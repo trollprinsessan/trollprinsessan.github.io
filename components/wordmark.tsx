@@ -10,9 +10,11 @@ const HNC =
 export default function Wordmark({
   label = "100",
   className,
+  style,
 }: {
   label?: string | null;
   className?: string;
+  style?: React.CSSProperties;
 }) {
   return (
     <svg
@@ -20,6 +22,7 @@ export default function Wordmark({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
+      style={style}
     >
       {/* n */}
       <path d="M297.518 183.553V185.729H261.665V182.858C261.665 151.68 261.665 120.501 261.611 89.3134C261.561 85.8667 261.163 82.434 260.423 79.0679C259.362 73.9407 255.926 70.7452 250.835 70.1674C247.204 69.722 243.525 69.8714 239.942 70.6098C233.844 71.9548 230.264 76.405 228.833 82.3446C227.949 85.9977 227.496 89.7425 227.484 93.5018C227.376 123.29 227.43 153.079 227.43 182.867V185.738H191.676V45.8221H225.856V62.4314C226.477 61.6371 226.756 61.3934 226.891 61.1045C234.887 47.3205 247.345 41.9766 262.636 42.0398C267.852 41.9709 273.035 42.8675 277.927 44.6847C288.388 48.7558 294.118 56.7626 296.052 67.5226C296.936 72.1957 297.406 76.9383 297.455 81.6947C297.563 115.654 297.518 149.604 297.518 183.553Z" fill="currentColor" />
@@ -41,10 +44,23 @@ export default function Wordmark({
       {/* 100 — condensed numeral, same treatment everywhere it appears */}
       {label && (
         <text
-          x="1213"
+          /* at rest the numeral is re-spaced off the final "n" (ink ends at
+             1187.4): x and dx are solved so the n-1, 1-0 and 0-0 ink gaps all
+             come out at ~46.6 and the last zero still clears the right margin by
+             the same 6.7 units the first "n" clears the left */
+          x={label === "100" ? "1224.03" : "1213"}
           y="185"
           fontSize="250"
           fill="currentColor"
+          /* The figures are tabular (each digit a 120-unit cell) so the 000->100
+             count-up never jitters. At rest the digits end 63 units short of
+             the right margin (viewBox edge 1632), and the air is uneven: ~43
+             after the narrow "1", ~9 between the zeros. These shifts spread
+             the slack so both gaps come out equal (~52) and the ink clears the
+             right edge by the same 6.7 units the "n" clears the left - equal
+             margins, measured off getBBox in the browser. Only applied to the
+             settled "100" - a mid-count number keeps its cells. */
+          dx={label === "100" ? "0 3.6 37.6" : undefined}
           style={{
             fontFamily: HNC,
             fontWeight: 700,

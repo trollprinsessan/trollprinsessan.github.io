@@ -1,226 +1,89 @@
-/* atelier-amont.ch's editorial voice: a single bold-cut grotesque used at
-   weight 400 everywhere, italic as the only device for marked content */
-/* Zurich, served by the site rather than borrowed from whatever is installed
-   locally. Previously every rule asked for "Zurich" while only "Zurich Bold"
-   was declared, so visitors silently fell through to Neue Haas. Real cuts for
-   400/700/900 and their italics, so nothing is synthesised. */
+/* Arial MT, from Nina's own files, served by the site rather than borrowed
+   from whatever is installed locally. One family carries the whole voice:
+   the interface runs at 700, italic is the single emphasis device, and the
+   narrow cut sets the wordmark's numerals. */
 @font-face {
-  font-family: "Zurich";
-  src: url("/fonts/ZurichRegular.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Zurich";
-  src: url("/fonts/ZurichItalic.ttf") format("truetype");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Zurich";
-  src: url("/fonts/ZurichBold.otf") format("opentype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Zurich";
-  src: url("/fonts/ZurichBoldItalic.otf") format("opentype");
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Zurich";
-  src: url("/fonts/ZurichBlack.ttf") format("truetype");
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Zurich";
-  src: url("/fonts/ZurichBlackItalic.ttf") format("truetype");
-  font-weight: 900;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "DGMSprinter";
-  src: url("/fonts/DGMSprinter-Thin.otf") format("opentype");
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "DGMSprinter";
-  src: url("/fonts/DGMSprinter-ThinItalic.otf") format("opentype");
-  font-weight: 100;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "DGMSprinter";
-  src: url("/fonts/DGMSprinter-Light.otf") format("opentype");
+  font-family: "Arial MT";
+  src: url("/fonts/ArialMT-Light.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: "DGMSprinter";
-  src: url("/fonts/DGMSprinter-LightItalic.otf") format("opentype");
+  font-family: "Arial MT";
+  src: url("/fonts/ArialMT-LightItalic.woff2") format("woff2");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
 }
+/* No 400 upright: the Regular in Nina's folder (arialmt.ttf) is corrupt -
+   its glyf and hmtx tables overrun their declared lengths, and it fails the
+   browser's font sanitiser however it is rebuilt. The site sets 700 almost
+   everywhere; the three rules that ask for 400 fall through to the system's
+   own Arial, which is the same face. Drop a good Regular in and this face
+   can go back. */
 @font-face {
-  font-family: "DGMSprinter";
-  src: url("/fonts/DGMSprinter-Regular.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "DGMSprinter";
-  src: url("/fonts/DGMSprinter-Italic.otf") format("opentype");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "DGMSprinter";
-  src: url("/fonts/DGMSprinter-Medium.otf") format("opentype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "DGMSprinter";
-  src: url("/fonts/DGMSprinter-MediumItalic.otf") format("opentype");
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "DGMSprinter";
-  src: url("/fonts/DGMSprinter-Bold.otf") format("opentype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "DGMSprinter";
-  src: url("/fonts/DGMSprinter-BoldItalic.otf") format("opentype");
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "NeueHaasDisplay";
-  src: url("/fonts/NeueHaasDisplayXXThin.ttf") format("truetype");
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "NeueHaasDisplay";
-  src: url("/fonts/NeueHaasDisplayXXThinItalic.ttf") format("truetype");
-  font-weight: 100;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "NeueHaasDisplay";
-  src: url("/fonts/NeueHaasDisplayXThin.ttf") format("truetype");
-  font-weight: 150;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "NeueHaasDisplay";
-  src: url("/fonts/NeueHaasDisplayThin.ttf") format("truetype");
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "NeueHaasDisplay";
-  src: url("/fonts/NeueHaasDisplayThinItalic.ttf") format("truetype");
-  font-weight: 200;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "NeueHaasDisplay";
-  src: url("/fonts/NeueHaasDisplayLight.ttf") format("truetype");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "NeueHaasDisplay";
-  src: url("/fonts/NeueHaasDisplayLightItalic.ttf") format("truetype");
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "NeueHaasDisplay";
-  src: url("/fonts/NeueHaasDisplayRoman.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "NeueHaasDisplay";
-  src: url("/fonts/NeueHaasDisplayRomanItalic.ttf") format("truetype");
+  font-family: "Arial MT";
+  src: url("/fonts/ArialMT-Italic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
-  font-family: "NeueHaasDisplay";
-  src: url("/fonts/NeueHaasDisplayMediu.ttf") format("truetype");
+  font-family: "Arial MT";
+  src: url("/fonts/ArialMT-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: "NeueHaasDisplay";
-  src: url("/fonts/NeueHaasDisplayMediumItalic.ttf") format("truetype");
+  font-family: "Arial MT";
+  src: url("/fonts/ArialMT-MediumItalic.woff2") format("woff2");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
-  font-family: "NeueHaasDisplay";
-  src: url("/fonts/NeueHaasDisplayBold.ttf") format("truetype");
+  font-family: "Arial MT";
+  src: url("/fonts/ArialMT-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: "NeueHaasDisplay";
-  src: url("/fonts/NeueHaasDisplayBoldItalic.ttf") format("truetype");
+  font-family: "Arial MT";
+  src: url("/fonts/ArialMT-BoldItalic.woff2") format("woff2");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
-  font-family: "NeueHaasDisplay";
-  src: url("/fonts/NeueHaasDisplayBlack.ttf") format("truetype");
+  font-family: "Arial MT";
+  src: url("/fonts/ArialMT-Black.woff2") format("woff2");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: "NeueHaasDisplay";
-  src: url("/fonts/NeueHaasDisplayBlackItalic.ttf") format("truetype");
+  font-family: "Arial MT";
+  src: url("/fonts/ArialMT-BlackItalic.woff2") format("woff2");
   font-weight: 900;
   font-style: italic;
+  font-display: swap;
+}
+/* the condensed cut, for the wordmark's numerals */
+@font-face {
+  font-family: "Arial MT Narrow";
+  src: url("/fonts/ArialMT-Narrow.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Arial MT Narrow";
+  src: url("/fonts/ArialMT-NarrowBold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -234,8 +97,8 @@
   --bg: #ffffff;
   --ink: #000000;
   --line: #e0e0e0;
-  --muted: #999999;
-  --meta: #b3b3b3;
+  --muted: #7F7F7F;
+  --meta: #7F7F7F;
   --dim: #e5e5e5; /* wheel-picker inactive option — radioraheem.it/music value */
   --accent: #BB29BB;
   /* climaxbooks.com's own token, read straight off their stylesheet */
@@ -252,11 +115,12 @@
   --metacol: calc(var(--namecol) * 0.8);
   --climax-gutter: 50.6px;  /* climaxbooks: gutter (== --pad) */
   --max: 950px;
-  --font: "Zurich", "NeueHaasDisplay", Helvetica, Arial, sans-serif;
-  --mono: "Zurich", "NeueHaasDisplay", Helvetica, Arial, sans-serif;
-  --black: "Zurich", "NeueHaasDisplay", Arial, sans-serif;
-  --serif: "DGMSprinter", Helvetica, Arial, sans-serif;
-  --editorial: "Zurich", var(--font); /* atelier-amont.ch body-copy face, scoped to roulette for now */
+  --titlecap: clamp(30px, 3.2vw, 44px);
+  --font: "Arial MT", Arial, Helvetica, sans-serif;
+  --mono: "Arial MT", Arial, Helvetica, sans-serif;
+  --black: "Arial MT", Arial, Helvetica, sans-serif;
+  --serif: "Arial MT", Arial, Helvetica, sans-serif;
+  --editorial: var(--font); /* atelier-amont.ch body-copy face, scoped to roulette for now */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -276,8 +140,8 @@ html.ground-pink {
      the ground instead of sitting on it as a neutral grey. One lever covers
      the view toggles, their dots, the greyed index rows, the search
      placeholder, the Latest and Network dates and the reveal copy. */
-  --meta: rgba(0, 0, 0, 0.30);
-  --muted: rgba(0, 0, 0, 0.40);
+  --meta: rgba(0, 0, 0, 0.5);
+  --muted: rgba(0, 0, 0, 0.5);
 }
 body {
   background: var(--bg);
@@ -362,63 +226,94 @@ main {
    centred at top: 20px, 25px per row, 0 10px padding, square corners, items
    space-between. Opaque white with black text — no backdrop blur and no
    mix-blend-mode, which is the substantive change from what was here before.
-   Their face is True Sans; var(--font) (Zurich) is our nearest grotesque. */
+   Their face is True Sans; var(--font) (Arial MT) is our nearest grotesque. */
+/* THE RUNNING HEAD
+   Not a bar. That catalogue marks every spread with three small pieces of
+   type set on the paper, and never with a filled band: the mark at the left,
+   where you are standing at the centre, the contents at the right. The ground
+   is the page's own, so nothing sits on a plate. */
 .site-nav {
-  position: fixed;
-  top: 10px;
-  left: 0;
-  right: 0;
+  /* sticky: the running head stays with the reader, on the page's own ground
+     so nothing shows through it */
+  position: sticky;
+  top: 0;
   z-index: 100;
-  background: transparent;
+  background: var(--bg);
+  color: var(--ink);
 }
-
-/* kept as a plain box: the source blends nothing, so the difference blend
-   that used to live here is gone. */
-.site-nav-blend {
-  mix-blend-mode: normal;
-}
-
-/* hangs on the same left/right margin as every section below it, rather than
-   floating as a centred bar */
 .site-nav-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
+  height: 30px;
   padding: 0 var(--pad);
 }
-
-/* centrephotogeneve.ch .navigation-item geometry — 4px radius, 8px/13px
-   padding, all 100ms ease-in-out — but transparent when idle so the box only
-   appears under the cursor. The padding is always applied, so the box
-   materialises in place instead of nudging the row on hover. */
-.site-nav-menu,
-.site-nav-search {
-  font-family: var(--font);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  color: #000;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  padding: 8px 13px;
-  cursor: pointer;
-  transition: all 100ms ease-in-out;
-}
-.site-nav-menu:hover,
-.site-nav-search:hover {
-  background: #000;
-  color: #fff;
-}
-
 .site-nav-title {
+  display: block;
+  height: 11px;
+  width: auto;
+  color: var(--ink);
+}
+/* one word, at the mark's own cap height and in full black - at 8px in grey
+   the contents read as a caption under a logo rather than its counterpart */
+.site-nav-trigger {
   font-family: var(--font);
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: none;
-  color: #000;
+  font-size: 11px;
+  line-height: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.site-nav-trigger--on,
+.site-nav-trigger:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+/* the contents page, dropped: a list on the paper, not a floating menu */
+.site-nav-drop {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 6px var(--pad) 28px;
+  animation: nav-drop 160ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes nav-drop {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-nav-drop { animation: none; }
+}
+.site-nav-drop a {
+  font-family: var(--font);
+  font-size: 21px;
+  line-height: 1.25;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.site-nav-drop a:hover { background: var(--ink); color: var(--bg); }
+.site-nav-drop a.site-nav-here {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+@media (max-width: 720px) {
+  .site-nav-top { height: 26px; }
 }
 
 .site-nav-ticker-row {
@@ -445,7 +340,7 @@ main {
 .site-nav-dot {
   width: 6px;
   height: 6px;
-  border-radius: 50%;
+  border-radius: 0;
   background: #f00;
   flex-shrink: 0;
 }
@@ -482,101 +377,20 @@ main {
    For z-index: -1 to sit under <main>, this element must share <main>'s
    stacking context — hence it is a sibling of <main>, not a child of the nav
    (whose z-index: 100 would drag it back on top). */
-.site-menu-panel {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  /* Sits ABOVE <main> (z-index 2), below the nav bar (100). Two earlier
-     attempts were wrong: z-index -1 put it behind the body's painting so it
-     was unclickable, and z-index 1 only revealed it at scrollY 0 — anywhere
-     else <main> is taller than the viewport, so sliding it down exposes more
-     of <main> rather than a gap. Painting on top works at every scroll
-     position, and is visually identical since the panel is opaque and <main>
-     has vacated that band anyway. */
-  z-index: 90;
-  height: 50vh;
-  background: #000;
-  visibility: hidden;
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  /* the source pads 10px all round, but its nav sits in the top-right corner,
-     clear of the columns. Ours is centred at top: 20px and would land on top
-     of the second column's first link — so the top pad clears the bar. */
-  padding: 46px 10px 10px;
-  --menu-size: clamp(28px, 3.4vw, 52px);
-}
+/* A drawer: slides in from the right over the page, black type on white.
+   Replaces the earlier arrangement where the whole page slid down 50vh to
+   reveal a black panel behind it. */
 
-/* the page itself is what moves. 0.6s easeInOutQuart is the source's curve —
-   slow in, slow out, so the slide reads as weight rather than a snap. */
-main {
-  transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
-}
-.site-menu-panel--open {
-  visibility: visible;
-  pointer-events: auto;
-}
 
-body.menu-open main {
-  transform: translateY(50vh);
-}
 /* Pinned, not merely overflow-hidden. `top` is set inline to -scrollY by the
    nav so the view stays exactly where it was, and taking body out of flow
    stops the 50vh slide from growing the document under the reader. */
-body.menu-open {
-  position: fixed;
-  left: 0;
-  right: 0;
-  width: 100%;
-  overflow: hidden;
-}
 @media (prefers-reduced-motion: reduce) {
   main { transition: none; }
 }
 
-.site-menu-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-}
-
-.site-menu-links {
-  display: flex;
-  flex-direction: column;
-}
-
-/* leading below 1 is the load-bearing value: the lines nest tighter than
-   their own glyph boxes, so the block reads as a slab, not a list. */
-.site-menu-links a {
-  font-family: var(--font);
-  font-size: var(--menu-size);
-  font-weight: 700;
-  line-height: 0.93;
-  letter-spacing: normal;
-  text-transform: none;
-  color: #fff;
-  text-decoration: none;
-}
-.site-menu-links a:hover { color: var(--meta); }
 
 /* one size throughout: the close word is set exactly like the links */
-.site-menu-close {
-  align-self: flex-start;
-  font-family: var(--font);
-  font-size: var(--menu-size);
-  font-weight: 700;
-  line-height: 0.93;
-  letter-spacing: normal;
-  text-transform: none;
-  color: #fff;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-.site-menu-close:hover { color: var(--meta); }
 
 /* ---- masthead ---- */
 .masthead {
@@ -618,6 +432,7 @@ body.menu-open {
   padding: 11px var(--pad);
 }
 /* single Filter trigger, on the row's type like everything else in the bar */
+/* single Filter trigger, on the row's type like everything else in the bar */
 .filter-trigger {
   grid-column: 1;
   justify-self: start;
@@ -628,45 +443,68 @@ body.menu-open {
   border: none;
   padding: 0;
   cursor: pointer;
-  font-family: "Zurich", var(--font);
-  font-size: 14px;
-  font-weight: 700;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
   letter-spacing: normal;
   color: var(--ink);
 }
 .filter-trigger:hover { background: var(--ink); color: var(--bg); }
+.filter-trigger-count {
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  color: inherit;
+}
 
-/* climaxbooks.com/filter: every group side by side in one panel, heading and
-   options at the same size. On the page's own column system rather than
-   auto-width tracks, so Year starts on the name column and Sector on card 2. */
 .filter-panel {
+  padding: 24px var(--pad) 28px;
+}
+/* climaxbooks' own filter: every group side by side in the one panel, each a
+   heading over its own vertical list, so the whole set is exposed at once -
+   laid on the page's own --gridcols tracks, so the groups line up with the
+   Filter control, the card grid and everything else on the page */
+.filter-panel-groups {
   display: grid;
   grid-template-columns: repeat(var(--gridcols), 1fr);
-  gap: 16px;
+  column-gap: 16px;
+  row-gap: 24px;
   align-items: start;
-  padding: 18px var(--pad) 30px;
 }
 .filter-group {
+  grid-column: span 1;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
   min-width: 0;
 }
+/* two page tracks, and the options split across two columns inside them */
+.filter-group--wide { grid-column: span 2; }
+.filter-group--wide .filter-group-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+  row-gap: 4px;
+}
 .filter-group-title {
-  font-family: "Zurich", var(--font);
-  font-size: 14px;
-  font-weight: 700;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
   letter-spacing: normal;
   color: var(--ink);
 }
+/* stacked, one option per line — no max-height, no overflow, the whole set
+   on screen at once */
 .filter-group-list {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  max-height: 340px;
-  overflow-y: auto;
-  scrollbar-width: thin;
+  gap: 4px;
+  align-items: flex-start;
 }
+/* plain text in the row, no box - just the dot and a colour change, the
+   way this looked before the pills grew borders */
 .filter-opt {
   display: flex;
   align-items: center;
@@ -677,9 +515,10 @@ body.menu-open {
   cursor: pointer;
   text-align: left;
   white-space: nowrap;
-  font-family: "Zurich", var(--font);
-  font-size: 14px;
-  font-weight: 700;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
   letter-spacing: normal;
   color: var(--meta);
   transition: color 120ms ease;
@@ -687,7 +526,8 @@ body.menu-open {
 .filter-opt:hover { color: var(--ink); }
 .filter-opt--on { color: var(--ink); }
 
-/* 12px circle, filled when active — their exact mark */
+/* 12px circle, filled when active — the only signal now that the box is
+   gone, so it is back to its original size */
 .filter-dot {
   width: 12px;
   height: 12px;
@@ -699,25 +539,59 @@ body.menu-open {
 }
 .filter-opt--on .filter-dot { background: currentColor; }
 
+/* the live count + clear + apply row, after the reference's own footer */
+.filter-panel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 26px;
+}
+.filter-clear,
+.filter-apply {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+  letter-spacing: normal;
+  color: var(--ink);
+  transition: color 120ms ease, background 120ms ease;
+}
+.filter-clear:hover:not(:disabled) { background: var(--ink); color: var(--bg); }
+.filter-clear:disabled { color: var(--meta); cursor: default; }
+.filter-apply:hover { background: var(--ink); color: var(--bg); }
+.filter-count {
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+  color: var(--meta);
+  text-align: center;
+}
+
 
 /* the statement column — the widest, so the placeholder never clips */
 .search {
   grid-column: 2;
-  font-family: "Zurich", var(--font);
-  font-size: 14px;
-  font-weight: 700;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
   letter-spacing: normal;
   background: none;
   border: none;
   height: 30px;
-  line-height: 30px;
+  line-height: 15px;
   padding: 0;
   color: var(--ink);
   width: 100%;
   min-width: 0;
 }
 .search:focus { outline: none; }
-.search::placeholder { color: var(--meta); font-weight: 700; letter-spacing: normal; }
+.search::placeholder { color: var(--meta); font-weight: 500; letter-spacing: normal; }
 
 
 
@@ -755,9 +629,10 @@ body.menu-open {
   border: none;
   padding: 0;
   cursor: pointer;
-  font-family: "Zurich", var(--font);
-  font-size: 14px;
-  font-weight: 700;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
   letter-spacing: normal;
   color: var(--meta);
   transition: color 120ms ease;
@@ -768,6 +643,7 @@ body.menu-open {
 .views-dot {
   width: 11px;
   height: 11px;
+  /* a radio mark reads as a circle: kept round deliberately */
   border-radius: 50%;
   border: 1.5px solid currentColor;
   background: transparent;
@@ -784,7 +660,7 @@ body.menu-open {
   font-family: var(--font);
   font-size: 11px;
   letter-spacing: normal;
-  font-weight: 400;
+  font-weight: 700;
   background: transparent;
   border: none;
   padding: 0;
@@ -797,6 +673,8 @@ body.menu-open {
 /* ---- index view ---- */
 .index { display: block; }
 
+
+
 /* atelier-amont.ch pattern: pure text table, no thumbnails, uneven CSS-grid
    columns, one weight throughout, no dividers or hover-fill — separation is
    whitespace only, rows as dense as a single text baseline. */
@@ -805,8 +683,9 @@ body.menu-open {
   grid-template-columns: var(--namecol) 1fr var(--metacol) var(--metacol);
   gap: 16px;
   align-items: baseline;
-  /* tighter set — rows were 26px, now ~20px */
-  padding: 1px var(--pad);
+  /* tighter set — rows were 26px, now ~20px. The 3px gives the open row's
+     black band a little air around its type rather than clamping it. */
+  padding: 3px var(--pad);
   width: 100%;
   background: none;
   border: none;
@@ -820,11 +699,13 @@ body.menu-open {
 .row-statement,
 .row-sector,
 .row-geo {
-  font-family: "Zurich", var(--font);
-  font-size: 14px;
-  font-weight: 700;
+  font-family: var(--font);
+  font-size: 13px;
+  /* medium, as the manifest and the plates run: Arial MT ships a real 500
+     and the index reads better without the bold */
+  font-weight: 500;
   font-style: normal;
-  line-height: 1.3;
+  line-height: 15px;
   letter-spacing: normal;
   text-transform: none;
   color: var(--ink);
@@ -832,9 +713,6 @@ body.menu-open {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  /* style swap is instant — no faux-slant tween to fake — but the grey-out
-     when another company opens eases */
-  transition: font-style 0s, color 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* while one company is open the rest recede to grey, so the disclosed row is
@@ -854,13 +732,47 @@ body.menu-open {
   color: var(--ink);
 }
 
-/* atelier-amont.ch: bold → bold italic on hover, the true italic cut */
+/* architecturecuratingpractice.com's list, measured: on hover an arrow
+   appears before the title and the row's text steps 13px to the right to
+   make room for it - the right-aligned date on their list stays put. No
+   colour, no slant, no underline, and NO tween: sampled at 16ms there are
+   exactly two states and nothing between them. It snaps. */
+.row-name,
+.row-statement,
+.row-sector,
+.row-geo {
+  transition: color 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* the arrow hangs off the ROW, not the name cell: the cell clips its own
+   overflow for the ellipsis, so anything placed outside it never paints */
+.row { position: relative; }
+.row::before {
+  content: "\2197";
+  position: absolute;
+  left: var(--pad);
+  top: 3px;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  opacity: 0;
+  pointer-events: none;
+}
+/* the step alone, no arrow: 6px, on and off in one frame */
 .row:hover .row-name,
 .row:hover .row-statement,
 .row:hover .row-sector,
 .row:hover .row-geo {
-  font-style: italic;
+  transform: translateX(6px);
 }
+.row:hover::before { opacity: 0; }
+/* the open row is already marked by its inversion; it does not also step */
+.index-item--open .row:hover .row-name,
+.index-item--open .row:hover .row-statement,
+.index-item--open .row:hover .row-sector,
+.index-item--open .row:hover .row-geo { transform: none; }
+.index-item--open .row:hover::before { opacity: 0; }
 
 /* Inline disclosure for index rows — replaces the modal in this view. Detail
    sits under the row it belongs to, indented to the statement column so the
@@ -868,15 +780,26 @@ body.menu-open {
 .index-item {
   border: none;
 }
+/* the open row inverts, the same device every other selection state on the
+   site uses (card tags, nav hover, the manifest tabs) - not just italics */
+.index-item--open .row {
+  background: var(--ink);
+}
 .index-item--open .row-name,
 .index-item--open .row-statement,
 .index-item--open .row-sector,
 .index-item--open .row-geo {
-  font-style: italic;
+  color: var(--bg);
+  /* the open row marks itself by inversion alone - same medium as every
+     other row, no slant and no extra weight */
+  font-weight: 500;
 }
 
 /* Detail inherits the row's own grid, so the image lands directly under the
-   sector column and the prose under name + statement. */
+   sector column and the prose under name + statement. Restyled on the same
+   record/label conventions the company pages use (EntryLayout): no filled
+   pill, no uppercase, no circle - a hairline spec table instead of the tags
+   and the round CTA. */
 .row-detail {
   display: grid;
   grid-template-columns: var(--namecol) 1fr var(--metacol) var(--metacol);
@@ -886,109 +809,142 @@ body.menu-open {
 }
 
 /* the statement column only — same measure as the row's own statement text */
+/* nine-track nested grid, starting flush with the statement column above it
+   (and the Search field on the same line) - track 1 here sits exactly where
+   row-statement's own left edge sits, since row-detail-text occupies that
+   same outer track. Problem and Solution kept their widths from the earlier
+   2-5/6-9 spec, just shifted one track left so nothing is indented off that
+   shared edge. */
 .row-detail-text {
   grid-column: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  column-gap: 16px;
+  row-gap: 14px;
+  align-items: start;
 }
+/* five tracks each rather than four, so the two blocks fill the measure
+   instead of leaving a track hanging off the end */
+.row-detail-block:nth-of-type(1) { grid-column: 1 / 6; }
+.row-detail-block:nth-of-type(2) { grid-column: 6 / 11; }
 .row-detail-block {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-/* same pill as .card-tag in the grid view — the category reads as a tag
-   rather than a heading, so it stops announcing itself */
-.row-detail-label {
-  align-self: flex-start;
-  font-family: var(--font);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  color: #fff;
-  background: var(--ink);
-  border-radius: 999px;
-  padding: 5px 10px;
-  line-height: 1;
-  white-space: nowrap;
-}
+/* the same setting as .entry-block-body: one size and one weight for every
+   piece of prose on the site */
 .row-detail p {
   font-family: var(--font);
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.3;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 15px;
   letter-spacing: normal;
   color: var(--ink);
   margin: 0;
+  /* ranged left: at this measure the forced word spacing opened rivers */
+  text-align: left;
+  hyphens: none;
+  -webkit-hyphens: none;
 }
 
-/* the spec column: tags over the CTA, both hard left on the name column */
+/* ---- the modal inverts ----
+   The plate is a black page: the archive behind it is veiled to near-white,
+   so the entry reads as the one thing lit. Shuffle keeps the white ground -
+   it is a page of the site, not a plate laid over it. */
+.entry:not(.entry--inline) {
+  background: var(--ink);
+  color: var(--bg);
+}
+.entry:not(.entry--inline) .entry-name,
+.entry:not(.entry--inline) .entry-statement,
+.entry:not(.entry--inline) .entry-spec dt,
+.entry:not(.entry--inline) .entry-spec dd,
+.entry:not(.entry--inline) .entry-block-label,
+.entry:not(.entry--inline) .entry-block-body,
+.entry:not(.entry--inline) .entry-close {
+  color: var(--bg);
+}
+.entry:not(.entry--inline) .entry-close { border-color: var(--bg); }
+.entry:not(.entry--inline) .entry-close:hover {
+  background: var(--bg);
+  color: var(--ink);
+}
+.entry:not(.entry--inline) .entry-spec dd a { color: var(--bg); }
+.entry:not(.entry--inline) .entry-spec dd a:hover {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* just the picture now, hard left on the name column */
 .row-detail-meta {
   grid-column: 1;
   grid-row: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 22px;
 }
-.row-detail-meta .card-tags {
-  margin-top: 0;
-  gap: 5px;
-}
-
-.row-detail-cta {
-  flex-shrink: 0;
-}
-/* the image under the sector column */
 .row-detail-img {
-  grid-column: 3 / -1;
-  grid-row: 1;
   display: block;
   width: 100%;
   height: auto;
-  align-self: start;
+  /* measured: the picture's top edge on the same topline as the record's
+     first value ("Newcomer") and the block heads */
+  margin-top: 2.7px;
 }
 
-
-/* round white button with a hairline rule, after the region selector on
-   climaxbooks — a true circle, not a pill */
-.row-detail-cta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  /* 80% of the name column it sits under == --metacol, i.e. one meta column.
-     Written as a percentage because --namecol's own 100% would resolve
-     against this grid area rather than against the whole grid. */
-  width: 80%;
-  aspect-ratio: 1;
-  height: auto;
-  border-radius: 50%;
-  border: 1px solid var(--ink);
-  background: #fff;
-  color: var(--ink);
+/* the record: the same six fields and hairline rules as the company pages'
+   .entry-spec, narrowed to fit two meta columns rather than a half-page
+   measure - label stacked over value instead of side by side, since there
+   isn't the width here for a two-column split. Sits where the round CTA
+   used to, with the URL as the last row rather than a separate button. */
+.row-detail-spec {
+  grid-column: 3 / -1;
+  grid-row: 1;
+}
+/* the record with its labels struck out - Newcomer, a year, the sectors and
+   a domain each say what they are. The dt stays in the DOM so the dl is still
+   a real definition list for anything reading it aloud. */
+.row-detail-spec-cell {
+  display: block;
+  padding: 2px 0;
+}
+.row-detail-spec dt {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.row-detail-spec dd {
+  min-width: 0;
+  margin: 0;
   font-family: var(--font);
   font-size: 13px;
-  font-weight: 700;
-  letter-spacing: normal;
-  line-height: 1.2;
-  padding: 0 14px;
-  box-sizing: border-box;
-  white-space: nowrap;
-  transition: background 140ms ease, color 140ms ease;
+  line-height: 15px;
+  font-weight: 500;
+  color: var(--ink);
 }
-.row-detail-cta:hover {
-  background: var(--ink);
-  color: #fff;
+.row-detail-spec dd a {
+  color: inherit;
+  /* the one live thing in the record - it should look like a link */
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  padding: 0 2px;
+  margin: 0 -2px;
+  word-break: break-all;
 }
+.row-detail-spec dd a:hover { background: var(--ink); color: var(--bg); }
 
 
 /* ---- grid view — uniform cards, 5+ per row ---- */
+/* PLATES
+   The catalogue's plate pages: a picture with real air around it, and the
+   caption centred beneath in the small regular size. The tighter the caption
+   sets, the more the picture reads as a plate rather than a thumbnail. */
 .grid {
   display: grid;
   grid-template-columns: repeat(var(--gridcols), 1fr);
-  gap: 44px 16px;
+  gap: 40px 16px;
   padding: 0 var(--pad);
   align-items: start;
 }
@@ -996,7 +952,7 @@ body.menu-open {
 .card {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 14px;
   background: none;
   border: none;
   padding: 0;
@@ -1006,78 +962,95 @@ body.menu-open {
   font-family: inherit;
 }
 
-.card-name {
-  font-family: "Zurich", var(--font);
-  /* 14px, matching the controls and the index rows */
-  font-size: 14px;
-  font-weight: 700;
-  font-style: normal;
-  letter-spacing: normal;
-  line-height: 1;
-  color: var(--ink);
-}
-
-/* No forced ratio and no plate: each image keeps its own proportions and its
-   own edge. The grey box and the object-fit: cover crop were both there to
-   make mismatched stock photography line up; with real art direction they were
-   throwing away the framing and putting a grey rectangle behind everything. */
+/* Each plate fills the width of its column and keeps its own proportion: a
+   square stays square, a 4:3 stays 4:3. Nothing is cropped and nothing is
+   padded out to a common shape, so the rows rag at the foot - that is the
+   price of leaving every frame as it was made, and it is the right price. */
 .card-media {
   width: 100%;
 }
+/* a square frame for every card, whatever came in: three quarters of the 2026
+   pictures will be cutout PNGs of any proportion, and with height: auto the
+   captions landed on six different lines across one row. Contained, and
+   standing on the frame's bottom edge so a cutout sits on the caption line
+   like an object on a shelf. */
 .card-thumb {
   width: 100%;
+  aspect-ratio: 1;
   height: auto;
+  object-fit: contain;
+  object-position: bottom center;
   display: block;
 }
+
 /* nothing to show rather than an empty grey plate */
 .card-thumb--empty { display: none; }
 
-.card-statement {
-  font-family: "Zurich", var(--font);
-  font-size: 11px;
-  font-weight: 700;
+/* THE CAPTION
+   The Latest card's system, applied here: everything at one size and one
+   weight, and the hierarchy carried by case, by two spacing values, and by a
+   single grey for the least important line. Nothing changes size. */
+.card-caption {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
   font-style: normal;
   letter-spacing: normal;
-  line-height: 1.3;
   color: var(--ink);
-  margin: 0;
+  text-align: left;
+  text-wrap: pretty;
 }
-
-/* radioraheem.it: black pill tags, white uppercase text */
-.card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 4px;
+/* the title */
+.card-name { margin: 0; }
+/* the category: the same setting as the name, on the line straight under it.
+   No caps and no step down - the card runs at one size and one weight, the
+   way the Shuffle page and the index do now, and the only hierarchy is the
+   line break before the statement. */
+.card-facts {
+  /* under the statement, as the last line of the card: name, what they do,
+     then where and in what. A flex order, so the markup stays as it reads */
+  order: 3;
+  margin-top: 15px;
+  font-size: 13px;
+  line-height: 15px;
+  text-transform: none;
 }
-
-.card-tag {
-  font-family: var(--font);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: normal;
+/* the body: what they do. Held at three lines so the cards keep their step;
+   the statements run a median of 69 characters. One blank line above it. */
+.card-statement {
+  /* tight under the name: the two belong together */
+  margin-top: 7px;
+  min-height: 45px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+/* the campaign, where the Latest card puts its date: caps, grey */
+.card-themes {
+  margin-top: 14px;
   text-transform: uppercase;
-  color: #fff;
-  background: var(--ink);
-  border-radius: 999px;
-  padding: 5px 10px;
-  line-height: 1;
-  white-space: nowrap;
+  color: var(--meta);
 }
 
-/* atelier-amont.ch: bold → bold italic on hover, same treatment as the Index rows */
-.card:hover .card-statement {
-  font-style: italic;
+/* the plate's caption underlines on hover, the way the book marks a heading */
+.card:hover .card-name {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 @media (min-width: 1500px) { :root { --gridcols: 7; } }
 @media (min-width: 1900px) { :root { --gridcols: 8; } }
 @media (max-width: 900px)  { :root { --gridcols: 3; } }
-@media (max-width: 560px)  { :root { --gridcols: 2; } .grid { gap: 32px 14px; } }
+@media (max-width: 560px)  { :root { --gridcols: 2; } .grid { gap: 40px 14px; } }
 
 .tag {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 13px;
+  line-height: 15px;
   letter-spacing: normal;
   text-transform: uppercase;
   color: var(--muted);
@@ -1194,6 +1167,41 @@ body.menu-open {
   display: none;
 }
 
+/* Animated section titles. Each asset is cropped differently, so the widths
+   below normalise them to one shared cap height rather than one shared width:
+   faq.gif is 972x318 with the glyphs filling the frame, nomination-partners.gif
+   is 1080x200 with a 63px cap band. min(..., 100%) lets a narrow viewport
+   shrink them instead of overflowing. */
+.mod-title-art {
+  display: block;
+  margin: 0 auto;
+  height: auto;
+}
+/* faq.gif 972x318, glyphs fill the frame: no padding to cancel */
+.mod-title-art--faq { width: min(calc(var(--titlecap) * 3.06), 100%); }
+
+/* nomination-partners.gif 1080x200, cap band y61-123: 61px of empty frame above
+   and 76px below. It runs the full width of the section, so those cancels are
+   expressed as a percentage of that width (61/1080, 76/1080) — margin
+   percentages resolve against the containing block, which at width 100% is the
+   element's own width, so they stay exact at every viewport. */
+.mod-title-art--partners {
+  width: 100%;
+  margin-top: -5.65%;
+  margin-bottom: -7.04%;
+}
+
+/* the-latest.gif 1280x720 with alpha, ink box measured across the animation at
+   y264-468 and x41: 1.29 cap units of empty frame above, 1.22 below, 0.20 to
+   the left. It runs at four times the shared cap height, so the margins that
+   cancel that frame are keyed to its own cap rather than the shared one. */
+.mod-title-art--latest {
+  --latestcap: calc(var(--titlecap) * 4);
+  width: min(calc(var(--latestcap) * 6.24), 100%);
+  margin: calc(var(--latestcap) * -1.29) 0 calc(var(--latestcap) * -1.22)
+          calc(var(--latestcap) * -0.20);
+}
+
 /* =============================================
    01 — HERO
    ============================================= */
@@ -1255,7 +1263,8 @@ body.menu-open {
 
 .mod-hero-placeholder span {
   font-family: var(--font);
-  font-size: 10px;
+  font-size: 13px;
+  line-height: 15px;
   font-weight: 700;
   letter-spacing: normal;
   text-transform: uppercase;
@@ -1329,6 +1338,9 @@ body.menu-open {
    (the set is mixed square/landscape, so a 3:4 crop would gut them). ---- */
 .mod-manifest {
   position: relative;
+  /* above the masthead that follows, so the artwork hanging out of the bottom
+     of this section laps over the wordmark rather than under it */
+  z-index: 1;
   background: var(--bg);
   color: var(--ink);
   /* top tightened so the row sits close under the hero — it was 89px of dead
@@ -1341,8 +1353,14 @@ body.menu-open {
      Fixed rather than min-height because the artwork and the copy both change
      length per panel, and without a fixed stage the section grew and shrank
      and shoved everything below it by up to 315px on every tab click. */
-  height: calc(100vh - ((100vw - 2 * var(--pad)) * 0.1306 + 48px));
-  min-height: 460px;
+  /* One viewport MINUS the masthead, so the manifest and the wordmark share a
+     screen - but as a floor, not a ceiling: at display scale the longer
+     panels run past it rather than being crushed into it */
+  min-height: calc(100vh - ((100vw - 2 * var(--pad)) * 0.1306 + 48px));
+  /* the stage has to fill that floor, or its row collapses to the copy and
+     the artwork rides up behind the type instead of sitting under it */
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   /* the ground travels when a panel asks for it */
   transition: background-color 520ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -1357,33 +1375,57 @@ body.menu-open {
    measures in site columns like everything else. The text block takes the last
    two columns, set one column in from the right margin; the image keeps the
    left of the section. */
+/* buildingparis.fr/about, measured at 1118px: 12 columns, 10px gutters,
+   col-4 = 353px. Label column on the left, copy in the next four columns,
+   artwork in the last four. No rules between bands: Nina's variant. */
+/* THE SPREAD
+   MoMA's Yoko Ono: One Woman Show, measured off its entry pages. Nothing in
+   that book is bold: the whole thing runs at one small regular size, and the
+   devices are caps, italic, an underline, and a great deal of empty paper.
+   Three running heads across the top, the contents down the far margin, one
+   narrow justified column left of centre, the plate on the right with its
+   caption under it. */
+.mod-manifest-runheads {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: baseline;
+  padding: 0 var(--pad);
+  margin-bottom: clamp(48px, 9vh, 130px);
+  font-family: var(--font);
+  font-size: 11px;
+  line-height: 13px;
+  font-weight: 500;
+  letter-spacing: normal;
+  color: var(--ink);
+}
+.mod-manifest-runheads span:nth-child(2) { justify-self: center; }
+.mod-manifest-runheads span:nth-child(3) {
+  justify-self: end;
+  text-transform: uppercase;
+}
+
 .mod-manifest-top {
   display: grid;
-  grid-template-columns: repeat(var(--gridcols), 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 10px;
   padding: 0 var(--pad);
   align-items: start;
 }
-.mod-manifest-top > .mod-manifest-gifline {
-  grid-column: 1 / 4;
-}
-.mod-manifest-col {
-  grid-column: -4 / -2;
-}
-
-
+/* the contents, in the far margin: number, then title */
+.mod-manifest-index { grid-column: 1 / 3; }
 .mod-manifest-index ol {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-/* Only the active item is in focus; the rest sit slightly out of it. The blur
-   is transitioned, so switching pulls one item sharp while the others soften —
-   the same language as the copy swap on the right. */
-.mod-manifest-tab {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 3px;
+}
+.mod-manifest-index li { display: block; }
+.mod-manifest-tab {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  column-gap: 8px;
   width: 100%;
   background: none;
   border: none;
@@ -1391,44 +1433,56 @@ body.menu-open {
   text-align: left;
   cursor: pointer;
   font-family: var(--font);
-  font-size: 16.5px;
-  line-height: 1.15;
+  font-size: 11px;
+  line-height: 13px;
   letter-spacing: normal;
-  /* Climax runs weight 400 for its entire text column — one size, one weight,
-     italic as the only emphasis. Focus here is carried by blur and colour, so
-     the items still never shift width when the active one changes.
-     Set to 700 rather than the reference's 400 — the single-size, single-weight
-     discipline is kept, just at bold. */
-  font-weight: 700;
-  /* inactive items stay black and are separated by blur alone. Greying them
-     as well washed out on the pink ground, and blur already says "not this
-     one" without draining the ink. */
+  font-weight: 500;
   color: var(--ink);
-  filter: blur(1.6px);
-  transition: filter 480ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-.mod-manifest-tab:hover {
-  filter: blur(0.6px);
+.mod-manifest-tab-num { font-variant-numeric: tabular-nums; }
+.mod-manifest-tab-label { text-transform: uppercase; }
+/* the open one is marked the way the book marks a heading: underlined */
+.mod-manifest-tab--active .mod-manifest-tab-label {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
-.mod-manifest-tab--active,
-.mod-manifest-tab--active:hover {
-  filter: blur(0);
-}
-@media (prefers-reduced-motion: reduce) {
-  .mod-manifest-tab { transition: none; }
-}
-
-.mod-manifest-tab-num {
-  flex: 0 0 10px;
-  font-variant-numeric: tabular-nums;
+.mod-manifest-tab:hover .mod-manifest-tab-label {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-/* the right column stacks index over copy, the way Climax stacks title, meta
-   and description in one column */
-.mod-manifest-col {
-  display: flex;
-  flex-direction: column;
-  gap: 1.15em;
+/* the text column, centred on the page with its title over it: six tracks of
+   twelve, so its middle sits on the page's middle */
+/* the catalogue's measure: pp. 58-59 set the body on about 47 characters,
+   which is what makes the column read as a book page rather than a web
+   column. At 18px that is roughly 430px, so the copy takes four of the
+   twelve tracks rather than six - the same setting, just bigger. */
+.mod-manifest-col { grid-column: 5 / 9; grid-row: 1; }
+.mod-manifest-head {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 18px;
+  line-height: 1.28;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: var(--ink);
+  /* the book leaves a clear band between the centred header block and the
+     body, not a line's worth */
+  margin-bottom: 2.2em;
+}
+
+
+/* the plate, under the text on the same measure: with the column centred
+   there is no right-hand page for it to sit on any more */
+.mod-manifest-top > .mod-manifest-gifline {
+  grid-column: 4 / 10;
+  grid-row: 2;
+  align-self: start;
+  margin-top: clamp(40px, 6vh, 88px);
 }
 
 /* Copy swap. Keyed on the panel in React, so React remounts this element on
@@ -1436,29 +1490,15 @@ body.menu-open {
    only fire once. Driven by an animation rather than the scroll-triggered
    RevealBlur, which fires from an IntersectionObserver and cannot be relied on
    to re-run for an element already sitting in view. */
-@keyframes manifest-swap-in {
-  from {
-    opacity: 0;
-    filter: blur(7px);
-    transform: translateY(7px);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: none;
-  }
-}
-.mod-manifest-swap {
-  animation: manifest-swap-in 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-@media (prefers-reduced-motion: reduce) {
-  .mod-manifest-swap { animation: none; }
-}
+/* the panel copy swaps instantly - no fade, no rise. Opening a file shows
+   what is in it. */
 
 .mod-manifest-body {
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  /* no blank line between paragraphs: the turn is carried by a first-line
+     indent, as it is on every page of that book */
+  gap: 0;
   border: none;
   padding: 0;
   margin: 0;
@@ -1466,22 +1506,31 @@ body.menu-open {
      <summary> and anything else inside inherits it too. It was on `p` alone,
      which is why the disclosure summary fell back to the page default face. */
   font-family: var(--font);
-  font-size: 16.5px;
-  font-weight: 700;
-  line-height: 1.15;
+  /* The manifest is the one paragraph on the page that has to carry the
+     subject, so it takes the statement tier - the same setting the Shuffle
+     view's statement uses - rather than the 13px interface size everything
+     else runs at. At 13px in a 431px column the measure ran to ~85 characters
+     as well; at this size the same column reads at ~45. */
+  /* the catalogue's setting: 18px in the medium cut, justified, hyphenated,
+     on a measure of about 55 characters. Nothing is bold anywhere in that
+     book and nothing is bold here. */
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.28;
   letter-spacing: normal;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  text-align-last: left;
   color: var(--ink);
 }
+.mod-manifest-body p + p { text-indent: 2em; }
 .mod-manifest-body p {
-  font-family: var(--font);
-  /* 14px on a ~4-column measure lands near 59 chars/line — the same register
-     Climax runs ONE size for its whole text column — 16.5px (0.75rem of a
-     22px root), ratio 1.15, -0.02em, no size hierarchy at all. Replicated,
-     but at weight 700 instead of the reference's 400. */
-  font-size: 16.5px;
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: normal;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
   color: var(--ink);
   margin: 0;
 }
@@ -1497,22 +1546,40 @@ body.menu-open {
    right-hand column. Behind the text (z-index 0 vs the column's 1) so the copy
    stays legible over it, and it never affects layout because the overflow is
    purely visual — the grid cell keeps its own width. */
+.mod-manifest > .mod-manifest-gifline {
+  /* the figure holds the top of the artwork; the rest hangs 210px out of the
+     section (see the img below), so its height is the art minus that hang
+     and minus the 40px the art starts below the notes */
+  height: calc(clamp(370px, 59vw, 820px) - 250px);
+  margin-top: clamp(28px, 4vh, 48px);
+}
 .mod-manifest-gifline {
   margin: 0;
+  /* position: relative WITHOUT a z-index, deliberately. Adding z-index: 0 here
+     creates a stacking context, and mix-blend-mode only blends against the
+     backdrop inside its own context — so the multiply on the gif had nothing
+     to act on and silently did nothing. The copy column still paints above
+     this because it carries z-index: 1 of its own. */
   position: relative;
-  z-index: 0;
-  /* contributes no height: a square gif and a landscape mark must leave the
-     layout identical, so the copy column alone sets the row */
-  height: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 0;
 }
 .mod-manifest-gifline img {
+  /* Positioned rather than laid out, so it can hang below the section and lap
+     over the wordmark without lengthening anything. Sized off the viewport,
+     not off its cell, so it scales with the page. Uncropped. */
   position: absolute;
-  top: 0;
-  left: 0;
-}
-.mod-manifest-gifline img {
-  /* 150% was the original overspill; 120% is that, 20% smaller */
-  width: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  /* hangs out of the section so it laps the wordmark below, and kept to the
+     foot of the stage: at 59vw it sat straight behind the display type and
+     fought it for the same space. It is the ground the type is printed on,
+     not a second thing competing with it. */
+  bottom: -250px;
+  width: auto;
+  height: clamp(240px, 31vw, 440px);
   max-width: none;
 }
 
@@ -1521,11 +1588,14 @@ body.menu-open {
   position: relative;
   z-index: 1;
 }
-/* columns 4-9 of 12: centred, and still on real column lines */
 .mod-manifest-gifline img {
   display: block;
-  height: auto;
   mix-blend-mode: multiply;
+}
+/* the inlined mark travels with the same offset as the gif */
+.mod-manifest-gifline .eu-mark {
+  width: 100%;
+  height: 100%;
 }
 /* white-ground art needs nothing: multiply alone dissolves the paper. */
 .mod-manifest-gifline--light img {
@@ -1541,15 +1611,11 @@ body.menu-open {
   overflow: hidden;
 }
 
-.mod-manifest-gifline--plain img {
+.mod-manifest-gifline--plain img,
+.mod-manifest-gifline--plain .eu-mark {
   mix-blend-mode: normal;
   /* cheap.urls.loan's print distortion, their values exactly */
   filter: url(#print-distort);
-  /* the mark runs wider and sits lower than the vortex: it is a landscape
-     stamp rather than a disc, so it takes more width and drops clear of the
-     tab index above it. Transform, not margin, so it never affects layout. */
-  width: 150%;
-  transform: translateY(216px);
 }
 @media (max-width: 720px) {
   .mod-manifest-gifline--plain img { filter: url(#print-distort-mobile); }
@@ -1584,14 +1650,29 @@ body.menu-open {
 }
 
 @media (max-width: 720px) {
-  .mod-manifest-top { grid-template-columns: 1fr; gap: 28px 0; }
-  /* explicit placement would leave a 12-col sheet unreadable on a phone —
-     collapse to a single stacked column and let the inline row/col be ignored */
+  /* the spread becomes one column on a phone: contents, then the text with
+     its title, then the plate and its caption */
+  .mod-manifest-runheads { margin-bottom: 26px; }
+  .mod-manifest-runheads span:nth-child(2) { display: none; }
+  .mod-manifest-top {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+    row-gap: 30px;
+  }
+  .mod-manifest-index,
+  .mod-manifest-col,
+  .mod-manifest-top > .mod-manifest-gifline { grid-column: 1; }
+  .mod-manifest-index ol { gap: 3px; }
+  .mod-manifest-body { font-size: 17px; }
+  .mod-manifest-head { font-size: 17px; }
+  /* the section is a fixed one-screen stage on desktop; on a phone it has to
+     grow with whatever the panel holds */
+  .mod-manifest { height: auto; }
 }
 
 /* The one expressive device in an otherwise single-size, single-weight system
    — exactly how climaxbooks marks titles. A real italic cut, not a slant:
-   Zurich ships one, so nothing is synthesised. */
+   Arial MT ships one, so nothing is synthesised. */
 .mod-manifest-body em {
   font-style: italic;
   font-weight: inherit;
@@ -1675,8 +1756,20 @@ body.menu-open {
    These rules were lost in an earlier edit, which left the mark unstyled and
    running edge-to-edge. Restored on var(--pad) so its left/right margin
    matches every other section (it was previously a one-off 20px). */
+/* the mark turns in space as it crosses the screen: p-o.space's own device,
+   a rotateY off scroll inside a perspective. The perspective has to live on
+   the parent, or the rotation flattens to a horizontal squash. */
+/* the archive owns a screen: masthead, controls, then the view taking
+   whatever is left. The Shuffle stage used to assume 128px above it and was
+   cropped by however much the masthead and the control row actually took. */
+
 .archive-masthead {
   padding: 0 var(--pad) 48px;
+  perspective: 1600px;
+}
+.manifest-logo-svg {
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .manifest-logo {
@@ -1687,6 +1780,137 @@ body.menu-open {
   display: block;
   width: 100%;
   height: auto;
+}
+
+/* ---- manifest, as the book's spread ----
+   Overrides the catalogue-page setting above. The same page the company
+   spreads are: the plate inset on the verso with air above it, the number
+   and the title in the foot; on the recto the lead line and a justified
+   body at the head, the contents standing lower as the record with the
+   current one underlined, and the number in the foot. One screen. */
+.mod-manifest {
+  height: calc(100dvh - 30px);
+  min-height: 520px;
+  padding: 38px 0 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+.mod-manifest-runheads { display: none; }
+.mod-manifest-head { display: none; }
+.mod-manifest-top {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  /* both leaves run the full height of the stage, so their feet sit on one
+     line - the earlier catalogue-page rule started them at the top */
+  align-items: stretch;
+  column-gap: 16px;
+  padding: 0 var(--pad);
+}
+.mod-manifest-verso,
+.mod-manifest-recto { align-self: stretch; }
+.mod-manifest-verso {
+  grid-column: 1 / 7;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+.mod-manifest-recto {
+  grid-column: 7 / 12;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+.mod-manifest-verso .mod-manifest-gifline {
+  flex: 0 1 auto;
+  position: static;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  max-height: 62%;
+  aspect-ratio: 1;
+  /* the plate sits a fifth of the way down its page, inset from the gutter */
+  margin: clamp(48px, 12vh, 140px) 8% 0 0;
+  padding: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.mod-manifest-verso .mod-manifest-gifline img,
+.mod-manifest-verso .mod-manifest-gifline .eu-mark {
+  position: static;
+  left: auto;
+  bottom: auto;
+  transform: none;
+  mix-blend-mode: normal;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: contain;
+  object-position: left top;
+  margin: 0;
+  display: block;
+}
+.mod-manifest-body {
+  position: static;
+  width: auto;
+  max-width: none;
+  margin: 0;
+  font-size: 15px;
+  line-height: 17px;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-align: justify;
+  text-align-last: left;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+.mod-manifest-body p { margin: 0; }
+.mod-manifest-body p + p { text-indent: 0; margin-top: 17px; }
+/* the contents head the recto, above the copy: pinned to the top they sit
+   on the same line whichever panel is open, and they read as what they are -
+   the way in - before the text starts */
+.mod-manifest-index {
+  grid-column: auto;
+  order: -1;
+  margin: 0 0 40px;
+  padding: 0;
+}
+.mod-manifest-index ol { gap: 0; }
+/* the contents: not numbered, set in caps - the numbers live in the foot */
+.mod-manifest-tab {
+  grid-template-columns: 1fr;
+  column-gap: 0;
+  font-size: 15px;
+  line-height: 17px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+.mod-manifest-tab-num { display: none; }
+.mod-manifest-tab-label {
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.mod-manifest-tab--active .mod-manifest-tab-label,
+.mod-manifest-tab:hover .mod-manifest-tab-label {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+@media (max-width: 720px) {
+  .mod-manifest { height: auto; }
+  .mod-manifest-top { grid-template-columns: 1fr; row-gap: 30px; }
+  .mod-manifest-verso,
+  .mod-manifest-recto { grid-column: 1; }
+  .mod-manifest-verso .mod-manifest-gifline { margin-top: 0; max-height: none; }
 }
 
 /* ---- latest ----
@@ -1703,6 +1927,8 @@ body.menu-open {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* the title sits close to the slideshow: the track's own padding is the gap */
+  margin-bottom: 0;
 }
 
 .mod-latest-nav {
@@ -1711,9 +1937,9 @@ body.menu-open {
 }
 .mod-latest-arrow {
   font-family: var(--font);
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 700;
-  line-height: 1;
+  line-height: 15px;
   color: var(--ink);
   background: none;
   border: none;
@@ -1732,7 +1958,7 @@ body.menu-open {
 .mod-latest-track {
   display: flex;
   gap: 24px;
-  padding: 32px var(--pad) 0;
+  padding: 24px var(--pad) 0;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -1763,7 +1989,8 @@ body.menu-open {
 }
 .mod-latest-media-placeholder {
   font-family: var(--font);
-  font-size: 9px;
+  font-size: 13px;
+  line-height: 15px;
   font-weight: 700;
   letter-spacing: normal;
   text-transform: uppercase;
@@ -1772,10 +1999,10 @@ body.menu-open {
 
 .mod-latest-title {
   font-family: var(--font);
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 500;
   letter-spacing: normal;
-  line-height: 26px;
+  line-height: 15px;
   text-transform: none;
   color: var(--ink);
   margin: 0;
@@ -1783,10 +2010,10 @@ body.menu-open {
 
 .mod-latest-category {
   font-family: var(--font);
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 500;
   letter-spacing: normal;
-  line-height: 16px;
+  line-height: 15px;
   text-transform: uppercase;
   color: var(--ink);
   margin-top: 6px;
@@ -1794,18 +2021,19 @@ body.menu-open {
 
 .mod-latest-body {
   font-family: var(--font);
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 500;
   letter-spacing: normal;
-  line-height: 18px;
+  line-height: 15px;
   color: var(--ink);
   margin-top: 14px;
 }
 
 .mod-latest-date {
   font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
   letter-spacing: normal;
   text-transform: uppercase;
   color: var(--meta);
@@ -1913,7 +2141,8 @@ body.menu-open {
 }
 
 .mod-alumni-coname {
-  font-size: 14px;
+  font-size: 13px;
+  line-height: 15px;
   font-weight: 700;
   letter-spacing: normal;
 }
@@ -2054,7 +2283,7 @@ body.menu-open {
   background: none;
   min-height: 0;
   aspect-ratio: 1;
-  border-radius: 50%;
+  border-radius: 0;
   cursor: grab;
 }
 .mod-network-feature--sphere:active {
@@ -2067,7 +2296,8 @@ body.menu-open {
 
 .mod-network-placeholder {
   font-family: var(--font);
-  font-size: 9px;
+  font-size: 13px;
+  line-height: 15px;
   font-weight: 700;
   letter-spacing: normal;
   text-transform: uppercase;
@@ -2092,7 +2322,8 @@ body.menu-open {
 }
 .mod-network-entry-date {
   font-family: var(--font);
-  font-size: 11px;
+  font-size: 13px;
+  line-height: 15px;
   font-weight: 700;
   letter-spacing: normal;
   color: var(--meta);
@@ -2100,7 +2331,8 @@ body.menu-open {
 .mod-network-entry-name {
   grid-column: 2;
   font-family: var(--font);
-  font-size: 24px;
+  font-size: 13px;
+  line-height: 15px;
   font-weight: 700;
   letter-spacing: normal;
   color: var(--ink);
@@ -2108,9 +2340,9 @@ body.menu-open {
 .mod-network-entry-update {
   grid-column: 2;
   font-family: var(--font);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  line-height: 1.3;
+  line-height: 15px;
   letter-spacing: normal;
   color: var(--ink);
 }
@@ -2123,15 +2355,15 @@ body.menu-open {
 }
 .mod-network-entry-tag {
   font-family: var(--font);
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: normal;
   text-transform: uppercase;
   color: #fff;
   background: var(--ink);
-  border-radius: 999px;
+  border-radius: 0;
   padding: 6px 12px;
-  line-height: 1;
+  line-height: 15px;
 }
 
 @media (max-width: 720px) {
@@ -2178,7 +2410,8 @@ body.menu-open {
 
 .mod-community-placeholder {
   font-family: var(--font);
-  font-size: 9px;
+  font-size: 13px;
+  line-height: 15px;
   font-weight: 700;
   letter-spacing: normal;
   text-transform: uppercase;
@@ -2193,407 +2426,783 @@ body.menu-open {
   .mod-community-cell--tall { grid-row: auto; }
 }
 
+/* ---- the company modal ----
+   judithkakon.com's proportions: a plate centred in the viewport on a layer
+   with no tint at all, so the archive stays fully visible around it. */
+.entry-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  /* no tint: the black plate is contrast enough, and the archive stays
+     itself around it */
+  background: none;
+}
+
+.entry {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 201;
+  width: 90vw;
+  height: 90vh;
+  background: var(--bg);
+  box-sizing: border-box;
+  /* one value on every side, so the close mark, the name and the last spec
+     line all sit the same distance from the plate's edge */
+  padding: clamp(20px, 2.4vw, 40px);
+  /* An animation rather than a transition: there is no second render to flip
+     a class on, so a transition would have nothing to move between. */
+  animation: entry-open 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: transform, opacity;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 10px;
+  /* name+close / statement / record / categories. The last row takes the
+     slack, so the picture beside them fills whatever the type leaves. */
+  grid-template-rows: auto auto auto minmax(0, 1fr);
+  /* row 1 is the head line both leaves start from: the name on one, the
+     statement on the other */
+  cursor: default;
+}
+
 /* ---- roulette / shuffle view ----
    radioraheem.it/verticale spotlight pattern: full-bleed image at true
    scale against a tight text column, a top hairline standing in for the
    card frame we're not using, italic meta as the only "state" marker. */
-.roulette {
-  display: flex;
-  align-items: stretch;
-  gap: 0;
-  min-height: 70vh;
+/* A packed field, after last year's random view on norrsken.org/100: modules
+   butted together to fill one screen with no slack. Rebuilt on this site's 12
+   columns, 13/15 interface type and three colours, held by alignment rather
+   than rules. The statement is the only thing given scale. */
+
+/* the fixed one-screen stage is released on a phone; the layout's own mobile
+   rules (single column, stacked spec) do the rest */
+@media (max-width: 720px) {
+  .entry--inline { min-height: 0; padding-bottom: 32px; }
 }
 
-.roulette-image {
-  flex: 0 0 48%;
-  width: 48%;
-  position: relative;
-  overflow: hidden;
-  background: #f0f0f0;
-  cursor: pointer;
-}
-
-.roulette-image img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-}
-
-.roulette-image-empty { width: 100%; height: 100%; background: #f0f0f0; }
-
-.roulette-body {
-  flex: 1;
-  min-width: 0;
-  padding: clamp(28px, 4vw, 48px) var(--pad) clamp(28px, 4vw, 48px) 48px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* card-tags sits right after the name here, not after a statement below it
-   (as in the grid) — flip the margin so the gap lands in the right place */
-.roulette-card-flash .card-tags {
-  margin-top: 12px;
-  margin-bottom: 0;
-}
-
-.roulette-name {
-  font-family: var(--font);
-  font-size: 36px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: none;
-  line-height: 0.92;
-  color: var(--ink);
-}
-
-.roulette-statement {
-  font-family: var(--editorial);
-  font-size: clamp(17px, 1.6vw, 21px);
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: normal;
-  color: var(--ink);
-}
-
-.roulette-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 12px;
-  margin-top: auto;
-  padding-top: 32px;
-}
-
-/* same shape/type as .card-tag, scaled up, outline instead of fill —
-   stretched to the full width of the text column above it */
-.roulette-link {
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  text-align: center;
-  /* 14px/700 like every other control on the page */
-  font-family: var(--font);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: none;
-  color: var(--ink);
-  background: transparent;
-  text-decoration: none;
-  border: 1px solid var(--ink);
-  border-radius: 999px;
-  padding: 13px 26px;
-  line-height: 1;
-  transition: background 0.15s ease, color 0.15s ease;
-}
-.roulette-link:hover { background: var(--ink); color: #fff; }
-
-.roulette-more {
-  font-family: var(--font);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  color: var(--meta);
+.entry--inline {
+  position: static;
+  /* the modal's centring offsets have to be released too: this box is
+     position: relative further down, so left/top would still apply */
+  left: auto;
+  top: auto;
+  transform: none;
+  animation: none;
+  width: auto;
+  /* one screen, always: the entry is a page and it never scrolls. The height
+     above it is measured, not assumed - see the ResizeObserver in Roulette.
+     The fallback holds until that first measurement lands. */
+  height: calc(100dvh - var(--shuffle-head, 330px));
+  min-height: 420px;
   background: none;
-  border: none;
+  /* sits close under the control row rather than a screen-width below it */
+  padding: 0 var(--pad) 40px;
+  /* the plate is placed against this box */
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--gridcols), 1fr);
+  column-gap: 16px;
+  /* two columns under a full-width head: the type on the left, the plate and
+     its caption on the right. The name spans both so it never has to wrap.
+     Rows: name / statement / body (the slack) / caption. */
+  /* the reference spread: a bold lead line, the body under it, the picture
+     high on the recto, then the fact sheet and a running foot. */
+  /* name across the head, then on the verso the fact sheet, the lead line and
+     the body; the picture beside them from the sheet's line down. The white
+     falls at the foot. name / sheet / statement / body / slack */
+  /* the body row is the only one allowed to give: with a floor of 0 it takes
+     the shrink when the copy is longer than the screen, and the sheet and
+     the folio hold their height. The lorem is ~2.5x the live copy; nothing
+     shrinks against the real text. */
+  /* two leaves side by side, each running its own column: the verso (name over
+     picture) and the recto (lead, body, record). One row - the leaves fill it,
+     so both end on the same line. */
+  grid-template-rows: minmax(0, 1fr);
+}
+.entry--inline .entry-head { display: none; }
+
+/* THE PAGE
+   pp. 58-59 of the catalogue, copied: a centred header block over an inset
+   body column on the verso, the notes hung small at the foot of the column
+   beside it, and the plate alone on the recto. Measured off the spread -
+   the body column runs 30%-69% of the page, the notes 74%-92%, the plate
+   20%-81% of the recto, and the head margin is 13% of the page depth. */
+.entry--inline {
+  grid-template-columns: repeat(12, 1fr);
+  padding-top: 38px;
+  /* the rows are set in the stage rule above; a second template here was
+     silently overriding it */
+}
+.entry--inline .entry-name,
+.entry--inline .entry-statement,
+.entry--inline .entry-spec,
+.entry--inline .entry-blocks {
+  position: relative;
+  z-index: 1;
+}
+
+
+
+/* the header block: the book sets the title of a show at BODY size, in caps
+   and underlined, with the place and the date centred under it - not at
+   display scale. Three centred lines and nothing else. */
+/* the name back at display scale and across the whole page: centred on the
+   full width it never wraps, so the box holds one line and the statement
+   under it sits on the same line on every draw */
+/* the name heads the page at display scale, across the whole width so even
+   the long names hold one line */
+.entry--inline .entry-name {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  align-self: start;
+  justify-self: stretch;
+  display: block;
+  width: auto;
+  height: auto;
+  margin: 0 0 26px;
   padding: 0;
-  cursor: pointer;
+  overflow: visible;
+  font-family: var(--font);
+  font-size: 80px;
+  line-height: 84px;
+  font-weight: 500;
+  /* display caps close up, not open out: the +0.02em came from the name's
+     17px kicker setting and at this size it drifts the letters apart */
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
   text-align: left;
 }
-.roulette-more:hover { color: var(--ink); }
-
-.roulette-blocks {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin-top: 28px;
+.entry--inline .entry-statement {
+  grid-column: 1 / 6;
+  grid-row: 3;
+  align-self: start;
+  display: block;
+  width: auto;
+  /* sized to its own text: the held two-line box left an empty line under a
+     one-line statement, so the gap to the copy read as two breaks. The body
+     takes the stage's slack, so its top moving is the only consequence -
+     the name and the sheet stay put at the foot. */
+  height: auto;
+  overflow: visible;
+  margin: 0;
+  /* the reference's lead line: body size, set BOLD. It is the sentence that
+     carries the company, and weight rather than scale is what marks it. */
+  font-size: 15px;
+  line-height: 17px;
+  font-weight: 700;
+  letter-spacing: normal;
+  text-transform: none;
+  text-align: left;
 }
 
-/* italic marks it as annotation rather than a title — atelier-amont.ch's
-   only typographic device for setting content apart from the plain flow */
-.roulette-block-label {
+
+/* the body: one column, ranged left, the paragraphs parted by a blank line -
+   no justification and no indent, exactly as the reference sets them */
+.entry--inline .entry-blocks {
+  grid-column: 1 / 6;
+  grid-row: 4;
+  align-self: start;
+  align-content: start;
+  justify-self: stretch;
   display: block;
-  font-family: var(--editorial);
-  font-size: 13px;
-  font-weight: 400;
-  font-style: italic;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  overflow: hidden;
+  /* one line of the body's own leading between the lead line and the copy */
+  margin: 17px 0 0;
+}
+.entry--inline .entry-block {
+  display: block;
+  gap: 0;
+}
+
+/* The chronology setting, pp. 224-25: ranged left on a generous line, and the
+   turn carried by indenting the WHOLE block rather than its first line. The
+   measured indent there is 21% of the column. Nothing is justified and nothing
+   is hyphenated - the ragged edge is the point. */
+.entry--inline .entry-block-body {
+  font-size: 15px;
+  line-height: 17px;
+  text-align: left;
+  hyphens: none;
+  -webkit-hyphens: none;
+}
+.entry--inline .entry-block + .entry-block .entry-block-body {
+  text-indent: 0;
+  margin: 17px 0 0;
+}
+
+/* THE FOOTNOTE BAND
+   The device the references keep using: the hard facts set as a row of small
+   numbered notes across the very foot of the page, under a hairline, each one
+   a label over its value. Not a table in a column - a band. */
+/* THE FACT SHEET
+   One block, not a band strung along the bottom: a label column and a value
+   column, set tight, hung from the foot of the recto under the picture. */
+.entry--inline .entry-spec {
+  /* with the text, on the verso: it belongs to the entry's copy, not to the
+     picture */
+  grid-column: 1 / 6;
+  grid-row: 2;
+  align-self: start;
+  justify-self: stretch;
+  display: grid;
+  grid-template-columns: 104px 1fr;
+  column-gap: 16px;
+  row-gap: 0;
+  width: auto;
+  max-width: none;
+  height: auto;
+  overflow: visible;
+  /* the sheet sits clear of the name above it (a later `margin: 0` shorthand
+     in this rule was silently wiping an earlier margin-top) */
+  margin: 0 0 26px;
+  padding: 0;
+  border: none;
+  text-align: left;
+}
+.entry--inline .entry-spec-cell {
+  /* one row of the sheet: label in the first column, value in the second */
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  display: grid;
+  align-items: start;
+  padding: 0;
+}
+.entry--inline .entry-spec dt {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip-path: none;
+  white-space: normal;
+  display: block;
+  margin: 0;
+  font-family: var(--font);
+  /* the body's own setting: the sheet is part of the copy, not a caption */
+  font-size: 15px;
+  line-height: 17px;
+  font-weight: 500;
   letter-spacing: normal;
   text-transform: none;
   color: var(--ink);
-  margin-bottom: 3px;
 }
-
-.roulette-block-body {
-  font-family: var(--editorial);
+.entry--inline .entry-spec dd {
+  display: block;
   font-size: 15px;
-  font-weight: 400;
-  line-height: 1.25;
-  letter-spacing: normal;
-  color: var(--ink);
+  line-height: 17px;
 }
 
-/* spinning state */
-@keyframes card-flash {
-  0%   { opacity: 0; transform: translateY(4px); }
-  100% { opacity: 1; transform: translateY(0); }
+/* THE PLATE
+   Alone on the recto, in the upper two thirds of the page. It arrives after
+   the company has landed. */
+.entry--inline {
+  --track: calc((100% - 2 * var(--pad) - 5 * 16px) / 6);
+  --col: calc(var(--track) + 16px);
+  /* the page's own twelve tracks, so the prose indent can land on a column
+     line rather than on a percentage of the measure */
+  --t12: calc((100% - 2 * var(--pad) - 11 * 16px) / 12);
+  --col12: calc(var(--t12) + 16px);
 }
-
-@keyframes content-reveal {
-  0%   { opacity: 0; transform: translateY(8px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-.roulette-card-flash {
-  animation: card-flash 0.07s ease-out;
-}
-
-.roulette--spinning .roulette-image img {
-  animation: card-flash 0.07s ease-out;
-}
-
-.roulette-content {
-  animation: content-reveal 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.roulette-content--hidden {
-  visibility: hidden;
-}
-
-@media (max-width: 720px) {
-  .roulette { flex-direction: column; }
-  .roulette-image { width: 100%; height: 60vw; flex: none; }
-}
-
-/* ---- company modal ---- */
-@keyframes bd-in  { from { opacity: 0 } to { opacity: 1 } }
-@keyframes bd-out { from { opacity: 1 } to { opacity: 0 } }
-@keyframes m-in  { from { opacity: 0; transform: translateY(14px) scale(0.98) } to { opacity: 1; transform: translateY(0) scale(1) } }
-@keyframes m-out { from { opacity: 1; transform: translateY(0) scale(1) } to { opacity: 0; transform: translateY(8px) scale(0.99) } }
-
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  background: rgba(0, 0, 0, 0.5);
+/* Three quarters of the pictures are cutout PNGs, not photographs: no frame,
+   no bleed, no crop - the object simply stands in the white of the recto with
+   air under it. */
+.entry--inline .entry-figure {
+  position: static;
+  /* seven tracks, not five: the picture is the page's other half, and the
+     gutter between it and the copy was wider than a column */
+  grid-column: 7 / -1;
+  grid-row: 2 / -1;
+  /* stretched to its rows and contributing NO size of its own: a spanning
+     item's intrinsic height is otherwise spread across the auto rows it
+     crosses, which was opening a 180px hole between the lead line and the
+     body. The picture fills whatever the type leaves; it never sizes it. */
+  align-self: stretch;
+  contain: size;
+  z-index: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 24px;
-  animation: bd-in 0.18s ease forwards;
+  overflow: visible;
+  pointer-events: none;
+  animation: plate-in 520ms cubic-bezier(0.22, 1, 0.36, 1) 260ms both;
 }
-.modal-backdrop--out { animation: bd-out 0.14s ease forwards; }
 
-/* radioraheem.it spotlight, condensed to fit a single viewport: full-bleed
-   image beside a dense text column instead of stacked image-then-text. */
-.modal {
-  position: relative;
-  /* Built vertically: one column, read top to bottom. The width is set by the
-     measure the body copy wants at 14px, not by how much sits beside the
-     image, so the picture spans the full column instead of competing with a
-     text track next to it. */
-  width: min(620px, 95vw);
-  height: auto;
-  max-height: 90vh;
-  background: var(--bg);
+
+
+.entry--inline .entry-figure img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: contain;
+  object-position: top center;
+  display: block;
+  transform: none;
+  pointer-events: auto;
+  cursor: pointer;
+}
+/* THE TWO LEAVES
+   Verso: the name, then the picture filling down to the foot. Recto: the
+   lead line, the body, and the record pushed to the foot. Each is a flex
+   column, so the two flows are independent and only their edges agree. */
+.entry--inline .entry-verso {
+  grid-column: 1 / 7;
+  grid-row: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 28px;
-  box-sizing: border-box;
-  overflow-y: auto;
-  overflow: hidden;
-  animation: m-in 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  min-height: 0;
+  min-width: 0;
 }
-.modal--out { animation: m-out 0.14s ease-in forwards; }
+.entry--inline .entry-recto {
+  /* tracks 8-11: a column of air off the picture, and one off the trim */
+  grid-column: 8 / 12;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+/* inside a leaf the children are flex items: their grid placement is void
+   and a leftover align-self would push them sideways */
+.entry--inline .entry-verso > *,
+.entry--inline .entry-recto > * {
+  grid-area: auto;
+  align-self: auto;
+  justify-self: auto;
+  width: auto;
+}
+.entry--inline .entry-verso .entry-name {
+  margin: 0 0 26px;
+}
+.entry--inline .entry-verso .entry-figure {
+  flex: 1 1 0;
+  min-height: 0;
+  margin: 0;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.entry--inline .entry-verso .entry-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left top;
+}
+.entry--inline .entry-recto .entry-statement { margin: 0; }
+.entry--inline .entry-recto .entry-blocks {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  margin: 17px 0 0;
+}
+.entry--inline .entry-recto .entry-spec {
+  /* to the foot, and never closer than a line and a half to the body */
+  margin: auto 0 0;
+  padding-top: 26px;
+}
 
-.modal-close {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 10;
-  background: transparent;
-  border: 1px solid var(--ink);
+/* THE FOLD
+   Shuffle is not a tab: choosing it unfolds the entry under the control row.
+   The wrapper animates its height from nothing to the stage's own height;
+   the entry inside is laid out at full size the whole time, so the page is
+   revealed top-down rather than squashed into shape. The plate follows the
+   type in (see plate-in), as before. */
+.entry-fold {
+  overflow: hidden;
+  animation: entry-fold 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes entry-fold {
+  from { height: 0; }
+  to   { height: calc(100dvh - var(--shuffle-head, 330px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .entry-fold { animation: none; }
+}
+
+/* THE BOOK'S SPREAD
+   After the coffee-table book's own company spreads, which follow the
+   catalogue's plate pages: the plate inset on the verso, not bleeding, with
+   air above it; the folio and the name in the foot. On the recto the lead
+   line and a justified body at the head, the record lower on the page - the
+   name, then the facts with no labels, the domain underlined - and the page
+   number in the foot. */
+.entry--inline .entry-verso .entry-figure {
+  flex: 0 1 auto;
+  /* under the name, inset from the gutter */
+  margin: 0 8% 0 0;
+  aspect-ratio: 1;
+  min-height: 0;
+  max-height: 62%;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.entry--inline .entry-verso .entry-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left top;
+}
+.entry-foot {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: baseline;
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 17px;
+  font-weight: 500;
   color: var(--ink);
-  font-size: 10px;
+}
+.entry-foot-num { justify-self: start; }
+.entry-foot-name { justify-self: center; text-align: center; }
+.entry-foot--recto { grid-template-columns: 1fr; }
+.entry-foot--recto .entry-foot-num { justify-self: end; }
+
+/* the recto's body sets justified, as every text page in the book does */
+.entry--inline .entry-recto .entry-block-body {
+  text-align: justify;
+  text-align-last: left;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+/* the record: the name in the first column, the facts in the second, no
+   labels. It stands between the body and the foot, the space above and
+   below it shared. */
+.entry-record {
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+  align-items: start;
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 17px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.entry-record-values {
+  display: flex;
+  flex-direction: column;
+}
+.entry-record-values a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  align-self: flex-start;
+}
+.entry-record-values a:hover { background: var(--ink); color: var(--bg); }
+/* the name heads the verso at display scale, over the plate; the labelled
+   table is not carried - the record on the recto replaces it */
+.entry--inline .entry-verso > .entry-name {
+  display: block;
+  margin: 0 0 26px;
+}
+.entry--inline .entry-recto > .entry-spec { display: none; }
+
+@keyframes plate-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .entry--inline .entry-figure { animation: none; }
+}
+.entry--spinning .entry-figure { opacity: 0; }
+
+/* the side is the company's own: verso for three of the five slots, recto for
+   the other two, so consecutive draws rarely repeat the same composition */
+/* no flip: the text is always the verso and the plate always the recto. A
+   spread that changed hands every draw read as an accident, not a system. */
+
+/* the two breakpoints where --gridcols itself changes upward: same split
+   logic, re-stated in that width's own whole tracks */
+/* the page is set on its own twelve tracks, so it holds at every width */
+
+@media (max-width: 900px) {
+  /* --gridcols drops to 3 here: an odd number splits unevenly, so the halves
+     give way to one column and the image moves below the text instead of
+     beside it */
+  .entry--inline { grid-template-rows: auto auto auto auto auto; }
+  .entry--inline .entry-blocks,
+  .entry--inline .entry-figure,
+  .entry--inline .entry-spec { grid-column: 1 / -1; }
+  .entry--inline .entry-figure { grid-row: 3; aspect-ratio: 1; }
+  .entry--inline .entry-spec { grid-row: 4; align-self: start; }
+  .entry--inline .entry-blocks { grid-row: 5; grid-template-columns: 1fr; }
+  .entry--inline .entry-block:nth-of-type(2) { grid-column: 1; }
+}
+
+
+@keyframes entry-open {
+  from { transform: translate(-50%, calc(-50% + 10px)); opacity: 0; }
+  to   { transform: translate(-50%, -50%); opacity: 1; }
+}
+@keyframes entry-shut {
+  from { transform: translate(-50%, -50%); opacity: 1; }
+  to   { transform: translate(-50%, calc(-50% + 8px)); opacity: 0; }
+}
+.entry--out { animation: entry-shut 200ms cubic-bezier(0.4, 0, 1, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .entry { animation: none; transform: translate(-50%, -50%); }
+  .entry--out { animation: none; }
+}
+
+/* nothing but the close mark: no running head, no rule under it - the sheet's
+   own top edge is the only line the page needs here */
+.entry-head {
+  /* the verso measure, not the full plate: the mark sits in the gutter beside
+     the picture rather than on top of it */
+  grid-column: 1 / 7;
+  grid-row: 1;
+  display: flex;
+  justify-content: flex-end;
+  /* above the name, which now shares this row and spans every track */
+  position: relative;
+  z-index: 1;
+}
+.entry-close {
   width: 22px;
   height: 22px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: var(--font);
+  font-size: 10px;
   line-height: 1;
-}
-.modal-close:hover { background: var(--ink); color: #fff; }
-
-/* No plate and no crop, same rule as the cards: the image keeps its own
-   proportions and sits on the page, not on a grey rectangle. */
-.modal-image {
-  width: 100%;
+  color: var(--ink);
   background: none;
+  border: 1px solid var(--ink);
   padding: 0;
-  position: relative;
-  /* full bleed across the column, clearing the 28px page padding */
-  margin: 4px -28px;
-  width: calc(100% + 56px);
+  cursor: pointer;
 }
-.modal-image img {
+.entry-close:hover { background: var(--ink); color: var(--bg); }
+
+/* the name at masthead scale: this is the page's title, not a card heading */
+/* shares row 1 with the close mark and the plate. Measured at this size and
+   line-height the cap sat 0.145em ABOVE the box top, so the margin pushes it
+   back down onto the row line - three toplines, one line. In em, so it holds
+   as the name scales. */
+.entry-name {
+  /* the verso measure: the name can never run under the plate beside it */
+  grid-column: 1 / 7;
+  grid-row: 1;
+  align-self: start;
+  margin: 0.03em 0 0;
+  font-family: var(--font);
+  font-size: clamp(34px, 5.4vw, 76px);
+  line-height: 0.94;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+/* the record, after the reference sheets: one ruled line per category,
+   stacked. It now sits as the first column of the bottom band, beside Problem
+   and Solution, so its label column is a fixed measure rather than page
+   tracks - inside a third of the plate the 12-track split was unusable. */
+/* a direct child of the entry now, so Shuffle can hang it off the picture's
+   bottom edge. In the modal it simply follows the two categories. */
+.entry-spec {
+  grid-column: 1 / 5;
+  /* the record sits above the prose now, under the statement, and carries no
+     rules: there is not a ruled table anywhere in that book */
+  grid-row: 3;
+  min-width: 0;
+  margin: 34px 0 0;
+  /* One grid for the whole table, with each row inheriting its tracks through
+     subgrid. Each row used to be its own grid, so every label column sized
+     itself independently and the values started at six different x positions. */
+  display: grid;
+  grid-template-columns: auto 1fr;
+  /* the values sit 20px further off their labels than they did */
+  column-gap: 32px;
+}
+.entry-spec-cell {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  padding: 2px 0;
+  /* toplines, not baselines: the label is much smaller than its value, so
+     they are hung from the top of the row and the label is nudged up by the
+     difference between the two cap heights */
+  align-items: start;
+}
+.entry-spec dt {
+  font-family: var(--font);
+  /* 60% of the value's size, after the book's own caption scale */
+  font-size: 8px;
+  line-height: 15px;
+  /* measured: the label's cap sat 1.1px low against the value's */
+  margin-top: -3.1px;
+  font-weight: 500;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+.entry-spec dd {
+  margin: 0;
+  min-width: 0;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.entry-spec dd a {
+  color: inherit;
+  text-decoration: none;
+  padding: 0 4px;
+  margin: 0 -4px;
+  word-break: break-all;
+}
+.entry-spec dd a:hover { background: var(--ink); color: var(--bg); }
+
+.entry-statement {
+  /* the same measure as the two prose blocks below it - nothing on the verso
+     runs wider than the column the text sets in */
+  grid-column: 1 / 6;
+  grid-row: 2;
+  margin: 14px 0 0;
+  font-family: var(--font);
+  font-size: clamp(16px, 1.5vw, 21px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* the furthest-right column, spanning from the name's own row down through
+   the categories - its topline matches the name's rather than starting under
+   the statement. The -8px matches the name's -0.115em cap-height correction
+   (see .entry-name), which sits the name's rendered top a few px above the
+   grid line the figure aligns to. */
+/* the recto plate: its top edge on the same line as the close mark and the
+   name's cap, running to the foot of the page. One column of gutter between
+   the type and the picture, so the plate is a real half of the spread. */
+.entry-figure {
+  grid-column: 7 / -1;
+  grid-row: 1 / -1;
+  margin: 0;
+  min-height: 0;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  padding: 0;
+}
+/* the picture hangs from its own topline at full column width, rather than
+   being centred by object-fit inside a full-height box - contain in a tall
+   cell put a landscape plate and a portrait plate at different heights. */
+.entry-figure img {
   width: 100%;
   height: auto;
+  max-height: 100%;
+  min-height: 0;
+  object-fit: contain;
+  object-position: top;
   display: block;
-}
-/* live point-cloud fills the image box; poster img shows until the cloud builds */
-.pc-wrap {
-  position: absolute;
-  inset: 0;
-}
-.pc-poster {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.modal-image-caption {
-  position: absolute;
-  right: 2px;
-  bottom: 16px;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  font-family: var(--font);
-  font-size: 9px;
-  font-weight: 700;
-  font-style: italic;
-  text-transform: lowercase;
-  letter-spacing: normal;
-  color: var(--ink);
-  pointer-events: none;
-  z-index: 1;
-  max-height: calc(100% - 56px);
-  overflow: hidden;
-}
-.modal-image-empty {
-  width: 100%;
-  height: 100%;
-  background: #f0f0f0;
 }
 
-.modal-content {
+/* the categories side by side: two in the 2026 batch, three in the archive,
+   each taking an equal share either way */
+.entry-blocks {
+  grid-column: 1 / -1;
+  /* under the record, which now sits directly beneath the statement */
+  grid-row: 4;
+  align-self: start;
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 10px;
+  row-gap: 20px;
+  align-items: start;
+}
+.entry-block {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 }
-
-.modal-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 10px;
-}
-
-.modal-date {
+/* stacked rather than side by side, and one track wider than before now
+   that they no longer have to share the row */
+.entry-block:nth-of-type(1) { grid-column: 1 / 6; grid-row: 1; }
+.entry-block:nth-of-type(2) { grid-column: 1 / 6; grid-row: 2; }
+.entry-block-label {
   font-family: var(--font);
   font-size: 13px;
-  font-weight: 700;
-  letter-spacing: normal;
-  color: var(--ink);
-  margin: 0;
-}
-
-.modal-name {
-  font-family: var(--font);
-  font-size: clamp(22px, 3vw, 32px);
-  font-weight: 700;
-  letter-spacing: normal;
-  line-height: 1;
+  line-height: 15px;
+  font-weight: 500;
+  font-style: normal;
   text-transform: uppercase;
   color: var(--ink);
 }
-
-.modal-statement {
-  /* same as the index row's statement: one family, one weight */
-  font-size: 14px;
+.entry-block-body {
+  margin: 0;
   font-family: var(--font);
-  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.28;
+  font-weight: 500;
   letter-spacing: normal;
-  text-transform: none;
-  line-height: 1.3;
   color: var(--ink);
+  /* ranged left, not justified: the forced word spacing was opening rivers
+     down a column this narrow */
   text-align: left;
+  hyphens: none;
+  -webkit-hyphens: none;
 }
 
-.modal-blocks {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 4px;
-}
-/* italic marks it as annotation rather than a title — same device as the
-   roulette spotlight and atelier-amont.ch's own project credit lines */
-.modal-block-label {
-  /* italic, not a pill: the label sits in the same 14/700 as the body it
-     introduces, and the slant alone separates them */
-  display: block;
-  font-family: var(--font);
-  font-size: 14px;
-  font-weight: 700;
-  font-style: italic;
-  text-transform: none;
-  color: var(--ink);
-  line-height: 1.3;
-  margin-bottom: 2px;
-}
-.modal-block-body {
-  font-family: var(--font);
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: normal;
-  color: var(--ink);
-  margin: 0;
-}
 
-/* last item in the stack. Same shape/type as .roulette-link, so the two
-   spotlight moments read as one system */
-.modal-website {
-  align-self: flex-start;
-  display: inline-block;
-  /* 14px/700 like every other control on the page, and like .roulette-link */
-  font-family: var(--font);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: none;
-  color: var(--ink);
-  background: transparent;
-  text-decoration: none;
-  border: 1px solid var(--ink);
-  border-radius: 999px;
-  padding: 12px 24px;
-  line-height: 1;
-  transition: background 0.15s ease, color 0.15s ease;
-}
-.modal-website:hover { background: var(--ink); color: #fff; }
-
-.modal-detail {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  color: var(--meta);
-}
-.modal-detail:hover { color: var(--ink); }
-
-@media (max-width: 720px) {
-  .modal-backdrop { padding: 0; }
-  .modal { flex-direction: column; width: 100%; height: 100%; max-height: 100%; }
-  .modal-image { width: 100%; height: 38vh; flex: none; }
-  .modal-content { padding: 20px 20px 24px; }
+@media (max-width: 900px) {
+  .entry { width: 94vw; height: 94vh; }
+  .entry-name,
+  .entry-statement,
+  .entry-blocks { grid-column: 1 / -1; }
+  .entry-spec { grid-column: 1 / -1; grid-row: 3; }
+  .entry-figure img { grid-column: 1 / -1; }
+  .entry-block:nth-of-type(1),
+  .entry-block:nth-of-type(2) { grid-column: 1 / -1; }
+  .entry-block:nth-of-type(2) { grid-row: 2; }
 }
 
 /* ---- FAQ accordion ---- */
 .mod-faq {
   padding: clamp(80px, 10vw, 160px) var(--pad);
+  /* the shared column system at quarter resolution, so the split between the
+     title art and the questions can sit off the page grid: the art takes 15 of
+     24 tracks, the questions the remaining 9. Lines at multiples of four still
+     land on the page grid exactly; line 16 deliberately does not. */
+  display: grid;
+  grid-template-columns: repeat(calc(var(--gridcols) * 4), 1fr);
+  gap: 16px;
+  align-items: start;
+}
+.mod-faq .mod-section-header {
+  grid-column: 1 / 16;
+  margin-bottom: 0;
+  text-align: left;
+}
+.mod-faq .mod-title-art--faq {
+  width: 100%;
+  margin: 0;
+}
+.mod-faq .faq-top {
+  grid-column: 16 / -1;
+}
+/* the narrow grids have no room for the split: stack the title over the list */
+@media (max-width: 900px) {
+  .mod-faq .mod-section-header,
+  .mod-faq .faq-top {
+    grid-column: 1 / -1;
+  }
+  .mod-faq .mod-section-header { margin-bottom: 32px; }
+  .mod-faq .mod-title-art--faq { width: min(calc(var(--titlecap) * 3.06), 100%); }
 }
 
 /* full-bleed like the Index view — rows start at var(--pad) off the viewport
@@ -2664,7 +3273,7 @@ body.menu-open {
   .faq-stat { flex: 1 1 45%; }
 }
 
-/* Index-view treatment: dense text rows, Zurich weight, no dividers —
+/* Index-view treatment: dense text rows, one weight, no dividers —
    separation is whitespace only, hover swaps to the true italic cut. */
 .faq-list {
   display: flex;
@@ -2690,16 +3299,16 @@ body.menu-open {
 }
 
 /* type spec lifted verbatim from .row-name / .row-statement in the Index view —
-   Zurich 14/1.3, one weight, no ellipsis here because questions must wrap */
+   14/1.3, one weight, no ellipsis here because questions must wrap */
 .faq-title {
-  font-family: "Zurich", var(--font);
+  font-family: var(--font);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
   font-style: normal;
   letter-spacing: normal;
   text-transform: none;
   color: var(--ink);
-  line-height: 1.3;
+  line-height: 17px;
   transition: font-style 0s; /* instant swap — no faux-slant tween */
 }
 
@@ -2717,8 +3326,8 @@ body.menu-open {
 .faq-icon {
   position: relative;
   display: block;
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   flex-shrink: 0;
   align-self: center;
 }
@@ -2785,15 +3394,15 @@ body.menu-open {
   transition-delay: 90ms;
 }
 
-/* answer sits at the same 14px as the question so the row rhythm holds —
-   only the colour drops back to meta grey to separate answer from question */
+/* answer sits at the same size as the question so the row rhythm holds, and
+   at the same black: the indent and the reveal separate it, not a tint */
 .faq-body p {
-  font-family: "Zurich", var(--font);
+  font-family: var(--font);
   font-size: 14px;
-  font-weight: 700;
-  line-height: 1.4;
+  font-weight: 500;
+  line-height: 17px;
   letter-spacing: normal;
-  color: var(--meta);
+  color: var(--ink);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2801,3 +3410,364 @@ body.menu-open {
   .mod-manifest-gifline,
   body { transition: none; }
 }
+
+/* the inlined mark scales like the img it replaces */
+.eu-mark svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* =============================================
+   FOOTER — the record's last line
+   ============================================= */
+
+.mod-footer {
+  border-top: 1px solid var(--ink);
+  padding: 12px var(--pad) 16px;
+}
+
+.mod-footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+}
+
+.mod-footer-mark {
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 700;
+}
+
+.mod-footer-links {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.mod-footer a {
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+.mod-footer a:hover { background: var(--ink); color: var(--bg); }
+
+/* the imprint sits a step below, quiet but still black */
+.mod-footer-row--imprint {
+  margin-top: 48px;
+  font-family: var(--font);
+  font-size: 11px;
+  line-height: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+
+/* =============================================
+   MOBILE — Index, Shuffle and the filter panel
+   Each of these is laid out on a multi-column desktop grid that has no room
+   to exist on a phone. Rather than letting the tracks crush (Problem and
+   Solution were rendering 48px wide), every one collapses to a single
+   column here, and the long option lists run two-up so the panel does not
+   tower.
+   ============================================= */
+@media (max-width: 720px) {
+  /* ---- Index rows: one line, three columns ----
+     Name, geography, sector on their own tracks so the columns run straight
+     down the list. Same tight line as the desktop row; the statement does
+     not survive at this width. ---- */
+  .row {
+    /* sector starts on the Index radio above it: the views group is right
+       aligned and 183px wide, so its left edge is 199px in from the right,
+       and the name track is what remains once the gap is taken off. Sector
+       is held to its longest label (Transportation, 92px) so country can sit
+       tight beside it rather than floating in the middle of the page. */
+    grid-template-columns: calc(100% - 195px) 92px 1fr;
+    gap: 0 12px;
+    padding: 1px var(--pad);
+    align-items: baseline;
+  }
+  .row-name { grid-column: 1; grid-row: 1; }
+  .row-sector { grid-column: 2; grid-row: 1; }
+  .row-geo { grid-column: 3; grid-row: 1; justify-self: start; }
+  .row-statement { display: none; }
+  .row-name,
+  .row-geo,
+  .row-sector {
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+  /* the open row inverts whole */
+  .index-item--open .row-geo,
+  .index-item--open .row-sector { color: var(--bg); }
+
+  /* ---- Index detail: one column, everything full width ---- */
+  .row-detail {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 14px var(--pad) 32px;
+  }
+  .row-detail-meta,
+  .row-detail-text,
+  .row-detail-spec { grid-column: 1; grid-row: auto; }
+  .row-detail-img { max-width: 220px; margin-top: 0; }
+  .row-detail-text { grid-template-columns: 1fr; row-gap: 18px; }
+  .row-detail-block:nth-of-type(1),
+  .row-detail-block:nth-of-type(2) { grid-column: 1; }
+
+  /* ---- The company record: modal and Shuffle are the same object, so at
+     this width they take the same single stack — head, name, statement,
+     picture, the record, and only then the long text. The spec sits above
+     the two 600-character blocks so the hard facts are reachable without
+     scrolling past them. The modal scrolls inside its own plate; Shuffle
+     runs with the page. ---- */
+  .entry,
+  .entry--inline {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto auto;
+    column-gap: 0;
+  }
+  .entry {
+    width: 94vw;
+    height: 92vh;
+    padding: 18px var(--pad);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .entry--inline {
+    height: auto;
+    padding: 16px var(--pad) 40px;
+  }
+
+  .entry-head,
+  .entry--inline .entry-head { grid-row: 1; grid-column: 1; }
+  .entry-name,
+  .entry--inline .entry-name { grid-row: 2; grid-column: 1; margin: 0; }
+  .entry-statement,
+  .entry--inline .entry-statement { grid-row: 3; grid-column: 1; margin-top: 10px; }
+  /* the square figure + percentage-height image gave the auto row nothing
+     definite to size from, so the track resolved to 0 and the picture
+     painted straight over the text below it. Intrinsic ratio at full
+     column width instead. */
+  .entry-figure,
+  .entry--inline .entry-figure {
+    grid-row: 4;
+    grid-column: 1;
+    margin: 16px 0 0;
+    padding: 0;
+    aspect-ratio: auto;
+    height: auto;
+    min-height: auto;
+    align-self: start;
+  }
+  .entry-figure img,
+  .entry--inline .entry-figure img {
+    width: 100%;
+    height: auto;
+    max-height: none;
+  }
+  .entry-spec,
+  .entry--inline .entry-spec {
+    grid-row: 5;
+    grid-column: 1;
+    width: 100%;
+    margin-top: 20px;
+  }
+  .entry-blocks,
+  .entry--inline .entry-blocks {
+    grid-row: 6;
+    grid-column: 1;
+    grid-template-columns: 1fr;
+    row-gap: 18px;
+    margin-top: 20px;
+  }
+  .entry-block:nth-of-type(1),
+  .entry-block:nth-of-type(2),
+  .entry--inline .entry-block:nth-of-type(1),
+  .entry--inline .entry-block:nth-of-type(2) { grid-column: 1; }
+
+  /* ---- Filter: one group per row, options two-up ---- */
+  .filter-panel-groups { grid-template-columns: 1fr; row-gap: 22px; }
+  .filter-group,
+  .filter-group--wide { grid-column: 1 / -1; }
+  .filter-group-list,
+  .filter-group--wide .filter-group-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 12px;
+    row-gap: 5px;
+  }
+  .filter-panel-footer { flex-wrap: wrap; row-gap: 10px; }
+
+  /* ---- The bar itself: the desktop track set (name + statement + two meta
+     columns) does not fit, and the views group sat on tracks 3-4 that no
+     longer exist at this width, so the grid grew implicit columns past the
+     right edge and the whole page could be scrolled sideways. Two rows
+     instead: Filter and the view radios on one line, search under them. ---- */
+  .controls {
+    grid-template-columns: auto 1fr;
+    gap: 9px 12px;
+    /* the band clears the fixed wordmark, so rows never scroll into it */
+    padding: 34px var(--pad) 10px;
+    /* the list is long and the filter has to stay reachable inside it */
+    position: sticky;
+    top: 0;
+    z-index: 40;
+  }
+  .filter-trigger { grid-column: 1; grid-row: 1; }
+  .views {
+    grid-column: 2;
+    grid-row: 1;
+    gap: 13px;
+  }
+  .search { grid-column: 1 / -1; grid-row: 2; height: 20px; }
+
+  /* the Latest title runs at four cap units: as a rigid flex item it pushed
+     the arrows past the right edge and took the page sideways with it */
+  .mod-latest .mod-section-header { column-gap: 12px; }
+  .mod-latest .mod-title-art--latest { flex: 1 1 auto; min-width: 0; }
+}
+
+/* =============================================
+   GOOD NEWS
+   architecturecuratingpractice.com's floating note, in this site's black and
+   white: fixed, draggable by its title row, dismissable, and remembered once
+   dismissed. Theirs is acid green at 8px with a 3px radius; this one keeps
+   the page's own hairline, 11px and square corners.
+   ============================================= */
+.goodnews {
+  position: fixed;
+  right: var(--pad);
+  bottom: var(--pad);
+  z-index: 80;
+  width: 268px;
+  box-sizing: border-box;
+  background: var(--bg);
+  border: 1px solid var(--ink);
+  padding: 9px 11px 11px;
+  cursor: move;
+  touch-action: none;
+  font-family: var(--font);
+  font-size: 11px;
+  line-height: 13px;
+  font-weight: 700;
+  letter-spacing: normal;
+  color: var(--ink);
+  animation: goodnews-in 200ms linear both;
+}
+@keyframes goodnews-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .goodnews { animation: none; }
+}
+.goodnews-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  text-transform: uppercase;
+}
+.goodnews-head button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  text-transform: none;
+  color: var(--meta);
+  transition: color 120ms ease;
+}
+.goodnews-head button:hover { color: var(--ink); }
+.goodnews-body {
+  margin: 9px 0 0;
+  color: var(--ink);
+}
+.goodnews-link {
+  display: inline-block;
+  margin-top: 9px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.goodnews-link:hover { background: var(--ink); color: var(--bg); }
+@media (max-width: 720px) {
+  .goodnews { width: auto; left: var(--pad); right: var(--pad); }
+}
+
+/* =============================================
+   GOOD NEWS
+   architecturecuratingpractice.com's floating note, in this site's black and
+   white: fixed, draggable by its title row, dismissable, and remembered once
+   dismissed. Theirs is acid green at 8px with a 3px radius; this one keeps
+   the page's own hairline, 11px and square corners.
+   ============================================= */
+.goodnews {
+  position: fixed;
+  right: var(--pad);
+  bottom: var(--pad);
+  z-index: 80;
+  width: 268px;
+  box-sizing: border-box;
+  background: var(--bg);
+  border: 1px solid var(--ink);
+  padding: 9px 11px 11px;
+  cursor: move;
+  touch-action: none;
+  font-family: var(--font);
+  font-size: 11px;
+  line-height: 13px;
+  font-weight: 700;
+  letter-spacing: normal;
+  color: var(--ink);
+  animation: goodnews-in 200ms linear both;
+}
+@keyframes goodnews-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .goodnews { animation: none; }
+}
+.goodnews-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  text-transform: uppercase;
+}
+.goodnews-head button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  text-transform: none;
+  color: var(--meta);
+  transition: color 120ms ease;
+}
+.goodnews-head button:hover { color: var(--ink); }
+.goodnews-body {
+  margin: 9px 0 0;
+  color: var(--ink);
+}
+.goodnews-link {
+  display: inline-block;
+  margin-top: 9px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.goodnews-link:hover { background: var(--ink); color: var(--bg); }
+@media (max-width: 720px) {
+  .goodnews { width: auto; left: var(--pad); right: var(--pad); }
+}
+
+

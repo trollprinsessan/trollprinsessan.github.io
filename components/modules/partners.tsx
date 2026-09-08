@@ -71,7 +71,11 @@ export default function Partners() {
   return (
     <section className="mod-partners">
       <div className="mod-section-header">
-        <span className="mod-eyebrow">Nomination Partners</span>
+        <img
+          className="mod-title-art mod-title-art--partners"
+          src="/title-gifs/nomination-partners.gif"
+          alt="Nomination Partners"
+        />
         <span className="mod-eyebrow-right">{LOGOS.length}+ organisations</span>
       </div>
       <Row logos={rowA} />

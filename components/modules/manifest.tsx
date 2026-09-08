@@ -2,6 +2,7 @@
 
 import { Fragment, useEffect, useRef, useState } from "react";
 import { NOMINATION_PARTNERS } from "./partners";
+import ElectroMark from "./electro-mark";
 
 // Structure after the foot of u-p.co: a small numbered index on the left, the
 // panel's copy on the right, and a full-bleed horizontal image strip beneath.
@@ -139,6 +140,75 @@ function Count({ to, suffix = "" }: { to: number; suffix?: string }) {
   );
 }
 
+type Panel = (typeof PANELS)[number];
+
+/* One paragraph renderer for the essay and the notes: {{n}} counts up, [x](y)
+   links, *x* is the italic cut, \n is a line turn inside the paragraph. */
+function Body({ panel }: { panel: Panel }) {
+  return (
+    <>
+      {panel.body.map((para, pi) => (
+        <Fragment key={para}>
+          <p>
+            {para.split("\n").map((line, li) => (
+              <span key={line}>
+                {li > 0 && <br />}
+                {line
+                  .split(/(\{\{[^}]+\}\}|\[[^\]]+\]\([^)]+\)|\*[^*]+\*)/)
+                  .map((bit, j) => {
+                    const num = bit.match(/^\{\{([\d,]+)(\D*)\}\}$/);
+                    if (num) {
+                      return (
+                        <Count
+                          key={j}
+                          to={Number(num[1].replace(/,/g, ""))}
+                          suffix={num[2]}
+                        />
+                      );
+                    }
+                    const link = bit.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+                    if (link) {
+                      return (
+                        <a
+                          key={j}
+                          className="mod-manifest-inline-link"
+                          href={link[2]}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {link[1]}
+                        </a>
+                      );
+                    }
+                    return bit.startsWith("*") && bit.endsWith("*") ? (
+                      <em key={j}>{bit.slice(1, -1)}</em>
+                    ) : (
+                      bit
+                    );
+                  })}
+              </span>
+            ))}
+          </p>
+          {/* sits under the sentence it belongs to, not at the foot */}
+          {"partners" in panel && panel.partners && pi === 0 && (
+            <details className="mod-manifest-reveal">
+              <summary>Nomination partners</summary>
+              <p>{NOMINATION_PARTNERS.join(", ")}</p>
+            </details>
+          )}
+        </Fragment>
+      ))}
+      {"link" in panel && panel.link && (
+        <p className="mod-manifest-link">
+          <a href={panel.link.href} target="_blank" rel="noreferrer">
+            {panel.link.label}
+          </a>
+        </p>
+      )}
+    </>
+  );
+}
+
 export default function Manifest() {
   const [active, setActive] = useState(0);
   const panel = PANELS[active];
@@ -174,16 +244,36 @@ export default function Manifest() {
           <feDisplacementMap in="SourceGraphic" scale="1.5" />
         </filter>
       </svg>
-      <div className="mod-manifest-top">
-        {/* climaxbooks: image column left, text column right */}
-        <figure
-          key={art.file}
-          className={`mod-manifest-gifline mod-manifest-gifline--${art.ground}`}
-        >
-          <img src={`/manifest-images/${art.file}`} alt={art.alt ?? ""} />
-        </figure>
 
-        <div className="mod-manifest-col">
+      {/* The same spread the company pages are, after the book: the plate
+          inset on the verso with the panel's number and title in the foot;
+          on the recto the copy - first paragraph bold as the lead line,
+          justified - then the contents standing lower as the record, the
+          current one underlined, and the number again in the foot. */}
+      <div className="mod-manifest-top">
+        <div className="mod-manifest-verso">
+          <figure
+            key={art.file}
+            className={`mod-manifest-gifline mod-manifest-gifline--${art.ground}`}
+          >
+            {art.file.endsWith(".svg") ? (
+              <ElectroMark src={`/manifest-images/${art.file}`} />
+            ) : (
+              <img src={`/manifest-images/${art.file}`} alt={art.alt ?? ""} />
+            )}
+          </figure>
+          <footer className="entry-foot">
+            <span className="entry-foot-num">{String(active + 1).padStart(2, "0")}</span>
+            <span className="entry-foot-name">{panel.key}</span>
+            <span aria-hidden="true" />
+          </footer>
+        </div>
+
+        <div className="mod-manifest-recto">
+          <blockquote className="mod-manifest-body" key={panel.key}>
+            <Body panel={panel} />
+          </blockquote>
+
           <nav className="mod-manifest-index" aria-label="Manifest sections">
             <ol>
               {PANELS.map((p, i) => (
@@ -193,81 +283,19 @@ export default function Manifest() {
                     onClick={() => setActive(i)}
                     aria-current={i === active}
                   >
-                    <span className="mod-manifest-tab-num">{i + 1}</span>
-                    {p.key}
+                    <span className="mod-manifest-tab-num">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="mod-manifest-tab-label">{p.key}</span>
                   </button>
                 </li>
               ))}
             </ol>
           </nav>
 
-          <div className="mod-manifest-panel">
-            <div className="mod-manifest-swap" key={panel.key}>
-              <blockquote className="mod-manifest-body">
-                {panel.body.map((para, pi) => (
-                  <Fragment key={para}>
-                    {/* \n is a true line break: a new row inside the same
-                        paragraph, so the line turns without opening the 1em
-                        gap a separate paragraph would. Used sparingly. */}
-                    <p>
-                      {para.split("\n").map((line, li) => (
-                        <span key={line}>
-                          {li > 0 && <br />}
-                          {line
-                            .split(/(\{\{[^}]+\}\}|\[[^\]]+\]\([^)]+\)|\*[^*]+\*)/)
-                            .map((bit, j) => {
-                              const num = bit.match(/^\{\{([\d,]+)(\D*)\}\}$/);
-                              if (num) {
-                                return (
-                                  <Count
-                                    key={j}
-                                    to={Number(num[1].replace(/,/g, ""))}
-                                    suffix={num[2]}
-                                  />
-                                );
-                              }
-                              const link = bit.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
-                              if (link) {
-                                return (
-                                  <a
-                                    key={j}
-                                    className="mod-manifest-inline-link"
-                                    href={link[2]}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                  >
-                                    {link[1]}
-                                  </a>
-                                );
-                              }
-                              return bit.startsWith("*") && bit.endsWith("*") ? (
-                                <em key={j}>{bit.slice(1, -1)}</em>
-                              ) : (
-                                bit
-                              );
-                            })}
-                        </span>
-                      ))}
-                    </p>
-                    {/* sits under the sentence it belongs to, not at the foot */}
-                    {panel.partners && pi === 0 && (
-                      <details className="mod-manifest-reveal">
-                        <summary>Nomination partners</summary>
-                        <p>{NOMINATION_PARTNERS.join(", ")}</p>
-                      </details>
-                    )}
-                  </Fragment>
-                ))}
-                {panel.link && (
-                  <p className="mod-manifest-link">
-                    <a href={panel.link.href} target="_blank" rel="noreferrer">
-                      {panel.link.label}
-                    </a>
-                  </p>
-                )}
-              </blockquote>
-            </div>
-          </div>
+          <footer className="entry-foot entry-foot--recto">
+            <span className="entry-foot-num">{String(active + 1).padStart(2, "0")}</span>
+          </footer>
         </div>
       </div>
     </section>

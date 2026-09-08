@@ -74,6 +74,13 @@ function FaqItem({ title, body }: { title: string; body: string }) {
 export default function Faq() {
   return (
     <section className="mod-faq">
+      <div className="mod-section-header">
+        <img
+          className="mod-title-art mod-title-art--faq"
+          src="/title-gifs/faq.gif"
+          alt="FAQ"
+        />
+      </div>
       <div className="faq-top">
         <div className="faq-list">
           {ITEMS.map((item) => (

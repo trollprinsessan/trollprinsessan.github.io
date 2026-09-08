@@ -85,7 +85,11 @@ export default function Latest() {
   return (
     <section className="mod-latest">
       <div className="mod-section-header">
-        <span className="mod-eyebrow">Latest</span>
+        <img
+          className="mod-title-art mod-title-art--latest"
+          src="/title-gifs/the-latest.gif"
+          alt="The Latest Updates"
+        />
         <div className="mod-latest-nav">
           <button
             className="mod-latest-arrow"
