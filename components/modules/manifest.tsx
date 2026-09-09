@@ -29,8 +29,8 @@ const PANELS = [
     key: "What this is",
     body: [
       "The norrsken100 highlights the most promising early-stage startups solving global challenges at scale by outperforming the legacy models that created them.",
-      "Scroll down to find 100 founders of the next economy. The first trillion-euro companies will be built by people solving problems this size.",
-      "They shape what comes next.\nThey are *100 ways to fix the future.*",
+      "Scroll down to find 100 founders of the next economy. They shape what comes next.",
+      "They are 100 ways to fix the future.",
     ],
   },
   {
@@ -245,10 +245,8 @@ export default function Manifest() {
         </filter>
       </svg>
 
-      {/* The same spread the company pages are, after the book: the plate
-          inset on the verso with the panel's number and title in the foot;
-          on the recto the copy - first paragraph bold as the lead line,
-          justified - then the contents standing lower as the record, the
+      {/* Stacked: the contents heading the type, the copy under them, and the
+          plate below taking whatever they leave - the
           current one underlined, and the number again in the foot. */}
       <div className="mod-manifest-top">
         <div className="mod-manifest-verso">
@@ -262,11 +260,6 @@ export default function Manifest() {
               <img src={`/manifest-images/${art.file}`} alt={art.alt ?? ""} />
             )}
           </figure>
-          <footer className="entry-foot">
-            <span className="entry-foot-num">{String(active + 1).padStart(2, "0")}</span>
-            <span className="entry-foot-name">{panel.key}</span>
-            <span aria-hidden="true" />
-          </footer>
         </div>
 
         <div className="mod-manifest-recto">
@@ -292,10 +285,6 @@ export default function Manifest() {
               ))}
             </ol>
           </nav>
-
-          <footer className="entry-foot entry-foot--recto">
-            <span className="entry-foot-num">{String(active + 1).padStart(2, "0")}</span>
-          </footer>
         </div>
       </div>
     </section>

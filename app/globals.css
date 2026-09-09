@@ -1673,9 +1673,13 @@ main {
 /* The one expressive device in an otherwise single-size, single-weight system
    — exactly how climaxbooks marks titles. A real italic cut, not a slant:
    Arial MT ships one, so nothing is synthesised. */
+/* no emphasis device in the copy at all: not a slant, not caps - the text
+   runs at one setting and the marked phrases read as the sentence does */
 .mod-manifest-body em {
-  font-style: italic;
+  font-style: normal;
   font-weight: inherit;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 /* Figure roman, descriptor italic — the number is the fact, the italic says
@@ -1789,8 +1793,11 @@ main {
    body at the head, the contents standing lower as the record with the
    current one underlined, and the number in the foot. One screen. */
 .mod-manifest {
-  height: calc(100dvh - 30px);
-  min-height: 520px;
+  /* one screen at rest, but free to grow: the nomination list is a
+     disclosure, and a fixed height made opening it shrink the plate below
+     from 494px to 111px. It pushes the page down now, which is what a
+     disclosure should do, and nothing above or beside it moves. */
+  min-height: 100dvh;
   padding: 38px 0 40px;
   box-sizing: border-box;
   display: flex;
@@ -1804,39 +1811,45 @@ main {
   height: auto;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: minmax(0, 1fr);
-  /* both leaves run the full height of the stage, so their feet sit on one
-     line - the earlier catalogue-page rule started them at the top */
+  /* stacked, not a spread: the type on the head line, the plate under it
+     taking whatever the type leaves */
+  grid-template-rows: auto minmax(0, 1fr);
   align-items: stretch;
   column-gap: 16px;
   padding: 0 var(--pad);
 }
 .mod-manifest-verso,
 .mod-manifest-recto { align-self: stretch; }
-.mod-manifest-verso {
-  grid-column: 1 / 7;
+/* the type: contents and copy, on tracks 4-9 */
+.mod-manifest-recto {
+  grid-column: 4 / 10;
+  grid-row: 1;
   display: flex;
   flex-direction: column;
   min-width: 0;
   min-height: 0;
 }
-.mod-manifest-recto {
-  grid-column: 7 / 12;
+/* the plate, below the type on the same left edge */
+.mod-manifest-verso {
+  grid-column: 3 / 10;
+  grid-row: 2;
   display: flex;
   flex-direction: column;
   min-width: 0;
   min-height: 0;
 }
 .mod-manifest-verso .mod-manifest-gifline {
-  flex: 0 1 auto;
+  /* a fixed size, not the leftover band: as a flex remainder the plate
+     resized with every change of copy length - between panels, and again
+     when the nomination list opened */
+  flex: 0 0 auto;
   position: static;
   width: auto;
-  height: auto;
+  height: clamp(300px, 50vh, 560px);
   min-height: 0;
-  max-height: 62%;
-  aspect-ratio: 1;
-  /* the plate sits a fifth of the way down its page, inset from the gutter */
-  margin: clamp(48px, 12vh, 140px) 8% 0 0;
+  max-height: none;
+  aspect-ratio: auto;
+  margin: 20px 0 0;
   padding: 0;
   display: flex;
   align-items: flex-start;
@@ -1874,16 +1887,76 @@ main {
 }
 .mod-manifest-body p { margin: 0; }
 .mod-manifest-body p + p { text-indent: 0; margin-top: 17px; }
-/* the contents head the recto, above the copy: pinned to the top they sit
-   on the same line whichever panel is open, and they read as what they are -
-   the way in - before the text starts */
+/* the disclosure is a sibling of the paragraphs, not one of them, so the
+   p + p rule never reached it and it sat flush against the text either side */
+.mod-manifest-body > .mod-manifest-reveal { margin-top: 22px; }
+/* and the same air under the summary, before the list itself */
+.mod-manifest-body > .mod-manifest-reveal p { margin-top: 22px; }
+.mod-manifest-body > .mod-manifest-reveal + p { margin-top: 17px; }
+/* the partner list runs to seventy-odd names on one measure, so it takes a
+   little more leading than the body's 17px */
+.mod-manifest-body > .mod-manifest-reveal p { line-height: 19px; }
+/* the disclosure: centred on the column and underlined, the same mark the
+   contents and the links carry */
+.mod-manifest-body > .mod-manifest-reveal {
+  text-align: center;
+  /* the body sets text-align-last: left for its justified paragraphs, and on
+     a single line that is the line the browser aligns - it has to be reset
+     wherever the type is centred */
+  text-align-last: center;
+}
+.mod-manifest-body > .mod-manifest-reveal summary {
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+/* the Electro Union mark: half again as large and a little lower on the
+   page. A transform, so it reflows nothing - the wordmark below the section
+   stays exactly where it is. */
+.mod-manifest-verso .mod-manifest-gifline .eu-mark {
+  transform: translateY(24px) scale(1.5);
+  transform-origin: center top;
+}
+/* the links: caps and underlined, inline in the copy and at the close - the
+   same mark the contents above them carry */
+.mod-manifest-body .mod-manifest-inline-link {
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+/* the closing link: centred on the column */
+.mod-manifest-body > .mod-manifest-link {
+  margin-top: 34px;
+  text-align: center;
+  text-align-last: center;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.mod-manifest-body > .mod-manifest-link a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+/* the contents head the type, above the copy: pinned to the top they sit on
+   the same line whichever panel is open, and they read as what they are -
+   the way in - before the text starts. Centred on the column. */
 .mod-manifest-index {
   grid-column: auto;
   order: -1;
   margin: 0 0 40px;
   padding: 0;
+  text-align: center;
 }
+.mod-manifest-index ol { align-items: center; }
+.mod-manifest-tab { justify-items: center; }
 .mod-manifest-index ol { gap: 0; }
+/* stacked, the page has one foot: the recto's page number would otherwise
+   land mid-page under the copy */
+.mod-manifest-recto .entry-foot--recto { display: none; }
 /* the contents: not numbered, set in caps - the numbers live in the foot */
 .mod-manifest-tab {
   grid-template-columns: 1fr;
@@ -1938,7 +2011,7 @@ main {
 .mod-latest-arrow {
   font-family: var(--font);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 15px;
   color: var(--ink);
   background: none;
@@ -2054,8 +2127,10 @@ main {
 }
 .mod-partners .mod-section-header {
   padding: 0 var(--pad);
-  /* tighter to the marquee than the shared 64px default */
-  margin-bottom: 28px;
+  /* tighter to the marquee than the shared 64px default. The title gif has a
+     -7.04% bottom margin that pulls its own whitespace off, so this is the
+     real gap between the gif and the first row of logos. */
+  margin-bottom: 43px;
 }
 
 /* gigadesignstudio.com logo wall: two independent infinite marquees,
@@ -3422,48 +3497,102 @@ main {
    FOOTER — the record's last line
    ============================================= */
 
+/* On the page's own twelve tracks and in its own setting: no rule, 15/17
+   medium, links in caps and underlined like every other link on the site.
+   The mark takes the first two tracks, the links the rest - the same
+   left/right split the imprint under it uses. */
 .mod-footer {
-  border-top: 1px solid var(--ink);
-  padding: 12px var(--pad) 16px;
+  border-top: none;
+  padding: 60px var(--pad) 16px;
 }
 
 .mod-footer-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 16px;
   align-items: baseline;
-  gap: 24px;
 }
 
-.mod-footer-mark {
-  font-family: var(--font);
-  font-size: 13px;
-  line-height: 15px;
-  font-weight: 700;
-}
-
+/* one column per group, stacked, the way the contents are set */
 .mod-footer-links {
   display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 0;
+  align-items: flex-start;
 }
+.mod-footer-links:nth-of-type(1) { grid-column: 1 / 4; }
+.mod-footer-links:nth-of-type(2) { grid-column: 4 / 7; }
 
-.mod-footer a {
+.mod-footer a,
+.mod-footer input,
+.mod-footer button {
   font-family: var(--font);
   font-size: 13px;
-  line-height: 15px;
-  font-weight: 700;
+  line-height: 17px;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--ink);
   text-decoration: none;
 }
+
+/* the sign-up: a field on a hairline, its action set as the page sets a
+   link - caps and underlined */
+.mod-footer-signup {
+  grid-column: 8 / -1;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+.mod-footer-signup-field {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 6px;
+}
+.mod-footer-signup input {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  outline: none;
+}
+.mod-footer-signup input::placeholder { color: var(--meta); }
+.mod-footer-signup button {
+  flex: none;
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+.mod-footer-signup button:hover { background: var(--ink); color: var(--bg); }
 .mod-footer a:hover { background: var(--ink); color: var(--bg); }
 
-/* the imprint sits a step below, quiet but still black */
+/* the imprint sits a step below, on the same tracks, in caps - the links
+   above it stay regular */
 .mod-footer-row--imprint {
-  margin-top: 48px;
+  margin-top: 60px;
   font-family: var(--font);
-  font-size: 11px;
-  line-height: 13px;
-  font-weight: 700;
+  font-size: 13px;
+  line-height: 17px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.mod-footer-row--imprint > span { grid-column: 1 / 7; }
+.mod-footer-row--imprint > a {
+  grid-column: 7 / -1;
+  justify-self: end;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
@@ -3640,8 +3769,8 @@ main {
    GOOD NEWS
    architecturecuratingpractice.com's floating note, in this site's black and
    white: fixed, draggable by its title row, dismissable, and remembered once
-   dismissed. Theirs is acid green at 8px with a 3px radius; this one keeps
-   the page's own hairline, 11px and square corners.
+   dismissed. Theirs is acid green at 8px with a 3px radius; this one runs in
+   the page's own 15/17 medium, on the page's ground, with no rule at all.
    ============================================= */
 .goodnews {
   position: fixed;
@@ -3651,14 +3780,18 @@ main {
   width: 268px;
   box-sizing: border-box;
   background: var(--bg);
-  border: 1px solid var(--ink);
-  padding: 9px 11px 11px;
+  /* no rule: the note is held by its ground and its own type, like every
+     other block on the page */
+  border: none;
+  padding: 0;
   cursor: move;
   touch-action: none;
   font-family: var(--font);
-  font-size: 11px;
-  line-height: 13px;
-  font-weight: 700;
+  /* the site's own setting - it was running 11/13 at 700, the only bold and
+     the only 11px left on the page */
+  font-size: 15px;
+  line-height: 17px;
+  font-weight: 500;
   letter-spacing: normal;
   color: var(--ink);
   animation: goodnews-in 200ms linear both;
@@ -3676,6 +3809,7 @@ main {
   justify-content: space-between;
   gap: 12px;
   text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 .goodnews-head button {
   background: none;
@@ -3689,14 +3823,19 @@ main {
 }
 .goodnews-head button:hover { color: var(--ink); }
 .goodnews-body {
-  margin: 9px 0 0;
+  margin: 17px 0 0;
   color: var(--ink);
 }
 .goodnews-link {
   display: inline-block;
-  margin-top: 9px;
+  margin-top: 17px;
   color: var(--ink);
-  text-decoration: none;
+  /* caps and underlined, the mark every other link on the page carries */
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
 }
 .goodnews-link:hover { background: var(--ink); color: var(--bg); }
 @media (max-width: 720px) {
@@ -3707,8 +3846,8 @@ main {
    GOOD NEWS
    architecturecuratingpractice.com's floating note, in this site's black and
    white: fixed, draggable by its title row, dismissable, and remembered once
-   dismissed. Theirs is acid green at 8px with a 3px radius; this one keeps
-   the page's own hairline, 11px and square corners.
+   dismissed. Theirs is acid green at 8px with a 3px radius; this one runs in
+   the page's own 15/17 medium, on the page's ground, with no rule at all.
    ============================================= */
 .goodnews {
   position: fixed;
@@ -3718,14 +3857,18 @@ main {
   width: 268px;
   box-sizing: border-box;
   background: var(--bg);
-  border: 1px solid var(--ink);
-  padding: 9px 11px 11px;
+  /* no rule: the note is held by its ground and its own type, like every
+     other block on the page */
+  border: none;
+  padding: 0;
   cursor: move;
   touch-action: none;
   font-family: var(--font);
-  font-size: 11px;
-  line-height: 13px;
-  font-weight: 700;
+  /* the site's own setting - it was running 11/13 at 700, the only bold and
+     the only 11px left on the page */
+  font-size: 15px;
+  line-height: 17px;
+  font-weight: 500;
   letter-spacing: normal;
   color: var(--ink);
   animation: goodnews-in 200ms linear both;
@@ -3743,6 +3886,7 @@ main {
   justify-content: space-between;
   gap: 12px;
   text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 .goodnews-head button {
   background: none;
@@ -3756,14 +3900,19 @@ main {
 }
 .goodnews-head button:hover { color: var(--ink); }
 .goodnews-body {
-  margin: 9px 0 0;
+  margin: 17px 0 0;
   color: var(--ink);
 }
 .goodnews-link {
   display: inline-block;
-  margin-top: 9px;
+  margin-top: 17px;
   color: var(--ink);
-  text-decoration: none;
+  /* caps and underlined, the mark every other link on the page carries */
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
 }
 .goodnews-link:hover { background: var(--ink); color: var(--bg); }
 @media (max-width: 720px) {

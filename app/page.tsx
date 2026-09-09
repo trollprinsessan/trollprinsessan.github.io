@@ -1,6 +1,5 @@
 import { companies, getFacets } from "@/lib/companies";
 import Archive from "@/components/archive";
-import Nav from "@/components/nav";
 import Hero from "@/components/modules/hero";
 import Manifest from "@/components/modules/manifest";
 import ManifestLogo from "@/components/modules/manifest-logo";
@@ -14,7 +13,6 @@ export default function Home() {
   const facets = getFacets();
   return (
     <>
-      <Nav />
       <main>
         <Hero />
         <div id="manifest"><Manifest /></div>

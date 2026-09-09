@@ -81,7 +81,7 @@ function sections(c: Company) {
    the same object rather than two designs that resemble each other. `corner`
    is whatever control belongs in the top right: the close mark in the modal,
    the spin circle in Shuffle. */
-function EntryLayout({ c, corner, onImageClick, spread, number }: {
+function EntryLayout({ c, corner, onImageClick, spread }: {
   c: Company;
   corner: React.ReactNode;
   onImageClick?: () => void;
@@ -90,8 +90,6 @@ function EntryLayout({ c, corner, onImageClick, spread, number }: {
      One grid cannot give two columns independent rows, so the leaves are
      real wrappers. The modal keeps the flat order. */
   spread?: boolean;
-  /* the company's place in the list, printed as the folio on the spread */
-  number?: number;
 }) {
   /* Description is dropped: it restates Problem and Solution, and the 2026
      batch carries two categories anyway */
@@ -165,21 +163,14 @@ function EntryLayout({ c, corner, onImageClick, spread, number }: {
   );
 
   if (spread) {
-    const folio = number ? String(number) : "";
     const url = c.website ? c.website.replace(/^https?:\/\//, "").replace(/\/$/, "") : "";
     return (
       <>
         {head}
-        {/* the verso: the plate inset on the page, the folio and the name in
-            the foot - as the book sets a plate page */}
+        {/* the verso: the name over the plate */}
         <div className="entry-verso">
           {name}
           {figure}
-          <footer className="entry-foot">
-            <span className="entry-foot-num">{folio}</span>
-            <span className="entry-foot-name">{c.name}</span>
-            <span aria-hidden="true" />
-          </footer>
         </div>
         {/* the recto: the lead line and the body at the head; the record
             lower, as the book's does - the name, then the facts with no
@@ -198,9 +189,6 @@ function EntryLayout({ c, corner, onImageClick, spread, number }: {
               )}
             </div>
           </div>
-          <footer className="entry-foot entry-foot--recto">
-            <span className="entry-foot-num">{folio}</span>
-          </footer>
         </div>
       </>
     );
@@ -297,15 +285,6 @@ export default function Archive({
     setTheme(new Set());
     setYear(new Set());
   };
-
-  /* the folio: the company's place in this edition's hundred, alphabetical -
-     the page it would have in the book - not its row in the whole dataset */
-  const edition = useMemo(() => {
-    const latest = Math.max(0, ...companies.flatMap((c) => c.years));
-    return companies
-      .filter((c) => c.years.includes(latest))
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }, [companies]);
 
   const rouletteCompany = view === "shuffle" && filtered.length > 0
     ? filtered[seed % filtered.length]
@@ -416,7 +395,6 @@ export default function Archive({
       ) : view === "shuffle" && rouletteCompany ? (
         <Roulette
           company={rouletteCompany}
-          number={edition.findIndex((x) => x.slug === rouletteCompany.slug) + 1}
           spinning={spinning}
           onSpin={doSpin}
         />
@@ -448,9 +426,8 @@ function slotFor(slug: string) {
   return h % PLATE_SLOTS;
 }
 
-function Roulette({ company: c, number, spinning, onSpin }: {
+function Roulette({ company: c, spinning, onSpin }: {
   company: Company;
-  number: number;
   spinning: boolean;
   onSpin: () => void;
 }) {
@@ -494,7 +471,7 @@ function Roulette({ company: c, number, spinning, onSpin }: {
         key={c.slug}
       >
         {/* the image is the spin control: clicking it draws another company */}
-        <EntryLayout c={c} corner={null} onImageClick={onSpin} spread number={number} />
+        <EntryLayout c={c} corner={null} onImageClick={onSpin} spread />
       </div>
     </div>
   );
