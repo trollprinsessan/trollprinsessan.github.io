@@ -1,6 +1,7 @@
 import { companies, getFacets } from "@/lib/companies";
 import { visualFor } from "@/lib/art-direction";
 import Archive from "@/components/archive";
+import Nav from "@/components/nav";
 import Hero from "@/components/modules/hero";
 import Manifest from "@/components/modules/manifest";
 import ManifestLogo from "@/components/modules/manifest-logo";
@@ -28,6 +29,7 @@ export default function Home() {
     }));
   return (
     <>
+      <Nav />
       <main>
         <Hero />
         <div id="manifest"><Manifest draw={draw} /></div>

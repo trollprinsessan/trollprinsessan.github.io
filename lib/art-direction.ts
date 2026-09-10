@@ -97,3 +97,88 @@ export const PHOTOS = new Set([
 export function isPhoto(src: string | undefined) {
   return !!src && PHOTOS.has(src);
 }
+
+/* The line-drawn plates and the gif. Classified by eye off the folder, not
+   by anything in the file: the drawings are the same hand, the photographs
+   are photographs or rendered objects, and nothing in the data says which is
+   which. */
+const LINE_ART = new Set([
+  "/n100/ai-bob.webp",
+  "/n100/aibob.webp",
+  "/n100/biocre.webp",
+  "/n100/biographica.webp",
+  "/n100/biorce.webp",
+  "/n100/cradle.webp",
+  "/n100/floodbase.webp",
+  "/n100/jua.webp",
+  "/n100/mittilabs2.webp",
+  "/n100/overstory.webp",
+  "/n100/source-ag.webp",
+]);
+
+export function isPhotographic(src: string) {
+  return !LINE_ART.has(src) && !src.endsWith(".gif");
+}
+
+/* the photographs alone - the 21 that are neither drawn nor moving */
+export const PHOTO_POOL = PLAY_IMAGES.filter(isPhotographic);
+
+/* 320px copies of the same files, for the places that draw them small - the
+   loader's field and the contact sheet. The full plates are 1600px, and
+   eighty-odd of those is five megabytes before the page has painted. */
+export function thumb(src: string) {
+  return src.replace("/n100/", "/n100/thumb/");
+}
+export const PHOTO_THUMBS = PHOTO_POOL.map(thumb);
+
+/* the same hash as pick(), against the photographic pool only: a company
+   keeps its picture, and the contact sheet never draws a line plate */
+export function photoFor(slug: string) {
+  const named = ART_DIRECTION[slug];
+  if (named && isPhotographic(named)) return named;
+  let h = 0x811c9dc5;
+  for (let i = 0; i < slug.length; i++) {
+    h ^= slug.charCodeAt(i);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  h ^= h >>> 15;
+  h = Math.imul(h, 0x2545f491) >>> 0;
+  h = (h ^ (h >>> 13)) >>> 0;
+  return PHOTO_POOL[h % PHOTO_POOL.length];
+}
+
+/* THE ELECTRO UNION, provisionally.
+   The panel's copy names 27 builders, but no cohort field exists in the data
+   yet - these are picked from it by the only signal there is: European, and
+   in the sectors the copy names (the grid, storage, generation, electrified
+   industry and transport, and the materials it runs on), alphabetical.
+   Replace with the real list the moment it is in backstage. */
+export const ELECTRO_UNION = [
+  "1komma5",
+  "alight",
+  "beyond-aero",
+  "bloom-biorenewables",
+  "blykalla",
+  "cuspai",
+  "desolenator",
+  "einride",
+  "electricity-maps",
+  "elonroad",
+  "elyos-energy",
+  "enter",
+  "genomines",
+  "granular-energy",
+  "h2site",
+  "heart-aerospace",
+  "hived",
+  "instagrid",
+  "kitekraft",
+  "kraftblock",
+  "magnotherm",
+  "metris-energy",
+  "newcleo",
+  "nitrovolt",
+  "northvolt",
+  "piclo",
+  "pionix",
+];

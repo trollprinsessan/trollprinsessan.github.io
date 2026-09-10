@@ -79,10 +79,6 @@ const PANELS = [
       "In 2024 AI startups raised over $110bn, about a third of all venture funding worldwide. Most of it went to productivity and convenience. If this wave runs like the ones before it, 80% of those companies disappear. The biggest returns come from fixing the biggest problems.",
       "Scroll down and you'll find *25 companies* where AI is an integral part of the product, pointed at global problems at scale. This is a historic moment for innovation. Let's make sure we *prompt what actually matters.*",
     ],
-    link: {
-      href: "https://www.norrsken.org/goodnews/prompt-what-matters",
-      label: "Read the open letter",
-    },
   },
 ];
 
@@ -211,14 +207,24 @@ function Body({
             aria-controls="nomination-partners"
             onClick={onPartners}
           >
-            Nomination partners
+            {/* the section's own title art, at the copy's line height -
+                the words are the picture */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/title-gifs/nomination-partners.gif"
+              alt="Nomination partners"
+            />
           </button>
         </div>
       )}
       {"link" in panel && panel.link && (
         <p className="mod-manifest-link">
-          <a href={panel.link.href} target="_blank" rel="noreferrer">
-            {panel.link.label}
+          <a
+            href={(panel.link as { href: string; label: string }).href}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {(panel.link as { href: string; label: string }).label}
           </a>
         </p>
       )}
@@ -286,9 +292,9 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
      plate while they are open. Closed again when the panel changes. */
   const [partnersOpen, setPartnersOpen] = useState(false);
   useEffect(() => setPartnersOpen(false), [active]);
-  /* once the wheel has landed the caption comes in two beats: the name and
-     the country the moment it lands, the statement a quarter second after -
-     a slide's caption, not a typewriter. */
+  /* once the wheel has landed the caption cuts in: the name and the country,
+     nothing else. The statement is off the plate - beat 2 is kept because the
+     label a screen reader hears still carries it. */
   const [beat, setBeat] = useState(0);
   const line1 = one ? `${one.name}, ${iso(one.geo)}` : "";
   const line2 = one ? one.statement : "";
@@ -337,6 +343,27 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
   /* the Electro Union panel carries its own artwork: the mark draws itself
      where the plate would be, and there is no wheel to spin */
   const marked = art.ground === "plain";
+  /* MAKE EUROPE. A shower of croissants over the mark whenever the panel is
+     opened - falls once and is gone, not a loop. The drops are fixed, not
+     random, so the shower is the same every time and can be tuned by eye:
+     x across the section, size in px, the delay before it enters, how long
+     it takes to fall, and how far it turns on the way down. */
+  const CROISSANTS = [
+    { x: 6, delay: 0, fall: 3.0, spin: 220 },
+    { x: 14, delay: 1.6, fall: 3.4, spin: -180 },
+    { x: 21, delay: 0.42, fall: 3.6, spin: -160 },
+    { x: 29, delay: 1.9, fall: 2.8, spin: 240 },
+    { x: 36, delay: 0.14, fall: 2.6, spin: 300 },
+    { x: 44, delay: 0.86, fall: 3.2, spin: -240 },
+    { x: 50, delay: 2.4, fall: 3.7, spin: 160 },
+    { x: 57, delay: 0.28, fall: 2.9, spin: 180 },
+    { x: 64, delay: 1.15, fall: 3.9, spin: -120 },
+    { x: 71, delay: 0.6, fall: 3.1, spin: 260 },
+    { x: 78, delay: 2.1, fall: 3.3, spin: -260 },
+    { x: 85, delay: 1.4, fall: 2.7, spin: -320 },
+    { x: 91, delay: 0.2, fall: 3.5, spin: 140 },
+    { x: 97, delay: 0.98, fall: 3.0, spin: -200 },
+  ];
   const ground = panel.ground;
   useEffect(() => {
     const root = document.documentElement;
@@ -379,6 +406,26 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
           if (!marked && !isType(e.target)) another();
         }}
       >
+        {/* over the mark, under nothing: the shower is keyed on the panel so
+            it falls again on every press of Electro Union */}
+        {marked && (
+          <div className="mod-manifest-rain" key={panel.key} aria-hidden="true">
+            {CROISSANTS.map((c, i) => (
+              <img
+                key={i}
+                src="/manifest-images/croissant.webp"
+                alt=""
+                style={{
+                  left: `${c.x}%`,
+                  animationDelay: `${c.delay}s`,
+                  animationDuration: `${c.fall}s`,
+                  ["--spin" as string]: `${c.spin}deg`,
+                }}
+              />
+            ))}
+          </div>
+        )}
+
         <div className="mod-manifest-verso">
           <figure
             key={art.file}
@@ -441,9 +488,9 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
               {/* typed out once the wheel lands; nothing while it turns */}
               {!spinning && (
                 <p className="mod-manifest-draw-caption" aria-label={`${line1}. ${line2}`}>
-                  <span aria-hidden="true">{beat >= 1 ? line1 : ""}</span>
-                  <br />
-                  <span aria-hidden="true">{beat >= 2 ? line2 : ""}</span>
+                  <span className="mod-manifest-draw-who" aria-hidden="true">
+                    {beat >= 1 ? line1 : ""}
+                  </span>
                 </p>
               )}
               <div className="mod-manifest-draw-record">

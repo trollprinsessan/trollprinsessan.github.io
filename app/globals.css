@@ -104,6 +104,10 @@
   /* climaxbooks.com's own token, read straight off their stylesheet */
   --climax-pink: #ff78c8;
   --pad: 16px;
+  /* the running head's height. The film below is sized off it, so the two
+     make one screen - it lives here, not on .site-nav, since the hero is a
+     sibling and custom properties inherit down, not sideways. */
+  --nav-h: 33px;
   --gutter: 6px;   /* the gutter, everywhere on the page grid. The page margin (--pad) stays 16. */
   /* one shared column system: the grid view lays cards on --gridcols tracks,
      and --namecol is exactly one of those tracks, so the index name column
@@ -232,85 +236,62 @@ main {
    type set on the paper, and never with a filled band: the mark at the left,
    where you are standing at the centre, the contents at the right. The ground
    is the page's own, so nothing sits on a plate. */
+/* THE RUNNING HEAD
+   The page's twelve tracks: the mark on track 1, the sections on 9, 10 and
+   11. One size and one weight throughout - the same 15/17 the copy is set
+   in - so the bar reads as the page's first line rather than as chrome. */
 .site-nav {
-  /* sticky: the running head stays with the reader, on the page's own ground
-     so nothing shows through it */
+  /* holds at the head of the page while everything scrolls under it, and
+     above the archive's own control row, which now starts below it */
   position: sticky;
   top: 0;
-  z-index: 100;
-  background: var(--bg);
-  color: var(--ink);
-}
-.site-nav-top {
-  display: flex;
+  z-index: 60;
+  height: var(--nav-h);
+  box-sizing: border-box;
+  /* inverted: a black band, and the type in whatever ground the page is
+     standing on - so on the pink panel the words turn pink and the bar reads
+     as a hole cut in the page rather than a strip laid over it */
+  background: var(--ink);
+  color: var(--bg);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--gutter);
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  height: 30px;
-  padding: 0 var(--pad);
+  /* a 33px band: 8 above the line, then the 17px type, then 8 */
+  padding: 8px var(--pad);
 }
-.site-nav-title {
-  display: block;
-  height: 11px;
-  width: auto;
-  color: var(--ink);
+.site-nav-mark {
+  /* off the margin and onto track 7, so the four items read as one line of
+     four rather than a mark at one edge and a menu at the other */
+  grid-column: 7;
 }
-/* one word, at the mark's own cap height and in full black - at 8px in grey
-   the contents read as a caption under a logo rather than its counterpart */
-.site-nav-trigger {
+.site-nav-mark,
+.site-nav-link {
   font-family: var(--font);
-  font-size: 11px;
-  line-height: 12px;
+  font-size: 15px;
+  line-height: 17px;
   font-weight: 500;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--ink);
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-.site-nav-trigger--on,
-.site-nav-trigger:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-}
-
-/* the contents page, dropped: a list on the paper, not a floating menu */
-.site-nav-drop {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 100%;
-  background: var(--bg);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 6px var(--pad) 28px;
-  animation: nav-drop 160ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-@keyframes nav-drop {
-  from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .site-nav-drop { animation: none; }
-}
-.site-nav-drop a {
-  font-family: var(--font);
-  font-size: 21px;
-  line-height: 1.25;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  color: var(--ink);
+  letter-spacing: normal;
+  color: inherit;
   text-decoration: none;
+  white-space: nowrap;
 }
-.site-nav-drop a:hover { background: var(--ink); color: var(--bg); }
-.site-nav-drop a.site-nav-here {
+.site-nav-link--1 { grid-column: 9; }
+.site-nav-link--2 { grid-column: 10; }
+.site-nav-link--3 { grid-column: 11; }
+.site-nav-mark:hover,
+.site-nav-link:hover {
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-underline-offset: 2px;
   text-decoration-thickness: 1px;
+}
+/* the mark keeps its track; the three sections stack onto the last of them */
+@media (max-width: 720px) {
+  .site-nav { grid-template-columns: repeat(6, 1fr); row-gap: 8px; }
+  .site-nav-mark { grid-column: 1 / 4; }
+  .site-nav-link--1 { grid-column: 1; grid-row: 2; }
+  .site-nav-link--2 { grid-column: 2; grid-row: 2; }
+  .site-nav-link--3 { grid-column: 3; grid-row: 2; }
 }
 @media (max-width: 720px) {
   .site-nav-top { height: 26px; }
@@ -424,9 +405,9 @@ main {
    their own: the search bar starts where the statement column does, which is
    where card 2 starts in the grid view */
 .controls {
-  /* holds at the head of the page while the archive scrolls under it */
+  /* holds under the running head while the archive scrolls under it */
   position: sticky;
-  top: 0;
+  top: var(--nav-h);
   z-index: 40;
   background: var(--bg);
   display: grid;
@@ -448,8 +429,8 @@ main {
   padding: 0;
   cursor: pointer;
   font-family: var(--font);
-  font-size: 13px;
-  line-height: 15px;
+  font-size: 15px;
+  line-height: 17px;
   font-weight: 500;
   letter-spacing: normal;
   color: var(--ink);
@@ -457,7 +438,7 @@ main {
 .filter-trigger:hover { background: var(--ink); color: var(--bg); }
 .filter-trigger-count {
   font-family: var(--font);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   color: inherit;
 }
@@ -628,8 +609,8 @@ main {
   transform: translateY(-50%);
   pointer-events: none;
   font-family: var(--font);
-  font-size: 13px;
-  line-height: 15px;
+  font-size: 15px;
+  line-height: 17px;
   font-weight: 500;
   letter-spacing: normal;
   color: var(--ink);
@@ -652,13 +633,13 @@ main {
 }
 .search {
   font-family: var(--font);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   letter-spacing: normal;
   background: none;
   border: none;
   height: 30px;
-  line-height: 15px;
+  line-height: 17px;
   padding: 0;
   color: var(--ink);
   width: 100%;
@@ -715,34 +696,36 @@ main {
   padding: 0;
   cursor: pointer;
   font-family: var(--font);
-  font-size: 13px;
-  line-height: 15px;
+  font-size: 15px;
+  line-height: 17px;
   font-weight: 500;
   letter-spacing: normal;
   color: var(--ink);
 }
 /* the mark is a switch, not a radio: a hairline track with the knob at one
    end of it. The knob takes the Grid end or the Index end, and it snaps -
-   the same on-off the index rows take, with nothing in between. */
+   the same on-off the index rows take, with nothing in between.
+
+   Cap height, and square. At 15px the caps are 10.7px, and the old 12px pill
+   stood proud of the line - it read as an object beside the words rather
+   than a mark set with them. Nothing else on this page is a rounded pill. */
 .views-dot {
   width: 22px;
-  height: 12px;
+  height: 11px;
   box-sizing: border-box;
-  padding: 0 1px;
+  padding: 1px;
   margin: 0;
   cursor: pointer;
   border: 1px solid var(--ink);
-  border-radius: 999px;
+  border-radius: 0;
   background: none;
   flex-shrink: 0;
   display: inline-flex;
-  align-items: center;
+  align-items: stretch;
 }
 .views-dot::before {
   content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
+  width: 9px;
   background: var(--ink);
 }
 .views-toggle--index .views-dot::before { margin-left: auto; }
@@ -947,6 +930,10 @@ main {
   right: var(--pad);
   display: flex;
   justify-content: flex-end;
+  /* over the name. The name is a flex item carrying z-index: 1, and a flex
+     item's z-index counts even unpositioned - so it stacked level with the
+     mark and won on DOM order, and every click on the mark hit the name. */
+  z-index: 2;
 }
 /* the panel is set at the index's own size - 13/15 throughout, the name
    included: it sits beside the list, so it reads with it */
@@ -1337,7 +1324,7 @@ main {
 .card-name {
   margin: 0;
   font-size: 15px;
-  line-height: 16px;
+  line-height: 17px;
   font-weight: 500;
   letter-spacing: normal;
   text-transform: none;
@@ -1545,7 +1532,9 @@ main {
 .mod-hero {
   position: relative;
   width: 100%;
-  height: 100vh;
+  /* the running head rides in the same screen: nav plus film is one view, so
+     the page's first snap shows both rather than scrolling the bar away */
+  height: calc(100vh - var(--nav-h));
   min-height: 480px;
   background: #000;
   overflow: hidden;
@@ -1681,13 +1670,16 @@ main {
    between them shows half of each. Proximity rather than mandatory: it settles
    onto whichever of the two you are near and leaves the archive below to
    scroll freely. */
-html {
-  scroll-snap-type: y proximity;
-}
+/* PARKED: the page's own scroll snapping.
+   The two sections are a viewport tall each, so `y proximity` captured a
+   ~700px band around each one and yanked the page by up to 275px mid-scroll -
+   with the running head sticky above it, that read as the bars jumping. The
+   sections are still built to a screen each; they just no longer pull.
+   To bring it back: scroll-snap-type: y proximity on html, and
+   scroll-snap-align: start here. */
 .mod-hero,
 .mod-manifest {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  scroll-margin-top: var(--nav-h);
 }
 
 .mod-manifest {
@@ -2070,8 +2062,19 @@ html {
   margin: 0;
 }
 .mod-manifest-reveal summary::-webkit-details-marker { display: none; }
-.mod-manifest-reveal summary:hover,
-.mod-manifest-reveal-summary:hover { background: var(--ink); color: var(--bg); }
+.mod-manifest-reveal summary:hover { background: var(--ink); color: var(--bg); }
+/* the label is the section's own title art rather than the words: 240px on a
+   1080x200 file, so 44 tall. The file carries 4.54% of clear space down its
+   left edge, so the box is pulled back by exactly that - the INK lands on the
+   copy's line, not the picture's own margin. No hover ground: it would sit
+   behind a picture with its own edges. */
+.mod-manifest-reveal-summary img {
+  display: block;
+  width: 240px;
+  height: auto;
+  margin-left: -10.9px;
+}
+.mod-manifest-reveal-summary:hover img { opacity: 0.65; }
 
 /* an inline link inside the copy: underlined, since without it a link in
    running text has no affordance at all, and italic is already spoken for as
@@ -2234,17 +2237,154 @@ html {
   min-width: 0;
   min-height: 0;
 }
-/* the mark's own leaf: the plate's box, exactly. On the Electro Union panel
-   there is no wheel - the mark stands where the pictures stand on the other
-   panels, tracks 4 to 13, the same top, the same 75px to the right, and draws
-   itself there. Out of the flow, so the copy's length cannot reach it. */
+/* =============================================
+   THE LOADER — the index arriving
+   ============================================= */
+
+/* The whole page, white, filled with the index's own pictures: they land row
+   by row the way a contact sheet fills as it loads, hold for a beat, and go
+   again on the same wave. The wordmark is what is left in the middle.
+
+   The whole thing is one CSS timeline, 2450ms, and it ENDS ITSELF - the last
+   keyframe takes the layer to visibility: hidden, so the page underneath is
+   reachable whether or not the JavaScript ever ran. Nothing here is timed in
+   script. */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--bg);
+  animation: loader-veil 2450ms linear forwards;
+}
+/* no fades anywhere in here: every state change is a cut */
+@keyframes loader-veil {
+  0%, 97.9% { opacity: 1; visibility: visible; }
+  98%, 100% { opacity: 0; visibility: hidden; }
+}
+
+/* twelve to a row, seven rows: the delays in the markup are computed off
+   these two numbers, so they move together */
+.loader-sheet {
+  position: absolute;
+  inset: 0;
+  padding: var(--pad);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+  gap: 20px;
+}
+.loader-cell {
+  margin: 0;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* in, hold, out - one animation a cell, its delay carrying the wave */
+  animation: loader-cell 620ms linear both;
+}
+.loader-cell img {
+  display: block;
+  /* the picture's own proportion: nothing cropped or boxed to a ratio */
+  width: auto;
+  height: auto;
+  max-width: 88%;
+  max-height: 88%;
+}
+@keyframes loader-cell {
+  0%, 22.9%   { opacity: 0; }
+  23%, 77.9%  { opacity: 1; }
+  78%, 100%   { opacity: 0; }
+}
+
+/* what the field leaves behind */
+.loader-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 62vw;
+  transform: translate(-50%, -50%);
+  color: var(--ink);
+  /* in as the last cells go, and held until the veil lifts */
+  animation: loader-mark 2450ms linear both;
+}
+.loader-mark-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+@keyframes loader-mark {
+  0%, 64.9% { opacity: 0; }
+  65%, 100% { opacity: 1; }
+}
+
+/* no field, no wave: the wordmark alone, and gone on the same clock */
+@media (prefers-reduced-motion: reduce) {
+  .loader-sheet { display: none; }
+  .loader-mark { animation: loader-mark-plain 1200ms linear both; }
+  .loader { animation: loader-veil 1200ms linear forwards; }
+  @keyframes loader-mark-plain {
+    0%, 19.9% { opacity: 0; }
+    20%, 100% { opacity: 1; }
+  }
+}
+
+@media (max-width: 900px) {
+  .loader-sheet {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 12px;
+  }
+  .loader-mark { width: 84vw; }
+}
+
+/* MAKE EUROPE
+   A shower of croissants over the Electro Union mark, once per opening. The
+   layer is the whole section and clipped by it, so a drop enters above the
+   top edge and is gone at the foot; the type and the mark are untouched
+   underneath. */
+.mod-manifest-rain {
+  /* the page, not the section: fixed escapes the section's own overflow, so
+     a croissant falls on past the foot and over the wordmark below it */
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  overflow: hidden;
+}
+.mod-manifest-rain img {
+  position: absolute;
+  top: 0;
+  /* one size for all of them: the depth is in the timing, not the scale */
+  width: 96px;
+  height: auto;
+  /* forwards, so a drop stays where it landed - off the foot, clipped */
+  animation-name: croissant-fall;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.75, 0.55);
+  animation-fill-mode: both;
+}
+@keyframes croissant-fall {
+  from {
+    transform: translate3d(0, -40vh, 0) rotate(0deg);
+  }
+  to {
+    transform: translate3d(0, 130vh, 0) rotate(var(--spin, 200deg));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mod-manifest-rain { display: none; }
+}
+
+/* the mark's own leaf: the plate's box on the right. On the Electro Union
+   panel there is no wheel - the mark stands where the pictures stand on the
+   other panels and draws itself there, tilted like a stamp. Out of the flow,
+   so the copy's length cannot reach it. */
 .mod-manifest-verso:has(.mod-manifest-gifline--plain) {
   display: flex;
   grid-area: auto;
   position: absolute;
   left: calc(var(--pad) + 3 * var(--l));
   width: calc(9 * var(--t) + 8 * var(--gutter));
-  /* hung 30 under the section's top edge */
   top: 32px;
   height: auto;
   transform: translateX(75px);
@@ -2258,9 +2398,6 @@ html {
   width: 106%;
   height: auto;
   margin: 0;
-  /* a stamp, not a plate: tilted five degrees off the page's lines */
-  transform: rotate(-5deg);
-  transform-origin: center;
 }
 .mod-manifest-verso .mod-manifest-gifline {
   /* a fixed size, not the leftover band: as a flex remainder the plate
@@ -2343,13 +2480,14 @@ html {
   transform: translateY(24px) scale(1.5);
   transform-origin: center top;
 }
-/* pinned at the foot, the mark is its three tracks and nothing more: the lift
-   and the scale were for the row under the copy, and out of flow they only
-   push it into the copy's tracks */
+/* in the plate's box the mark is its own box and nothing more - the lift and
+   the scale above were for the old spread. A stamp, tilted five degrees off
+   the page's lines. */
 .mod-manifest-verso:has(.mod-manifest-gifline--plain) .mod-manifest-gifline .eu-mark {
   width: 100%;
   height: auto;
-  transform: none;
+  transform: rotate(-5deg);
+  transform-origin: center;
 }
 /* the links: caps and underlined, inline in the copy and at the close - the
    same mark the contents above them carry */
@@ -2587,9 +2725,11 @@ html {
      to the right margin: eleven tracks, five columns of sixteen */
   left: calc(var(--pad) + 1 * var(--l));
   width: calc(11 * var(--t) + 10 * var(--gutter));
-  /* the copy's head line (100 + the four tabs + 12), the button's own line,
-     and 12 under it */
-  top: calc(100px + 68px + 12px + 17px + 12px);
+  /* the copy's head line (100 + the four tabs + 12), the label's own art
+     (44 tall, its ink ending 62% down), and air under it. The label is a
+     picture now, not a line of type, so the last term carries the 10px the
+     ink needs rather than the 12 a text line wanted. */
+  top: calc(100px + 68px + 12px + 27px + 10px);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -2616,12 +2756,15 @@ html {
 .mod-manifest-draw-caption {
   grid-area: auto;
   position: absolute;
-  left: calc(var(--pad) + 6 * var(--l));
-  width: calc(5 * var(--t) + 4 * var(--gutter));
+  /* the name and its country alone, on track 5 - the plate's own left line.
+     The statement that used to run beside it is off the plate. */
+  left: calc(var(--pad) + 4 * var(--l));
+  width: calc(3 * var(--t) + 2 * var(--gutter));
   /* 10px under the plate's box, wherever the window puts it */
   top: calc(22px + (100dvh - var(--masthead-h, 210px)) * 0.83 + 10px);
   margin: 0;
   min-height: 34px;
+  /* the copy's own size: the caption is the section's type, not a footnote */
   font-size: 15px;
   line-height: 17px;
   font-weight: 500;
@@ -4240,7 +4383,7 @@ html {
    left/right split the imprint under it uses. */
 .mod-footer {
   border-top: none;
-  padding: 60px var(--pad) 16px;
+  padding: 50px var(--pad) 16px;
 }
 
 .mod-footer-row {

@@ -4,7 +4,10 @@ import Wordmark from "@/components/wordmark";
 
 export default function ManifestLogo() {
   const [visible, setVisible] = useState(false);
-  const [deg, setDeg] = useState(0);
+  /* the tilt is written straight onto the node, never into state: as state it
+     re-rendered this whole SVG on every scroll frame, and the page stuttered
+     under the sticky bars for it. */
+  const markRef = useRef<SVGSVGElement>(null);
   const [num, setNum] = useState<number | null>(null); // null → not shown yet
 
   const ref = useRef<HTMLDivElement>(null);
@@ -84,7 +87,9 @@ export default function ManifestLogo() {
         const r = el.getBoundingClientRect();
         // -1 when the mark sits at the foot of the screen, +1 at the head
         const t = 1 - ((r.top + r.height / 2) / window.innerHeight) * 2;
-        setDeg(Math.max(-1, Math.min(1, t)) * 16);
+        const deg = Math.max(-1, Math.min(1, t)) * 16;
+        const svg = markRef.current;
+        if (svg) svg.style.transform = `rotateY(${deg.toFixed(2)}deg)`;
       });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -103,11 +108,7 @@ export default function ManifestLogo() {
       className="manifest-logo"
       style={{ opacity: visible ? 1 : 0, transition: "opacity 0.3s ease" }}
     >
-      <Wordmark
-        label={label}
-        className="manifest-logo-svg"
-        style={{ transform: `rotateY(${deg.toFixed(2)}deg)` }}
-      />
+      <Wordmark ref={markRef} label={label} className="manifest-logo-svg" />
     </div>
   );
 }

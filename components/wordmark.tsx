@@ -11,13 +11,18 @@ export default function Wordmark({
   label = "100",
   className,
   style,
+  ref,
 }: {
   label?: string | null;
   className?: string;
   style?: React.CSSProperties;
+  /* so a caller can drive the mark without re-rendering it - the masthead
+     writes its scroll tilt straight onto the node */
+  ref?: React.Ref<SVGSVGElement>;
 }) {
   return (
     <svg
+      ref={ref}
       viewBox="185 0 1447 189"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
