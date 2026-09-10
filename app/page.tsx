@@ -1,4 +1,5 @@
 import { companies, getFacets } from "@/lib/companies";
+import { visualFor } from "@/lib/art-direction";
 import Archive from "@/components/archive";
 import Hero from "@/components/modules/hero";
 import Manifest from "@/components/modules/manifest";
@@ -11,11 +12,25 @@ import GoodNews from "@/components/good-news";
 
 export default function Home() {
   const facets = getFacets();
+  /* the manifest draws one company at a time; it needs four fields, not the
+     whole record, so the list handed to it stays small in the bundle. Only the
+     companies with a picture are eligible - 252 of the 352 have none, and the
+     plate is the point of that block. */
+  const draw = companies
+    .filter((c) => visualFor(c))
+    .map((c) => ({
+      slug: c.slug,
+      name: c.name,
+      statement: c.statement,
+      geo: c.countries.join(", "),
+      sector: c.sectorLabel,
+      visual: visualFor(c),
+    }));
   return (
     <>
       <main>
         <Hero />
-        <div id="manifest"><Manifest /></div>
+        <div id="manifest"><Manifest draw={draw} /></div>
         <div id="archive">
           <div className="archive-masthead"><ManifestLogo /></div>
           <Archive companies={companies} facets={facets} />

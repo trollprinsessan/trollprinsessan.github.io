@@ -51,12 +51,14 @@ export default function ElectroMark({ src }: { src: string }) {
 
         /* longer contours take longer to draw, so the ellipse does not finish
            in the same beat as a comma */
-        const duration = Math.min(900, Math.max(220, len * 0.45));
+        /* a third slower than it was: at the plate's size the strokes are
+           long, and the hand was moving too fast to be read as a hand */
+        const duration = Math.min(1200, Math.max(300, len * 0.6));
         const anim = p.animate(
           [{ strokeDashoffset: len }, { strokeDashoffset: 0 }],
           { duration, delay: clock, easing: "cubic-bezier(0.4, 0, 0.2, 1)", fill: "forwards" }
         );
-        clock += 26;
+        clock += 35;
 
         anim.onfinish = () => {
           p.style.stroke = "none";

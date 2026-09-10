@@ -8,6 +8,24 @@ export default function ManifestLogo() {
   const [num, setNum] = useState<number | null>(null); // null → not shown yet
 
   const ref = useRef<HTMLDivElement>(null);
+
+  /* the manifest above ends a masthead's height short of the screen, so this
+     wordmark rides up into the same snapped view. Measured, because the
+     wordmark scales with the window's width. */
+  useEffect(() => {
+    const mast = ref.current?.closest(".archive-masthead");
+    if (!mast) return;
+    const place = () => {
+      document.documentElement.style.setProperty(
+        "--masthead-h",
+        `${Math.ceil(mast.getBoundingClientRect().height)}px`
+      );
+    };
+    place();
+    const ro = new ResizeObserver(place);
+    ro.observe(mast);
+    return () => ro.disconnect();
+  }, []);
   const rafRef = useRef<number | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 

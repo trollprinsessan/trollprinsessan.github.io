@@ -26,15 +26,14 @@ import ElectroMark from "./electro-mark";
 // folded into "How they're picked", where the numbers are actually the point.
 const PANELS = [
   {
-    key: "What this is",
+    key: "About",
     body: [
-      "The norrsken100 highlights the most promising early-stage startups solving global challenges at scale by outperforming the legacy models that created them.",
-      "Scroll down to find 100 founders of the next economy. They shape what comes next.",
+      "The norrsken100 highlights the most promising early-stage startups solving global challenges at scale by outperforming the legacy models that created them. They shape what comes next.",
       "They are 100 ways to fix the future.",
     ],
   },
   {
-    key: "How they're picked",
+    key: "The Process",
     // stacked facts at body size, the way Climax lists edition, publisher,
     // price and dimensions, not a dashboard of oversized numbers. Figure in
     // roman, descriptor in italic: Climax's own split.
@@ -144,7 +143,15 @@ type Panel = (typeof PANELS)[number];
 
 /* One paragraph renderer for the essay and the notes: {{n}} counts up, [x](y)
    links, *x* is the italic cut, \n is a line turn inside the paragraph. */
-function Body({ panel }: { panel: Panel }) {
+function Body({
+  panel,
+  partnersOpen,
+  onPartners,
+}: {
+  panel: Panel;
+  partnersOpen: boolean;
+  onPartners: () => void;
+}) {
   return (
     <>
       {panel.body.map((para, pi) => (
@@ -189,15 +196,25 @@ function Body({ panel }: { panel: Panel }) {
               </span>
             ))}
           </p>
-          {/* sits under the sentence it belongs to, not at the foot */}
-          {"partners" in panel && panel.partners && pi === 0 && (
-            <details className="mod-manifest-reveal">
-              <summary>Nomination partners</summary>
-              <p>{NOMINATION_PARTNERS.join(", ")}</p>
-            </details>
-          )}
         </Fragment>
       ))}
+      {/* last, under the copy it belongs to */}
+      {"partners" in panel && panel.partners && (
+        /* the list itself is drawn by Manifest, across the section: at one
+           name a line it is far taller than the copy's column, and the
+           section does not grow */
+        <div className="mod-manifest-reveal">
+          <button
+            type="button"
+            className="mod-manifest-reveal-summary"
+            aria-expanded={partnersOpen}
+            aria-controls="nomination-partners"
+            onClick={onPartners}
+          >
+            Nomination partners
+          </button>
+        </div>
+      )}
       {"link" in panel && panel.link && (
         <p className="mod-manifest-link">
           <a href={panel.link.href} target="_blank" rel="noreferrer">
@@ -209,15 +226,117 @@ function Body({ panel }: { panel: Panel }) {
   );
 }
 
-export default function Manifest() {
+/* the caption's short form of the geography: the three-letter code, so the
+   name and the country hold one line under the plate */
+const ISO3: Record<string, string> = {
+  "United States": "USA", "United Kingdom": "GBR", Germany: "DEU", Sweden: "SWE",
+  France: "FRA", Kenya: "KEN", Spain: "ESP", Nigeria: "NGA", India: "IND",
+  Netherlands: "NLD", Denmark: "DNK", Singapore: "SGP", Switzerland: "CHE",
+  Israel: "ISR", Canada: "CAN", Norway: "NOR", Argentina: "ARG",
+  "South Africa": "ZAF", Australia: "AUS", Finland: "FIN", Ghana: "GHA",
+  Latvia: "LVA", "Hong Kong": "HKG", Rwanda: "RWA", Estonia: "EST", Italy: "ITA",
+  Turkey: "TUR", Indonesia: "IDN", Mexico: "MEX", Tanzania: "TZA", Austria: "AUT",
+  Malaysia: "MYS", Belgium: "BEL", Egypt: "EGY", Portugal: "PRT", Vietnam: "VNM",
+  Pakistan: "PAK", Lithuania: "LTU", Senegal: "SEN", Japan: "JPN", China: "CHN",
+};
+const iso = (geo: string) =>
+  geo.split(/\s*,\s*/).map((g) => ISO3[g] ?? g.slice(0, 3).toUpperCase()).join(", ");
+
+export type Draw = {
+  slug: string;
+  name: string;
+  statement: string;
+  geo: string;
+  sector: string;
+  visual: string;
+};
+
+export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
   const [active, setActive] = useState(0);
   const panel = PANELS[active];
+
+  /* THE COMPRESSED SHUFFLE
+     One company, in the three fields that carry it: name, statement, place.
+     After architecturecuratingpractice.com, where the nouns inside the running
+     sentence are the buttons - the content swaps in place, with no navigation
+     and nothing moving around it. Drawn on the client only: a random index
+     during render would not match the static export's HTML. */
+  const [drawn, setDrawn] = useState(0);
+  /* the mark follows the pointer instead of sitting in a circle: anywhere on
+     the section that is not the contents or a link is a draw, and the word
+     rides the cursor to say so */
+  const [mark, setMark] = useState<{ x: number; y: number } | null>(null);
+  useEffect(() => {
+    if (draw.length) setDrawn(Math.floor(Math.random() * draw.length));
+  }, [draw.length]);
+  const one = draw[drawn];
+  /* the contents, the links and the disclosure keep their own behaviour */
+  const isType = (t: EventTarget | null) =>
+    t instanceof Element &&
+    !!t.closest("a, button, summary, .mod-manifest-index");
+  /* a roulette, not a cut: the plate runs through a handful of companies,
+     each held a little longer than the last, before it lands. The same
+     deceleration as the spread's spin. The stops are chosen up front so their
+     pictures can be fetched before the wheel turns - a lazy image swapped in
+     at 30ms would show as a hole. */
+  const spinTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  useEffect(() => () => spinTimers.current.forEach(clearTimeout), []);
+  const [spinning, setSpinning] = useState(false);
+  /* the nomination partners: one name a line, in columns, standing in for the
+     plate while they are open. Closed again when the panel changes. */
+  const [partnersOpen, setPartnersOpen] = useState(false);
+  useEffect(() => setPartnersOpen(false), [active]);
+  /* once the wheel has landed the caption comes in two beats: the name and
+     the country the moment it lands, the statement a quarter second after -
+     a slide's caption, not a typewriter. */
+  const [beat, setBeat] = useState(0);
+  const line1 = one ? `${one.name}, ${iso(one.geo)}` : "";
+  const line2 = one ? one.statement : "";
+  useEffect(() => {
+    setBeat(0);
+    if (spinning || !one) return;
+    setBeat(1);
+    const id = setTimeout(() => setBeat(2), 250);
+    return () => clearTimeout(id);
+  }, [spinning, one?.slug]);
+  const another = () => {
+    if (draw.length < 2) return;
+    spinTimers.current.forEach(clearTimeout);
+    spinTimers.current = [];
+    setSpinning(true);
+    const gaps = [30, 40, 55, 80, 120, 175, 250];
+    const stops: number[] = [];
+    let last = drawn;
+    for (let i = 0; i < gaps.length; i++) {
+      let n = last;
+      while (n === last) n = Math.floor(Math.random() * draw.length);
+      stops.push(n);
+      last = n;
+    }
+    stops.forEach((n) => {
+      const src = draw[n]?.visual;
+      if (src) new Image().src = src;
+    });
+    let elapsed = 0;
+    gaps.forEach((gap, i) => {
+      elapsed += gap;
+      spinTimers.current.push(
+        setTimeout(() => {
+          setDrawn(stops[i]);
+          if (i === gaps.length - 1) setSpinning(false);
+        }, elapsed),
+      );
+    });
+  };
 
   /* The ground belongs to the page, not to this section, so the class goes on
      <html>: it redefines --bg, and body plus every surface painted with it
      turn together. Cleared on unmount so the colour cannot outlive the tab. */
   // artwork is per panel, falling back to the vortex that holds everywhere else
   const art = panel.image ?? MANIFEST_GIF;
+  /* the Electro Union panel carries its own artwork: the mark draws itself
+     where the plate would be, and there is no wheel to spin */
+  const marked = art.ground === "plain";
   const ground = panel.ground;
   useEffect(() => {
     const root = document.documentElement;
@@ -235,20 +354,31 @@ export default function Manifest() {
           scale 2 on desktop and 1.5 on mobile. Applied to the Electro Union
           mark only, via .mod-manifest-gifline--plain. */}
       <svg className="mod-manifest-filters" aria-hidden="true" focusable="false">
+        {/* the displacement was at the reference's own scale of 2, which on
+            the mark's hairlines read as a bleed rather than as print grain */}
         <filter id="print-distort">
           <feTurbulence baseFrequency="1 1" numOctaves={1} />
-          <feDisplacementMap in="SourceGraphic" scale="2" />
+          <feDisplacementMap in="SourceGraphic" scale="0.8" />
         </filter>
         <filter id="print-distort-mobile">
           <feTurbulence baseFrequency="1 1" numOctaves={1} />
-          <feDisplacementMap in="SourceGraphic" scale="1.5" />
+          <feDisplacementMap in="SourceGraphic" scale="0.6" />
         </filter>
       </svg>
 
       {/* Stacked: the contents heading the type, the copy under them, and the
           plate below taking whatever they leave - the
           current one underlined, and the number again in the foot. */}
-      <div className="mod-manifest-top">
+      <div
+        className="mod-manifest-top"
+        onMouseMove={(e) =>
+          setMark(marked || isType(e.target) ? null : { x: e.clientX, y: e.clientY })
+        }
+        onMouseLeave={() => setMark(null)}
+        onClick={(e) => {
+          if (!marked && !isType(e.target)) another();
+        }}
+      >
         <div className="mod-manifest-verso">
           <figure
             key={art.file}
@@ -263,9 +393,67 @@ export default function Manifest() {
         </div>
 
         <div className="mod-manifest-recto">
-          <blockquote className="mod-manifest-body" key={panel.key}>
-            <Body panel={panel} />
+          <blockquote
+            className={`mod-manifest-body${partnersOpen ? " mod-manifest-body--partners" : ""}`}
+            key={panel.key}
+          >
+            <Body
+              panel={panel}
+              partnersOpen={partnersOpen}
+              onPartners={() => setPartnersOpen((o) => !o)}
+            />
           </blockquote>
+
+          {partnersOpen && (
+            <ul className="mod-manifest-partners" id="nomination-partners">
+              {NOMINATION_PARTNERS.map((name) => (
+                <li key={name}>{name}</li>
+              ))}
+            </ul>
+          )}
+          {one && !partnersOpen && !marked && (
+            <div className="mod-manifest-draw">
+              {/* kept for the keyboard: the pointer has the word instead */}
+              <button
+                type="button"
+                className="mod-manifest-draw-mark"
+                onClick={another}
+              >
+                Shuffle
+              </button>
+              {mark && (
+                <span
+                  className="mod-manifest-draw-cursor"
+                  aria-hidden="true"
+                  style={{ left: mark.x, top: mark.y }}
+                >
+                  Shuffle
+                </span>
+              )}
+              {/* the frame is drawn whether or not the company has a
+                  picture, so a draw without one leaves a hole rather than
+                  pulling the record up the page */}
+              <figure className="mod-manifest-draw-plate">
+                {one.visual && (
+                  <img src={one.visual} alt={one.name} />
+                )}
+              </figure>
+              {/* typed out once the wheel lands; nothing while it turns */}
+              {!spinning && (
+                <p className="mod-manifest-draw-caption" aria-label={`${line1}. ${line2}`}>
+                  <span aria-hidden="true">{beat >= 1 ? line1 : ""}</span>
+                  <br />
+                  <span aria-hidden="true">{beat >= 2 ? line2 : ""}</span>
+                </p>
+              )}
+              <div className="mod-manifest-draw-record">
+                <p className="mod-manifest-draw-name">{one.name}</p>
+                <p className="mod-manifest-draw-geo">{one.geo}</p>
+                <p className="mod-manifest-draw-sector">{one.sector}</p>
+              </div>
+              <p className="mod-manifest-draw-statement">{one.statement}</p>
+            </div>
+          )}
 
           <nav className="mod-manifest-index" aria-label="Manifest sections">
             <ol>

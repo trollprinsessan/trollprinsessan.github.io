@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { Company, Facets } from "@/lib/types";
+import { visualFor, isPhoto } from "@/lib/art-direction";
 
 // client-only: reads image pixels + WebGL, must never run on the server
 
@@ -50,7 +51,14 @@ function FilterGroup({ title, value, options, onChange, wide }: {
 }
 
 
-type View = "index" | "grid" | "shuffle";
+type View = "index" | "grid";
+
+/* Shuffle is parked for now - the control is hidden, the draw is kept. */
+const SHUFFLE_ON = false;
+
+/* The card's statement is parked while the tight grid is tried. Flip to bring
+   it back. */
+const CARD_STATEMENT_ON = true;
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -94,10 +102,15 @@ function EntryLayout({ c, corner, onImageClick, spread }: {
   /* Description is dropped: it restates Problem and Solution, and the 2026
      batch carries two categories anyway */
   const blocks = sections(c).filter((s) => s.label !== "Description");
-  /* everything the named rows do not already carry: secondary sectors, themes */
+  /* everything the named rows do not already carry: secondary sectors, themes.
+     The data joins some of these with an ampersand - "Clean Energy & Climate
+     Tech" - which reads as one label; they are two tags, so the split takes
+     the ampersand as well as the comma and the record commas them all. */
   const meta = [
-    ...c.subsector.split(",").map((x) => x.trim()).filter(Boolean),
-    ...(c.themes ?? []),
+    ...c.subsector.split(/\s*[,&]\s*/).map((x) => x.trim()).filter(Boolean),
+    ...(c.themes ?? []).flatMap((t) =>
+      t.split(/\s*&\s*/).map((x) => x.trim()).filter(Boolean)
+    ),
   ];
 
   const head = <header className="entry-head">{corner}</header>;
@@ -163,32 +176,43 @@ function EntryLayout({ c, corner, onImageClick, spread }: {
   );
 
   if (spread) {
-    const url = c.website ? c.website.replace(/^https?:\/\//, "").replace(/\/$/, "") : "";
     return (
       <>
         {head}
-        {/* the verso: the name over the plate */}
+        {/* the verso carries the type, as the printed spread does: the name
+            small at the head, the record high and indented under it, and the
+            lead line and body hung from the foot of the page */}
         <div className="entry-verso">
           {name}
-          {figure}
-        </div>
-        {/* the recto: the lead line and the body at the head; the record
-            lower, as the book's does - the name, then the facts with no
-            labels; the page number in the foot */}
-        <div className="entry-recto">
-          {statement}
-          {prose}
           <div className="entry-record">
             <span className="entry-record-name">{c.name}</span>
             <div className="entry-record-values">
               <span>{c.countries.map(abbreviateCountry).join(", ")}</span>
               {c.sectorLabel && <span>{c.sectorLabel}</span>}
               {meta.length > 0 && <span>{meta.join(", ")}</span>}
-              {url && (
-                <a href={c.website} target="_blank" rel="noopener noreferrer">{url}</a>
+              {c.website && (
+                <a href={c.website} target="_blank" rel="noopener noreferrer">
+                  {c.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                </a>
               )}
             </div>
           </div>
+          <div className="entry-verso-foot">
+            {/* the lead line is on the recto now, over the plate */}
+            {prose}
+          </div>
+        </div>
+        {/* the recto: the name again as a running head, a short caption on
+            the record's own line, and the plate under them - the three things
+            the reference spread puts on its picture page */}
+        <div className="entry-recto">
+          <p className="entry-runhead">{c.statement}</p>
+          <p className="entry-plate-caption">
+            {[c.countries.map(abbreviateCountry).join(", "), c.sectorLabel]
+              .filter(Boolean)
+              .join(", ")}
+          </p>
+          {figure}
         </div>
       </>
     );
@@ -206,7 +230,14 @@ function EntryLayout({ c, corner, onImageClick, spread }: {
   );
 }
 
-function CompanyModal({ c, onClose }: { c: Company; onClose: () => void }) {
+function CompanyModal({ c, onClose, onShuffle, spinning }: {
+  c: Company;
+  onClose: () => void;
+  /* the draw lives in here now: pressing the picture, or the control at the
+     foot, rolls another company into the same plate without closing it */
+  onShuffle?: () => void;
+  spinning?: boolean;
+}) {
   const [out, setOut] = useState(false);
 
   /* matches the exit animation, so the plate is gone before it unmounts */
@@ -226,15 +257,22 @@ function CompanyModal({ c, onClose }: { c: Company; onClose: () => void }) {
   return (
     <div className={`entry-scrim${out ? " entry-scrim--out" : ""}`} onClick={close}>
       <article
-        className={`entry${out ? " entry--out" : ""}`}
+        className={`entry entry--spread entry--slot${slotFor(c.slug)}${
+          out ? " entry--out" : ""
+        }${spinning ? " entry--spinning" : ""}`}
         onClick={(e) => e.stopPropagation()}
       >
         <EntryLayout
           c={c}
+          spread
+          onImageClick={onShuffle}
           corner={
             <button className="entry-close" onClick={close} aria-label="Close">✕</button>
           }
         />
+        {onShuffle && (
+          <button className="entry-spin" onClick={onShuffle}>Shuffle</button>
+        )}
       </article>
     </div>
   );
@@ -257,11 +295,18 @@ export default function Archive({
   const [year, setYear] = useState<Set<string>>(new Set(["2025"]));
   const [query, setQuery] = useState("");
   const [view, setView] = useState<View>("grid");
-  const [seed, setSeed] = useState(0);
-  const [spinning, setSpinning] = useState(false);
-  const spinTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const [modal, setModal] = useState<Company | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [spinning, setSpinning] = useState(false);
+  const spinTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  useEffect(() => () => spinTimers.current.forEach(clearTimeout), []);
+
+  /* choosing a view puts the filter panel away: the panel is a detour off the
+     row, and picking a view means you are done with it */
+  const chooseView = (v: View) => {
+    setView(v);
+    setFiltersOpen(false);
+  };
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -286,24 +331,30 @@ export default function Archive({
     setYear(new Set());
   };
 
-  const rouletteCompany = view === "shuffle" && filtered.length > 0
-    ? filtered[seed % filtered.length]
-    : null;
-
+  /* Shuffle is not a view: it draws one of the hundred straight into the
+     modal, which now carries the spread. */
+  /* the roulette: the plate flickers through the list on a decelerating
+     cadence and lands on one, the way the old Shuffle view did */
   const doSpin = () => {
     if (filtered.length === 0) return;
     spinTimers.current.forEach(clearTimeout);
     spinTimers.current = [];
-    setView("shuffle");
+    const pick = (avoid?: string) => {
+      if (filtered.length === 1) return filtered[0];
+      let next = filtered[Math.floor(Math.random() * filtered.length)];
+      while (avoid && next.slug === avoid) {
+        next = filtered[Math.floor(Math.random() * filtered.length)];
+      }
+      return next;
+    };
     setSpinning(true);
-    const target = Math.floor(Math.random() * filtered.length);
     const gaps = [30, 40, 55, 80, 120, 175, 250];
     let elapsed = 0;
     gaps.forEach((gap, i) => {
       elapsed += gap;
       const isLast = i === gaps.length - 1;
       spinTimers.current.push(setTimeout(() => {
-        setSeed(isLast ? target : Math.floor(Math.random() * filtered.length));
+        setModal((current) => pick(isLast ? current?.slug : undefined));
         if (isLast) setSpinning(false);
       }, elapsed));
     });
@@ -311,7 +362,14 @@ export default function Archive({
 
   return (
     <>
-      {modal && <CompanyModal c={modal} onClose={() => setModal(null)} />}
+      {modal && (
+        <CompanyModal
+          c={modal}
+          onClose={() => setModal(null)}
+          onShuffle={doSpin}
+          spinning={spinning}
+        />
+      )}
 
       <div className="controls">
         {/* a single Filter trigger; every group lives in one panel below.
@@ -328,37 +386,86 @@ export default function Archive({
           onClick={() => setFiltersOpen((v) => !v)}
         >
           Filter
-          {activeFilterCount > 0 && (
+          {activeFilterCount > 0 ? (
             <span className="filter-trigger-count">({activeFilterCount})</span>
+          ) : (
+            /* nothing is on, so the count has nothing to say: the mark tells
+               you the panel folds out instead, and turns when it is open.
+               Drawn, not set: Arial MT has no arrow glyph and the character
+               fell through to a blank box. */
+            <svg
+              className="filter-trigger-mark"
+              viewBox="0 0 10 10"
+              width="10"
+              height="10"
+              aria-hidden="true"
+            >
+              <path
+                d="M5 0.5 V9 M1.2 5.4 L5 9.2 L8.8 5.4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1"
+              />
+            </svg>
           )}
         </button>
 
         {/* one control per row column: Filter over the name column, search
             over the statement, view radios over sector/geography */}
-        <input
-          className="search"
-          placeholder="Search…"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
+        {/* the placeholder is drawn rather than native, so its three dots can
+            blink in turn - the field reads as thinking while it waits */}
+        <div className="search-field">
+          <input
+            className="search"
+            aria-label="Search"
+            placeholder="Search…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          {query === "" && (
+            <span className="search-ghost" aria-hidden="true">
+              Search<i /><i /><i />
+            </span>
+          )}
+        </div>
 
-        <div className="views" role="radiogroup" aria-label="View">
-          {([
-            ["index", "Index"],
-            ["grid", "Grid"],
-            ["shuffle", "Shuffle"],
-          ] as const).map(([key, label]) => (
+        <div className="views">
+          {/* one mark between the two words, not one each: the dot sits on
+              the side of whichever view is open */}
+          <div
+            className={`views-toggle views-toggle--${view}`}
+            role="radiogroup"
+            aria-label="View"
+          >
             <button
-              key={key}
               role="radio"
-              aria-checked={view === key}
-              onClick={() => (key === "shuffle" ? doSpin() : setView(key))}
-              className={`views-opt${view === key ? " views-opt--on" : ""}`}
+              aria-checked={view === "grid"}
+              onClick={() => chooseView("grid")}
+              className="views-opt"
             >
-              <span className="views-dot" aria-hidden="true" />
-              {label}
+              Grid
             </button>
-          ))}
+            {/* the switch itself is a control: flicking it swaps the view */}
+            <button
+              type="button"
+              className="views-dot"
+              aria-label={view === "grid" ? "Switch to Index" : "Switch to Grid"}
+              onClick={() => chooseView(view === "grid" ? "index" : "grid")}
+            />
+            <button
+              role="radio"
+              aria-checked={view === "index"}
+              onClick={() => chooseView("index")}
+              className="views-opt"
+            >
+              Index
+            </button>
+          </div>
+          {/* Parked, not deleted: Shuffle draws one of the hundred into the
+              modal. Flip SHUFFLE_ON to bring it back. */}
+          {SHUFFLE_ON && (
+            <button className="views-draw" onClick={doSpin}>Shuffle</button>
+          )}
         </div>
       </div>
 
@@ -392,12 +499,6 @@ export default function Archive({
 
       {filtered.length === 0 ? (
         <div className="empty">No companies match these filters.</div>
-      ) : view === "shuffle" && rouletteCompany ? (
-        <Roulette
-          company={rouletteCompany}
-          spinning={spinning}
-          onSpin={doSpin}
-        />
       ) : view === "grid" ? (
         <Grid list={filtered} onSelect={setModal} />
       ) : (
@@ -426,169 +527,93 @@ function slotFor(slug: string) {
   return h % PLATE_SLOTS;
 }
 
-function Roulette({ company: c, spinning, onSpin }: {
-  company: Company;
-  spinning: boolean;
-  onSpin: () => void;
-}) {
-  /* The stage is one screen minus whatever the masthead and the control row
-     actually take. Both are responsive - the masthead wordmark scales with
-     the viewport - so the figure has to be measured rather than assumed, or
-     the foot of the page is cropped by the difference. */
-  useEffect(() => {
-    const archive = document.getElementById("archive");
-    if (!archive) return;
-    const head = archive.querySelector(".archive-masthead");
-    const controls = archive.querySelector(".controls");
-    if (!head || !controls) return;
-    const measure = () => {
-      const h = head.getBoundingClientRect().height +
-        controls.getBoundingClientRect().height;
-      archive.style.setProperty("--shuffle-head", `${Math.ceil(h)}px`);
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(head);
-    ro.observe(controls);
-    window.addEventListener("resize", measure);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", measure);
-    };
-  }, []);
 
-  /* the same layout the modal uses, laid inline in the page instead of on a
-     floating plate; the spin circle takes the corner the close mark holds.
-     The wrapper is what folds: it grows from nothing to the stage's height
-     while the entry inside is already laid out at full size, so the module
-     unfolds under the controls rather than switching in like a tab. */
-  return (
-    <div className="entry-fold">
-      <div
-        className={`entry entry--inline entry--slot${slotFor(c.slug)}${
-          spinning ? " entry--spinning" : ""
-        }`}
-        key={c.slug}
-      >
-        {/* the image is the spin control: clicking it draws another company */}
-        <EntryLayout c={c} corner={null} onImageClick={onSpin} spread />
-      </div>
-    </div>
-  );
-}
-
-/* TEMPORARY, for looking at this year's art direction only.
-   Overrides the stock company photography for the first two grid rows with the
-   images staged into /public/art-direction. Delete this map and the visualFor()
-   calls to go back to the real photography. */
-const ART_DIRECTION: Record<string, string> = {
-  "aerleum": "/art-direction/hsdgs.png",
-  "aerones": "/art-direction/improx2.png",
-  "again-bio": "/art-direction/stellarator_spin.gif",
-  "agricarbon": "/art-direction/jksdjksdj.png",
-  "alcemy": "/art-direction/hksjdhsj.png",
-  "amini": "/art-direction/jhsdgsh.png",
-  "anthro-energy": "/art-direction/kssgdhjs.png",
-  "arbonics": "/art-direction/hsjd.png",
-  "arnergy": "/art-direction/djhdjdf.png",
-  "arsenale-bioyards": "/art-direction/oneka-buoy.gif",
-  "ataraxis": "/art-direction/original_ea8093b43ed5e95103870bc6002e343e.png",
-  "avelios": "/art-direction/hsdgs.png",
-};
-
-function visualFor(c: Company) {
-  return ART_DIRECTION[c.slug] ?? c.visual;
-}
 
 // atelier-amont.ch table: no thumbnails, pure text columns — name / statement /
 // sector / geography, each one line, dense single-baseline rows.
 function Index({ list }: { list: Company[] }) {
-  // index rows disclose inline rather than opening the modal — one at a time,
-  // like the nomination-partners control in the manifest
+  /* A row opens a panel on the right rather than unfolding under itself: the
+     list keeps its place and the company is read beside it. The panel sits
+     under the control row, which is sticky at the top of the page. */
   const [open, setOpen] = useState<string | null>(null);
+  const shown = list.find((c) => c.slug === open) ?? null;
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(null); };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [open]);
+
+  /* a row that is filtered away must not leave its panel behind */
+  useEffect(() => {
+    if (open && !list.some((c) => c.slug === open)) setOpen(null);
+  }, [list, open]);
+
+  /* the panel starts under the control row wherever that row currently is:
+     it is sticky, so its bottom sits at 52 once the page has scrolled past
+     the masthead and lower than that before. Measured rather than assumed. */
+  useEffect(() => {
+    if (!open) return;
+    const controls = document.querySelector(".controls");
+    if (!controls) return;
+    const place = () => {
+      const bottom = controls.getBoundingClientRect().bottom;
+      document.documentElement.style.setProperty(
+        "--index-panel-top",
+        `${Math.max(0, Math.round(bottom))}px`
+      );
+    };
+    place();
+    window.addEventListener("scroll", place, { passive: true });
+    window.addEventListener("resize", place);
+    return () => {
+      window.removeEventListener("scroll", place);
+      window.removeEventListener("resize", place);
+    };
+  }, [open]);
 
   return (
-    <div className={`index${open ? " index--focused" : ""}`}>
-      {list.map((c) => {
-        const isOpen = open === c.slug;
-        // Description dropped: Problem and Solution carry the row now,
-        // same content policy as the company pages (EntryLayout).
-        const blocks = sections(c).filter((b) => b.label !== "Description");
-        // sector and geography already sit in the row's own columns, so the
-        // detail tags carry what the row does not: theme, then subsector.
-        // Subsector is a comma-joined string in the data, and only the 2025
-        // cohort has one — fall back to the sector so the stack is never empty.
-        const subs = c.subsector
-          .split(",")
-          .map((x) => x.trim())
-          .filter(Boolean);
-        const tags = [...(c.themes ?? []), ...(subs.length ? subs : [c.sectorLabel])];
-        return (
-          <div key={c.slug} className={`index-item${isOpen ? " index-item--open" : ""}`}>
-            <button
-              className="row"
-              aria-expanded={isOpen}
-              onClick={() => setOpen(isOpen ? null : c.slug)}
-            >
-              <div className="row-name">{c.name}</div>
-              <div className="row-statement">{c.statement}</div>
-              <div className="row-sector">{c.sectorLabel}</div>
-              <div className="row-geo">{abbreviateCountry(c.countries[0])}</div>
-            </button>
-            {isOpen && (
-              <div className="row-detail">
+    <div className={`index-view${open ? " index-view--open" : ""}`}>
+      <div className={`index${open ? " index--focused" : ""}`}>
+        {list.map((c) => {
+          const isOpen = open === c.slug;
+          return (
+            <div key={c.slug} className={`index-item${isOpen ? " index-item--open" : ""}`}>
+              <button
+                className="row"
+                aria-expanded={isOpen}
+                onClick={() => setOpen(isOpen ? null : c.slug)}
+              >
+                <div className="row-name">{c.name}</div>
+                <div className="row-statement">{c.statement}</div>
+                <div className="row-sector">{c.sectorLabel}</div>
+                <div className="row-geo">{abbreviateCountry(c.countries[0])}</div>
+              </button>
+            </div>
+          );
+        })}
+      </div>
 
-                {/* the description leads across two columns; the remaining
-                    categories sit beneath it, one column each */}
-                {/* one grid item holding all the prose, so the image and the
-                    circle beside it cannot inflate the text rows */}
-                {/* the picture alone in the meta column now - the record
-                    below carries what the tag pills and the circle used to */}
-                <div className="row-detail-meta">
-                  {visualFor(c) && (
-                    <img src={visualFor(c)} alt="" className="row-detail-img" />
-                  )}
-                </div>
-
-                <div className="row-detail-text">
-                  {blocks.map((b) => (
-                    <div key={b.label} className="row-detail-block">
-                      <p>{b.body}</p>
-                    </div>
-                  ))}
-                </div>
-
-                {/* the same record the company pages use, in the column the
-                    circle held - Meta carries what the tag pills used to */}
-                <dl className="row-detail-spec">
-                  <div className="row-detail-spec-cell">
-                    <dt>Status</dt>
-                    <dd>{c.returning ? "Returning" : "Newcomer"}</dd>
-                  </div>
-                  <div className="row-detail-spec-cell">
-                    <dt>Founded</dt>
-                    <dd>{c.yearFounded ?? "—"}</dd>
-                  </div>
-                  <div className="row-detail-spec-cell">
-                    <dt>Meta</dt>
-                    <dd>{tags.length ? tags.join(", ") : "—"}</dd>
-                  </div>
-                  <div className="row-detail-spec-cell">
-                    <dt>URL</dt>
-                    <dd>
-                      {c.website ? (
-                        <a href={c.website} target="_blank" rel="noopener noreferrer">
-                          {c.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
-                        </a>
-                      ) : "—"}
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            )}
+      {shown && (
+        <aside className="index-panel" key={shown.slug}>
+          <div className="entry entry--spread entry--panel">
+            <EntryLayout
+              c={shown}
+              spread
+              corner={
+                <button
+                  className="entry-close"
+                  onClick={() => setOpen(null)}
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
+              }
+            />
           </div>
-        );
-      })}
+        </aside>
+      )}
     </div>
   );
 }
@@ -635,7 +660,12 @@ function Grid({ list, onSelect }: {
             <div className="card-media">
               {visualFor(c) ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img className="card-thumb" src={visualFor(c)} alt={c.name} loading="lazy" />
+                <img
+                  className={`card-thumb${isPhoto(visualFor(c)) ? " card-thumb--photo" : ""}`}
+                  src={visualFor(c)}
+                  alt={c.name}
+                  loading="lazy"
+                />
               ) : (
                 <div className="card-thumb--empty" />
               )}
@@ -647,7 +677,7 @@ function Grid({ list, onSelect }: {
                   campaign - the title / category / body / date pattern. */}
               <span className="card-name">{c.name}</span>
               {facts && <span className="card-facts">{facts}</span>}
-              {c.statement && (
+              {CARD_STATEMENT_ON && c.statement && (
                 <span className="card-statement">{c.statement}</span>
               )}
               {tags.length > 0 && (
