@@ -49,12 +49,6 @@ function FaqItem({ title, body }: { title: string; body: string }) {
     <div className={`faq-item${open ? " faq-item--open" : ""}`}>
       <button className="faq-row" onClick={() => setOpen((v) => !v)} aria-expanded={open}>
         <span className="faq-title">{title}</span>
-        {/* two rules rather than a +/− glyph swap: the vertical one rotates
-            flat into the horizontal one, so + becomes − as a movement */}
-        <span className="faq-icon" aria-hidden="true">
-          <span className="faq-icon-bar" />
-          <span className="faq-icon-bar faq-icon-bar--v" />
-        </span>
       </button>
       {/* always mounted — collapsing 1fr→0fr is what makes the height
           animatable; aria-hidden keeps the closed copy out of the a11y tree */}

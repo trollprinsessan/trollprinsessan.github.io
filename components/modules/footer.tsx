@@ -1,10 +1,15 @@
+import Wordmark from "@/components/wordmark";
+import { GoodNewsForm } from "@/components/modules/good-news";
+
 // The record's last line: the page's own sections in one column, Norrsken in
-// the next, the Good News sign-up in the last, then the imprint. Set on the
-// page's twelve tracks, at 13px.
+// the next, the Good News signup on the right half - then the norrsken100
+// mark across the whole width as the last thing on the page. Set on the page's
+// twelve tracks, at 13px.
 const SECTIONS = [
   { href: "#manifest", label: "Manifest" },
   { href: "#archive", label: "Archive" },
   { href: "#latest", label: "Latest" },
+  { href: "#goodnews", label: "Good News" },
   { href: "#partners", label: "Partners" },
   { href: "#faq", label: "FAQ" },
 ];
@@ -34,33 +39,16 @@ export default function Footer() {
           ))}
         </nav>
 
-        {/* The sign-up. The field has no endpoint yet: submitting hands the
-            address to Norrsken's own Good News page rather than pretending to
-            capture it here. */}
-        <form
-          className="mod-footer-signup"
-          action="https://www.norrsken.org/goodnews"
-          method="get"
-          target="_blank"
-        >
-          <div className="mod-footer-signup-field">
-            <input
-              type="email"
-              name="email"
-              required
-              placeholder="Email"
-              aria-label="Email address"
-            />
-            <button type="submit">Subscribe</button>
-          </div>
-        </form>
+        <div className="mod-footer-signup">
+          <p className="mod-footer-signup-head">WANT MORE GOOD NEWS?</p>
+          <GoodNewsForm className="mod-goodnews-form--footer" />
+        </div>
       </div>
 
-      <div className="mod-footer-row mod-footer-row--imprint">
-        <span>Norrsken Foundation · Stockholm · 2026</span>
-        <a href="https://www.norrsken.org/100" target="_blank" rel="noreferrer">
-          norrsken.org/100
-        </a>
+      {/* the mark comes down to the foot of the page, whole, across the
+          width - the same mark the masthead parks above the list */}
+      <div className="mod-footer-mark">
+        <Wordmark label="100" className="mod-footer-mark-svg" />
       </div>
     </footer>
   );

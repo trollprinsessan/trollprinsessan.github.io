@@ -97,6 +97,11 @@
   --bg: #ffffff;
   --ink: #000000;
   --line: #e0e0e0;
+  /* the only tone on the page: the ground a control sits in. Light enough
+     that the type on it keeps the page's contrast, dark enough that the slot
+     reads as a slot on white. */
+  --slot: #ededed;
+  --slot-on: #e2e2e2;
   --muted: #7F7F7F;
   --meta: #7F7F7F;
   --dim: #e5e5e5; /* wheel-picker inactive option — radioraheem.it/music value */
@@ -104,11 +109,11 @@
   /* climaxbooks.com's own token, read straight off their stylesheet */
   --climax-pink: #ff78c8;
   --pad: 16px;
-  /* the running head's height. The film below is sized off it, so the two
-     make one screen - it lives here, not on .site-nav, since the hero is a
-     sibling and custom properties inherit down, not sideways. */
-  --nav-h: 33px;
-  --gutter: 6px;   /* the gutter, everywhere on the page grid. The page margin (--pad) stays 16. */
+  /* no running head any more: the mark itself is the head, and it rides the
+     foot of the window. Kept at 0 so everything that offsets by it - the
+     control row, the scroll margins - simply reads nothing. */
+  --nav-h: 0px;
+  --gutter: 16px;   /* the gutter, everywhere on the page grid. Same as the page margin. */
   /* one shared column system: the grid view lays cards on --gridcols tracks,
      and --namecol is exactly one of those tracks, so the index name column
      ends where card 1 ends and the statement column starts on card 2 */
@@ -237,61 +242,44 @@ main {
    where you are standing at the centre, the contents at the right. The ground
    is the page's own, so nothing sits on a plate. */
 /* THE RUNNING HEAD
-   The page's twelve tracks: the mark on track 1, the sections on 9, 10 and
-   11. One size and one weight throughout - the same 15/17 the copy is set
-   in - so the bar reads as the page's first line rather than as chrome. */
+   The mark alone and centred, small: 85px wide, black on the page's own
+   ground. No sections beside it and no band behind it - the contents ARE the
+   page, one scroll away, and a bar naming them was carrying weight the scroll
+   already carries. --nav-h is the band's height and the one token: the film
+   below is sized off it and the archive's controls stick under it. */
 .site-nav {
-  /* holds at the head of the page while everything scrolls under it, and
-     above the archive's own control row, which now starts below it */
-  position: sticky;
+  /* OVER the page, not above it: fixed rather than sticky, so it takes no
+     room in the flow and the film runs to the very top of the window. */
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 60;
   height: var(--nav-h);
   box-sizing: border-box;
-  /* inverted: a black band, and the type in whatever ground the page is
-     standing on - so on the pink panel the words turn pink and the bar reads
-     as a hole cut in the page rather than a strip laid over it */
-  background: var(--ink);
-  color: var(--bg);
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  column-gap: var(--gutter);
+  /* no ground: the mark sits straight on whatever the page is showing, and
+     inverts it. The blend is on the header because the header is the
+     stacking context - inside it there is nothing to blend against. */
+  background: none;
+  mix-blend-mode: difference;
+  color: var(--ink);
+  display: flex;
   align-items: center;
-  /* a 33px band: 8 above the line, then the 17px type, then 8 */
-  padding: 8px var(--pad);
+  justify-content: center;
+  padding: 0 var(--pad);
 }
 .site-nav-mark {
-  /* off the margin and onto track 7, so the four items read as one line of
-     four rather than a mark at one edge and a menu at the other */
-  grid-column: 7;
-}
-.site-nav-mark,
-.site-nav-link {
-  font-family: var(--font);
-  font-size: 15px;
-  line-height: 17px;
-  font-weight: 500;
-  letter-spacing: normal;
+  display: block;
   color: inherit;
-  text-decoration: none;
-  white-space: nowrap;
 }
-.site-nav-link--1 { grid-column: 9; }
-.site-nav-link--2 { grid-column: 10; }
-.site-nav-link--3 { grid-column: 11; }
-.site-nav-mark:hover,
-.site-nav-link:hover {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 1px;
-}
-/* the mark keeps its track; the three sections stack onto the last of them */
-@media (max-width: 720px) {
-  .site-nav { grid-template-columns: repeat(6, 1fr); row-gap: 8px; }
-  .site-nav-mark { grid-column: 1 / 4; }
-  .site-nav-link--1 { grid-column: 1; grid-row: 2; }
-  .site-nav-link--2 { grid-column: 2; grid-row: 2; }
-  .site-nav-link--3 { grid-column: 3; grid-row: 2; }
+.site-nav-mark-svg {
+  display: block;
+  /* the mark is 1447:189, so 85 across is 11 down */
+  width: 85px;
+  height: auto;
+  /* white, so the header's difference inverts whatever is behind it: black
+     against the page, white against the film */
+  color: #fff;
 }
 @media (max-width: 720px) {
   .site-nav-top { height: 26px; }
@@ -404,44 +392,154 @@ main {
 /* identical grid to .row, so the controls sit on the index columns rather than
    their own: the search bar starts where the statement column does, which is
    where card 2 starts in the grid view */
-.controls {
-  /* holds under the running head while the archive scrolls under it */
-  position: sticky;
-  top: var(--nav-h);
+/* THE DOCK
+   Last year's bar, which sat at the FOOT of the window on desktop and mobile
+   alike. The list is the thing you are working, so its controls belong at the
+   near edge - under your thumb on a phone, out of the way of the type on a
+   desktop - and the page reads top to bottom with nothing held over it.
+
+   Bar and panel are one fixed block. The panel is the first child, so opening
+   it grows the block UPWARD off the bar instead of off the bottom of the
+   screen. It is here only while the list is on screen: over the film and the
+   manifest there is nothing for it to control, and the wordmark is using that
+   edge. */
+.dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 40;
-  background: var(--bg);
+  /* NO BAR. The controls float over the list as four black slots; the
+     rows run on underneath them. */
+  background: none;
+  /* out of the way until the list arrives - transform rather than display, so
+     it slides rather than appears, and never affects the page's height */
+  transform: translateY(100%);
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  /* no rule along its top: the slots are what say it is a bar */
+}
+.dock--on { transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .dock { transition: none; }
+}
+/* the list keeps the bar's height clear at its foot, so the last row is
+   never under it */
+.archive-list { padding-bottom: 92px; }
+
+/* the cells */
+.ctl {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+/* THE SLOT. Every control sits in one: a flat fill, no stroke and no radius,
+   so the control reads as recessed into the bar rather than drawn on it. The
+   fill is the only tone on the page - everything else is black on white - and
+   it is what makes the bar an interface without adding a single line. */
+.ctl-box {
+  box-sizing: border-box;
+  height: 28px;
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border: none;
+  /* INVERTED: the slot is the page's ink, the type its ground. On no bar,
+     a grey slot over the list read as a smudge; a black one reads as a
+     control laid on the page. */
+  background: var(--ink);
+  font-family: var(--font);
+  /* the card's own 13, not a size of its own: the bar is set like the list
+     it governs, and at 15 it read heavier than anything around it */
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+  letter-spacing: normal;
+  color: var(--bg);
+  /* the slot's own grey, for the count and the stops that recede */
+  --slot-meta: rgba(255, 255, 255, 0.55);
+}
+/* THE ROW IS ONE INSTRUMENT, IN THE MIDDLE.
+   The cells sit shoulder to shoulder on tracks 3 to 11 - the way last
+   year's bar did - none of them stretched to a margin. Count and Filter
+   and the view take what their words need; Search takes the rest. */
+.controls-row {
+  grid-column: 3 / 11;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+.ctl--count,
+.ctl--filter,
+.ctl--views { flex: 0 0 auto; }
+.ctl--search { flex: 1 1 auto; }
+.ctl--count .ctl-box,
+.ctl--filter .ctl-box,
+.ctl--views .ctl-box { width: auto; }
+.filter-trigger { gap: 14px; }
+
+/* the readout: fixed-width figures, zero-padded, so it does not jump about
+   as the list is filtered. In a slot like the rest - bare figures over the
+   list were unreadable once the bar had no ground. */
+.ctl-count {
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+  color: var(--bg);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ONE INSTRUMENT, FOUR CONTROLS AND A READOUT.
+   Every control is a drawn box: one hairline, one height, one type size, on
+   the page's own twelve tracks so the bar lines up with the list it governs.
+
+   It had caps labels above each control before. On a white page, in the same
+   face, they read as more list - the bar dissolved into the grid with only a
+   rule to say otherwise. An interface is legible because you can see the edge
+   of the thing you press; that edge does the labelling. */
+.controls {
+  background: none;
   display: grid;
-  grid-template-columns: var(--namecol) 1fr var(--metacol) var(--metacol);
-  gap: var(--gutter);
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--gutter);
   align-items: center;
   padding: 11px var(--pad);
 }
-/* single Filter trigger, on the row's type like everything else in the bar */
-/* single Filter trigger, on the row's type like everything else in the bar */
+/* the Filter trigger is a box like the rest: everything about its frame comes
+   from .ctl-box, and this only adds what a button needs. It used to carry
+   `border: none` from its bare-text days, which won on order and left it the
+   one control on the bar with no edge. */
 .filter-trigger {
-  grid-column: 1;
-  justify-self: start;
-  display: flex;
-  align-items: baseline;
-  gap: 7px;
-  background: none;
-  border: none;
-  padding: 0;
+  justify-content: space-between;
   cursor: pointer;
-  font-family: var(--font);
-  font-size: 15px;
-  line-height: 17px;
-  font-weight: 500;
-  letter-spacing: normal;
-  color: var(--ink);
 }
-.filter-trigger:hover { background: var(--ink); color: var(--bg); }
+/* pressing a slot deepens it rather than inverting it: the page's one tone,
+   one step darker */
+.filter-trigger:hover,
+.filter-trigger[aria-expanded="true"] { background: #222; }
+/* the count of what is on, in the slot's grey, and beside it the cross
+   that clears it all - undone from the bar, without opening the sheet */
 .filter-trigger-count {
-  font-family: var(--font);
-  font-size: 15px;
-  font-weight: 500;
-  color: inherit;
+  margin-left: auto;
+  padding-right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--slot-meta);
 }
+.filter-trigger-clear {
+  color: var(--bg);
+  font-size: 15px;
+  line-height: 15px;
+  cursor: pointer;
+}
+.filter-trigger-clear:hover { color: var(--slot-meta); }
+
 /* the fold-out mark, in the count's own place: it turns to point back up
    while the panel is open. Snapped, like every other state on the page. */
 .filter-trigger-mark {
@@ -457,36 +555,53 @@ main {
   transform: rotate(180deg);
 }
 
+/* THE SHEET.
+   Inverted, like the slots it opens off: the dock's ink, the page's type in
+   white. It reads as one thing with the bar - while it is up the control
+   row goes black under it, and the slots become words along its foot. */
 .filter-panel {
-  /* the panel belongs to the row above it: 15px off the control row's own
-     box, not a section's worth of air */
-  padding: 15px var(--pad) 28px;
+  background: var(--ink);
+  color: var(--bg);
+  /* it opens upward off the bar, so its air is at the top and the bar's own
+     padding closes it at the bottom */
+  padding: 24px var(--pad) 8px;
+  max-height: 60vh;
+  overflow-y: auto;
 }
-/* climaxbooks' own filter: every group side by side in the one panel, each a
-   heading over its own vertical list, so the whole set is exposed at once -
-   laid on the page's own --gridcols tracks, so the groups line up with the
-   Filter control, the card grid and everything else on the page */
+.dock--open .controls { background: var(--ink); }
+/* THE GROUPS SIT ON THE BAR'S OWN TRACKS.
+   The sheet is laid on the page's twelve tracks and keeps to the bar's
+   eight, 3 to 11: Year, Sector, Geography (two tracks, its forty countries
+   in two columns), Theme - and the last two tracks free. The sheet and the bar read as one instrument. */
 .filter-panel-groups {
   display: grid;
-  grid-template-columns: repeat(var(--gridcols), 1fr);
+  grid-template-columns: repeat(12, 1fr);
   column-gap: var(--gutter);
   row-gap: 24px;
   align-items: start;
 }
 .filter-group {
-  grid-column: span 1;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   min-width: 0;
 }
-/* two page tracks, and the options split across two columns inside them */
-.filter-group--wide { grid-column: span 2; }
+.filter-group:nth-child(1) { grid-column: 3 / 4; }
+.filter-group:nth-child(2) { grid-column: 4 / 6; }
+.filter-group:nth-child(3) { grid-column: 6 / 9; }
+.filter-group:nth-child(4) { grid-column: 9 / 11; }
 .filter-group--wide .filter-group-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: var(--gutter);
   row-gap: 4px;
+}
+/* the name, and the group's own Clear beside it when anything is on */
+.filter-group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
 }
 .filter-group-title {
   font-family: var(--font);
@@ -494,8 +609,20 @@ main {
   line-height: 15px;
   font-weight: 500;
   letter-spacing: normal;
-  color: var(--ink);
+  color: var(--bg);
 }
+.filter-group-clear {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+  color: var(--slot-meta, rgba(255, 255, 255, 0.55));
+}
+.filter-group-clear:hover { color: var(--bg); }
 /* stacked, one option per line — no max-height, no overflow, the whole set
    on screen at once */
 .filter-group-list {
@@ -504,144 +631,126 @@ main {
   gap: 4px;
   align-items: flex-start;
 }
-/* plain text in the row, no box - just the dot and a colour change, the
-   way this looked before the pills grew borders */
+/* AN OPTION IS A WORD, AND AN OPTION THAT IS ON IS INVERTED.
+   No dot, no box: the word recedes when off, comes forward on hover, and
+   flips to the page's white with the ink's type when on - the same on/off
+   the open index row takes. The inversion bleeds 4px past the word each
+   side so the letters do not touch its edge, and the negative margin keeps
+   the word on the column line. */
 .filter-opt {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  display: block;
   background: none;
   border: none;
-  padding: 0;
+  padding: 0 4px;
+  margin: 0 -4px;
   cursor: pointer;
   text-align: left;
-  white-space: nowrap;
+  /* a long label ("Internet & Connectivity") breaks in its one track rather
+     than running into the next group; the inversion follows each line */
+  white-space: normal;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
   font-family: var(--font);
   font-size: 13px;
   line-height: 15px;
   font-weight: 500;
   letter-spacing: normal;
-  color: var(--meta);
-  transition: color 120ms ease;
+  color: var(--slot-meta, rgba(255, 255, 255, 0.55));
 }
-.filter-opt:hover { color: var(--ink); }
-.filter-opt--on { color: var(--ink); }
-
-/* 12px circle, filled when active — the only signal now that the box is
-   gone, so it is back to its original size */
-.filter-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 1.5px solid currentColor;
-  background: transparent;
-  flex-shrink: 0;
-  transition: background 120ms ease;
+.filter-opt:hover { color: var(--bg); }
+/* on beats hover: the pointer is still on the word the instant it is
+   clicked, and the inversion has to land then, not when the mouse leaves */
+.filter-opt--on,
+.filter-opt--on:hover {
+  color: var(--ink);
+  background: var(--bg);
 }
-.filter-opt--on .filter-dot { background: currentColor; }
 
 /* the live count + clear + apply row, after the reference's own footer */
 .filter-panel-footer {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--gutter);
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
   margin-top: 26px;
 }
-.filter-clear,
-.filter-apply {
+.filter-panel-footer .filter-clear { grid-column: 3 / 5; justify-self: start; }
+.filter-panel-footer .filter-count { grid-column: 9 / 11; justify-self: end; }
+.filter-clear {
   background: none;
   border: none;
-  padding: 0;
+  padding: 0 4px;
+  margin: 0 -4px;
   cursor: pointer;
   font-family: var(--font);
   font-size: 13px;
   line-height: 15px;
   font-weight: 500;
   letter-spacing: normal;
-  color: var(--ink);
-  transition: color 120ms ease, background 120ms ease;
+  color: var(--bg);
 }
-.filter-clear:hover:not(:disabled) { background: var(--ink); color: var(--bg); }
-.filter-clear:disabled { color: var(--meta); cursor: default; }
-.filter-apply:hover { background: var(--ink); color: var(--bg); }
+.filter-clear:not(:disabled) { background: var(--bg); color: var(--ink); }
+.filter-clear:hover:not(:disabled) { background: var(--slot-meta, rgba(255, 255, 255, 0.55)); }
+.filter-clear:disabled { color: var(--slot-meta, rgba(255, 255, 255, 0.55)); cursor: default; }
 .filter-count {
   font-family: var(--font);
   font-size: 13px;
   line-height: 15px;
   font-weight: 500;
-  color: var(--meta);
-  text-align: center;
+  color: var(--slot-meta, rgba(255, 255, 255, 0.55));
+  font-variant-numeric: tabular-nums;
 }
 
 
 /* the statement column — the widest, so the placeholder never clips */
 /* the field holds the drawn placeholder over the input */
-.search-field {
-  grid-column: 2;
-  position: relative;
-  display: flex;
-  align-items: center;
-  /* the box wants something to be drawn around: the field takes three tracks
-     rather than the whole middle column, which is 785px wide */
-  width: 340px;
-  height: 30px;
-  max-width: 100%;
-  min-width: 0;
-}
-/* a black hairline on hover, drawn on the field's own edges - no inset, no
-   grey. An overlay, so nothing in the row moves when it appears, and it
-   snaps. */
-.search-field::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: 1px solid var(--ink);
-  opacity: 0;
-  pointer-events: none;
-}
+.search-field { position: relative; }
 .search-field:hover::after,
 .search-field:focus-within::after { opacity: 1; }
 .search-ghost {
   position: absolute;
-  left: 0;
+  /* inside the box's own padding, on the field's line */
+  left: 10px;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
   font-family: var(--font);
-  font-size: 15px;
-  line-height: 17px;
+  font-size: 13px;
+  line-height: 15px;
   font-weight: 500;
   letter-spacing: normal;
-  color: var(--ink);
+  color: var(--bg);
 }
 /* the three dots blink in turn, the way a thinking indicator does */
+/* THE DOTS ACCUMULATE.
+   None, then one, then two, then three, then none again - a count, the way a
+   thing waiting actually reads. They were three ghosts with a single lit dot
+   travelling along them, which reads as one dot moving rather than as dots
+   arriving. Each keyframe simply turns its own dot ON at its quarter and
+   leaves it on; the cycle restarting is what clears them. */
 .search-ghost i {
   font-style: normal;
-  animation: search-think 1.5s steps(1, end) infinite;
+  opacity: 0;
 }
 .search-ghost i::before { content: "."; }
-.search-ghost i:nth-of-type(1) { animation-delay: 0s; }
-.search-ghost i:nth-of-type(2) { animation-delay: 0.25s; }
-.search-ghost i:nth-of-type(3) { animation-delay: 0.5s; }
-@keyframes search-think {
-  0%,  16% { opacity: 1; }
-  17%, 100% { opacity: 0.15; }
-}
+.search-ghost i:nth-of-type(1) { animation: think-1 1.6s steps(1, end) infinite; }
+.search-ghost i:nth-of-type(2) { animation: think-2 1.6s steps(1, end) infinite; }
+.search-ghost i:nth-of-type(3) { animation: think-3 1.6s steps(1, end) infinite; }
+@keyframes think-1 { 0%, 24.9% { opacity: 0; } 25%, 100% { opacity: 1; } }
+@keyframes think-2 { 0%, 49.9% { opacity: 0; } 50%, 100% { opacity: 1; } }
+@keyframes think-3 { 0%, 74.9% { opacity: 0; } 75%, 100% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
   .search-ghost i { animation: none; opacity: 1; }
 }
 .search {
-  font-family: var(--font);
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: normal;
+  flex: 1 1 auto;
   background: none;
   border: none;
-  height: 30px;
-  line-height: 17px;
+  height: 100%;
+  font: inherit;
+  color: inherit;
   padding: 0;
-  color: var(--ink);
+  color: var(--bg);
   width: 100%;
   min-width: 0;
 }
@@ -669,68 +778,118 @@ main {
 .count { white-space: nowrap; margin-left: auto; color: var(--muted); font-family: var(--font); font-size: 11px; font-weight: 700; letter-spacing: normal; }
 
 /* climaxbooks' filter idiom: radio + label, one type size, no glyphs. */
-/* sector + geography columns together — the three radios need ~200px and a
-   single 120px column cannot hold them */
-.views {
-  grid-column: 3 / span 2;
-  display: flex;
-  align-items: center;
-  /* hard to the right margin: with Shuffle parked the toggle is the only
-     thing here, and it ends on the page's own trim */
-  justify-content: flex-end;
+/* THE SWITCH AND THE SCALE.
+   Grid or Index: two words in a slot, the open one black, the other grey.
+   And while the grid is up, its scale beside it: 16, 12, 8, 6 to a row, the
+   figures themselves spread across a slot, the open one black. The same
+   device for both - the manifest's tabs - and nothing drawn but type. */
+.views { gap: 14px; }
+/* THE SLIDER, o---O.
+   Between the two words: a hairline with a dot at each end and the knob
+   wherever it is set - four stops, but only the ends are drawn. All in the
+   slot's white. */
+.scale {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 92px;
+  height: 15px;
+  margin: 0 4px;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  flex: none;
 }
-/* ONE MARK, TWO WORDS
-   Grid and Index read as a single switch: the words sit either side of one
-   dot, and the dot takes the side of whichever is open. Neither word recedes -
-   the mark carries the state, not the colour. */
-.views-toggle {
-  display: flex;
-  align-items: center;
-  gap: 9px;
+.scale::-webkit-slider-runnable-track {
+  height: 15px;
+  /* the line, with a dot at each end and nothing between: o---O. The end
+     dots are 5px, inset by half a knob so the knob centres on them. */
+  background:
+    radial-gradient(circle, var(--bg) 2.5px, transparent 2.6px) 4.5px 50% / 5px 5px no-repeat,
+    radial-gradient(circle, var(--bg) 2.5px, transparent 2.6px) calc(100% - 4.5px) 50% / 5px 5px no-repeat,
+    linear-gradient(var(--bg), var(--bg)) 4.5px 50% / calc(100% - 9px) 1px no-repeat;
 }
+.scale::-moz-range-track {
+  height: 15px;
+  background:
+    radial-gradient(circle, var(--bg) 2.5px, transparent 2.6px) 4.5px 50% / 5px 5px no-repeat,
+    radial-gradient(circle, var(--bg) 2.5px, transparent 2.6px) calc(100% - 4.5px) 50% / 5px 5px no-repeat,
+    linear-gradient(var(--bg), var(--bg)) 4.5px 50% / calc(100% - 9px) 1px no-repeat;
+}
+.scale::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg);
+  margin-top: 3px;
+}
+.scale::-moz-range-thumb {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg);
+}
+.scale:focus-visible { outline: 1px solid var(--bg); outline-offset: 3px; }
 .views-opt {
-  display: inline-flex;
-  align-items: center;
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
   font-family: var(--font);
-  font-size: 15px;
-  line-height: 17px;
+  font-size: 13px;
+  line-height: 15px;
   font-weight: 500;
   letter-spacing: normal;
-  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  color: var(--slot-meta);
 }
-/* the mark is a switch, not a radio: a hairline track with the knob at one
-   end of it. The knob takes the Grid end or the Index end, and it snaps -
-   the same on-off the index rows take, with nothing in between.
+.views-opt[aria-checked="true"] { color: var(--bg); }
+.views-opt:hover { color: var(--bg); }
 
-   Cap height, and square. At 15px the caps are 10.7px, and the old 12px pill
-   stood proud of the line - it read as an object beside the words rather
-   than a mark set with them. Nothing else on this page is a rounded pill. */
-.views-dot {
-  width: 22px;
-  height: 11px;
-  box-sizing: border-box;
-  padding: 1px;
-  margin: 0;
-  cursor: pointer;
-  border: 1px solid var(--ink);
-  border-radius: 0;
-  background: none;
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: stretch;
+/* THE DOCK ON A PHONE. */
+@media (max-width: 720px) {
+  .controls { padding: 10px var(--pad); }
+  .controls-row { grid-column: 1 / -1; gap: var(--gutter); }
+  /* one line: the filter and the search. The count goes - the filter's own
+     figure says what is applied - and so does the view: a phone reads the
+     list as the index, with a picture on every line. */
+  .ctl--count,
+  .ctl--views { display: none; }
+  .filter-trigger { gap: 10px; }
+  .filter-trigger-count { padding-right: 4px; }
+  /* a breath between the mark and the first row */
+  .archive-list { padding-top: 5px; }
 }
-.views-dot::before {
-  content: "";
-  width: 9px;
-  background: var(--ink);
+
+/* WHAT EACH STOP SHOWS.
+   The card gives up a line at each step in: sixteen across is plates alone,
+   twelve adds the name, eight the facts, six the statement. */
+.grid--plates .card-caption { display: none; }
+.grid--names .card-facts,
+.grid--names .card-statement { display: none; }
+.grid--facts .card-statement { display: none; }
+
+/* and the type goes down with the card. At six across the caption is the
+   spec'd 15/11; at eight and twelve the card is 138 and 86 wide, and type set
+   for a 190px card reads as shouting on them. The name and its tags close up
+   as they shrink, so each caption stays one block rather than two lines with
+   a gap between. */
+.grid--facts .card-name {
+  font-size: 12px;
+  line-height: 14px;
 }
-.views-toggle--index .views-dot::before { margin-left: auto; }
-.views button:hover { color: var(--ink); }
-.views button[aria-pressed="true"] { color: var(--ink); }
+.grid--facts .card-facts {
+  font-size: 11px;
+  line-height: 13px;
+  margin-top: 1px;
+}
+.grid--names .card-name {
+  font-size: 11px;
+  line-height: 13px;
+}
 
 .shuffle-btn {
   font-family: var(--font);
@@ -754,6 +913,8 @@ main {
 /* atelier-amont.ch pattern: pure text table, no thumbnails, uneven CSS-grid
    columns, one weight throughout, no dividers or hover-fill — separation is
    whitespace only, rows as dense as a single text baseline. */
+/* the phone's line-high picture; the desktop row has none */
+.row-thumb { display: none; }
 .row {
   display: grid;
   grid-template-columns: var(--namecol) 1fr var(--metacol) var(--metacol);
@@ -817,7 +978,9 @@ main {
 .row-statement,
 .row-sector,
 .row-geo {
-  transition: color 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  /* no fade: a row opens and the rest recede in one cut, the way every other
+     state on the page changes - a 260ms colour fade left the open row's type
+     black on its black band for a beat, which read as a blink */
 }
 /* the arrow hangs off the ROW, not the name cell: the cell clips its own
    overflow for the ellipsis, so anything placed outside it never paints */
@@ -866,10 +1029,11 @@ main {
 .index-panel {
   /* it holds its place while the list scrolls past it */
   position: sticky;
-  /* set from the control row's measured bottom - see the effect in Index() */
-  top: var(--index-panel-top, 52px);
+  top: 0;
   align-self: start;
-  height: calc(100dvh - var(--index-panel-top, 52px));
+  /* the screen less the dock at its foot - measured, see the effect in
+     Index() */
+  height: calc(100dvh - var(--index-dock-h, 53px));
   min-width: 0;
   background: var(--bg);
   /* the whole company is meant to be read without scrolling: the panel holds
@@ -1020,24 +1184,6 @@ main {
 .index-panel .entry--panel .entry-block-body { text-align: left; hyphens: none; }
 .index-panel .entry--panel .entry-spin { display: none; }
 
-/* THE CONTROL ROW ON A PHONE
-   Four columns - the name column, the search, and two meta columns - come to
-   more than a phone is wide, and the search field's own 340px is wider than
-   the column it sits in. Filter and the view toggle share the first line and
-   the field takes the second. */
-@media (max-width: 720px) {
-  .controls {
-    grid-template-columns: auto 1fr;
-    row-gap: 10px;
-  }
-  .filter-trigger { grid-column: 1; grid-row: 1; }
-  .views { grid-column: 2; grid-row: 1; justify-content: flex-end; }
-  .search-field {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    width: auto;
-  }
-}
 
 /* THE PANEL ON A PHONE
    There is no room to push anything aside at this width, so the panel stops
@@ -1046,24 +1192,40 @@ main {
    desktop proposition, not a phone one. */
 @media (max-width: 900px) {
   .index-view--open { grid-template-columns: 1fr; }
+  /* A SHEET, NOT A PAGE.
+     It rises from the foot and stops short of the top, so the list it came
+     from is still there above it - the way a phone shows a thing on top of
+     the thing you were reading. It sits on the dock, which stays. */
   .index-panel {
     position: fixed;
     left: 0;
     right: 0;
-    top: var(--index-panel-top, 52px);
-    bottom: 0;
+    top: auto;
+    /* on the dock, which is fixed at the foot, and 86% of the screen tall:
+       the rest is the list, still there above it */
+    bottom: var(--index-dock-h, 53px);
+    height: calc(86vh - var(--index-dock-h, 53px));
     z-index: 60;
     width: auto;
-    height: auto;
     overflow-y: auto;
     overscroll-behavior: contain;
-    box-shadow: 0 -24px 60px rgba(0, 0, 0, 0.12);
+    /* barely there: enough to say the sheet is on the list, not in it */
+    box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.05);
+    animation: panel-up 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes panel-up {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
   }
   .index-panel .entry--panel {
     height: auto;
     overflow: visible;
+    /* air over the name and the close, and under the copy */
+    padding-top: 12px;
     padding-bottom: 40px;
   }
+  /* the close is placed off the sheet's top, so it takes the same 10 */
+  .index-panel .entry--panel .entry-head { top: 13px; }
   /* nothing gives on a phone: the copy runs its full length and the sheet
      scrolls to it */
   .index-panel .entry--panel .entry-verso > .entry-verso-foot {
@@ -1250,7 +1412,8 @@ main {
   /* the rows sit on the tallest card in each of them, so a 40px gap read as
      nearer 90 under the short ones */
   gap: 24px var(--gutter);
-  padding: 0 var(--pad);
+  /* one gutter between the parked mark and the first row */
+  padding: var(--gutter) var(--pad) 0;
   align-items: start;
 }
 
@@ -1273,35 +1436,21 @@ main {
    price of leaving every frame as it was made, and it is the right price. */
 .card-media {
   width: 100%;
-  /* the square frame lives here, not on the picture, so a photograph can take
-     another proportion inside it and still stand on the same line */
-  aspect-ratio: 1;
-  display: flex;
-  align-items: flex-end;
 }
-/* a square frame for every card, whatever came in: three quarters of the 2026
-   pictures will be cutout PNGs of any proportion, and with height: auto the
-   captions landed on six different lines across one row. Contained, and
-   standing on the frame's bottom edge so a cutout sits on the caption line
-   like an object on a shelf. */
+/* NO FRAME AND NO CROP.
+   Every picture at the proportion it was made in: a square stays square, a
+   3:2 stays 3:2, and nothing is contained in a box or cut to a common shape.
+   The price is that the rows rag at the foot - the captions in one row land
+   on different lines - and that is the right price for leaving the pictures
+   alone. */
 .card-thumb {
   width: 100%;
-  aspect-ratio: 1;
   height: auto;
-  object-fit: contain;
-  object-position: bottom center;
   display: block;
 }
 
 /* nothing to show rather than an empty grey plate */
 .card-thumb--empty { display: none; }
-/* the full-frame photographs: one proportion for all of them, 4:3, cropped
-   rather than contained, at the foot of the square with the cutouts */
-.card-thumb--photo {
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  object-position: center;
-}
 
 /* THE CAPTION
    The Latest card's system, applied here: everything at one size and one
@@ -1323,8 +1472,8 @@ main {
 /* the title */
 .card-name {
   margin: 0;
-  font-size: 15px;
-  line-height: 17px;
+  font-size: 13px;
+  line-height: 15px;
   font-weight: 500;
   letter-spacing: normal;
   text-transform: none;
@@ -1332,19 +1481,25 @@ main {
 /* the category: the last line of the card - name, what they do, then where
    and in what - a step down and in caps, so it reads as the record rather
    than as another sentence */
+/* THE RECORD: what it is and where it is, and nothing done to it. It was
+   caps with tracking; at 13 that weighed as much as the name and read as a
+   treatment. Plain is the point - the only marked thing on a card is the
+   cohort below. */
 .card-facts {
-  /* a flex order, so the markup stays as it reads */
-  order: 3;
-  margin-top: 15px;
-  font-size: 11px;
-  line-height: 13px;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  /* directly under the name, the record on its own line; then the
+     statement, a beat below */
+  margin-top: 1px;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: normal;
+  text-transform: none;
 }
 /* the body: what they do. Held at three lines so the cards keep their step;
    the statements run a median of 69 characters. One blank line above it. */
 .card-statement {
   /* tight under the name: the two belong together */
+  font-size: 11px;
+  line-height: 13px;
   margin-top: 7px;
   min-height: 45px;
   display: -webkit-box;
@@ -1353,11 +1508,30 @@ main {
   overflow: hidden;
 }
 /* the campaign, where the Latest card puts its date: caps, grey */
-.card-themes {
-  margin-top: 14px;
-  text-transform: uppercase;
-  color: var(--meta);
+/* THE CLAIM: the edition saying this one belongs to a group it has drawn.
+   The dock's own slot fill, at card scale - a filled tag means the same thing
+   everywhere on the site, and it is the only tone the page has. */
+.card-tags {
+  order: 4;
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
 }
+.card-tag {
+  padding: 2px 6px 3px;
+  background: var(--slot);
+  font-size: 11px;
+  line-height: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+/* the denser stops drop the cohort with the rest of the caption */
+.grid--names .card-tags,
+.grid--facts .card-tags { display: none; }
 
 /* the plate's caption underlines on hover, the way the book marks a heading */
 .card:hover .card-name {
@@ -1368,7 +1542,12 @@ main {
 @media (min-width: 1500px) { :root { --gridcols: 7; } }
 @media (min-width: 1900px) { :root { --gridcols: 8; } }
 @media (max-width: 900px)  { :root { --gridcols: 3; } }
-@media (max-width: 560px)  { :root { --gridcols: 2; } .grid { gap: 40px 14px; } }
+@media (max-width: 560px)  { :root { --gridcols: 2; } }
+/* the scale's stops mean something else on a phone: the grid takes the
+   phone figure the Grid sets alongside the desktop one */
+@media (max-width: 720px) {
+  .grid { grid-template-columns: repeat(var(--gridcols-phone, 2), 1fr); }
+}
 
 .tag {
   font-family: var(--mono);
@@ -1503,15 +1682,39 @@ main {
 /* faq.gif 972x318, glyphs fill the frame: no padding to cancel */
 .mod-title-art--faq { width: min(calc(var(--titlecap) * 3.06), 100%); }
 
-/* nomination-partners.gif 1080x200, cap band y61-123: 61px of empty frame above
-   and 76px below. It runs the full width of the section, so those cancels are
-   expressed as a percentage of that width (61/1080, 76/1080) — margin
-   percentages resolve against the containing block, which at width 100% is the
-   element's own width, so they stay exact at every viewport. */
-.mod-title-art--partners {
-  width: 100%;
-  margin-top: -5.65%;
-  margin-bottom: -7.04%;
+/* SET, NOT DRAWN.
+   The nomination-partners title art was a 1080x200 gif filling the section's
+   width, its caps 56px at 1440. This is the same line in the page's own face,
+   set in two stacked lines instead: one word to a line, over four of the
+   page's twelve tracks. "NOMINATION" is 6.38 ems wide in Arial, and four
+   tracks plus their gutters are 33% of the container, so 33/6.38 = 5.17cqw
+   sizes the longer word to exactly that measure - a container unit, not a
+   viewport one, so it holds however the section is laid out. The width forces
+   the break; line-height is cap to cap, so the block IS the ink. */
+.mod-section-header {
+  container-type: inline-size;
+}
+.mod-section-title {
+  /* the block is as wide as its longest word and no wider, so it wraps to
+     one word a line and sits centred on that word - a fixed third spilled
+     right as soon as the type outgrew it */
+  margin: 0 auto;
+  width: min-content;
+  text-align: center;
+  font-family: var(--font);
+  font-size: 6.2cqw;
+  line-height: 0.88;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+/* 80 up, the title alone: the logos keep their place */
+.mod-partners .mod-section-title { position: relative; top: -80px; }
+/* twice the size on a phone: the container is a third the width, and
+   the title was shrinking with it into a caption */
+@media (max-width: 720px) {
+  .mod-section-title { font-size: 12.4cqw; }
 }
 
 /* the-latest.gif 1280x720 with alpha, ink box measured across the animation at
@@ -1531,12 +1734,18 @@ main {
 
 .mod-hero {
   position: relative;
+  /* over the mark pinned at the foot of the window, which it uncovers as it
+     scrolls away */
+  z-index: 1;
   width: 100%;
-  /* the running head rides in the same screen: nav plus film is one view, so
-     the page's first snap shows both rather than scrolling the bar away */
-  height: calc(100vh - var(--nav-h));
+  /* the head is fixed over the page now, so the film has the whole window */
+  height: 100vh;
   min-height: 480px;
-  background: #000;
+  /* NO GROUND AT ALL. Only the film inside this box is clipped as it paints;
+     a background here is not, so an opaque hero covered the mark at the foot
+     the moment the intro let go of it. Transparent, the mark stands in the
+     white of the page until the film's own bands reach down and cover it. */
+  background: none;
   overflow: hidden;
 }
 
@@ -1556,11 +1765,112 @@ main {
   object-fit: cover;
   display: block;
 }
+/* the phone's cut is the tower itself, so it fills the screen as it is:
+   no lift, and centred so the sign is the middle of the picture */
+@media (max-width: 720px) {
+  .mod-hero-media img {
+    height: 100%;
+    transform: none;
+    object-position: center;
+  }
+}
 
 /* TV-static grain over the hero: real randomized noise (SVG fractal
    turbulence), not a repeating line pattern — the fine 1px crosshatch this
    replaced caused moiré against the GIF's own pixel grid. A stepped
    background-position jump gives it a flicker instead of sitting still. */
+/* THE SCREEN IT PLAYS ON.
+   Scanlines, 2px, faint: the film is a broadcast on a screen, and the
+   screen has lines. With the grain over it and a soft fall-off at the
+   edges, the picture is something's output rather than a jpeg. */
+.mod-hero-scan {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0px,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(0, 0, 0, 0.18) 2px,
+      rgba(0, 0, 0, 0.18) 3px
+    ),
+    radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.35) 100%);
+}
+/* THE STAMP.
+   The running timecode and the place - three lines stacked in the film's
+   top left corner, on the page's own margin, the page's 11px in white on
+   the film. Set as written, not in caps. */
+.mod-hero-osd {
+  position: absolute;
+  left: var(--pad);
+  top: 14px;
+  z-index: 2;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font);
+  font-size: 11px;
+  line-height: 13px;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+/* THE MENU.
+   Top right of the window, on the stamp's line and the page's margin, and
+   it stays there down the whole page: one word, and the sections fold out
+   under it, the page's 11px in white - white on the film, black on the
+   page, by difference. Held while the intro runs
+   and for the 760ms the film takes to paint after it, then a hard cut in -
+   nothing stands on the film before the film is there. */
+.mod-hero-menu {
+  position: fixed;
+  right: var(--pad);
+  top: 14px;
+  /* over the dock and the index sheet */
+  z-index: 70;
+  /* white on the film, black on the page: difference does the deciding */
+  mix-blend-mode: difference;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: var(--font);
+  font-size: 11px;
+  line-height: 13px;
+  font-weight: 500;
+  letter-spacing: normal;
+  color: #fff;
+  transition: opacity 1ms steps(1, end) 760ms;
+}
+.mod-hero-menu-word {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: right;
+}
+.mod-hero-menu-word:hover,
+.mod-hero-menu-word[aria-expanded="true"] { text-decoration: underline; text-underline-offset: 2px; }
+/* the sections, folded out under the word */
+.mod-hero-menu-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 13px;
+}
+.mod-hero-menu a {
+  color: inherit;
+  text-decoration: none;
+}
+.mod-hero-menu a:hover { text-decoration: underline; text-underline-offset: 2px; }
+.intro .mod-hero-menu { opacity: 0; transition: none; }
+
 .mod-hero-grain {
   position: absolute;
   inset: 0;
@@ -1670,13 +1980,31 @@ main {
    between them shows half of each. Proximity rather than mandatory: it settles
    onto whichever of the two you are near and leaves the archive below to
    scroll freely. */
-/* PARKED: the page's own scroll snapping.
-   The two sections are a viewport tall each, so `y proximity` captured a
-   ~700px band around each one and yanked the page by up to 275px mid-scroll -
-   with the running head sticky above it, that read as the bars jumping. The
-   sections are still built to a screen each; they just no longer pull.
-   To bring it back: scroll-snap-type: y proximity on html, and
-   scroll-snap-align: start here. */
+/* ONE SNAP POINT, AND ONLY ONE.
+   The view that matters is the end of the reveal: the mark parked whole at
+   the foot of the window with the list waiting under it. `end` aligns the
+   block's bottom edge to the scrollport's bottom edge, which IS that view.
+
+   It was `y proximity` with the film and the manifest BOTH as targets before,
+   and two viewport-tall snap areas captured a ~700px band each and yanked the
+   page by up to 275px mid-scroll. One target, at a place the reader is
+   heading for anyway, does not fight the scroll. */
+html {
+  scroll-snap-type: y proximity;
+}
+.reveal {
+  scroll-snap-align: end;
+}
+/* and a second one on a phone: the next swipe lands with the mark at the
+   head of the screen and the list under it. The list's start is the target
+   (the masthead is sticky, and a sticky snap target judders), pulled up by
+   the masthead's own height so the mark comes with it. */
+@media (max-width: 720px) {
+  #archive {
+    scroll-snap-align: start;
+    scroll-margin-top: var(--masthead-h, 55px);
+  }
+}
 .mod-hero,
 .mod-manifest {
   scroll-margin-top: var(--nav-h);
@@ -1687,7 +2015,10 @@ main {
   /* above the masthead that follows, so the artwork hanging out of the bottom
      of this section laps over the wordmark rather than under it */
   z-index: 1;
-  background: var(--bg);
+  /* NO GROUND. The mark rides the foot of the window behind this section, and
+     an opaque manifest hid it: transparent, the wordmark shows through the
+     copy and the plate as they pass over it. */
+  background: none;
   color: var(--ink);
   /* top tightened so the row sits close under the hero — it was 89px of dead
      padding with nothing marking the section start */
@@ -1995,26 +2326,6 @@ main {
   filter: invert(1) hue-rotate(180deg);
 }
 
-@media (max-width: 720px) {
-  /* the spread becomes one column on a phone: contents, then the text with
-     its title, then the plate and its caption */
-  .mod-manifest-runheads { margin-bottom: 26px; }
-  .mod-manifest-runheads span:nth-child(2) { display: none; }
-  .mod-manifest-top {
-    grid-template-columns: 1fr;
-    column-gap: 0;
-    row-gap: 30px;
-  }
-  .mod-manifest-index,
-  .mod-manifest-col,
-  .mod-manifest-top > .mod-manifest-gifline { grid-column: 1; }
-  .mod-manifest-index ol { gap: 3px; }
-  .mod-manifest-body { font-size: 17px; }
-  .mod-manifest-head { font-size: 17px; }
-  /* the section is a fixed one-screen stage on desktop; on a phone it has to
-     grow with whatever the panel holds */
-  .mod-manifest { height: auto; }
-}
 
 /* The one expressive device in an otherwise single-size, single-weight system
    — exactly how climaxbooks marks titles. A real italic cut, not a slant:
@@ -2133,13 +2444,24 @@ main {
    whatever is left. The Shuffle stage used to assume 128px above it and was
    cropped by however much the masthead and the control row actually took. */
 
+/* STUCK TO THE FOOT OF THE WINDOW, THEN PARKED.
+   sticky with `bottom` is the whole mechanism: while the mark's own place in
+   the flow is still below the fold it rides the bottom edge of the screen, so
+   the film and the manifest pass over it as you read; the moment its place
+   comes up it stops and stays there, directly above the list. No script, no
+   scroll listener - the browser does the handover. */
+.reveal { position: relative; }
 .archive-masthead {
-  padding: 0 var(--pad) 48px;
-  perspective: 1600px;
-}
-.manifest-logo-svg {
-  transform-style: preserve-3d;
-  will-change: transform;
+  position: sticky;
+  bottom: 0;
+  /* UNDER everything it travels past. No ground of its own: the film and the
+     manifest lie over it and slide off, uncovering the mark rather than the
+     mark arriving. They come later in the DOM, so the mark needs the lower
+     layer to stay beneath them. */
+  z-index: 0;
+  /* nothing under the mark: its foot IS the foot of the window while it is
+     pinned, and the list starts immediately under it once it parks */
+  padding: 0 var(--pad);
 }
 
 .manifest-logo {
@@ -2171,11 +2493,13 @@ main {
      foot is fixed now; everything hung from it is placed off the section
      itself (see --t / --l below), never off the copy's row. */
   height: calc(100dvh - var(--masthead-h, 210px));
-  /* the plate is bigger than the page, so the section is what trims it */
-  overflow: hidden;
-  /* 15px off the hero: the section starts as close under the Times Square
-     plate as the page's own rhythm allows */
-  padding: 15px 0 40px;
+  /* the plate is wider than the page, so the section trims it at the side
+     - and only at the side: at the foot it runs on over the mark parked
+     under the section, in front of it (this section is above the masthead
+     in the stack), and `clip` on one axis leaves the other free */
+  overflow-x: clip;
+  overflow-y: visible;
+  padding: 0 0 40px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -2222,6 +2546,9 @@ main {
   grid-column: 2 / 5;
   grid-row: 2;
   min-width: 0;
+  /* on the open tab's line: the label steps in 10, and the copy under it
+     stands where the label stands */
+  padding-left: 10px;
 }
 /* The vortex is parked: the drawn company's plate carries the section now, and
    two big pictures ran it to a screen and a half. The Electro Union mark is
@@ -2238,28 +2565,58 @@ main {
   min-height: 0;
 }
 /* =============================================
-   THE LOADER — the index arriving
+   THE LOADER — the index arriving, and the mark taking its seat
    ============================================= */
 
-/* The whole page, white, filled with the index's own pictures: they land row
-   by row the way a contact sheet fills as it loads, hold for a beat, and go
-   again on the same wave. The wordmark is what is left in the middle.
+/* An intro, not a spinner. The index's own pictures fill the page row by row,
+   the field cuts away to leave the mark alone in the middle, and then the
+   mark shrinks and rises into the head of the page - landing exactly where
+   the real one lives, so the handoff is invisible. The film fades in behind
+   it once the veil is gone.
 
-   The whole thing is one CSS timeline, 2450ms, and it ENDS ITSELF - the last
-   keyframe takes the layer to visibility: hidden, so the page underneath is
-   reachable whether or not the JavaScript ever ran. Nothing here is timed in
-   script. */
+   THE CLOCK, in one place:
+     0-170      empty page, so row one is seen arriving
+     170-734    rows land, one every 94ms, each a cut
+     734-834    the field stands complete - one beat, no more
+     834-1734   rows LEAVE, one every 150ms - slower than they arrived
+     1434-1734  the mark is UNCOVERED from the top down as they go: half of
+                it while one row still stands, all of it when that row goes
+     1734       the last row is gone and the mark is whole
+     1734-1974  it stands there, on white, for a quarter second
+     1734-2434  it stands there, whole, on white
+     1974       the white goes, the layer leaves, and the film begins to
+                paint - from the top down, so the last thing it reaches is
+                the mark at the foot, which it covers
+   There is never a blank page: at every moment something is on it.
+
+   EVERY NUMBER LIVES IN loader.tsx. The per-cell cuts arrive as --in and
+   --out, and the three below as --t-mark, --t-flight and --t-veil - nothing
+   here is a figure that has to be kept in step by hand.
+
+   The whole thing ENDS ITSELF - the veil's last keyframe is visibility
+   hidden - so the page is reachable whether or not the script ran. */
+/* THE LAYER AND ITS GROUND ARE TWO THINGS.
+   The white is a ::before, not the layer itself, so it can go while the mark
+   is still flying - the film paints in behind the mark for the whole of the
+   flight instead of waiting for it to land. The layer is decorative
+   throughout, so it never takes a click. */
 .loader {
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: var(--bg);
-  animation: loader-veil 2450ms linear forwards;
+  pointer-events: none;
 }
-/* no fades anywhere in here: every state change is a cut */
+.loader::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  animation: loader-veil 1ms linear both;
+  animation-delay: var(--t-veil);
+}
 @keyframes loader-veil {
-  0%, 97.9% { opacity: 1; visibility: visible; }
-  98%, 100% { opacity: 0; visibility: hidden; }
+  from { opacity: 1; visibility: visible; }
+  to   { opacity: 0; visibility: hidden; }
 }
 
 /* twelve to a row, seven rows: the delays in the markup are computed off
@@ -2273,6 +2630,7 @@ main {
   grid-template-rows: repeat(7, 1fr);
   gap: 20px;
 }
+
 .loader-cell {
   margin: 0;
   min-width: 0;
@@ -2280,8 +2638,16 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* in, hold, out - one animation a cell, its delay carrying the wave */
-  animation: loader-cell 620ms linear both;
+  /* TWO CUTS A CELL: in on its row's turn, out on its row's turn again.
+     The out keeps `forwards` rather than `both` - with `both` its backwards
+     fill would paint the cell in from t=0 and beat the in entirely. */
+  animation: loader-in 1ms linear, loader-out 1ms linear;
+  animation-fill-mode: both, forwards;
+  animation-delay: var(--in), var(--out);
+}
+@keyframes loader-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }
 .loader-cell img {
   display: block;
@@ -2291,42 +2657,88 @@ main {
   max-width: 88%;
   max-height: 88%;
 }
-@keyframes loader-cell {
-  0%, 22.9%   { opacity: 0; }
-  23%, 77.9%  { opacity: 1; }
-  78%, 100%   { opacity: 0; }
+@keyframes loader-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-/* what the field leaves behind */
+/* THE MARK TAKES ITS SEAT.
+   It is laid out AT ITS DESTINATION - the masthead's own box, full width and
+   anchored 48px off the foot of the window, which is exactly where the real
+   mark stands at the top of the page. It never travels: it is already there,
+   and only its SIZE changes. So where it ends is the real mark's position by
+   construction, not a number kept in step by hand. */
 .loader-mark {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 62vw;
-  transform: translate(-50%, -50%);
+  --mark-foot: 0px;           /* the masthead's own bottom padding */
+  position: fixed;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: var(--mark-foot);
+  /* PLAIN BLACK, NO BLEND.
+     It was white with mix-blend-mode: difference, which inverts the white
+     ground to black - correct while the ground is there, but at the handover
+     the ground lifts a frame before the layer leaves, and for that one frame
+     the mark had nothing to invert and flashed white. Through this whole
+     intro the mark only ever stands on white, so black is simply what it is,
+     and it matches the real mark it hands off to exactly. */
   color: var(--ink);
-  /* in as the last cells go, and held until the veil lifts */
-  animation: loader-mark 2450ms linear both;
+  /* NO SCALE AND NO TRAVEL: full size from the start, and uncovered from the
+     top down in step with the rows leaving - one row-step to the half, the
+     next to the whole. The steps() count and the run both come from the
+     markup, so the mark and the rows cannot drift apart. */
+  animation:
+    loader-in 1ms linear both,
+    loader-mark-reveal var(--t-mark-run) steps(var(--mark-steps), end) both;
+  animation-delay: var(--t-mark), var(--t-mark);
+}
+@keyframes loader-mark-reveal {
+  from { clip-path: inset(0 0 100% 0); }
+  to   { clip-path: inset(0 0 0 0); }
 }
 .loader-mark-svg {
   display: block;
   width: 100%;
   height: auto;
 }
-@keyframes loader-mark {
-  0%, 64.9% { opacity: 0; }
-  65%, 100% { opacity: 1; }
+
+/* THE FILM PAINTS IN.
+   Not a fade - the way a picture arrived over a slow line, a band at a time
+   from the top down. And a slow line is not a metronome: the bands are
+   uneven and so are the waits between them - a thin one, then a stall, then
+   a fat one lands in one go. Twenty even steps read as a wipe; this reads
+   as a picture arriving. 760ms in all.
+   Hard cuts between the keyframes (step-end), so a band is there or it is
+   not. Held at nothing while the intro runs; the class going is what starts
+   it. */
+.intro .mod-hero-media { clip-path: inset(0 0 100% 0); animation: none; }
+.mod-hero-media {
+  clip-path: inset(0 0 0 0);
+  animation: film-paint 760ms step-end both;
+}
+@keyframes film-paint {
+  0%   { clip-path: inset(0 0 100% 0); }
+  7%   { clip-path: inset(0 0 91% 0); }
+  11%  { clip-path: inset(0 0 86% 0); }
+  14%  { clip-path: inset(0 0 79% 0); }
+  30%  { clip-path: inset(0 0 74% 0); }
+  34%  { clip-path: inset(0 0 55% 0); }
+  38%  { clip-path: inset(0 0 52% 0); }
+  52%  { clip-path: inset(0 0 46% 0); }
+  56%  { clip-path: inset(0 0 41% 0); }
+  60%  { clip-path: inset(0 0 24% 0); }
+  79%  { clip-path: inset(0 0 21% 0); }
+  83%  { clip-path: inset(0 0 12% 0); }
+  87%  { clip-path: inset(0 0 9% 0); }
+  100% { clip-path: inset(0 0 0 0); }
 }
 
-/* no field, no wave: the wordmark alone, and gone on the same clock */
+/* no field and no flight: the mark alone, and gone on the same clock */
 @media (prefers-reduced-motion: reduce) {
   .loader-sheet { display: none; }
-  .loader-mark { animation: loader-mark-plain 1200ms linear both; }
-  .loader { animation: loader-veil 1200ms linear forwards; }
-  @keyframes loader-mark-plain {
-    0%, 19.9% { opacity: 0; }
-    20%, 100% { opacity: 1; }
-  }
+  .loader-mark { animation: loader-in 1ms linear both; animation-delay: 0ms; }
+  .loader { animation-delay: 1200ms; }
+  .intro .mod-hero-media { clip-path: none; }
+  .mod-hero-media { animation: none; }
 }
 
 @media (max-width: 900px) {
@@ -2335,7 +2747,7 @@ main {
     grid-template-rows: repeat(10, 1fr);
     gap: 12px;
   }
-  .loader-mark { width: 84vw; }
+  .loader-mark { --mark-grow: 4; }
 }
 
 /* MAKE EUROPE
@@ -2450,6 +2862,7 @@ main {
 }
 .mod-manifest-body p { margin: 0; }
 .mod-manifest-body p + p { text-indent: 0; margin-top: 17px; }
+
 /* the disclosure is a sibling of the paragraphs, not one of them, so the
    p + p rule never reached it and it sat flush against the text either side */
 .mod-manifest-body > .mod-manifest-reveal { margin-top: 22px; }
@@ -2571,7 +2984,7 @@ main {
 }
 .mod-manifest-tab--active .mod-manifest-tab-label,
 .mod-manifest-tab:hover .mod-manifest-tab-label {
-  transform: translateX(6px);
+  transform: translateX(10px);
 }
 
 /* THE COMPRESSED SHUFFLE
@@ -2615,7 +3028,7 @@ main {
    waits on it. The pictures are square pngs on no ground, contained rather
    than cropped, and hung off the right margin. */
 .mod-manifest-draw-plate {
-  grid-column: 4 / 13;
+  grid-column: 3 / 13;
   /* the WHOLE grid is its area, not the band under the head line: pinned to
      row 2 its top moved with the copy, so a long panel pushed the picture
      down. It is a back layer - the type must not move it, and it is free to
@@ -2624,11 +3037,13 @@ main {
   position: absolute;
   left: 0;
   right: 0;
-  top: 22px;
-  /* the whole box 75px to the right of its tracks: the draw reads better off
-     the copy, and the box bleeds past the margin rather than the plate
+  /* 140 down: the plate sits low in the stage and laps over the mark
+     parked under it */
+  top: 140px;
+  /* the whole box 130px to the right of its tracks: the draw reads better
+     off the copy, and the box bleeds past the margin rather than the plate
      shrinking */
-  transform: translateX(75px);
+  transform: translateX(130px);
   z-index: 0;
   margin: 0;
   padding: 0;
@@ -2637,7 +3052,9 @@ main {
      of the screen the section is built to fill rather than of the grid: the
      grid grows with the longer panels, and a plate sized off it jumped on
      every tab. */
-  height: calc((100dvh - var(--masthead-h, 210px)) * 0.83);
+  /* 0.92 of the stage: the plate is bigger than the band it sits in and
+     laps over the mark parked under it, which is meant */
+  height: calc((100dvh - var(--masthead-h, 210px)) * 0.92);
   min-height: 0;
   display: flex;
   align-items: flex-start;
@@ -2718,19 +3135,30 @@ main {
    from the copy's track to the right margin. The plate and the copy step
    aside while it is open. Seventy-eight names over five columns is sixteen
    lines, 272px: it fits the section without growing it. */
-.mod-manifest-partners {
-  grid-area: auto;
+/* THE ROSTER FOLDS OUT UNDER THE LABEL.
+   Placed off the section's tracks - the copy's own line, across to the
+   right margin, five columns - but with no `top`: an absolutely placed box
+   with top auto takes its static position, which is where it stands in the
+   flow, directly under the label. So it follows the label. It unfolds the
+   way the FAQ does: a grid row from 0fr to 1fr, clipped, no measuring. */
+.mod-manifest-partners-fold {
   position: absolute;
-  /* under the Nomination partners line, on the copy's own track, and across
-     to the right margin: eleven tracks, five columns of sixteen */
-  left: calc(var(--pad) + 1 * var(--l));
-  width: calc(11 * var(--t) + 10 * var(--gutter));
-  /* the copy's head line (100 + the four tabs + 12), the label's own art
-     (44 tall, its ink ending 62% down), and air under it. The label is a
-     picture now, not a line of type, so the last term carries the 10px the
-     ink needs rather than the 12 a text line wanted. */
-  top: calc(100px + 68px + 12px + 27px + 10px);
-  margin: 0;
+  /* its containing block is the copy's column, which is positioned - so
+     the tracks are taken off the page's width rather than the column's, and
+     the box starts at the column's own left line, the copy's 10px indent
+     undone */
+  --tt: calc((100vw - 2 * var(--pad) - 11 * var(--gutter)) / 12);
+  left: -10px;
+  width: calc(11 * var(--tt) + 10 * var(--gutter));
+  z-index: 1;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.mod-manifest-reveal--open .mod-manifest-partners-fold { grid-template-rows: 1fr; }
+.mod-manifest-partners-clip { overflow: hidden; min-height: 0; }
+.mod-manifest-partners {
+  margin: 10px 0 0;
   padding: 0;
   list-style: none;
   columns: 5;
@@ -2739,12 +3167,20 @@ main {
   line-height: 17px;
   font-weight: 500;
   color: var(--meta);
-  z-index: 1;
 }
-/* while the roster is open the copy steps aside and the button stands alone
-   at the copy's head line, as the heading the list hangs from */
-.mod-manifest-body--partners > p { display: none; }
-.mod-manifest-body--partners > .mod-manifest-reveal { margin-top: 0; }
+/* and the copy folds away on the same clock, so the label slides up to the
+   head of the column as the names come out under it */
+.mod-manifest-copy-fold {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.mod-manifest-copy-fold--away { grid-template-rows: 0fr; }
+.mod-manifest-copy-clip { overflow: hidden; min-height: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .mod-manifest-partners-fold,
+  .mod-manifest-copy-fold { transition: none; }
+}
 .mod-manifest-partners li {
   break-inside: avoid;
   /* a long name breaks to a second line rather than pushing the column */
@@ -2756,12 +3192,12 @@ main {
 .mod-manifest-draw-caption {
   grid-area: auto;
   position: absolute;
-  /* the name and its country alone, on track 5 - the plate's own left line.
-     The statement that used to run beside it is off the plate. */
-  left: calc(var(--pad) + 4 * var(--l));
+  /* the name and its country alone, on track 4, well up from the plate's
+     foot - the plate laps the mark now, and a caption under it landed on
+     the letters. 250 up from where it was. */
+  left: calc(var(--pad) + 3 * var(--l));
   width: calc(3 * var(--t) + 2 * var(--gutter));
-  /* 10px under the plate's box, wherever the window puts it */
-  top: calc(22px + (100dvh - var(--masthead-h, 210px)) * 0.83 + 10px);
+  top: calc(140px + (100dvh - var(--masthead-h, 210px)) * 0.92 + 10px - 250px);
   margin: 0;
   min-height: 34px;
   /* the copy's own size: the caption is the section's type, not a footnote */
@@ -2777,23 +3213,88 @@ main {
 .mod-manifest-draw-record,
 .mod-manifest-draw-statement { display: none; }
 
+/* THE MANIFEST ON A PHONE.
+   One column, in reading order: the contents, the copy, the drawn plate
+   and its caption. Everything the desktop places off the section's tracks
+   - the plate, the caption, the roster, the Electro Union mark - is put
+   back in flow, and the section is at least one screen, more if a panel
+   needs it.
+   The top is a flex column so the pieces can be ORDERED: the DOM has the
+   draw before the contents, and a reader on a phone wants the words first. */
 @media (max-width: 720px) {
-  .mod-manifest { height: auto; }
-  .mod-manifest-top { grid-template-columns: 1fr; grid-template-rows: none; row-gap: 30px; }
-  .mod-manifest-verso,
-  .mod-manifest-recto { grid-column: 1; }
-  .mod-manifest-verso .mod-manifest-gifline { margin-top: 0; max-height: none; }
-  /* one column: everything stacks in reading order and the draw's tracks go */
-  .mod-manifest-index,
-  .mod-manifest-body,
+  .mod-manifest {
+    /* ONE SCREEN HERE TOO. The section is the screen less the wordmark, so
+       the mark sits at the foot of the phone on the first swipe and a
+       longer panel does not move it: a floor rather than a fixed height,
+       so the nomination roster can still open and push. */
+    height: auto;
+    min-height: calc(100dvh - var(--masthead-h, 45px));
+    padding: 32px 0 24px;
+    overflow: visible;
+    box-sizing: border-box;
+  }
+  /* the mark stands 10 off the phone's foot - the masthead measures
+     itself, so the section above still comes out to one screen */
+  .archive-masthead { padding-bottom: 10px; }
+  .mod-manifest-top {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0 var(--pad);
+  }
+  .mod-manifest-index { order: 1; margin: 0 0 22px; }
+  .mod-manifest-body { order: 2; margin: 0; padding-left: 10px; }
+  .mod-manifest-verso:has(.mod-manifest-gifline--plain) { order: 3; }
+  /* the draw, under the copy: the plate whole at 4:3, its caption under
+     it. No mark and no cursor - the wheel turns by itself here, and a tap
+     anywhere on the section draws at once. */
   .mod-manifest-draw-mark,
-  .mod-manifest-draw-plate,
-  .mod-manifest-draw-record,
-  .mod-manifest-draw-statement { grid-column: 1; grid-row: auto; }
-  .mod-manifest-index ol { grid-template-columns: 1fr; }
-  .mod-manifest-draw-mark { width: 103px; justify-self: start; }
-  .mod-manifest-draw-plate { height: auto; aspect-ratio: 1; justify-content: flex-start; }
-  .mod-manifest-draw-plate img { object-position: left top; }
+  .mod-manifest-draw-cursor { display: none; }
+  .mod-manifest-draw-plate { order: 4; }
+  .mod-manifest-draw-caption { order: 5; }
+  .mod-manifest-draw-plate {
+    position: static;
+    transform: none;
+    width: 100%;
+    height: auto;
+    /* 82 under the copy, and 16:9: the drop is the ask, the ratio pays for
+       it - the longest panel (Prompt What Matters) has to fit the one
+       screen with its picture, or the page shifts on that tab. */
+    aspect-ratio: 16 / 9;
+    margin: 82px 0 0;
+    justify-content: center;
+  }
+  .mod-manifest-draw-plate img { object-position: center; }
+  /* not on The Process: that panel's copy is long and its roster opens
+     under it - with the plate as well, the phone's one screen is gone and
+     every spin moved the page. The words alone there. */
+  .mod-manifest-top[data-panel="The Process"] .mod-manifest-draw-plate,
+  .mod-manifest-top[data-panel="The Process"] .mod-manifest-draw-caption { display: none; }
+  /* the caption centred under the plate */
+  .mod-manifest-draw-caption {
+    position: static;
+    width: auto;
+    /* the column shrink-wraps its items; the caption has to span it to
+       centre on the plate rather than on its own words */
+    align-self: stretch;
+    margin: 16px 0 0;
+    min-height: 17px;
+    text-align: center;
+  }
+  .mod-manifest-partners-fold { position: static; width: auto; }
+  .mod-manifest-partners {
+    columns: 2;
+    /* the index row's size: a list on a phone is set like the other list */
+    font-size: 13px;
+    line-height: 15px;
+  }
+  .mod-manifest-verso:has(.mod-manifest-gifline--plain) {
+    position: static;
+    width: 100%;
+    transform: none;
+    margin: 20px 0 0;
+  }
+  .mod-manifest-verso:has(.mod-manifest-gifline--plain) .mod-manifest-gifline { width: 100%; }
 }
 
 /* ---- latest ----
@@ -2803,7 +3304,9 @@ main {
    14/700, then body 16/700 at lh 18. The category label is the point —
    one feed carrying events, fundraises, reports and partnerships together. */
 .mod-latest {
-  padding: clamp(80px, 10vw, 160px) 0 clamp(40px, 5vw, 80px);
+  /* 60 less over the top: the title, Prev / Next and the cards all come up
+     together */
+  padding: calc(clamp(80px, 10vw, 160px) - 60px) 0 clamp(40px, 5vw, 80px);
 }
 .mod-latest .mod-section-header {
   padding: 0 var(--pad);
@@ -4125,36 +4628,199 @@ main {
 
 /* ---- FAQ accordion ---- */
 .mod-faq {
-  padding: clamp(80px, 10vw, 160px) var(--pad);
+  /* the full step above, a short one below: the footer follows closely */
+  padding: clamp(80px, 10vw, 160px) var(--pad) 40px;
   /* the shared column system at quarter resolution, so the split between the
      title art and the questions can sit off the page grid: the art takes 15 of
      24 tracks, the questions the remaining 9. Lines at multiples of four still
      land on the page grid exactly; line 16 deliberately does not. */
+  position: relative;
   display: grid;
   grid-template-columns: repeat(calc(var(--gridcols) * 4), 1fr);
   gap: var(--gutter);
   align-items: start;
 }
+/* THE WORD IS THE GROUND.
+   Out of the flow and hung off the right margin, starting a little above the
+   first question and running larger than the list - the questions are free to
+   cross it, because at that size it reads as the section's ground rather than
+   as a heading standing beside them. */
 .mod-faq .mod-section-header {
-  grid-column: 1 / 16;
+  position: absolute;
+  /* mirrored: the art on the left, the questions on the right */
+  left: var(--pad);
+  top: calc(clamp(80px, 10vw, 160px) - 112px);
+  width: 68%;
   margin-bottom: 0;
   text-align: left;
+  z-index: 0;
+  pointer-events: none;
 }
 .mod-faq .mod-title-art--faq {
   width: 100%;
   margin: 0;
 }
+/* GOOD NEWS
+   The title art large and centred, set back to 30%, and the signup laid
+   over the middle of it on four tracks: a running head, the copy, the
+   field in the dock's slot, the consent - all centred.
+   Same grid, same slot: it is a page of the same book, not a form at the
+   end of it. */
+.mod-goodnews {
+  padding: clamp(80px, 10vw, 160px) var(--pad);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  /* the art fills the section and the three rows of type sit at their own
+     heights in the middle of it: equal free rows above and below centre
+     them on the art */
+  grid-template-rows: 1fr auto auto auto 1fr;
+  column-gap: var(--gutter);
+  align-items: start;
+}
+.mod-goodnews .mod-section-header {
+  /* THE ART IS THE GROUND. Centred across tracks 2 to 11 - at 1400 that is
+     about the file's own width, so the dither is near 1:1 - and set back to
+     30%, with the signup laid over the middle of it */
+  grid-column: 2 / 12;
+  grid-row: 1 / 6;
+  align-self: center;
+  margin: 0;
+  text-align: center;
+}
+.mod-title-art--goodnews { width: 100%; margin: 0; opacity: 0.3; }
+.mod-goodnews-head,
+.mod-goodnews-copy {
+  /* four tracks in the middle, 5 to 8, centred on the art */
+  grid-column: 5 / 9;
+  text-align: center;
+  position: relative;
+  margin: 0;
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 17px;
+  font-weight: 500;
+  letter-spacing: normal;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+/* the running head, the way the manifest's contents stand over its copy */
+.mod-goodnews-head { grid-row: 2; margin-bottom: 17px; }
+.mod-goodnews-copy { grid-row: 3; }
+.mod-goodnews-form {
+  grid-column: 5 / 9;
+  grid-row: 4;
+  position: relative;
+  margin: 34px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mod-goodnews-field {
+  /* the dock's slot, at the copy's size */
+  height: 30px;
+  font-size: 15px;
+  line-height: 17px;
+}
+.mod-goodnews-field input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--bg);
+  outline: none;
+}
+.mod-goodnews-field input::placeholder { color: var(--slot-meta, rgba(255, 255, 255, 0.55)); opacity: 1; }
+.mod-goodnews-field button {
+  flex: none;
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--bg);
+  cursor: pointer;
+}
+.mod-goodnews-field button:hover { color: var(--slot-meta, rgba(255, 255, 255, 0.55)); }
+/* the consent: the page's small size, and a square that is filled or not -
+   the same on-off every other state here takes, with no box drawn round it */
+.mod-goodnews-consent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font);
+  font-size: 11px;
+  line-height: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+}
+.mod-goodnews-consent input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.mod-goodnews-consent-mark {
+  display: block;
+  width: 9px;
+  height: 9px;
+  background: var(--slot);
+  flex: none;
+}
+.mod-goodnews-consent input:checked ~ .mod-goodnews-consent-mark { background: var(--ink); }
+.mod-goodnews-consent input:focus-visible ~ .mod-goodnews-consent-mark { outline: 1px solid var(--ink); outline-offset: 2px; }
+.mod-goodnews-consent a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+@media (max-width: 900px) {
+  /* the same stack on a phone: the art across the width, the signup over
+     its middle on all but the outer tracks */
+  .mod-goodnews .mod-section-header { grid-column: 1 / -1; }
+  .mod-goodnews-head,
+  .mod-goodnews-copy,
+  .mod-goodnews-form { grid-column: 2 / 12; }
+  .mod-goodnews-form { margin-top: 24px; }
+}
+
+/* THE MANIFEST BODY'S MEASURE.
+   Questions, marks and answers take exactly the column the manifest's copy
+   takes - lines 2 to 5 of the page's TWELVE-track grid. This section is laid
+   on the quarter grid (gridcols x 4 = 24 tracks), and two of those make one
+   twelve-track column, so 3/11 here is 2/6 there - the copy's measure plus a
+   column, since the questions run longer than the copy's lines. */
 .mod-faq .faq-top {
-  grid-column: 16 / -1;
+  /* the same eight quarter-tracks it had on the left, counted in from the
+     right edge instead - a mirror at any column count */
+  grid-column: span 8 / -3;
+  position: relative;
+  z-index: 1;
 }
 /* the narrow grids have no room for the split: stack the title over the list */
 @media (max-width: 900px) {
-  .mod-faq .mod-section-header,
-  .mod-faq .faq-top {
-    grid-column: 1 / -1;
+  .mod-faq { display: block; padding-top: 40px; }
+  /* 40 less over the title art and 40 less under it: the gif carries air
+     of its own inside its frame */
+  .mod-faq .mod-section-header {
+    position: static;
+    width: 100%;
+    margin-bottom: -8px;
+    text-align: center;
   }
-  .mod-faq .mod-section-header { margin-bottom: 32px; }
-  .mod-faq .mod-title-art--faq { width: min(calc(var(--titlecap) * 3.06), 100%); }
+  /* three times its desktop measure: at a phone's cap it was 92px wide */
+  .mod-faq .mod-title-art--faq { width: min(calc(var(--titlecap) * 9.18), 100%); margin: 0 auto; }
+  .mod-faq .faq-top { grid-column: auto; }
+  /* the room reserved on desktop is for a head that floats beside the list;
+     here the head is above it, so the list starts where it starts */
+  .faq-list { margin-top: 0; min-height: 0; }
 }
 
 /* full-bleed like the Index view — rows start at var(--pad) off the viewport
@@ -4230,6 +4896,14 @@ main {
 .faq-list {
   display: flex;
   flex-direction: column;
+  /* 100 down from the section's top line, under the FAQ mark */
+  margin-top: 200px;
+  /* THE ROOM IS RESERVED, SO THE FOOT NEVER MOVES.
+     Closed, the nine questions are 189 tall; the longest answer takes the
+     list to 421. Holding that height means an answer opens INTO space that
+     already exists rather than pushing the footer down the page. Measured,
+     not guessed - if the copy grows, so must this. */
+  min-height: 421px;
 }
 
 .faq-item {
@@ -4237,18 +4911,30 @@ main {
 }
 
 .faq-row {
+  /* the question at the head of the span, the mark at its foot: both inside
+     columns 2 to 5, nothing outside them */
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: baseline;
+  gap: var(--gutter);
   width: 100%;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px 0;
+  /* the index row's own 2px, so the questions sit on its rhythm too. It
+     bleeds a pad each side so the open row's band has the index row's air
+     around the type, with the question itself staying on the column line */
+  padding: 2px var(--pad);
+  margin: 0 calc(-1 * var(--pad));
+  width: calc(100% + 2 * var(--pad));
   text-align: left;
-  gap: 16px;
-  align-items: baseline;
 }
+/* THE OPEN QUESTION STEPS IN, THE WAY THE MANIFEST'S OPEN TAB DOES.
+   No mark and no band: the question is nudged 10px along its line when it
+   is open or under the pointer, and its answer stands on that same line. */
+.faq-title { display: inline-block; }
+.faq-item--open .faq-title,
+.faq-row:hover .faq-title { transform: translateX(10px); }
 
 /* type spec lifted verbatim from .row-name / .row-statement in the Index view —
    14/1.3, one weight, no ellipsis here because questions must wrap */
@@ -4264,44 +4950,12 @@ main {
   transition: font-style 0s; /* instant swap — no faux-slant tween */
 }
 
-.faq-row:hover .faq-title {
-  font-style: italic;
-}
 
 /* ---- open/close: one shared easing so height, copy and marker move as a
    single gesture rather than three independent animations ---- */
 :root {
   --faq-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --faq-dur: 420ms;
-}
-
-.faq-icon {
-  position: relative;
-  display: block;
-  width: 10px;
-  height: 10px;
-  flex-shrink: 0;
-  align-self: center;
-}
-
-.faq-icon-bar {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: var(--ink);
-  transform: translateY(-50%);
-}
-
-/* closed: upright, so the pair reads as +. open: rotated flat onto its
-   sibling, so the pair reads as −. */
-.faq-icon-bar--v {
-  transform: translateY(-50%) rotate(90deg);
-  transition: transform var(--faq-dur) var(--faq-ease);
-}
-.faq-item--open .faq-icon-bar--v {
-  transform: translateY(-50%) rotate(0deg);
 }
 
 /* 0fr → 1fr is the one height transition that works without measuring the
@@ -4321,7 +4975,6 @@ main {
 
 @media (prefers-reduced-motion: reduce) {
   .faq-reveal,
-  .faq-icon-bar--v,
   .faq-body {
     transition: none;
   }
@@ -4332,18 +4985,11 @@ main {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-width: 640px;
-  opacity: 0;
-  transform: translateY(-6px);
-  transition: opacity 180ms ease, transform var(--faq-dur) var(--faq-ease);
-}
-
-/* copy trails the height slightly on the way open so it settles into a space
-   that already exists, and leads on the way closed so it never clips */
-.faq-item--open .faq-body {
-  opacity: 1;
-  transform: none;
-  transition-delay: 90ms;
+  /* the answer runs the same columns 2 to 5 the question does - it was capped
+     at 640 and stopped short of them */
+  max-width: none;
+  /* on the open question's stepped line */
+  padding-left: 10px;
 }
 
 /* answer sits at the same size as the question so the row rhythm holds, and
@@ -4380,7 +5026,7 @@ main {
 /* On the page's own twelve tracks and in its own setting: no rule, 15/17
    medium, links in caps and underlined like every other link on the site.
    The mark takes the first two tracks, the links the rest - the same
-   left/right split the imprint under it uses. */
+   left/right split of the page's twelve tracks. */
 .mod-footer {
   border-top: none;
   padding: 50px var(--pad) 16px;
@@ -4403,6 +5049,39 @@ main {
 .mod-footer-links:nth-of-type(1) { grid-column: 1 / 4; }
 .mod-footer-links:nth-of-type(2) { grid-column: 4 / 7; }
 
+/* THE SIGNUP IN THE FOOTER: the head in the footer's caps, then the same
+   field and consent the Good News section uses, on the right half */
+.mod-footer-signup {
+  grid-column: 8 / -1;
+  align-self: start;
+}
+.mod-footer-signup-head {
+  margin: 0 0 12px;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 17px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+.mod-footer .mod-goodnews-form--footer {
+  grid-column: auto;
+  grid-row: auto;
+  margin: 0;
+}
+.mod-footer .mod-goodnews-form--footer .mod-goodnews-field { font-size: 13px; line-height: 17px; }
+/* the footer sets its fields in ink; in the slot they are the page's white */
+.mod-footer .mod-goodnews-field input,
+.mod-footer .mod-goodnews-field button { color: var(--bg); }
+.mod-footer .mod-goodnews-field button:hover { background: none; color: var(--slot-meta, rgba(255, 255, 255, 0.55)); }
+.mod-footer .mod-goodnews-consent { justify-content: flex-start; }
+.mod-footer .mod-goodnews-consent a { font-size: 11px; line-height: 13px; }
+
+/* the norrsken100 mark, whole, across the width of the page */
+/* the mark is the last thing on the page */
+.mod-footer-mark { margin-top: 56px; }
+.mod-footer-mark-svg { display: block; width: 100%; height: auto; color: var(--ink); }
+
 .mod-footer a,
 .mod-footer input,
 .mod-footer button {
@@ -4416,64 +5095,13 @@ main {
   text-decoration: none;
 }
 
-/* the sign-up: a field on a hairline, its action set as the page sets a
-   link - caps and underlined */
-.mod-footer-signup {
-  grid-column: 8 / -1;
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-}
-.mod-footer-signup-field {
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-  border-bottom: 1px solid var(--ink);
-  padding-bottom: 6px;
-}
-.mod-footer-signup input {
-  flex: 1 1 auto;
-  min-width: 0;
-  background: none;
-  border: none;
-  border-radius: 0;
-  padding: 0;
-  outline: none;
-}
-.mod-footer-signup input::placeholder { color: var(--meta); }
-.mod-footer-signup button {
-  flex: none;
-  background: none;
-  border: none;
-  border-radius: 0;
-  padding: 0;
-  cursor: pointer;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 1px;
-}
-.mod-footer-signup button:hover { background: var(--ink); color: var(--bg); }
 .mod-footer a:hover { background: var(--ink); color: var(--bg); }
 
-/* the imprint sits a step below, on the same tracks, in caps - the links
-   above it stay regular */
-.mod-footer-row--imprint {
-  margin-top: 60px;
-  font-family: var(--font);
-  font-size: 13px;
-  line-height: 17px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-.mod-footer-row--imprint > span { grid-column: 1 / 7; }
-.mod-footer-row--imprint > a {
-  grid-column: 7 / -1;
-  justify-self: end;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+@media (max-width: 720px) {
+  .mod-footer-links:nth-of-type(1) { grid-column: 1 / 7; }
+  .mod-footer-links:nth-of-type(2) { grid-column: 7 / -1; }
+  .mod-footer-signup { grid-column: 1 / -1; margin-top: 32px; }
+  .mod-footer-mark { margin-top: 40px; }
 }
 
 
@@ -4501,7 +5129,16 @@ main {
     padding: 1px var(--pad);
     align-items: baseline;
   }
-  .row-name { grid-column: 1; grid-row: 1; }
+    .row-name { grid-column: 1; grid-row: 1; display: flex; align-items: center; gap: 6px; }
+  /* the picture, one line tall, held to a fixed slot so the names align */
+  .row-thumb {
+    display: block;
+    flex: none;
+    width: 20px;
+    height: 15px;
+    object-fit: contain;
+    object-position: center;
+  }
   .row-sector { grid-column: 2; grid-row: 1; }
   .row-geo { grid-column: 3; grid-row: 1; justify-self: start; }
   .row-statement { display: none; }
@@ -4603,10 +5240,29 @@ main {
   .entry--spread .entry-block:nth-of-type(1),
   .entry--spread .entry-block:nth-of-type(2) { grid-column: 1; }
 
-  /* ---- Filter: one group per row, options two-up ---- */
+  /* ---- Filter: the sheet takes the screen above the bar, one group per
+     row with the options two-up, and the Clear / count row pinned at the
+     sheet's foot so it is always in reach ---- */
+  .filter-panel {
+    max-height: calc(100dvh - 68px);
+    padding: 20px var(--pad) 0;
+  }
+  .filter-panel-footer {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    background: var(--ink);
+    padding: 12px 0;
+    margin-top: 16px;
+  }
+  .filter-panel-footer .filter-clear,
+  .filter-panel-footer .filter-count { grid-column: auto; }
   .filter-panel-groups { grid-template-columns: 1fr; row-gap: 22px; }
-  .filter-group,
-  .filter-group--wide { grid-column: 1 / -1; }
+  .filter-group:nth-child(1),
+  .filter-group:nth-child(2),
+  .filter-group:nth-child(3),
+  .filter-group:nth-child(4) { grid-column: 1 / -1; }
   .filter-group-list,
   .filter-group--wide .filter-group-list {
     display: grid;
@@ -4615,29 +5271,6 @@ main {
     row-gap: 5px;
   }
   .filter-panel-footer { flex-wrap: wrap; row-gap: 10px; }
-
-  /* ---- The bar itself: the desktop track set (name + statement + two meta
-     columns) does not fit, and the views group sat on tracks 3-4 that no
-     longer exist at this width, so the grid grew implicit columns past the
-     right edge and the whole page could be scrolled sideways. Two rows
-     instead: Filter and the view radios on one line, search under them. ---- */
-  .controls {
-    grid-template-columns: auto 1fr;
-    gap: 9px 12px;
-    /* the band clears the fixed wordmark, so rows never scroll into it */
-    padding: 34px var(--pad) 10px;
-    /* the list is long and the filter has to stay reachable inside it */
-    position: sticky;
-    top: 0;
-    z-index: 40;
-  }
-  .filter-trigger { grid-column: 1; grid-row: 1; }
-  .views {
-    grid-column: 2;
-    grid-row: 1;
-    gap: 13px;
-  }
-  .search { grid-column: 1 / -1; grid-row: 2; height: 20px; }
 
   /* the Latest title runs at four cap units: as a rigid flex item it pushed
      the arrows past the right edge and took the page sideways with it */

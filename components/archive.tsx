@@ -3,24 +3,25 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { Company, Facets } from "@/lib/types";
-import { visualFor, isPhoto } from "@/lib/art-direction";
+import { visualFor, cohortsFor, thumb } from "@/lib/art-direction";
 
 // client-only: reads image pixels + WebGL, must never run on the server
 
-// norrsken.org/100's own filter, rebuilt in this system: every group's full
-// option list is exposed at once — no inner scroll, pills wrap onto as many
-// lines as they need — and every group is multi-select (checkboxes, not
-// radios), so "ClimateTech" and "FinTech" can both be on at the same time.
-// The reference inverts a pill to white-on-black the instant it's checked and
-// updates a live "N/352" count before you ever hit its "Show results"; both
-// carried over here in the site's own black-on-white idiom.
+// THE FILTER IS A SHEET OFF THE DOCK.
+// Every group's full option list is exposed at once, every group is
+// multi-select, and it filters live: there is nothing to submit, so there is
+// no "show results" - the list behind is already the result. An option is
+// on when it is INVERTED, the way an open index row is; nothing else marks
+// it. What is applied is carried in the Filter slot itself, so you can read
+// the state of the list without opening anything.
 function FilterGroup({ title, value, options, onChange, wide }: {
   title: string;
   value: Set<string>;
   options: string[];
   onChange: (v: Set<string>) => void;
-  /* a long list (Geography's 41 countries) takes two page tracks and splits
-     its own options across two columns rather than running 800px down */
+  /* a long list (Geography's 41 countries) takes the search's four tracks
+     and splits its own options across two columns rather than running
+     800px down */
   wide?: boolean;
 }) {
   const toggle = (o: string) => {
@@ -31,7 +32,16 @@ function FilterGroup({ title, value, options, onChange, wide }: {
   };
   return (
     <div className={`filter-group${wide ? " filter-group--wide" : ""}`}>
-      <span className="filter-group-title">{title}</span>
+      {/* the group's name, and its own Clear the moment anything in it is
+          on - so a group is undone where it was done */}
+      <div className="filter-group-head">
+        <span className="filter-group-title">{title}</span>
+        {value.size > 0 && (
+          <button className="filter-group-clear" onClick={() => onChange(new Set())}>
+            Clear
+          </button>
+        )}
+      </div>
       <div className="filter-group-list" role="group" aria-label={title}>
         {options.map((o) => (
           <button
@@ -41,7 +51,6 @@ function FilterGroup({ title, value, options, onChange, wide }: {
             className={`filter-opt${value.has(o) ? " filter-opt--on" : ""}`}
             onClick={() => toggle(o)}
           >
-            <span className="filter-dot" aria-hidden="true" />
             {o}
           </button>
         ))}
@@ -52,6 +61,23 @@ function FilterGroup({ title, value, options, onChange, wide }: {
 
 
 type View = "index" | "grid";
+
+/* THE DENSITY SLIDER
+   One control between the two ways of reading the list: a contact sheet at
+   one end, a catalogue at the other. The card gives up a line at each step in
+   - plates alone, then the name, then the facts, then the statement - so the
+   slider is really one decision about how much of each company you want at
+   once. */
+/* THE GRID'S SCALE: sixteen across down to six. It is the grid's own
+   control and shows only while the grid is up; the index has no density. */
+const DENSITIES = [
+  /* `phone` is the same stop on a phone's width, should the grid ever be
+     shown there */
+  { cols: 16, phone: 4, shows: "plates" },
+  { cols: 12, phone: 3, shows: "names" },
+  { cols: 8, phone: 2, shows: "facts" },
+  { cols: 6, phone: 2, shows: "full" },
+];
 
 /* Shuffle is parked for now - the control is hidden, the draw is kept. */
 const SHUFFLE_ON = false;
@@ -294,17 +320,67 @@ export default function Archive({
   const [theme, setTheme] = useState<Set<string>>(new Set());
   const [year, setYear] = useState<Set<string>>(new Set(["2025"]));
   const [query, setQuery] = useState("");
+  /* the dock rides the foot of the window, but only while the list it belongs
+     to is on screen - an observer rather than a scroll listener, so it costs
+     nothing while you read */
+  const [dockOn, setDockOn] = useState(false);
+  const listRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = listRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => setDockOn(e.isIntersecting),
+      { rootMargin: "0px 0px -20% 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  /* six across, which is the grid the page has always opened on */
+  const [density, setDensity] = useState(3);
   const [view, setView] = useState<View>("grid");
+  /* a phone opens on the index and stays there: the switch is not on the
+     phone's bar, and each row carries a thumbnail the height of its line
+     instead. Set after mount rather than read at render, so the static page
+     and the first paint agree; the loader is still over the page when this
+     runs. */
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 720px)");
+    if (mq.matches) setView("index");
+    /* and if the window becomes a phone's width later, the same */
+    const onChange = (e: MediaQueryListEvent) => { if (e.matches) setView("index"); };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+  const { cols, phone, shows } = DENSITIES[density];
   const [modal, setModal] = useState<Company | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  /* the sheet closes on Escape, and on a press anywhere off the dock: the
+     list behind it is the result, and reaching for it means you are done */
+  useEffect(() => {
+    if (!filtersOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setFiltersOpen(false); };
+    const onPress = (e: PointerEvent) => {
+      if (!(e.target as Element).closest(".dock")) setFiltersOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPress);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPress);
+    };
+  }, [filtersOpen]);
   const [spinning, setSpinning] = useState(false);
   const spinTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
   useEffect(() => () => spinTimers.current.forEach(clearTimeout), []);
 
-  /* choosing a view puts the filter panel away: the panel is a detour off the
-     row, and picking a view means you are done with it */
+  /* choosing a view or a stop puts the filter panel away: the panel is a
+     detour off the row, and picking a view means you are done with it */
   const chooseView = (v: View) => {
     setView(v);
+    setFiltersOpen(false);
+  };
+  const chooseDensity = (d: number) => {
+    setDensity(d);
     setFiltersOpen(false);
   };
 
@@ -371,28 +447,78 @@ export default function Archive({
         />
       )}
 
+      {/* THE DOCK.
+          Bar and panel are one fixed thing at the foot of the window, and the
+          panel is FIRST in it so it opens upward off the bar rather than off
+          the screen. Shown only while the list is on screen - over the film
+          and the manifest there is nothing for it to control, and the mark is
+          using that edge. */}
+      <div className={`dock${dockOn ? " dock--on" : ""}${filtersOpen ? " dock--open" : ""}`}>
+      {filtersOpen && (
+        <div className="filter-panel">
+          <div className="filter-panel-groups">
+            <FilterGroup title="Year" value={year} options={facets.years.map(String)} onChange={setYear} />
+            <FilterGroup title="Sector" value={sector} options={facets.sectors} onChange={setSector} />
+            <FilterGroup title="Geography" value={country} options={facets.countries} onChange={setCountry} wide />
+            <FilterGroup title="Theme" value={theme} options={facets.themes} onChange={setTheme} />
+          </div>
+          {/* the live count and the one action: clearing. Nothing to show,
+              because the list is already showing it. */}
+          <div className="filter-panel-footer">
+            <button
+              className="filter-clear"
+              onClick={clearFilters}
+              disabled={activeFilterCount === 0}
+            >
+              Clear all
+            </button>
+            <span className="filter-count">
+              {filtered.length} of {companies.length}
+            </span>
+          </div>
+        </div>
+      )}
       <div className="controls">
-        {/* a single Filter trigger; every group lives in one panel below.
-            The count badge is the same "how many are on" signal the
-            reference gives on its pills, surfaced here too so it reads even
-            with the panel closed. */}
-        {/* a single Filter trigger; every group lives in one panel below.
-            The count badge is the same "how many are on" signal the
-            reference gives on its pills, surfaced here too so it reads even
-            with the panel closed. */}
-        <button
-          className="filter-trigger"
-          aria-expanded={filtersOpen}
-          onClick={() => setFiltersOpen((v) => !v)}
-        >
-          Filter
-          {activeFilterCount > 0 ? (
-            <span className="filter-trigger-count">({activeFilterCount})</span>
-          ) : (
-            /* nothing is on, so the count has nothing to say: the mark tells
-               you the panel folds out instead, and turns when it is open.
-               Drawn, not set: Arial MT has no arrow glyph and the character
-               fell through to a blank box. */
+        {/* ONE INSTRUMENT IN THE MIDDLE OF THE PAGE, the way last year's
+            bar was: the cells shoulder to shoulder on tracks 3 to 9, none
+            of them stretched to a margin. Count, Filter, Search, and the
+            view - with the grid's scale inside the view cell while the grid
+            is up. */}
+        <div className="controls-row">
+
+        {/* a readout, not a control: no box, because you cannot press it */}
+        <div className="ctl ctl--count">
+          <span className="ctl-count ctl-box">
+            {String(filtered.length).padStart(3, "0")}
+          </span>
+        </div>
+
+        <div className="ctl ctl--filter">
+          <button
+            className="filter-trigger ctl-box"
+            aria-expanded={filtersOpen}
+            onClick={() => setFiltersOpen((v) => !v)}
+          >
+            <span>Filter</span>
+            {/* how many are on, and a way to undo them all without opening
+                the sheet: the count, then a cross that clears */}
+            {activeFilterCount > 0 && (
+              <span className="filter-trigger-count">
+                {activeFilterCount}
+                <span
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Clear all filters"
+                  className="filter-trigger-clear"
+                  onClick={(e) => { e.stopPropagation(); clearFilters(); }}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.stopPropagation(); clearFilters(); } }}
+                >
+                  ×
+                </span>
+              </span>
+            )}
+            {/* drawn, not set: Arial MT has no arrow glyph and the character
+                fell through to a blank box. It turns when the panel is up. */}
             <svg
               className="filter-trigger-mark"
               viewBox="0 0 10 10"
@@ -407,36 +533,34 @@ export default function Archive({
                 strokeWidth="1"
               />
             </svg>
-          )}
-        </button>
-
-        {/* one control per row column: Filter over the name column, search
-            over the statement, view radios over sector/geography */}
-        {/* the placeholder is drawn rather than native, so its three dots can
-            blink in turn - the field reads as thinking while it waits */}
-        <div className="search-field">
-          <input
-            className="search"
-            aria-label="Search"
-            placeholder="Search…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          {query === "" && (
-            <span className="search-ghost" aria-hidden="true">
-              Search<i /><i /><i />
-            </span>
-          )}
+          </button>
         </div>
 
-        <div className="views">
-          {/* one mark between the two words, not one each: the dot sits on
-              the side of whichever view is open */}
-          <div
-            className={`views-toggle views-toggle--${view}`}
-            role="radiogroup"
-            aria-label="View"
-          >
+        <div className="ctl ctl--search">
+          {/* the placeholder is drawn rather than native, so its three dots
+              can blink in turn - the field reads as thinking while it waits */}
+          <div className="search-field ctl-box">
+            <input
+              className="search"
+              aria-label="Search"
+              placeholder=""
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            {query === "" && (
+              <span className="search-ghost" aria-hidden="true">
+                Search<i /><i /><i />
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* only the grid has a density; the index is one row a company */}
+        <div className="ctl ctl--views">
+          {/* Grid or Index in one cell, the open one white. While the grid
+              is up its scale sits between the two words: 16, 12, 8, 6 to a
+              row, the open stop white, the rest receding. */}
+          <div className="views ctl-box" role="radiogroup" aria-label="View">
             <button
               role="radio"
               aria-checked={view === "grid"}
@@ -445,13 +569,22 @@ export default function Archive({
             >
               Grid
             </button>
-            {/* the switch itself is a control: flicking it swaps the view */}
-            <button
-              type="button"
-              className="views-dot"
-              aria-label={view === "grid" ? "Switch to Index" : "Switch to Grid"}
-              onClick={() => chooseView(view === "grid" ? "index" : "grid")}
-            />
+            {view === "grid" && (
+              /* a slider: a line with a stop for each density and the knob
+                 on the one that is set - o---O. A real range, so it drags
+                 as well as clicks. */
+              <input
+                className="scale"
+                type="range"
+                min={0}
+                max={DENSITIES.length - 1}
+                step={1}
+                value={density}
+                onChange={(e) => chooseDensity(Number(e.target.value))}
+                aria-label="How many a row"
+                aria-valuetext={`${cols} a row`}
+              />
+            )}
             <button
               role="radio"
               aria-checked={view === "index"}
@@ -461,49 +594,22 @@ export default function Archive({
               Index
             </button>
           </div>
-          {/* Parked, not deleted: Shuffle draws one of the hundred into the
-              modal. Flip SHUFFLE_ON to bring it back. */}
-          {SHUFFLE_ON && (
-            <button className="views-draw" onClick={doSpin}>Shuffle</button>
-          )}
+        </div>
         </div>
       </div>
+      </div>
 
-      {filtersOpen && (
-        <div className="filter-panel">
-          <div className="filter-panel-groups">
-            <FilterGroup title="Year" value={year} options={facets.years.map(String)} onChange={setYear} />
-            <FilterGroup title="Sector" value={sector} options={facets.sectors} onChange={setSector} />
-            <FilterGroup title="Geography" value={country} options={facets.countries} onChange={setCountry} wide />
-            <FilterGroup title="Theme" value={theme} options={facets.themes} onChange={setTheme} />
-          </div>
-          {/* live count, updating on every pill click before "Show results"
-              is ever pressed - the reference's own N/352 read live too */}
-          <div className="filter-panel-footer">
-            <button
-              className="filter-clear"
-              onClick={clearFilters}
-              disabled={activeFilterCount === 0}
-            >
-              Clear filters
-            </button>
-            <span className="filter-count">
-              {filtered.length} of {companies.length} companies
-            </span>
-            <button className="filter-apply" onClick={() => setFiltersOpen(false)}>
-              Show results
-            </button>
-          </div>
-        </div>
-      )}
-
-      {filtered.length === 0 ? (
-        <div className="empty">No companies match these filters.</div>
-      ) : view === "grid" ? (
-        <Grid list={filtered} onSelect={setModal} />
-      ) : (
-        <Index list={filtered} />
-      )}
+      {/* the dock watches this: while any of the list is on screen the bar
+          is at the foot of the window, and when it is gone so is the bar */}
+      <div ref={listRef} className="archive-list">
+        {filtered.length === 0 ? (
+          <div className="empty">No companies match these filters.</div>
+        ) : view === "grid" ? (
+          <Grid list={filtered} onSelect={setModal} cols={cols} phone={phone} shows={shows} />
+        ) : (
+          <Index list={filtered} />
+        )}
+      </div>
     </>
   );
 }
@@ -550,27 +656,25 @@ function Index({ list }: { list: Company[] }) {
     if (open && !list.some((c) => c.slug === open)) setOpen(null);
   }, [list, open]);
 
-  /* the panel starts under the control row wherever that row currently is:
-     it is sticky, so its bottom sits at 52 once the page has scrolled past
-     the masthead and lower than that before. Measured rather than assumed. */
+  /* THE PANEL'S HEIGHT IS THE SCREEN LESS THE DOCK.
+     The controls used to run under the masthead, so the panel hung from
+     their bottom edge; they are in the fixed dock at the foot now, so the
+     panel runs from the top of the screen down to the dock. Measured rather
+     than assumed: the dock is one row, but that row's height is the type's. */
   useEffect(() => {
     if (!open) return;
-    const controls = document.querySelector(".controls");
-    if (!controls) return;
+    const dock = document.querySelector(".dock");
+    if (!dock) return;
     const place = () => {
-      const bottom = controls.getBoundingClientRect().bottom;
+      const h = dock.getBoundingClientRect().height;
       document.documentElement.style.setProperty(
-        "--index-panel-top",
-        `${Math.max(0, Math.round(bottom))}px`
+        "--index-dock-h",
+        `${Math.round(h)}px`
       );
     };
     place();
-    window.addEventListener("scroll", place, { passive: true });
     window.addEventListener("resize", place);
-    return () => {
-      window.removeEventListener("scroll", place);
-      window.removeEventListener("resize", place);
-    };
+    return () => window.removeEventListener("resize", place);
   }, [open]);
 
   return (
@@ -585,7 +689,18 @@ function Index({ list }: { list: Company[] }) {
                 aria-expanded={isOpen}
                 onClick={() => setOpen(isOpen ? null : c.slug)}
               >
-                <div className="row-name">{c.name}</div>
+                <div className="row-name">
+                  {/* the phone's picture: one line tall, before the name.
+                      Held as an empty slot when there is none, so the names
+                      stay on one edge. Hidden on desktop by the CSS. */}
+                  {visualFor(c) ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img className="row-thumb" src={thumb(visualFor(c))} alt="" loading="lazy" />
+                  ) : (
+                    <span className="row-thumb" aria-hidden="true" />
+                  )}
+                  {c.name}
+                </div>
                 <div className="row-statement">{c.statement}</div>
                 <div className="row-sector">{c.sectorLabel}</div>
                 <div className="row-geo">{abbreviateCountry(c.countries[0])}</div>
@@ -637,9 +752,12 @@ function abbreviateCountry(country?: string) {
   return COUNTRY_ABBREVIATIONS[country] ?? country;
 }
 
-function Grid({ list, onSelect }: {
+function Grid({ list, onSelect, cols, phone, shows }: {
   list: Company[];
   onSelect: (c: Company) => void;
+  cols: number;
+  phone: number;
+  shows: string;
 }) {
   /* Plates, after the Yoko Ono catalogue: the picture sits on the page with
      air around it and the caption runs centred beneath it in the small
@@ -647,21 +765,27 @@ function Grid({ list, onSelect }: {
      the book's own order and punctuation. Nothing is bold and nothing is
      boxed; the pill tags are folded into the caption line. */
   return (
-    <div className="grid">
+    <div
+      className={`grid grid--${shows}`}
+      style={{
+        ["--gridcols" as string]: cols,
+        ["--gridcols-phone" as string]: phone,
+      }}
+    >
       {list.map((c) => {
         const facts = [c.sectorLabel, abbreviateCountry(c.countries[0])]
           .filter(Boolean)
           .join(", ");
-        // the campaign tags. "No category" is the data's way of saying a
-        // company belongs to neither, so it is never printed.
-        const tags = themesOf(c);
+        // the cohorts this company has been drawn into - the only marked
+        // thing on the card
+        const cohorts = cohortsFor(c.slug);
         return (
           <button key={c.slug} className="card" onClick={() => onSelect(c)}>
             <div className="card-media">
               {visualFor(c) ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  className={`card-thumb${isPhoto(visualFor(c)) ? " card-thumb--photo" : ""}`}
+                  className="card-thumb"
                   src={visualFor(c)}
                   alt={c.name}
                   loading="lazy"
@@ -680,8 +804,12 @@ function Grid({ list, onSelect }: {
               {CARD_STATEMENT_ON && c.statement && (
                 <span className="card-statement">{c.statement}</span>
               )}
-              {tags.length > 0 && (
-                <span className="card-themes">{tags.join(", ")}</span>
+              {cohorts.length > 0 && (
+                <span className="card-tags">
+                  {cohorts.map((t) => (
+                    <span key={t} className="card-tag">{t}</span>
+                  ))}
+                </span>
               )}
             </figcaption>
           </button>

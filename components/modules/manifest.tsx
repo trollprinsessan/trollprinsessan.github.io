@@ -150,6 +150,12 @@ function Body({
 }) {
   return (
     <>
+      {/* THE FOLD. While the roster is open the copy folds away above the
+          label and the roster folds out under it - both are heights moving
+          on one clock, so the label slides from under the copy to the head
+          of the column and the names come out beneath it. Nothing fades. */}
+      <div className={`mod-manifest-copy-fold${partnersOpen ? " mod-manifest-copy-fold--away" : ""}`}>
+      <div className="mod-manifest-copy-clip">
       {panel.body.map((para, pi) => (
         <Fragment key={para}>
           <p>
@@ -194,12 +200,11 @@ function Body({
           </p>
         </Fragment>
       ))}
+      </div>
+      </div>
       {/* last, under the copy it belongs to */}
       {"partners" in panel && panel.partners && (
-        /* the list itself is drawn by Manifest, across the section: at one
-           name a line it is far taller than the copy's column, and the
-           section does not grow */
-        <div className="mod-manifest-reveal">
+        <div className={`mod-manifest-reveal${partnersOpen ? " mod-manifest-reveal--open" : ""}`}>
           <button
             type="button"
             className="mod-manifest-reveal-summary"
@@ -215,6 +220,19 @@ function Body({
               alt="Nomination partners"
             />
           </button>
+          {/* the roster hangs from the label, across the section: it is
+              placed off the section's tracks but takes its top from where
+              it stands in the flow - directly under the button - so it
+              follows the label as the copy folds */}
+          <div className="mod-manifest-partners-fold" aria-hidden={!partnersOpen}>
+            <div className="mod-manifest-partners-clip">
+              <ul className="mod-manifest-partners" id="nomination-partners">
+                {NOMINATION_PARTNERS.map((name) => (
+                  <li key={name}>{name}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       )}
       {"link" in panel && panel.link && (
@@ -292,19 +310,21 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
      plate while they are open. Closed again when the panel changes. */
   const [partnersOpen, setPartnersOpen] = useState(false);
   useEffect(() => setPartnersOpen(false), [active]);
-  /* once the wheel has landed the caption cuts in: the name and the country,
-     nothing else. The statement is off the plate - beat 2 is kept because the
-     label a screen reader hears still carries it. */
+  /* once the wheel has landed the caption is written in three beats: the
+     name, then the comma, then the country. Nothing while it turns. The
+     statement is off the plate; the label a screen reader hears carries it. */
   const [beat, setBeat] = useState(0);
-  const line1 = one ? `${one.name}, ${iso(one.geo)}` : "";
+  const line1 = one ? `${one.name}, ${one.geo}` : "";
   const line2 = one ? one.statement : "";
   useEffect(() => {
     setBeat(0);
     if (spinning || !one) return;
     setBeat(1);
-    const id = setTimeout(() => setBeat(2), 250);
-    return () => clearTimeout(id);
+    const a = setTimeout(() => setBeat(2), 220);
+    const b = setTimeout(() => setBeat(3), 440);
+    return () => { clearTimeout(a); clearTimeout(b); };
   }, [spinning, one?.slug]);
+  const written = !one || spinning || beat === 0 ? "" : beat === 1 ? one.name : beat === 2 ? `${one.name},` : `${one.name}, ${one.geo}`;
   const another = () => {
     if (draw.length < 2) return;
     spinTimers.current.forEach(clearTimeout);
@@ -334,6 +354,26 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
       );
     });
   };
+
+  /* ON A PHONE THE WHEEL TURNS ITSELF.
+     There is no pointer to ride and no room for a mark, so the draw runs on
+     its own: every six seconds while the section is on screen and the tab
+     is in front, another company. A tap on the section still draws at once. */
+  const anotherRef = useRef(another);
+  anotherRef.current = another;
+
+  const sectionRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (!window.matchMedia("(max-width: 720px)").matches) return;
+    const id = setInterval(() => {
+      const el = sectionRef.current;
+      if (!el || document.visibilityState !== "visible") return;
+      const r = el.getBoundingClientRect();
+      const onScreen = r.bottom > 0 && r.top < window.innerHeight;
+      if (onScreen) anotherRef.current();
+    }, 6000);
+    return () => clearInterval(id);
+  }, []);
 
   /* The ground belongs to the page, not to this section, so the class goes on
      <html>: it redefines --bg, and body plus every surface painted with it
@@ -374,7 +414,7 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
   }, [ground]);
 
   return (
-    <section className="mod-manifest">
+    <section className="mod-manifest" ref={sectionRef}>
       {/* Print-distortion filter, lifted verbatim off cheap.urls.loan: a high
           frequency turbulence used as a displacement map, which roughs the
           edges the way a bad print or a photocopy does. Their values exactly,
@@ -398,6 +438,10 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
           current one underlined, and the number again in the foot. */}
       <div
         className="mod-manifest-top"
+        /* which panel is up, for the stylesheet: a phone drops the draw on
+           The Process, and the class that marks the open roster is only
+           there once it is open */
+        data-panel={panel.key}
         onMouseMove={(e) =>
           setMark(marked || isType(e.target) ? null : { x: e.clientX, y: e.clientY })
         }
@@ -451,13 +495,9 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
             />
           </blockquote>
 
-          {partnersOpen && (
-            <ul className="mod-manifest-partners" id="nomination-partners">
-              {NOMINATION_PARTNERS.map((name) => (
-                <li key={name}>{name}</li>
-              ))}
-            </ul>
-          )}
+          {/* the draw is cut while the roster is up: the names take its
+              place, and a cut is the page's way of going from one to the
+              other */}
           {one && !partnersOpen && !marked && (
             <div className="mod-manifest-draw">
               {/* kept for the keyboard: the pointer has the word instead */}
@@ -485,14 +525,19 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
                   <img src={one.visual} alt={one.name} />
                 )}
               </figure>
-              {/* typed out once the wheel lands; nothing while it turns */}
-              {!spinning && (
-                <p className="mod-manifest-draw-caption" aria-label={`${line1}. ${line2}`}>
-                  <span className="mod-manifest-draw-who" aria-hidden="true">
-                    {beat >= 1 ? line1 : ""}
-                  </span>
-                </p>
-              )}
+              {/* the caption's line is always there and only its words come
+                  and go: cut in once the wheel lands, blank while it turns.
+                  Mounting it only on landing took its height with it, and
+                  everything under it - the mark, on a phone - jumped on
+                  every spin. */}
+              <p
+                className="mod-manifest-draw-caption"
+                aria-label={spinning ? undefined : `${line1}. ${line2}`}
+              >
+                <span className="mod-manifest-draw-who" aria-hidden="true">
+                  {written}
+                </span>
+              </p>
               <div className="mod-manifest-draw-record">
                 <p className="mod-manifest-draw-name">{one.name}</p>
                 <p className="mod-manifest-draw-geo">{one.geo}</p>
