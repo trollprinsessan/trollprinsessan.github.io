@@ -23,7 +23,7 @@ export default function SnapAssist() {
     let settling = false;
 
     const views = () => {
-      const reveal = document.querySelector(".reveal");
+      const reveal = document.querySelector(".reveal-end");
       const archive = document.querySelector("#archive");
       const mast = document.querySelector(".archive-masthead");
       if (!reveal || !archive || !mast) return [];

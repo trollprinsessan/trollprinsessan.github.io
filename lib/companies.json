@@ -5,17 +5,18 @@
     "countries": [
       "Spain"
     ],
-    "sector": "construction",
-    "sectorLabel": "Construction",
-    "subsector": "",
+    "sector": "built-environment",
+    "sectorLabel": "Built Environment",
+    "subsector": "Sustainable construction & development",
     "yearFounded": 2020,
     "years": [
       2023,
-      2024
+      2024,
+      2026
     ],
     "returning": true,
-    "statement": "Makes construction net-zero, better, faster, stronger (oh, and way cheaper).",
-    "website": "https://www.011h.com/",
+    "statement": "Snaps together homes for Europe's housing gap.",
+    "website": "https://www.011h.com",
     "visual": "",
     "legacy": {
       "solution": "",
@@ -23,9 +24,9 @@
       "description": ""
     },
     "current": {
-      "fix": "",
+      "fix": "Building apartments usually means a custom design every time, many separate contractors, and costs and timelines nobody can pin down until the work is done. 011h designs homes from a library of standard building parts, made in partner factories and assembled on site, with its own software planning the sequence. Because the same parts repeat from one project to the next, the cost and the carbon are known upfront rather than discovered along the way.",
       "outperform": "",
-      "future": ""
+      "future": "If homes can be built like well-planned kits, developers could know the cost, timeline and carbon footprint before breaking ground, rather than finding out as they go. That could help Europe build the affordable, lower-carbon homes it urgently needs, and build them faster than one-off projects allow. For the people waiting on a home, that is the difference between a project that takes years to start and one already underway."
     }
   },
   {
@@ -343,17 +344,18 @@
     "countries": [
       "Sweden"
     ],
-    "sector": "climatetech",
-    "sectorLabel": "ClimateTech",
-    "subsector": "",
-    "yearFounded": 2019,
+    "sector": "nature-biodiversity",
+    "sectorLabel": "Nature & Biodiversity",
+    "subsector": "Forestry & land management",
+    "yearFounded": 2020,
     "years": [
       2023,
-      2024
+      2024,
+      2026
     ],
     "returning": true,
-    "statement": "Thinning forests from above with giant zero-emission drones, like a tweezer.",
-    "website": "https://www.airforestry.com/en/",
+    "statement": "Drones thin forests without damage",
+    "website": "https://airforestry.com",
     "visual": "",
     "legacy": {
       "solution": "",
@@ -361,9 +363,9 @@
       "description": ""
     },
     "current": {
-      "fix": "",
+      "fix": "Thinning forests usually means driving harvesters and forwarders weighing tens of tonnes through them, which compacts soil, tears roots and leaves ruts that last for years, and can only be done in dry or frozen conditions. AirForestry uses electric drones that select a tree, grip the top, strip its branches, cut it near the base and lift the whole stem out to a roadside pile, without touching the forest floor. Onboard vision picks which trees to take.",
       "outperform": "",
-      "future": ""
+      "future": "Drones could make gentle forest care possible in wet, steep and roadless areas that machines can't reach. Healthier forests, less soil damage and work that isn't held back by the weather: a lighter footprint for forestry. Stands skipped year after year because the ground would never carry a machine could come back into rotation, tended by something that lands nowhere and leaves no track behind it."
     }
   },
   {
@@ -1467,16 +1469,17 @@
     "countries": [
       "Spain"
     ],
-    "sector": "healthtech",
-    "sectorLabel": "HealthTech",
-    "subsector": "Healthcare & Medicine",
+    "sector": "healthcare-medicine",
+    "sectorLabel": "Healthcare & Medicine",
+    "subsector": "AI drug discovery & TechBio",
     "yearFounded": 2024,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "Revolutionizing drug development through the power of AI.",
-    "website": "https://www.biorce.com/home",
+    "returning": true,
+    "statement": "Gives drug trials an AI layer so treatments reach patients sooner.",
+    "website": "https://www.biorce.com",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc1de9e8499278f7066e9e_Biorce.png",
     "legacy": {
       "solution": "Biorce is a Barcelona-based medtech company leveraging AI to streamline clinical trial processes through its platform, Jarvis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus, sit amet eleifend leo iaculis in. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem.",
@@ -1484,9 +1487,9 @@
       "description": "Enter Biorce, a Barcelona-based healthtech startup founded in 2024 by Clara Bernardes and Pedro Coelho.  Their mission? To transform clinical trial design with AI."
     },
     "current": {
-      "fix": "",
+      "fix": "Clinical trials are often designed on past experience, and flaws only show up once patients are enrolled, leading to costly changes, fresh ethics review and months of delay. Biorce uses AI trained on past trials to test a study's design before it starts, spotting problems with eligibility, timelines and recruitment early. It also points to the clinics that have found this kind of patient before, so the plan meets the people it was written for.",
       "outperform": "",
-      "future": ""
+      "future": "Better-designed trials mean new treatments reach patients sooner, because a flawed assumption surfaces in review rather than in a clinic full of enrolled patients. It could also make studies for rare diseases and small patient groups more feasible, the ones that never begin because recruiting them looks impossible, giving more people a chance at new therapies. For a family living with a condition almost nobody studies, that is a trial worth starting at all."
     }
   },
   {
@@ -1635,16 +1638,17 @@
     "countries": [
       "Sweden"
     ],
-    "sector": "energy",
-    "sectorLabel": "Energy",
-    "subsector": "",
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Advanced nuclear & fusion",
     "yearFounded": 2013,
     "years": [
-      2024
+      2024,
+      2026
     ],
-    "returning": false,
-    "statement": "Introducing small modular nuclear reactors: compact technology with a massive impact on the future of energy.",
-    "website": "https://www.blykalla.com/",
+    "returning": true,
+    "statement": "Nuclear power, built on an assembly line.",
+    "website": "https://www.blykalla.com",
     "visual": "",
     "legacy": {
       "solution": "",
@@ -1652,9 +1656,9 @@
       "description": ""
     },
     "current": {
-      "fix": "",
+      "fix": "Industries and data centres need clean power around the clock, but today's nuclear plants are huge, one-off projects that take many years to build. Blykalla is developing small nuclear reactors cooled by molten lead, using a special steel it developed to withstand the coolant, designed to be built in factories. A steel mill wanting round-the-clock carbon-free power has no supplier at its own size, so it waits in a grid queue or burns gas.",
       "outperform": "",
-      "future": ""
+      "future": "If reactors can be made in series and delivered where they're needed, clean, reliable power could sit right next to the steel mills, ports and data centres that depend on it. Nuclear energy could become something businesses order and receive, not decades-long national projects carried by a whole country's balance sheet. For the towns built around those works, it would mean the furnaces and the jobs stay, and the smoke above them does not."
     }
   },
   {
@@ -2078,22 +2082,23 @@
     }
   },
   {
-    "name": "CemVision",
+    "name": "Cemvision",
     "slug": "cemvision",
     "countries": [
       "Sweden"
     ],
-    "sector": "construction",
-    "sectorLabel": "Construction",
-    "subsector": "",
+    "sector": "built-environment",
+    "sectorLabel": "Built Environment",
+    "subsector": "Low-carbon cement & concrete",
     "yearFounded": 2020,
     "years": [
       2023,
-      2024
+      2024,
+      2026
     ],
     "returning": true,
-    "statement": "Producing fossil-free cement that cleans the air.",
-    "website": "https://cemvision.tech/",
+    "statement": "Cement, baked without cooking the planet",
+    "website": "https://www.cemvision.tech",
     "visual": "",
     "legacy": {
       "solution": "",
@@ -2101,9 +2106,9 @@
       "description": ""
     },
     "current": {
-      "fix": "",
+      "fix": "Making cement releases about seven per cent of the world's carbon dioxide, mostly from heating limestone and from the fuel burned to drive that reaction. Cemvision makes cement from steel industry slag and other industrial by-products instead, using an electric kiln and avoiding most of the emissions that limestone gives off. Much of that waste gave up its carbon in an earlier furnace, so the reaction simply never happens again.",
       "outperform": "",
-      "future": ""
+      "future": "Cement is everywhere, so cleaner cement could make a real dent in global emissions without bolting new equipment onto the kilns we already have. Turning industrial waste into a building material also means fewer quarries opened and fewer heaps left beside the mills, laying the foundations for a cleaner construction industry. The homes, bridges and schools still to be built would cost the air a good deal less."
     }
   },
   {
@@ -2166,17 +2171,18 @@
     "name": "Charm Industrial",
     "slug": "charm-industrial",
     "countries": [
-      "United States"
+      "US"
     ],
-    "sector": "climatetech",
-    "sectorLabel": "ClimateTech",
-    "subsector": "Clean Energy & Climate Tech",
+    "sector": "climate-decarbonization",
+    "sectorLabel": "Climate & Decarbonization",
+    "subsector": "Engineered carbon removal & storage",
     "yearFounded": 2018,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "Pumps carbon underground by turning crop waste into liquid bio-oil.",
+    "returning": true,
+    "statement": "Buries carbon back where the oil came from.",
     "website": "https://charmindustrial.com",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc1e39f421993713197ff3_CharmIndustrial.png",
     "legacy": {
@@ -2185,9 +2191,9 @@
       "description": "Charm Industrial converts crop residues into a stable, carbon-rich bio-oil and injects it deep underground, where it can stay for thousands of years. It’s fast, scalable, and measurable transforming waste into one of the world’s most effective carbon removal methods."
     },
     "current": {
-      "fix": "",
+      "fix": "When forests are thinned to reduce wildfire risk, the leftover branches are usually burned in open piles, and crop leftovers are left to rot, releasing their carbon either way. Charm turns this plant waste into a carbon-rich liquid and pumps it deep underground into regulated wells, where it stays for good. The waste is heated without oxygen until it breaks down, and once the liquid is in the well it sinks and hardens, putting the carbon back below the ground it came from.",
       "outperform": "",
-      "future": ""
+      "future": "If this can be done wherever forests are thinned and crops are harvested, waste that currently goes up in smoke could become permanent carbon removal, while helping fund the forest care that protects communities from wildfires. For the crews who do that thinning, and for the towns downhill from them, a pile of brush stops being a chore to burn and becomes part of what pays for the work of keeping the woods around them safe."
     }
   },
   {
@@ -2504,18 +2510,18 @@
     "name": "Cradle",
     "slug": "cradle",
     "countries": [
-      "Switzerland",
       "Netherlands"
     ],
-    "sector": "biotech",
-    "sectorLabel": "BioTech",
-    "subsector": "Material Science & Biotechnology",
+    "sector": "healthcare-medicine",
+    "sectorLabel": "Healthcare & Medicine",
+    "subsector": "AI drug discovery & TechBio",
     "yearFounded": 2021,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "Designs proteins with AI making biology faster, cleaner, and smarter.",
+    "returning": true,
+    "statement": "Speeds protein design for medicine and cleaner materials",
     "website": "https://www.cradle.bio/",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc1e9ee3d3599192552d0f_Cradle.png",
     "legacy": {
@@ -2524,9 +2530,9 @@
       "description": "Cradle Bio uses generative AI to help scientists design and validate new proteins in a fraction of the time. By simulating evolution and optimizing for function, stability, and sustainability, Cradle accelerates biomanufacturing breakthroughs from low-carbon materials to next-gen therapeutics."
     },
     "current": {
-      "fix": "",
+      "fix": "Designing better proteins, for medicines or greener materials, is slow: scientists make random changes and test the results, often for years. Cradle's AI suggests promising protein designs, learns from each round of lab results, and helps teams get to a better protein in far fewer steps. A team names the properties it wants, the model proposes variants, a batch is made and measured at the bench, and those measurements feed straight into the next round.",
       "outperform": "",
-      "future": ""
+      "future": "If AI-guided design becomes routine, small teams could create enzymes and antibodies that once needed huge industrial labs, and could chase several properties at once rather than one at a time. That opens the door to new treatments, and to making everyday materials with biology instead of oil. For the rest of us it shows up quietly, in medicines that arrive sooner and in ordinary things grown rather than drilled for."
     }
   },
   {
@@ -2931,17 +2937,18 @@
     "countries": [
       "France"
     ],
-    "sector": "climatetech",
-    "sectorLabel": "ClimateTech",
-    "subsector": "Clean Energy & Climate Tech",
-    "yearFounded": 2020,
+    "sector": "climate-decarbonization",
+    "sectorLabel": "Climate & Decarbonization",
+    "subsector": "CO2 utilization / carbon-to-products",
+    "yearFounded": 2021,
     "years": [
       2024,
-      2025
+      2025,
+      2026
     ],
     "returning": true,
-    "statement": "Turns industrial CO₂ emissions into clean fuels with electricity and science.",
-    "website": "https://dioxycle.com/",
+    "statement": "Turns factory smoke into plastic.",
+    "website": "https://dioxycle.com",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc1f63862a870abb7badcb_Dioxycle%20ai.jpg",
     "legacy": {
       "solution": "Dioxycle is a French-American climate tech startup pioneering a novel electrolysis technology that converts industrial CO₂ emissions into sustainable ethylene—a key petrochemical—using only water and renewable electricity. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -2949,9 +2956,9 @@
       "description": "Dioxycle uses low-cost renewable electricity to power electrochemical reactors that convert CO₂ into valuable products like synthetic fuels and chemicals. Their breakthrough tech creates a closed-loop carbon economy capturing emissions at the source and turning them into clean, circular commodities."
     },
     "current": {
-      "fix": "",
+      "fix": "Plastics start with a chemical called ethylene, made today in huge fossil-fuel plants that run at around eight hundred degrees. Dioxycle is building cells that use electricity and water to turn the carbon in factory exhaust into ethylene and other everyday chemicals instead. They are designed to work at ordinary temperatures, taking carbon monoxide or carbon dioxide from a furnace's exhaust and giving back ethylene, or formic acid.",
       "outperform": "",
-      "future": ""
+      "future": "Imagine a steel mill or cement plant turning its own smoke into something it can sell. That would change how and where chemicals are made: smaller, cleaner and right next to the factories whose waste becomes the raw material. Chemical making would sit in the towns built around heavy industry, rather than out by the ports where fossil feedstock arrives, and the air those towns breathe would carry less of the works."
     }
   },
   {
@@ -3433,21 +3440,22 @@
     }
   },
   {
-    "name": "evroc",
+    "name": "Evroc",
     "slug": "evroc",
     "countries": [
       "Sweden"
     ],
-    "sector": "cleantech",
-    "sectorLabel": "CleanTech",
-    "subsector": "Cloud Infrastructure",
+    "sector": "data-digital-infrastructure",
+    "sectorLabel": "Data & Digital Infrastructure",
+    "subsector": "Sustainable compute & data centres",
     "yearFounded": 2022,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "Builds Europe’s first sovereign green cloud powered entirely by renewables.",
-    "website": "https://evroc.com/",
+    "returning": true,
+    "statement": "A cloud Europe owns, not one it rents",
+    "website": "https://evroc.com",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc1fa6c65220804b7441e9_evroc.png",
     "legacy": {
       "solution": "The company is developing a secure, sovereign, and sustainable hyperscale cloud infrastructure aimed at enhancing Europe's digital sovereignty and sustainability. ​ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus, sit amet eleifend leo iaculis in.",
@@ -3455,9 +3463,9 @@
       "description": "EVROC is building a European hyperscale cloud platform powered 100% by renewable energy. With local data centers and open, secure infrastructure, they’re giving Europe control over its digital future while slashing emissions from the data economy."
     },
     "current": {
-      "fix": "",
+      "fix": "European banks, hospitals and governments that want advanced cloud and AI services mostly have to use American providers, which puts their data under foreign law. Evroc is building a full European cloud platform from the ground up, writing its own software and building its own data centres in Sweden and France. It serves customers today from leased halls in Stockholm, Paris and Frankfurt while those sites go up.",
       "outperform": "",
-      "future": ""
+      "future": "A strong European cloud would give organisations real choice over where their data lives and whose rules apply, so a hospital could run its work without accepting another country's courts over it. That could help Europe build its digital future on infrastructure it owns and shapes itself. Sovereignty would stop being a clause buried in a contract and become an ordinary choice, settled close to home by the people it concerns."
     }
   },
   {
@@ -3688,17 +3696,18 @@
     "name": "Fleetzero",
     "slug": "fleetzero",
     "countries": [
-      "United States"
+      "US"
     ],
-    "sector": "climatetech",
-    "sectorLabel": "ClimateTech",
-    "subsector": "Transportation",
+    "sector": "mobility-transport",
+    "sectorLabel": "Mobility & Transport",
+    "subsector": "Maritime decarbonization",
     "yearFounded": 2021,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "Builds electric cargo ships replacing diesel with clean batteries at sea.",
+    "returning": true,
+    "statement": "No diesel left in a cargo ship's tank",
     "website": "https://www.fleetzero.com",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc2074f4b6bce09dbf3782_Fleetzero.png",
     "legacy": {
@@ -3707,9 +3716,9 @@
       "description": "Fleetzero designs and operates fully electric cargo ships powered by swappable battery packs. Their modular, no-fuel-needed approach decarbonizes freight at sea, dramatically cutting emissions while reducing operating costs and creating a cleaner, quieter maritime future."
     },
     "current": {
-      "fix": "",
+      "fix": "Ships run almost entirely on heavy fuel oil or diesel, and large marine batteries are hard to get, with long lead times and few suppliers to order from. Fleetzero builds container-sized battery systems for ships, along with the power hub that ties them into the propulsion, so vessels can run on stored electricity for part of their journeys and on their engines for the rest. The modules go into new ships and into ones already at sea.",
       "outperform": "",
-      "future": ""
+      "future": "If large ships can run much of their time on batteries, shipping emissions could fall on today's vessels, without waiting for new fuels. It could also mean cleaner air in ports and coastal cities where ships spend hours with engines running. For people who live beside a working harbour, that change arrives at the window rather than in a report, on the morning a ship comes in quiet and the air by the quayside smells of the sea."
     }
   },
   {
@@ -3886,15 +3895,16 @@
     "countries": [
       "France"
     ],
-    "sector": "materials",
-    "sectorLabel": "Materials",
-    "subsector": "",
+    "sector": "circular-economy-materials",
+    "sectorLabel": "Circular Economy & Materials",
+    "subsector": "Critical minerals & metals recovery",
     "yearFounded": 2021,
     "years": [
-      2023
+      2023,
+      2026
     ],
-    "returning": false,
-    "statement": "Mining metals using plants.",
+    "returning": true,
+    "statement": "Plants extract metals the earth can't reach",
     "website": "https://www.genomines.com/",
     "visual": "",
     "legacy": {
@@ -3903,9 +3913,9 @@
       "description": ""
     },
     "current": {
-      "fix": "",
+      "fix": "Batteries need nickel, but new nickel mines take over a decade to open, cost billions and can damage forests. Genomines grows engineered plants that draw nickel up out of the soil. After a few months the leaves are harvested and processed into battery-grade nickel. The plants grow on nickel-bearing ground too thin to justify a pit, a haul fleet and a smelter, and the crop can come round again the following season.",
       "outperform": "",
-      "future": ""
+      "future": "Imagine farming metals instead of digging for them. If plant-based mining works at scale, battery materials could come from degraded land in months rather than from new open pits after years, giving the energy transition a gentler way to source what it needs. For the places where this metal sits near the surface, that could mean a growing season and a harvest rather than a haul road and a tailings pond."
     }
   },
   {
@@ -3914,15 +3924,16 @@
     "countries": [
       "Nigeria"
     ],
-    "sector": "fintech",
-    "sectorLabel": "FinTech",
-    "subsector": "Fintech",
+    "sector": "fintech-financial-inclusion",
+    "sectorLabel": "Fintech & Financial Inclusion",
+    "subsector": "Asset & vehicle financing",
     "yearFounded": 2022,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "Gigmile turns Africa’s invisible gig workforce into entrepreneurs through tailored financing.",
+    "returning": true,
+    "statement": "Grows vehicle owners out of gig drivers",
     "website": "https://www.gigmile.com",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc20dce6039d6535f9e42a_Gigmile.png",
     "legacy": {
@@ -3931,9 +3942,9 @@
       "description": "Gigmile provides mobility-focused gig workers with affordable rent-to-own financing, asset subscriptions, and micro-loans empowering them to earn, grow, and participate anywhere they work."
     },
     "current": {
-      "fix": "",
+      "fix": "Many ride-hail and delivery drivers in Nigeria can't get a bank loan, so they rent vehicles on tough terms and may never own them. Gigmile leases motorbikes, tricycles and cars on a rent-to-own basis, with payments based on what drivers actually earn and insurance and servicing included. The payment is sized against trip and earnings data from the platforms a driver already works on, and at the end of the term the vehicle is theirs to keep.",
       "outperform": "",
-      "future": ""
+      "future": "If this model spreads across West Africa, millions of gig drivers could end up owning the vehicles they work with. Ownership builds a foundation for financial security, turning a daily hustle into an asset that belongs to the driver. A vehicle that is finally paid off is also something a family can borrow against, lend to a relative, hand on to someone else, or use to start a second line of work of their own."
     }
   },
   {
@@ -4108,18 +4119,19 @@
     "name": "Gridware",
     "slug": "gridware",
     "countries": [
-      "United States"
+      "US"
     ],
-    "sector": "energy",
-    "sectorLabel": "Energy",
-    "subsector": "Clean Energy & Climate Tech",
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Grid infrastructure hardware",
     "yearFounded": 2020,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "Detects grid faults before they spark hazards using smart sensors.",
-    "website": "https://gridware.io/",
+    "returning": true,
+    "statement": "Feels a power line fail before it burns.",
+    "website": "https://www.gridware.io",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc214ce973abb35c50b311_Gridware%20ai.jpg",
     "legacy": {
       "solution": "builds smart sensors that help utility companies to immediately detect, find, and fix grid outages and take steps to prevent new outages, and other related disasters, from happening at all. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus, sit amet eleifend leo iaculis in.",
@@ -4127,9 +4139,9 @@
       "description": "Gridware builds rugged, AI-enabled sensors that mount directly to power poles and monitor grid health in real time. They detect faults, sparks, and vibrations instantly—giving utilities a live map of grid safety and helping prevent disaster before it starts."
     },
     "current": {
-      "fix": "",
+      "fix": "Power companies often only learn a line has failed when a customer calls or smoke appears, and faults can spark wildfires. Gridware attaches solar-powered sensors to power poles that detect problems like a fallen branch, a broken wire or a leaning pole the moment they happen. Each sensor listens to the wire and the pole itself, tracking vibration, sound and tilt, and works out on the spot which of those has gone wrong.",
       "outperform": "",
-      "future": ""
+      "future": "If utilities know exactly where a problem is, they can fix one stretch of line instead of cutting power to whole regions during dangerous weather. That could mean fewer wildfires, fewer blackouts and a safer, smarter grid. On a windy day in a dry town, that is the difference between a crew sent out to one span of wire and a whole valley sitting in the dark, with fridges warming and phones going flat, waiting for the wind to drop."
     }
   },
   {
@@ -4506,16 +4518,17 @@
     "countries": [
       "Germany"
     ],
-    "sector": "cleantech",
-    "sectorLabel": "CleanTech",
-    "subsector": "Clean Energy & Climate Tech",
-    "yearFounded": 2024,
+    "sector": "data-digital-infrastructure",
+    "sectorLabel": "Data & Digital Infrastructure",
+    "subsector": "Industrial process AI",
+    "yearFounded": 2023,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "Uses AI Agents for Industrial Process Control",
-    "website": "https://www.juna.ai/",
+    "returning": true,
+    "statement": "Teaches a factory to save its own energy",
+    "website": "https://juna.ai",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc2165e28a224ccd05a040_Juna%20AI.png",
     "legacy": {
       "solution": "Juna.ai develops AI agents that autonomously optimize industrial processes to enhance efficiency and reduce emissions. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus, sit amet eleifend leo iaculis in. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem.",
@@ -4523,9 +4536,9 @@
       "description": "Juna AI optimizes energy-intensive production processes with AI-based control and scheduling. Their customized co-pilots are trained on historical process data and increase resource efficiency, throughput and utilization of industrial plants."
     },
     "current": {
-      "fix": "",
+      "fix": "Big industrial plants burn more energy than they need to, because furnaces and boilers slowly drift away from their best settings and engineers can't watch every one around the clock. Juna's AI agents read the plant's own data, spot the drift early and suggest a fix, with an operator signing off before anything changes. The agents follow how heat and material move through the plant, catching the small, steady losses that a trend screen misses between reviews.",
       "outperform": "",
-      "future": ""
+      "future": "Imagine every cement, glass and paper plant learning from the others, so a lesson from one kiln helps the next. Energy efficiency would stop being a one-off project at each site and start building on itself across whole industries, cutting fuel use and emissions as it goes. The materials a town is built from, its cement, its glass, its paper, would quietly get cheaper to make and lighter on the air around them."
     }
   },
   {
@@ -6304,15 +6317,16 @@
     "countries": [
       "Netherlands"
     ],
-    "sector": "climatetech",
-    "sectorLabel": "ClimateTech",
-    "subsector": "Clean Energy & Climate Tech",
+    "sector": "data-digital-infrastructure",
+    "sectorLabel": "Data & Digital Infrastructure",
+    "subsector": "Geospatial & earth observation",
     "yearFounded": 2018,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "Smart grids, safe forests with AI that keeps lights on and flames out",
+    "returning": true,
+    "statement": "Flags the trees most likely to spark a wildfire",
     "website": "https://www.overstory.com/",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc241af39bf9de16e1b92f_Overstory.png",
     "legacy": {
@@ -6321,9 +6335,9 @@
       "description": "Overstory's software uses AI and remote sensing data to create detailed vegetation maps. This allows utilities to create efficient and data-driven management plans, reducing vegetation-related risks and making operations more resilient."
     },
     "current": {
-      "fix": "",
+      "fix": "Trees touching power lines cause many outages and some of the most destructive wildfires, but utilities usually trim on a fixed schedule rather than by risk. Overstory uses satellite and aerial imagery to measure individual trees along power lines and rank which ones pose the greatest danger. Height, species, growth rate and the gap to the wire are read from the images and joined to the utility's own maps, so crews go to the spans that need them most.",
       "outperform": "",
-      "future": ""
+      "future": "If utilities focus on the trees that matter most, the same budget could prevent more outages and fires, season after season. That means safer communities, more reliable power and smarter care for the trees that don't need cutting. For a town below a wooded ridge, it is the difference between a summer spent watching the hillside and wondering, and one spent getting on with everything else that summer is for."
     }
   },
   {
@@ -6758,16 +6772,17 @@
     "countries": [
       "Germany"
     ],
-    "sector": "climatetech",
-    "sectorLabel": "ClimateTech",
-    "subsector": "Clean Energy & Climate Tech",
+    "sector": "built-environment",
+    "sectorLabel": "Built Environment",
+    "subsector": "PropTech & building-decarb software",
     "yearFounded": 2021,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "Provides data-based sustainability insights for real estate portfolio management.",
-    "website": "https://www.predium.de/",
+    "returning": true,
+    "statement": "Maps a building's path to zero carbon",
+    "website": "https://www.predium.de/en",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68d656e43eb1195cd47f5a9d_predium.avif",
     "legacy": {
       "solution": "Platform that enables real estate owners to pinpoint CO2 hotspots, assess climate risks, and prioritise renovations that deliver the greatest environmental and financial returns. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus, sit amet eleifend leo iaculis in.",
@@ -6775,9 +6790,9 @@
       "description": "Predium offers a digital platform that makes it radically simple for real estate players to measure, manage, and Predium's platform uses AI and satellite imagery to complete building data and link it to financial and sustainability metrics. This enables users to simulate investment scenarios and prioritize based on data rather than working in silos."
     },
     "current": {
-      "fix": "",
+      "fix": "Many landlords don't know how much carbon their buildings emit, and finding out usually means paying a consultant to visit each property and come back months later. Predium builds an energy and carbon model of a building from just its address, then ranks which upgrades would cut the most emissions for the money. Satellite imagery and public records fill in what the address alone cannot say, without anyone setting foot on site.",
       "outperform": "",
-      "future": ""
+      "future": "If this works at scale, housing associations and cities could plan upgrades for thousands of buildings in the time it now takes to survey one. That could speed up the renovation of older, poorly documented buildings that are too often left until last. For the people living in them, it means a warmer flat and a smaller bill arriving years sooner than a place on the waiting list would ever have allowed."
     }
   },
   {
@@ -6870,16 +6885,17 @@
     "countries": [
       "Germany"
     ],
-    "sector": "energy",
-    "sectorLabel": "Energy",
-    "subsector": "",
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Advanced nuclear & fusion",
     "yearFounded": 2023,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "Turning star power into clean power.",
-    "website": "https://www.proximafusion.com/",
+    "returning": true,
+    "statement": "Building a star for the power grid.",
+    "website": "https://www.proximafusion.com",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc17db13fb02ee8eaf6dba_Proxima%20Fusion.avif",
     "legacy": {
       "solution": "Nuclear fusion, the process that powers the sun has promised limitless clean energy for decades but has remained out of reach. Meanwhile, the climate crisis demands clean, scalable energy faster than ever. Existing solutions like solar and wind are essential but intermittent, and current nuclear fission comes with major safety and waste concerns. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.",
@@ -6887,9 +6903,9 @@
       "description": "Proxima Fusion is building the first generation of fusion power plants using quasi-isodynamic (QI) stellarators. The clearest, most robust path to putting fusion on the grid."
     },
     "current": {
-      "fix": "",
+      "fix": "Grids need clean power that's there whenever it's needed, not just when the sun shines or the wind blows. Today that gap is mostly filled by gas and coal. Proxima Fusion is designing stellarators, fusion machines that hold superheated plasma in place using twisted superconducting magnets. The shape of those magnets and the engineering of the plant around them are worked out together, in one simulation loop.",
       "outperform": "",
-      "future": ""
+      "future": "Fusion could provide steady, clean power without depending on rivers, coastlines or special geology. If it works commercially, clean electricity could be produced almost anywhere, starting with old power plant sites that already have grid connections in place. For places with no river to dam, no coastline and no hot rock beneath them, steady power would come down to a decision someone makes rather than a map they were handed."
     }
   },
   {
@@ -7375,15 +7391,16 @@
     "countries": [
       "France"
     ],
-    "sector": "healthtech",
-    "sectorLabel": "HealthTech",
-    "subsector": "Healthcare & Medicine",
+    "sector": "healthcare-medicine",
+    "sectorLabel": "Healthcare & Medicine",
+    "subsector": "Neurotech & brain interfaces",
     "yearFounded": 2017,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "Swallowable robots travel your body to deliver life-saving precision.",
+    "returning": true,
+    "statement": "Sends microrobots to brain tumors surgery can't reach",
     "website": "https://www.robeaute.com/",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc26c5dc3220f4b5562ba7_Robeaute%CC%81.png",
     "legacy": {
@@ -7392,9 +7409,9 @@
       "description": "Robeauté has created microrobots no bigger than a grain of rice. These tiny, AI‑guided robots can enter the brain through a small opening. They move through curved pathways to reach hard‑to‑access areas, where they can collect samples, deliver treatments, or gather data. Doing more with far less disruption and ushering in a new era of precision medicine."
     },
     "current": {
-      "fix": "",
+      "fix": "Some brain tumours sit where a straight surgical needle can't safely reach, tucked behind a vessel or under the areas that govern movement and speech. Robeauté is developing a rice-sized robot that enters through a tiny opening in the skull and steers itself around vital areas, guided by ultrasound, to take tissue samples, deliver drugs or place electrodes. A hair-thin tether carries power, and the tips can be swapped for the job.",
       "outperform": "",
-      "future": ""
+      "future": "Today, what a surgeon can treat depends on whether there's a safe straight path to it. A robot that can curve through the brain could change that, giving patients with hard-to-reach tumours a diagnosis and treatment options that currently don't exist for them. Sampling several points of one tumour, or placing an electrode where a rigid lead cannot go, would become a question of benefit rather than access."
     }
   },
   {
@@ -7626,18 +7643,19 @@
     "name": "Savor",
     "slug": "savor",
     "countries": [
-      "United States"
+      "US"
     ],
-    "sector": "foodtech",
-    "sectorLabel": "FoodTech",
-    "subsector": "Agriculture & Food Systems",
+    "sector": "agriculture-food",
+    "sectorLabel": "Agriculture & Food",
+    "subsector": "Sustainable food ingredients",
     "yearFounded": 2022,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "Real fats and oils made from carbon. No animals, plants, or farmland required",
-    "website": "http://www.savor.it/",
+    "returning": true,
+    "statement": "Cooks butter out of carbon and hydrogen.",
+    "website": "http://www.savor.it",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc27b7d2894f5fb13190fe_Savor.avif",
     "legacy": {
       "solution": "Traditional fat production, from dairy farming to palm oil plantations, drives deforestation, greenhouse gas emissions, and supply chain instability. As global demand for fats grows, the environmental cost of land-based agriculture becomes unsustainable. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -7645,9 +7663,9 @@
       "description": "Savor uses thermochemical processes to create real fats by following nature’s own blueprints. Their platform produces versatile, functional fats and oils directly from carbon sources without conventional animal or plant agriculture."
     },
     "current": {
-      "fix": "",
+      "fix": "Fats like butter and palm oil come from animals or plantations, and palm oil expansion has driven large-scale deforestation across South East Asia. Savor makes fat without farms, combining carbon and hydrogen over a catalyst into the same fat molecules found in butter and plant oils. Bonded to glycerol, the result behaves like the fat it replaces, melting the way a biscuit or a face cream needs it to.",
       "outperform": "",
-      "future": ""
+      "future": "If fat can be made in a factory at a competitive price, food and cosmetics companies could stop relying on crops linked to deforestation, buying instead from a plant sited wherever hydrogen is cheap. That could ease pressure on tropical forests while keeping the foods people love on the table. For the forests themselves, and for everything living in them, it is a hectare of ground that never has to be cleared at all."
     }
   },
   {
@@ -8301,16 +8319,17 @@
     "countries": [
       "Sweden"
     ],
-    "sector": "recycling",
-    "sectorLabel": "Recycling",
-    "subsector": "Circular Economy & Waste Management,Fashion & Retail",
+    "sector": "circular-economy-materials",
+    "sectorLabel": "Circular Economy & Materials",
+    "subsector": "Textile-to-textile recycling",
     "yearFounded": 2023,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "Circular polyester, again and again.",
-    "website": "https://syre.com/",
+    "returning": true,
+    "statement": "Textile waste becomes fashion's raw material",
+    "website": "https://www.syre.com",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc2acf2d3c5c7d1aab1b44_Syre.png",
     "legacy": {
       "solution": "Syre is a textile impact company that decarbonizes the industry via textile-to-textile recycling. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus, sit amet eleifend leo iaculis in. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem.",
@@ -8318,9 +8337,9 @@
       "description": "Syre closes the loop on textile waste. They use a chemical recycling process that restores old polyester garments into virgin-quality polyester fibers again and again. This built-for-scale method prevents waste and cuts emissions drastically. The result? A radically new supply chain for fashion that doesn’t cost the Earth."
     },
     "current": {
-      "fix": "",
+      "fix": "Most 'recycled' polyester clothing is actually made from drinks bottles, pulled out of a working bottle loop, while old clothes are burned, dumped or shipped abroad in bales. Syre breaks down used polyester textiles into their basic building blocks and rebuilds them into new polyester that's as good as virgin material. Shredded garments have their metal and hard points taken out, and what comes back is a chip a spinner can run exactly as it runs material made from oil.",
       "outperform": "",
-      "future": ""
+      "future": "If old clothes can become new ones at scale, fashion could stop depending on oil for polyester, one of its most-used materials, and stop leaning on the bottle stream to get there. Worn-out garments would become a valuable resource instead of a growing mountain of waste. The jacket at the back of a wardrobe would be the beginning of the next one, wherever in the world it was worn out, and the mills making it would draw on what people already own."
     }
   },
   {
@@ -8613,16 +8632,17 @@
     "countries": [
       "Germany"
     ],
-    "sector": "energy",
-    "sectorLabel": "Energy",
-    "subsector": "Clean Energy & Climate Tech",
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Energy retail & procurement",
     "yearFounded": 2022,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "Turns messy energy markets into clean power.",
-    "website": "https://www.trawa.de/",
+    "returning": true,
+    "statement": "Gives small factories an energy trader.",
+    "website": "https://www.trawa.de/en/",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc2cc2234c607673f7ba56_Trawa.png",
     "legacy": {
       "solution": "Trawa offers AI-based technology that analyzes customers (mostly companies) energy consumption, providing transparency over costs and CO₂ emissions, and assembles optimal renewable energy portfolios tailored to their usage behavior. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -8630,9 +8650,9 @@
       "description": "Trawa uses software and algorithms to automate clean energy procurement, ensuring companies get optimal pricing, real-time insights, and access to 100% renewable energy. Allowing them to save up to 30% on electricity costs and tap into easy-to-access green energy."
     },
     "current": {
-      "fix": "",
+      "fix": "Large companies have energy traders watching the market for the right moment to buy. Smaller businesses rarely do, so the price they pay is often set by whatever the market happened to be doing the week their old contract ran out. Trawa supplies electricity to mid-sized companies and uses its own software to decide when and how to buy, reading each customer's usage, solar panels and batteries. A hotel group gets the trading done for it.",
       "outperform": "",
-      "future": ""
+      "future": "If smaller businesses can buy energy as smartly as the biggest players, they can save money and make better use of their own solar and storage, counting panels and batteries as part of how they buy power. That could make clean energy pay off for many more factories and firms. Buying well would stop being something only size can afford, whoever happens to handle the contracts that week, in a business of any size, in any town."
     }
   },
   {
@@ -8976,18 +8996,19 @@
     "name": "Variant Bio",
     "slug": "variant-bio",
     "countries": [
-      "United States"
+      "US"
     ],
-    "sector": "biotech",
-    "sectorLabel": "BioTech",
-    "subsector": "Material Science & Biotechnology",
+    "sector": "healthcare-medicine",
+    "sectorLabel": "Healthcare & Medicine",
+    "subsector": "Genomics & precision medicine",
     "yearFounded": 2018,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "Cures discovered in overlooked genetics",
-    "website": "variantbio.com",
+    "returning": true,
+    "statement": "Studies rare genes to find medicines for everyone",
+    "website": "https://www.variantbio.com",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc2dbc05e2845c2164a594_VariantBio.png",
     "legacy": {
       "solution": "Variant Bio is a drug discovery company that turns underexplored genetic diversity into new medicines. They combine data and machine learning to map disease mechanisms and develop precision therapies. All of this is built on a foundation of ethics and community collaboration. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -8995,9 +9016,9 @@
       "description": "Variant Bio identifies genetic outliers, people and communities with rare traits like disease resistance or extreme longevity, and partners with them to discover new therapies. Through ethical, benefit-sharing collaborations, they build more inclusive genomic data and translate it into breakthrough drugs. It’s precision medicine that starts with global justice."
     },
     "current": {
-      "fix": "",
+      "fix": "Most genetic research is based on people of European ancestry, held in a handful of wealthy-country biobanks, so many valuable insights from other populations are missed. Variant Bio partners with communities around the world whose members have unusual health traits, studies their DNA with consent, and shares the benefits of any discoveries back with those communities. Traits like resistance to a common disease point to rare protective variants that can become medicines.",
       "outperform": "",
-      "future": ""
+      "future": "Studying the full diversity of human genetics could uncover new medicines that benefit everyone, because a variant only becomes a medicine if someone sequenced the people who carry it. It could also set a fairer standard for research, where the communities who make discoveries possible share in their rewards. Sequencing a population would come with terms agreed in advance, and a share of whatever follows."
     }
   },
   {
@@ -9231,16 +9252,17 @@
     "countries": [
       "Norway"
     ],
-    "sector": "cleantech",
-    "sectorLabel": "CleanTech",
-    "subsector": "Clean Energy & Climate Tech",
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Wind energy technology",
     "yearFounded": 2022,
     "years": [
-      2025
+      2025,
+      2026
     ],
-    "returning": false,
-    "statement": "The next generation of wind farms.",
-    "website": "https://vind.ai/",
+    "returning": true,
+    "statement": "Finds the wind farm hiding in a map. / Where thirty years of wind gets decided.",
+    "website": "https://www.vind.ai",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc2e0ef7c69150ceb3b185_VindAI%20(1).png",
     "legacy": {
       "solution": "Vind AI is a Norwegian startup providing an AI-powered SaaS platform for optimizing wind park design and development. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus, sit amet eleifend leo iaculis in. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem.",
@@ -9248,9 +9270,9 @@
       "description": "Vind AI has created a software platform that uses AI to design wind farms. It combines layout, yield, cost, and environmental data in one place. Developers can test hundreds of scenarios in minutes, compare outcomes, and plan projects faster and more accurately."
     },
     "current": {
-      "fix": "",
+      "fix": "Planning a wind farm means juggling turbine positions, costs, cables, grid connection and local impact, spread across different software and consultants. Each change can take weeks. Vind AI brings it all into one model, so developers can test new layouts and see the business case in a single step. Moving a turbine returns the yield, the cable routing and the revenue together, instead of another round of files sent out by email.",
       "outperform": "",
-      "future": ""
+      "future": "Faster planning means more wind farms get built, and sites once dismissed as too difficult might get a second look. That could speed up the growth of wind power at a time when every year counts. A team could weigh many coastlines for the effort a single one takes today, and the years now spent finding out late that a place does not pay would be spent building instead, off coastlines nobody had bothered to look at twice."
     }
   },
   {
@@ -9895,6 +9917,2163 @@
       "fix": "",
       "outperform": "",
       "future": ""
+    }
+  },
+  {
+    "name": "44.01",
+    "slug": "44-01",
+    "countries": [
+      "Oman"
+    ],
+    "sector": "climate-decarbonization",
+    "sectorLabel": "Climate & Decarbonization",
+    "subsector": "Engineered carbon removal & storage",
+    "yearFounded": 2020,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Turns carbon dioxide into stone.",
+    "website": "https://www.4401.earth",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Storing captured CO₂ usually means pumping it underground as a gas and watching the site for decades to make sure it stays put, with someone carrying the liability all that time. 44.01 mixes CO₂ with seawater and injects it into peridotite, a rock that reacts with it, turning the carbon into solid stone within months. Once the carbon has become mineral it is simply part of the rock, and the watching can stop.",
+      "outperform": "",
+      "future": "If carbon can be turned into rock for good, storing it becomes a job that actually finishes rather than an obligation that outlasts the contract. That could make permanent carbon storage simpler, safer and easier to scale, especially in regions where the right rocks are plentiful. For the places sitting on those rocks, a quirk of local geology turns into steady work, and emitters gain somewhere to put their carbon."
+    }
+  },
+  {
+    "name": "Root",
+    "slug": "root",
+    "countries": [
+      "Sweden"
+    ],
+    "sector": "agriculture-food",
+    "sectorLabel": "Agriculture & Food",
+    "subsector": "Livestock methane reduction",
+    "yearFounded": 2023,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Cuts the climate cost of every cow.",
+    "website": "https://www.agteria.com/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Feed additives that cut methane from cows already exist, but they cost more per animal than most farmers are willing to pay, so they spread only where a dairy, a retailer or a carbon scheme picks up the bill. Root is developing a new molecule that blocks the reaction in a cow's stomach that turns feed into methane, designed to be effective at a much lower cost per animal. It goes in as a small daily dose, mixed into the feed a herd already eats.",
+      "outperform": "",
+      "future": "If cutting methane becomes cheap enough, it could become standard on farms everywhere rather than something only premium supply chains pay for. That could bring down emissions from the world's cattle herd, one of the biggest sources of methane. Most cattle are given nothing at all today, and a dose a farmer can afford unprompted is what changes that, herd by herd, in the countries where the herd is still growing."
+    }
+  },
+  {
+    "name": "AI-BOB",
+    "slug": "ai-bob",
+    "countries": [
+      "Sweden"
+    ],
+    "sector": "built-environment",
+    "sectorLabel": "Built Environment",
+    "subsector": "PropTech & building-decarb software",
+    "yearFounded": 2024,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Catches building errors before they're built",
+    "website": "https://aibob.io",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Sweden has replaced its detailed building code with rules based on performance, dropping the worked dimensions architects used to measure against, which leaves more room for interpretation and more room for mistakes. AI-BOB works inside architects' design software, checking a building design against the text of the regulations as it's drawn, flagging the clauses it fails and suggesting fixes. The drawing stays open the whole time.",
+      "outperform": "",
+      "future": "Catching mistakes on screen is far cheaper than fixing them on site. If checks like this become routine, buildings could be designed faster, approved more smoothly and built with less waste, time and cost. A rule missed at the drawing board costs an afternoon of redrawing, instead of a change order once the foundation has gone in, the site is full of people and the concrete has already been poured."
+    }
+  },
+  {
+    "name": "Amatera",
+    "slug": "amatera",
+    "countries": [
+      "France"
+    ],
+    "sector": "agriculture-food",
+    "sectorLabel": "Agriculture & Food",
+    "subsector": "Crop genetics & breeding",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Coffee bred in years, not lifetimes.",
+    "website": "https://www.amatera.bio/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Breeding a new coffee variety can take longer than a breeder's career, because each generation of plants has to grow and bear fruit before it can be judged, and the work sits mainly with public programmes on modest budgets. Amatera works with coffee, banana and grape at the single-cell stage, inducing variation and screening the resulting cell lines in the lab, then growing out only the most promising plants. The choosing happens before anything is planted.",
+      "outperform": "",
+      "future": "As climate change reshapes where crops can grow, farmers need new varieties fast. Breeding in years rather than decades could help keep coffee, bananas and grapes thriving, and protect the livelihoods of the farmers who grow them. Crops that were never worth a breeding programme measured in lifetimes could become worth the effort, in exactly the places where growing conditions are shifting fastest."
+    }
+  },
+  {
+    "name": "Ampd Energy",
+    "slug": "ampd-energy",
+    "countries": [
+      "Hong Kong"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Battery storage systems & second-life",
+    "yearFounded": 2014,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Powers cranes without the diesel.",
+    "website": "https://www.ampd.energy/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Construction sites usually run cranes and hoists on diesel generators sized for brief peaks, so they spend most of the day idling far below their rating, noisy and polluting, within earshot of everyone living nearby. Ampd Energy's sealed battery units replace those generators, charging from a small grid connection and delivering the bursts of power the machines need. There are no fuel deliveries to book and no refuelling to log.",
+      "outperform": "",
+      "future": "If building sites can run on stored electricity, cities could become quieter and cleaner while they grow. Rules for low-emission construction would become practical to follow, and sites wouldn't have to wait for costly grid upgrades before ditching diesel. For the people living beside a build, the years it takes would sound different, the air on their street would be easier to breathe, and the quiet hours would stay quiet."
+    }
+  },
+  {
+    "name": "ARC Ride",
+    "slug": "arc-ride",
+    "countries": [
+      "Kenya"
+    ],
+    "sector": "mobility-transport",
+    "sectorLabel": "Mobility & Transport",
+    "subsector": "Electric vehicles & components",
+    "yearFounded": 2020,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Trades petrol fumes for a charged battery",
+    "website": "https://arcrideglobal.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "For motorbike taxi riders in Kenya, electric bikes are hard to afford because the battery is so expensive, and nobody can lose hours to charging in the middle of a working day. ARC Ride builds electric motorbikes and three-wheelers in Nairobi and runs a network where riders swap a flat battery for a charged one in minutes, paying per swap. The battery stops being something a rider has to buy before they can start work.",
+      "outperform": "",
+      "future": "With enough swap stations, going electric becomes as easy as filling up with petrol, and cheaper. That could put more money in riders' pockets, cut fuel costs and clean up city air across Africa, where millions earn their living on two wheels. Every move in the pump price comes straight out of a rider's daily takings today, and stations sitting close enough together take that worry off the road for good."
+    }
+  },
+  {
+    "name": "ArkeaBio",
+    "slug": "arkeabio",
+    "countries": [
+      "US"
+    ],
+    "sector": "agriculture-food",
+    "sectorLabel": "Agriculture & Food",
+    "subsector": "Livestock methane reduction",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "A vaccine for the climate, given to cows.",
+    "website": "https://www.arkeabio.com/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Cows release large amounts of methane, a powerful greenhouse gas, produced by microbes in their stomachs. Current solutions are feed additives that need to be mixed into every meal, which doesn't work for grazing cattle. ArkeaBio is developing a vaccine that trains the cow's immune system to reduce those methane-producing microbes, with the antibodies carried into the stomach in the saliva a cow already makes in great volume.",
+      "outperform": "",
+      "future": "A simple injection, given during routine vet visits, could reach cattle anywhere, including the grazing herds that no current solution touches. That could make cutting methane from livestock possible worldwide, not just on indoor farms. Veterinary channels already reach almost every country, including the ones where herds are still growing, so a cow out on grass would get the same care as one kept inside."
+    }
+  },
+  {
+    "name": "AssetCool",
+    "slug": "assetcool",
+    "countries": [
+      "UK"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Grid infrastructure hardware",
+    "yearFounded": 2016,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Sunscreen for the power grid.",
+    "website": "https://www.assetcool.com/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Power lines can only carry so much electricity before they heat up and sag toward the ground, which limits how much new wind and solar power can connect. AssetCool sends a robot along live power lines to coat them with a surface that reflects sunlight and releases heat, so the lines stay cooler and carry more power. Raising that ceiling has usually meant stringing new wire along the same towers, priced by the mile and planned over years.",
+      "outperform": "",
+      "future": "Building new power lines takes years. Upgrading existing ones in place could free up capacity quickly, letting more clean energy onto the grid now, using the towers and wires we already have. No new right of way, no land to negotiate and no circuit switched out while crews string wire: capacity added a line at a time, on the grid that already runs past everybody's window and into the places waiting to connect."
+    }
+  },
+  {
+    "name": "Ataraxis AI",
+    "slug": "ataraxis-ai",
+    "countries": [
+      "US"
+    ],
+    "sector": "healthcare-medicine",
+    "sectorLabel": "Healthcare & Medicine",
+    "subsector": "AI diagnostics & screening",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Reads a biopsy to predict who needs chemo.",
+    "website": "https://www.ataraxis.ai",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Deciding whether a breast cancer patient needs chemotherapy often means sending tissue to a specialist lab and waiting around two weeks, and the test doesn't cover every type of breast cancer. Ataraxis AI uses AI to read the biopsy slide a hospital already has and estimate how likely the cancer is to return. It reads the shape of the tumour alongside basic clinical details, so patients whose cancer sits outside today's test are no longer treated on group averages.",
+      "outperform": "",
+      "future": "If a slide a hospital already has can produce this kind of risk estimate within days, more patients could get personalised treatment decisions sooner, including those with cancer types current tests don't cover. Some could be spared chemotherapy that was never going to help them. For someone waiting after a biopsy, the answer would come back in the days after diagnosis rather than the weeks of waiting the old route takes."
+    }
+  },
+  {
+    "name": "Avelios Medical",
+    "slug": "avelios-medical",
+    "countries": [
+      "Germany"
+    ],
+    "sector": "healthcare-medicine",
+    "sectorLabel": "Healthcare & Medicine",
+    "subsector": "Health IT & clinical software",
+    "yearFounded": 2020,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Updates hospital software so care keeps running.",
+    "website": "https://www.avelios.com/en",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Many hospitals in German-speaking countries have to replace their core software in the coming years, usually in one risky switchover prepared for well over a year, with every ward moving at once. Avelios offers a modern hospital system that can be introduced step by step, and records information in a structured way that different tools can understand. Ward rounds, medication, theatre lists and billing are all written down in shared clinical terms as the work happens.",
+      "outperform": "",
+      "future": "When patient records are clear and consistent from the start, the same information can support billing, safety checks and medical research without a separate project to clean it up first. Hospitals could learn faster from their own data, helping doctors make better decisions for patients. For anyone being treated, that means the care they get is shaped by what the hospital has already learned from everyone who came before them."
+    }
+  },
+  {
+    "name": "Axle Energy",
+    "slug": "axle-energy",
+    "countries": [
+      "UK"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Energy management & grid-flexibility software",
+    "yearFounded": 2023,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Home devices, standing in for gas plants.",
+    "website": "https://www.axle.energy",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "When electricity demand peaks, gas plants are paid to fire up, while electric cars, home batteries and heat pumps sit idle in garages and airing cupboards. Axle Energy connects these home devices to electricity markets, so they can shift their energy use when it helps the grid, and households get paid for it. One connection registers a device, works out what it can shift, offers that to the market and sends the money back to the household.",
+      "outperform": "",
+      "future": "Millions of homes already hold a huge amount of flexible energy in their garages and utility rooms, needing no new site, no permit and no construction. If it can be put to work, the grid could rely less on fossil fuel plants for peak demand, and families could earn money for helping keep the lights on. The car charging overnight and the heating that pauses for an hour become a quiet contribution from an ordinary street."
+    }
+  },
+  {
+    "name": "Bees & Bears",
+    "slug": "bees-bears",
+    "countries": [
+      "Germany"
+    ],
+    "sector": "fintech-financial-inclusion",
+    "sectorLabel": "Fintech & Financial Inclusion",
+    "subsector": "Climate & energy financing",
+    "yearFounded": 2023,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Puts solar within reach of any household",
+    "website": "https://www.beesandbears.com/en/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Many households want solar panels or a heat pump but can't pay the full cost upfront, and applying for a loan separately takes time while the quote goes stale and the project drifts. Bees & Bears lets installers offer financing on the spot during the sales visit, with a partner bank handling the credit. The installer builds the instalment plan in the same tool that produces the quote, and the bank pays the work out in stages as the job progresses.",
+      "outperform": "",
+      "future": "When financing is as easy as signing the quote, far more families can make the switch to clean energy at home, deciding during the visit rather than months later. That could speed up the spread of solar and heat pumps well beyond households with savings to spare. It would show up in ordinary streets, on the roofs and in the cellars of families who had always assumed this was something other people could afford."
+    }
+  },
+  {
+    "name": "Biographica",
+    "slug": "biographica",
+    "countries": [
+      "UK"
+    ],
+    "sector": "agriculture-food",
+    "sectorLabel": "Agriculture & Food",
+    "subsector": "Crop genetics & breeding",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Gives crop breeding a search engine.",
+    "website": "https://graphica.bio",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Finding the genes behind useful crop traits, like drought tolerance, is slow: each candidate gene can take a full growing season to test, and most turn out to be dead ends. Biographica uses AI to predict which genes matter most, then tests the shortlist in real plants and learns from the results. The models read protein structures, regulatory DNA, gene networks and published research, and every field result sharpens the next prediction.",
+      "outperform": "",
+      "future": "If breeders can find the right genes faster, they can improve more traits in more crops, including the minor crops and vegetables grown by smaller farmers that rarely get attention today. That could mean hardier harvests as the climate changes. For a family farming a few acres in a drying season, it is the difference between a crop that copes with the weather it now gets and one bred for somewhere else."
+    }
+  },
+  {
+    "name": "BIOSORRA",
+    "slug": "biosorra",
+    "countries": [
+      "Kenya"
+    ],
+    "sector": "agriculture-food",
+    "sectorLabel": "Agriculture & Food",
+    "subsector": "Agricultural carbon & soil",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Bakes nutshell waste into carbon-rich soil.",
+    "website": "https://www.biosorra.com/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "In Kenya, nutshells and husks from crop processing are often burned or dumped at the mill gate, releasing their carbon within hours, while nearby farmers struggle with worn-out soil. BIOSORRA heats that waste in a unit it built itself, turning it into biochar: a charcoal-like material that improves soil and locks carbon away for the long term. The residue and the tired fields sit a few kilometres apart, and this is what joins them.",
+      "outperform": "",
+      "future": "Very little carbon removal happens in Africa today, where a single corporate purchase can count among the largest deals on the continent. If this approach spreads to nut, coffee, cocoa and sugar processors across the tropics, farm waste could become a source of healthier soil, local jobs and trusted carbon removal, paid for by the buyers rather than the farmers. The crops the world already buys would leave behind better ground and steadier harvests for the people who grow them."
+    }
+  },
+  {
+    "name": "bound4blue",
+    "slug": "bound4blue",
+    "countries": [
+      "Spain"
+    ],
+    "sector": "climate-decarbonization",
+    "sectorLabel": "Climate & Decarbonization",
+    "subsector": "Maritime decarbonization",
+    "yearFounded": 2015,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Wind power for the ships that move the world.",
+    "website": "https://www.bound4blue.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Cargo ships run almost entirely on fossil fuel, and cleaner fuels are still scarce and expensive, with most of them needing a new hull to burn. bound4blue fits ships with tall, rigid sails that use a fan to hold the airflow, so they generate strong pushing power from the wind and adjust themselves without the crew. Every sail keeps working at angles where a soft sail would stall, taking a share off the fuel bill of a ship already at sea.",
+      "outperform": "",
+      "future": "The ships sailing today will be around for decades, and they will keep burning oil unless something changes on the vessels that exist now. If modern sails can be fitted during routine maintenance, existing fleets could cut fuel use and emissions right away, bringing wind power back to the ocean in a new form, fitted in a drydock slot a ship was booked into anyway. The trade that carries almost everything we own would move again partly on weather."
+    }
+  },
+  {
+    "name": "CLER",
+    "slug": "cler",
+    "countries": [
+      "Sweden"
+    ],
+    "sector": "healthcare-medicine",
+    "sectorLabel": "Healthcare & Medicine",
+    "subsector": "Indoor air quality",
+    "yearFounded": 2020,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Spins pollutants out of the air, no filters needed",
+    "website": "https://clerglobal.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Commercial kitchens and industrial buildings use filters to catch grease and dust, but filters clog quickly, use more energy as they fill and need frequent replacing. CLER spins the air so fast that grease and particles separate out and drain away, with no filters needed. With nothing loading up, the fans move the same air on the same power, and the panels that used to be swapped out and sent to landfill are gone from the job altogether.",
+      "outperform": "",
+      "future": "Air cleaning without filters to replace means lower energy use, less waste and fewer maintenance visits. Kitchens and factories could keep their air clean all the time, improving working conditions and reducing fire risk. Extraction could run at full strength through the whole year instead of fading between service calls, which for the cooks on the line and the crews on the floor means cleaner air to breathe for a whole shift."
+    }
+  },
+  {
+    "name": "Decade Energy",
+    "slug": "decade-energy",
+    "countries": [
+      "France"
+    ],
+    "sector": "mobility-transport",
+    "sectorLabel": "Mobility & Transport",
+    "subsector": "EV charging infrastructure",
+    "yearFounded": 2024,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Wires up the grid electric trucks need",
+    "website": "https://decade.energy",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Electric trucks are ready, but the depots they charge at often aren't. Grid connections can take years and the engineering is complex. Decade Energy builds and runs the full charging setup, including grid connection, batteries, solar and chargers, and depots pay a monthly fee rather than buying the equipment. It keeps ownership and operates the site, so the queue, the engineering and the upkeep sit with people who do this every day.",
+      "outperform": "",
+      "future": "If charging infrastructure becomes a service, logistics companies can electrify their fleets as fast as they can buy trucks, rather than waiting on a connection date nobody in the business controls. That could speed up the shift to cleaner freight across Europe, cutting emissions and noise on the roads. For anyone living along a freight route, that arrives as quieter mornings and cleaner air at the roadside."
+    }
+  },
+  {
+    "name": "Delfos Energy",
+    "slug": "delfos-energy",
+    "countries": [
+      "Spain"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Renewable asset performance",
+    "yearFounded": 2017,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Spots the fault before the power stops.",
+    "website": "https://www.delfos.energy/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Wind, solar and battery sites produce huge amounts of data, but engineers don't have time to read it all, so faults often go unnoticed until they cause losses. Delfos Energy uses AI to analyse this data and gives operators a clear list of what to fix, when, and what it will cost if they wait. The signals already stream in from each manufacturer's own system, and the ranking pulls the real fault out from under the nuisance alerts.",
+      "outperform": "",
+      "future": "Getting more clean power from the turbines and panels already standing is one of the fastest wins in the energy transition. Small gains at each site add up to a lot of extra clean electricity, without new land or construction. It arrives with no permits to win and nothing to build, in the very years when new projects sit waiting in a connection queue, and the view from the nearest village stays exactly as it was."
+    }
+  },
+  {
+    "name": "Djamo",
+    "slug": "djamo",
+    "countries": [
+      "Côte d'Ivoire"
+    ],
+    "sector": "fintech-financial-inclusion",
+    "sectorLabel": "Fintech & Financial Inclusion",
+    "subsector": "Digital banking & consumer credit",
+    "yearFounded": 2020,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "The unbanked, now carrying a full bank",
+    "website": "https://www.djamo.com/en-ci",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "In Francophone West Africa, most adults don't have a bank account, and mobile money lets people send money but not save or borrow. Djamo offers a banking app with a card, interest-earning savings, small loans and even access to the regional stock market. A customer signs up from a phone and gets an account number and a Visa card, without the payslips and proof of address a branch would ask for and cannot get from informal earners.",
+      "outperform": "",
+      "future": "If everyday people can save, borrow and invest from their phones, they gain tools to plan for the future, handle emergencies and grow their businesses. That could help millions build financial security across West Africa, in places where a branch has never been within easy reach. For a market trader or a young worker sending money home, it is the difference between money that only moves and money that can also grow."
+    }
+  },
+  {
+    "name": "Endolith",
+    "slug": "endolith",
+    "countries": [
+      "US"
+    ],
+    "sector": "circular-economy-materials",
+    "sectorLabel": "Circular Economy & Materials",
+    "subsector": "Critical minerals & metals recovery",
+    "yearFounded": 2023,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Microbes unlock the copper conventional mining leaves behind",
+    "website": "https://www.endolithmining.com/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "The most common type of copper ore is hard to process, so much low-grade rock is left on waste piles at mines. Endolith uses tailored teams of microbes, chosen with the help of software for each site, to release copper from ore on existing processing pads. The microbes free the copper into the liquid running through the heap, on pads a mine has already built, so rock written off as too poor to treat could go back into production.",
+      "outperform": "",
+      "future": "If microbes can release copper from rock that's currently discarded, existing mines could produce more without digging new pits. That could help meet the growing demand for copper for electric cars, grids and renewables, with less environmental disruption. For the communities living beside a working mine, more of the metal comes from ground already opened up, rather than from somewhere new having to be broken open."
+    }
+  },
+  {
+    "name": "Enerin",
+    "slug": "enerin",
+    "countries": [
+      "Norway"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Industrial heat decarbonization",
+    "yearFounded": 2017,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Factory steam without the chimney.",
+    "website": "https://www.enerin.no",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Factories use huge amounts of heat for drying, distilling and sterilising, mostly from gas-fired boilers, while waste warmth escapes through vents. Enerin's heat pump uses helium to capture that waste heat and boost it to the high temperatures industrial processes need, running on electricity. Compressing and expanding helium rather than boiling a refrigerant lets it reach hot water, steam or thermal oil in one step, and give back chilled water at the cold end.",
+      "outperform": "",
+      "future": "Most heat pumps can't get hot enough for heavy industry, which is why factories still burn fuel and keep a stack running whenever the line runs. Enerin's approach could make it practical for paper mills, distilleries and chemical plants to switch to clean electric heat. The warm air a building has always vented to the sky would come back as the heat the work needs, and the towns built around those mills would keep the mill and lose the chimney."
+    }
+  },
+  {
+    "name": "Enline",
+    "slug": "enline",
+    "countries": [
+      "Portugal"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Grid capacity & enhancement",
+    "yearFounded": null,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Software that makes power lines bigger.",
+    "website": "https://www.enline.energy",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Power lines are rated as if it's always a hot, windless, sunny day, which means they often carry far less electricity than they safely could. Enline uses a digital model of the grid, combining weather, terrain and line data, to calculate how much power each line can really carry at any moment. Because nothing has to be fitted to a live conductor, a whole network can be rated this way rather than one circuit at a time.",
+      "outperform": "",
+      "future": "Many clean energy projects wait years for grid connections. If existing lines can safely carry more power, some of those projects could connect much sooner, making better use of the grid we already have. It would mean more clean electricity travelling on wires already strung across the country, with no new towers and no new land, and towns waiting on a wind farm getting their power years earlier than the queue would ever have allowed."
+    }
+  },
+  {
+    "name": "Entrix",
+    "slug": "entrix",
+    "countries": [
+      "Germany"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Energy management & grid-flexibility software",
+    "yearFounded": 2021,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Stores and trades surplus power so none of it goes to waste",
+    "website": "https://entrixenergy.com/en",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Large batteries help store surplus wind and solar power, but earning money from them means trading electricity around the clock across complex markets. Entrix runs grid batteries it does not own using automated trading software that decides minute by minute whether to charge, hold or sell, bidding the same battery into several European markets at once. Owners get the benefit without staffing a trading desk of their own.",
+      "outperform": "",
+      "future": "If battery owners can count on steady income, banks will be more willing to finance new storage projects, and more of them will clear the credit committee. More batteries on the grid means less clean power wasted and a smoother path to a renewable energy system. For the rest of us, it means the wind that blows hard on a quiet night is still worth something by morning, instead of being turned away."
+    }
+  },
+  {
+    "name": "Epoch Biodesign",
+    "slug": "epoch-biodesign",
+    "countries": [
+      "UK"
+    ],
+    "sector": "circular-economy-materials",
+    "sectorLabel": "Circular Economy & Materials",
+    "subsector": "Advanced plastic & chemical recycling",
+    "yearFounded": 2019,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Landfill nylon becomes new fiber",
+    "website": "https://www.epochbiodesign.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Nylon in clothing, airbags and car interiors is very hard to recycle, because coatings, dyes and stretchy blends defeat shredding, so most of it ends up in landfill or is burned, while new nylon is made from oil. Epoch Biodesign uses AI to design enzymes that break nylon down into its basic building blocks in water, at room temperature rather than furnace heat. Worn clothing and old airbag fabric can become the material they started as.",
+      "outperform": "",
+      "future": "If enzymes can recycle mixed and coated nylon, old garments and car fabrics could become the raw material for new products, rather than something someone pays to get rid of. That would give nylon waste real value and help cut the need for oil-based production. It would also give the people who collect and sort textiles a reason to keep nylon aside and handle it with care, because somebody is waiting to buy it."
+    }
+  },
+  {
+    "name": "Etalytics",
+    "slug": "etalytics",
+    "countries": [
+      "Germany"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Energy management & grid-flexibility software",
+    "yearFounded": 2020,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Teaches data centres to cool themselves.",
+    "website": "https://etalytics.com/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Data centres use a lot of energy just to stay cool, and their cooling systems often run on settings chosen the day they were switched on, with plenty of waste built in. Etalytics creates a digital model of each site's cooling system from its own sensor history and uses AI to adjust it constantly based on weather, workload and electricity prices. Free cooling comes on at the right hour, and a third chiller stays off when two will carry the load.",
+      "outperform": "",
+      "future": "Data centres are one of the fastest-growing users of electricity, and new ones wait years in the queue for a grid connection. If smart software can cut their cooling needs without new equipment, grids gain precious capacity and the digital world grows with a smaller footprint. No new power line, no new permit, nothing built: only the buildings that already stand, asking a little less of the towns around them."
+    }
+  },
+  {
+    "name": "Exergy3",
+    "slug": "exergy3",
+    "countries": [
+      "UK"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Long-duration energy storage",
+    "yearFounded": 2023,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Factory heat, made from wasted power.",
+    "website": "https://www.exergy3.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Factories need high-temperature heat on demand, usually from gas, even when wind farms are being paid to switch off because there's too much power. Exergy3 builds modular thermal storage that soaks up cheap surplus electricity in short bursts and stores it as heat far above what a boiler or heat pump reaches, releasing it as a controlled stream of hot gas whenever the factory needs it. A distillery can take its heat from the windiest hour of the week.",
+      "outperform": "",
+      "future": "If surplus wind power can be stored as heat, distilleries, food plants and glassworks could run on clean energy that would otherwise go to waste, buying it in the hours it costs least. It turns a grid problem into an industrial one that can be solved. The power that Scottish wind farms are now paid to stop making would end up in the whisky, the bread and the window glass instead, in towns that live beside the turbines."
+    }
+  },
+  {
+    "name": "Farmless",
+    "slug": "farmless",
+    "countries": [
+      "Netherlands"
+    ],
+    "sector": "agriculture-food",
+    "sectorLabel": "Agriculture & Food",
+    "subsector": "Alternative proteins & fermentation",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Brews protein out of thin air and electricity.",
+    "website": "https://farmless.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "All our protein, whether from animals, soy or peas, depends on farmland, and so do the fermented alternatives, which are fed on sugar that is grown in fields as well. Farmless makes protein without fields: microbes in an ordinary brewing tank feed on an ingredient made from captured carbon, hydrogen and renewable electricity, producing a complete protein powder. What the tank needs is electricity and volume, not hectares.",
+      "outperform": "",
+      "future": "If protein can be made from air and electricity at a competitive price, food production could be freed from its dependence on land. That could ease pressure on forests and farmland, and let protein be produced almost anywhere in the world. The world's protein map has always followed its farmland map, and a tank that runs on carbon and electricity is one of the few things that could begin to draw that map differently."
+    }
+  },
+  {
+    "name": "Flok Health",
+    "slug": "flok-health",
+    "countries": [
+      "UK"
+    ],
+    "sector": "healthcare-medicine",
+    "sectorLabel": "Healthcare & Medicine",
+    "subsector": "Digital care delivery & remote monitoring",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Treats back and joint pain without a waiting list",
+    "website": "https://www.flok.health",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Back and joint pain is one of the biggest causes of disability worldwide, and patients often wait months for physiotherapy, because every appointment takes a clinician's hour. Flok offers physio through video appointments led by an AI clinician that assesses patients, sets exercises and adjusts treatment at each follow-up, handing over to a human physio when needed. Treatment can begin in days rather than seasons.",
+      "outperform": "",
+      "future": "If routine cases can be treated without a waiting list, more people get help sooner, and physiotherapists can focus on patients with more complex needs. It could be a new model for making healthcare capacity grow with demand, rather than with the number of people a service manages to hire. For someone whose back has hurt since spring, it means getting back to the stairs, the garden and the ordinary day that much sooner."
+    }
+  },
+  {
+    "name": "Floodbase",
+    "slug": "floodbase",
+    "countries": [
+      "US"
+    ],
+    "sector": "data-digital-infrastructure",
+    "sectorLabel": "Data & Digital Infrastructure",
+    "subsector": "Climate & weather intelligence",
+    "yearFounded": 2015,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Flood claims from orbit",
+    "website": "https://www.floodbase.com/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Most flood damage worldwide is uninsured, partly because checking every claim in person is slow and costly, with an adjuster visiting each site and the paperwork running for months. Floodbase combines satellite images, river data and modelling to map exactly where a flood hit and how far the water spread, so insurers can pay out quickly when a flood reaches a set level. Nobody has to photograph a ruined room to prove it.",
+      "outperform": "",
+      "future": "With reliable flood maps from space, insurance can reach communities and regions that insurers have never been able to serve, in places where no adjuster network has ever operated. Farmers, small businesses and governments could get money fast after a disaster, when it matters most for recovery. Money that arrives in days pays for the seed, the repair and the reopening while there is still something to save."
+    }
+  },
+  {
+    "name": "Flox Intelligence",
+    "slug": "flox-intelligence",
+    "countries": [
+      "Sweden"
+    ],
+    "sector": "nature-biodiversity",
+    "sectorLabel": "Nature & Biodiversity",
+    "subsector": "Wildlife & human-wildlife conflict",
+    "yearFounded": 2020,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Talk to animals before conflict starts",
+    "website": "https://floxintelligence.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Animals near airports, railways and farms cause collisions and crop damage, and keeping them away usually means people on patrol, loud cannons or culling. Flox places a smart device on site that works out which animal is there, on the device itself, and plays back calls from that animal's own species, varied so they don't get used to them. It sits on a battery beside a runway, a track or a field, with nobody there.",
+      "outperform": "",
+      "future": "If technology can keep deer, moose and birds away safely, fewer animals would need to be shot and fewer collisions would happen on rails, runways and roads. It points to a future where people and wildlife share space with less conflict. A field, a railway line and the animals that cross it could each carry on much as before, with the warning arriving in a language the animals already know and keep listening to."
+    }
+  },
+  {
+    "name": "Found Industries",
+    "slug": "found-industries",
+    "countries": [
+      "US"
+    ],
+    "sector": "circular-economy-materials",
+    "sectorLabel": "Circular Economy & Materials",
+    "subsector": "Critical minerals & metals recovery",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Scrap metal releases clean heat",
+    "website": "https://found-industries.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Factories that use gas to make steam can't easily switch to electricity without replacing their boilers and getting a bigger grid connection. Found Industries coats scrap aluminium with a liquid alloy so it reacts with water, releasing heat and hydrogen that can feed straight into a factory's existing steam system. The boiler and the pipework stay where they are, and the scrap can be the plant's own offcuts, which today leave for a remelter that pays little for them.",
+      "outperform": "",
+      "future": "Waste metal could become a clean fuel that arrives by truck and stores energy on site for days. For factories far from cheap power, that could offer a practical way off gas, using materials that would otherwise leave as low-value scrap. Energy would no longer have to reach a place by pipe or wire to be useful there, which matters most in towns built around a plant that has run on gas for as long as anyone remembers."
+    }
+  },
+  {
+    "name": "Galvany",
+    "slug": "galvany",
+    "countries": [
+      "Germany"
+    ],
+    "sector": "built-environment",
+    "sectorLabel": "Built Environment",
+    "subsector": "Building HVAC & heat pumps",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Retrofits the buildings solar companies skip",
+    "website": "https://galvany.de",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Switching from a gas boiler to a heat pump means finding an installer, applying for subsidies and hoping the system runs well, and nobody keeps an eye on it once it's fitted. Galvany handles the whole process, from the sale through to installers it manages end to end, then runs the system to heat homes when electricity is cheapest. A control box shifts heating and hot water into the cheaper hours, so the company stays responsible long after the invoice is paid.",
+      "outperform": "",
+      "future": "If one company can take care of everything, many more older buildings could move off gas faster. Smart control also lets homes use electricity when it's plentiful, easing pressure on the grid and lowering bills. For a family in an older apartment, the change would arrive simply as a warm home and a smaller bill at the end of the month, without anyone in the building having to become an expert in heating to get there."
+    }
+  },
+  {
+    "name": "Hades Mining",
+    "slug": "hades-mining",
+    "countries": [
+      "Germany"
+    ],
+    "sector": "circular-economy-materials",
+    "sectorLabel": "Circular Economy & Materials",
+    "subsector": "Critical minerals & metals recovery",
+    "yearFounded": 2025,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Laser drilling unlocks Europe's minerals",
+    "website": "https://www.hades.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Drilling deep into hard rock is slow and expensive: drill bits wear out and have to be pulled all the way up to be replaced. Hades Mining uses a powerful laser, sent down through optical fibre, to break rock without any mechanical cutter touching it. The heat cracks the rock at the bottom of the hole while jets of high-pressure fluid clear the fragments away, so there is no bit to blunt and nothing to haul up and change.",
+      "outperform": "",
+      "future": "If lasers can drill deep and fast, the heat beneath our feet becomes accessible across much of Europe, and so do minerals that clean technologies depend on. Deep geothermal energy and local supply of critical metals could become realistic almost anywhere. A city could then draw its winter warmth from the hot rock directly underneath it, rather than from something shipped in from the other side of the world."
+    }
+  },
+  {
+    "name": "Helios Innovations",
+    "slug": "helios-innovations",
+    "countries": [
+      "Sweden"
+    ],
+    "sector": "water-environment",
+    "sectorLabel": "Water & Environment",
+    "subsector": "PFAS & contaminant treatment",
+    "yearFounded": 2017,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Uses waste heat to clean industrial wastewater on-site",
+    "website": "https://heliosinnovations.se/en/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Factories with water polluted by PFAS, the 'forever chemicals', usually have to truck all of it to a handful of specialist incinerators, even though it's mostly water. Helios places a compact unit on site that evaporates the water at low temperatures, leaving the pollutants behind in a much smaller residue. The water trickles over cellulose blocks that spread it thin enough to evaporate gently, and the vapour condenses clean enough to reuse.",
+      "outperform": "",
+      "future": "If only the concentrated waste needs to travel, existing treatment facilities could handle pollution from far more sites. That could help clean up forever chemicals faster and protect drinking water for communities everywhere. It would also mean fewer tankers of mostly water on the road, and more places able to deal with what they have made close to where they made it, instead of sending it across a country and waiting in the queue."
+    }
+  },
+  {
+    "name": "Hertha Metals",
+    "slug": "hertha-metals",
+    "countries": [
+      "US"
+    ],
+    "sector": "circular-economy-materials",
+    "sectorLabel": "Circular Economy & Materials",
+    "subsector": "Green steel & primary metals",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Clean steel from dirty ore",
+    "website": "https://herthametals.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Traditional steelmaking relies on coal and high-grade iron ore, and some specialised high-purity iron has to be imported. Hertha Metals has developed a single furnace that turns iron ore, including low-grade ore and steel plant waste, into high-purity iron using natural gas or hydrogen instead of coal. One continuous reactor does the work of a coke oven, a blast furnace and a separate refining step, drawing off liquid metal pure enough for magnet makers.",
+      "outperform": "",
+      "future": "If lower-grade ore and waste can become high-quality iron, steelmaking could get cleaner and more local. Resources that end up in landfill today could supply key industries, from magnets to machines. Ore a country already has, and the waste already sitting in heaps beside its mills, could become the starting point for the metal its industries need, rather than something bought on a long line that runs halfway around the world."
+    }
+  },
+  {
+    "name": "Hive Health",
+    "slug": "hive-health",
+    "countries": [
+      "Philippines"
+    ],
+    "sector": "healthcare-medicine",
+    "sectorLabel": "Healthcare & Medicine",
+    "subsector": "Embedded & inclusive insurance",
+    "yearFounded": 2021,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Brings real health coverage to small business staff",
+    "website": "https://www.ourhivehealth.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "In the Philippines, most small businesses can't offer staff health insurance, so employees pay much of their hospital bills from savings or loans. Hive Health offers group health plans for companies with as few as three employees, with everything from sign-up to claims handled in a simple app. Staff can be added or removed within a business day, and members use the app to find accredited providers, book teleconsultations and file claims.",
+      "outperform": "",
+      "future": "If small employers can offer real health cover, millions more workers could get care without fear of the bill. A serious illness wouldn't have to wipe out a family's savings, and small businesses could compete for talent with bigger ones. For the family of someone working in a small shop or a small office, a week in hospital would stop being the thing that quietly undoes years of careful saving, or sends a household to a lender to cover the rest."
+    }
+  },
+  {
+    "name": "HoneyCoin",
+    "slug": "honeycoin",
+    "countries": [
+      "Kenya"
+    ],
+    "sector": "fintech-financial-inclusion",
+    "sectorLabel": "Fintech & Financial Inclusion",
+    "subsector": "Payments & cross-border infrastructure",
+    "yearFounded": 2020,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "African payments, minus the US detour",
+    "website": "https://honeycoin.app",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Sending a business payment from one African country to another often means routing money through US dollars or euros, which adds cost and can take days. HoneyCoin moves money between African currencies directly, using digital dollars behind the scenes and paying out through local banks and mobile money. The money lands in a local account or a mobile wallet at the far end, without either side keeping a dollar account open.",
+      "outperform": "",
+      "future": "If paying a supplier across a border becomes as fast and cheap as paying one across town, African businesses could trade far more with each other. That could help regional trade grow and keep more value inside the continent. A trader buying from a workshop in the country next door could send the money in the morning and expect it to arrive before the day is out, and plan the next order around that rather than around the wait."
+    }
+  },
+  {
+    "name": "Intramotev",
+    "slug": "intramotev",
+    "countries": [
+      "US"
+    ],
+    "sector": "mobility-transport",
+    "sectorLabel": "Mobility & Transport",
+    "subsector": "Electric vehicles & components",
+    "yearFounded": 2020,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Electrifies freight one wagon at a time",
+    "website": "https://intramotev.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Moving a few freight wagons a short distance by rail isn't worth the cost of a locomotive and crew, so that freight often goes by truck instead. Intramotev fits standard freight wagons with battery-electric drives so they can move themselves, singly or in small groups. A plant that needs to shift a couple of loaded cars a mile or two can send them on their own, instead of keeping a diesel switcher idling on site or paying a contract crew by the hour.",
+      "outperform": "",
+      "future": "If wagons can move on their own, short rail trips could become cheap and flexible again. Some of the freight now carried by trucks could return to rail, cutting emissions and congestion on the roads. For the towns and villages strung along those routes, that means fewer lorries passing the school gates, quieter streets and cleaner air, and a little more room on the roads for everyone who still needs to use them."
+    }
+  },
+  {
+    "name": "IONATE",
+    "slug": "ionate",
+    "countries": [
+      "UK"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Grid infrastructure hardware",
+    "yearFounded": 2019,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "More power through the same old wires.",
+    "website": "https://www.ionate.energy",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "The transformers on our streets were built decades ago and weren't designed for today's solar panels, electric cars and heat pumps, so many new connections are delayed or refused. IONATE builds smart transformers that can actively manage voltage and power flow, fitting in the same space as conventional ones. Because the electronics sit alongside the iron core rather than replacing it, one unit can steady the voltage on each phase, steer power where it is needed and report what it sees.",
+      "outperform": "",
+      "future": "Smarter transformers could let existing grids take on far more clean energy and new connections without digging up streets. That means households and businesses could connect sooner, and grid upgrades could go where they're truly needed. For a family waiting to plug in a heat pump, or a workshop waiting to switch on its own rooftop solar, it is the difference between a wait measured in years and one measured in weeks."
+    }
+  },
+  {
+    "name": "Isometric",
+    "slug": "isometric",
+    "countries": [
+      "UK"
+    ],
+    "sector": "climate-decarbonization",
+    "sectorLabel": "Climate & Decarbonization",
+    "subsector": "Carbon markets, MRV & registries",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Proves that carbon really left the air.",
+    "website": "https://isometric.com/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Carbon credits have a trust problem: in the old model, sellers pay for their own audits, and many credits have turned out not to represent real reductions. Isometric writes strict scientific standards for each type of carbon removal, uses software to check the evidence, and makes the data behind every credit public. Buyers pay, not sellers. Each standard sets out exactly what evidence a method must produce, software reads most of it, and the harder cases go to people.",
+      "outperform": "",
+      "future": "Checking carbon removal is currently slow and expensive, so only big projects can afford it. If rigorous verification gets faster and cheaper, a single farm or small plant could sell trusted carbon removal too, opening the market to many more of the people doing the actual work. A farmer spreading crushed rock across a field, or a village kiln turning waste into charcoal, could be counted alongside the largest projects."
+    }
+  },
+  {
+    "name": "Jua",
+    "slug": "jua",
+    "countries": [
+      "Switzerland"
+    ],
+    "sector": "data-digital-infrastructure",
+    "sectorLabel": "Data & Digital Infrastructure",
+    "subsector": "Climate & weather intelligence",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Predicts weather to keep clean power flowing",
+    "website": "https://www.jua.ai",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Wind and solar traders need precise, up-to-the-minute weather forecasts for each site, but public forecasts arrive a few times a day and cover big areas. Jua's AI produces detailed wind, sunlight and temperature forecasts that update constantly, without needing a supercomputer. Instead of buying a regional forecast and paying meteorologists to narrow it down to a single wind farm by hand, a desk can see the ridge and the valley apart.",
+      "outperform": "",
+      "future": "Accurate, affordable forecasts would let smaller grid operators and renewable energy companies plan as well as the biggest players. Better planning means less waste, steadier grids and more room for clean energy in the system. And for the households and towns drawing on those grids, it means the lights hold steady on a still, grey day, with less of the guesswork that somebody always ends up paying for."
+    }
+  },
+  {
+    "name": "Koolboks",
+    "slug": "koolboks",
+    "countries": [
+      "Nigeria"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Food preservation & cold chain",
+    "yearFounded": 2018,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Freezers that keep working after dark.",
+    "website": "https://koolboks.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Many market traders in Nigeria can't keep food cold without buying ice every day or running costly petrol generators, so unsold stock often spoils. Koolboks makes solar-powered freezers that store energy in ice and batteries to stay cold overnight and through cloudy days, with payments spread over time. That means no ice seller to visit before dawn and no fuel to price into every sale, and stock that can wait for a buyer.",
+      "outperform": "",
+      "future": "Reliable cooling changes what a small business can sell, from fish to dairy. If solar freezers spread like solar home systems did, food waste could fall, incomes rise and whole neighbourhoods gain access to fresher food. Street by street, it would show up as a wider choice on the stalls people already shop at, and as a trader whose working day no longer begins with carrying home a block of ice bought before dawn."
+    }
+  },
+  {
+    "name": "Mantle8",
+    "slug": "mantle8",
+    "countries": [
+      "France"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Hydrogen production & electrolyzers",
+    "yearFounded": 2024,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Clean fuel the Earth already made. / Clean fuel no tanker has to deliver.",
+    "website": "https://mantle8.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Deep underground, some rocks make hydrogen naturally when they meet water. Finding it is hard, because the tools we have were built to hunt for oil. Mantle8 combines several kinds of geological data into one model that shows where natural hydrogen is being made, where it moves and where it gets trapped. Oil sits still and waits to be found; this is a small, restless gas that leaks through seals and reacts with rock on its way up.",
+      "outperform": "",
+      "future": "Almost all hydrogen today has to be manufactured, using gas or lots of electricity. Hydrogen straight from the ground could give Europe's heavy industry a clean fuel it doesn't need to build a factory to produce. Priced more like a mineral than a product, it would be something a country finds under its own hills, the way it once found coal or water, rather than something it has to build a plant to make."
+    }
+  },
+  {
+    "name": "Matter",
+    "slug": "matter",
+    "countries": [
+      "UK"
+    ],
+    "sector": "water-environment",
+    "sectorLabel": "Water & Environment",
+    "subsector": "Microplastics capture",
+    "yearFounded": 2018,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Self-cleaning filter that keeps microplastics out of rivers",
+    "website": "https://matter.industries/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Every time we wash synthetic clothes, tiny plastic fibres go down the drain and often end up in rivers and on farmland. Matter makes a filter for washing machines that traps those microplastics and cleans itself, so there are no cartridges to replace. Just empty the collected fibres every few weeks. Most machines carry no filter at all, so the fibres travel on to sewage works that were never built to catch anything so fine.",
+      "outperform": "",
+      "future": "If filters like this are built into washing machines and textile factories, a major source of microplastic pollution could be stopped at the source. It would protect rivers, soils and oceans without depending on people remembering to change a filter. Rivers, the soil beside them and the food grown in it would carry less of what our clothes shed, and a wash would stop being a way plastic reaches the sea."
+    }
+  },
+  {
+    "name": "Mazama",
+    "slug": "mazama",
+    "countries": [
+      "US"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Next-gen geothermal",
+    "yearFounded": 2023,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Volcano-grade heat, minus the volcano. / Geothermal for countries without volcanoes.",
+    "website": "https://mazamaenergy.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Geothermal energy usually only works in places with hot water close to the surface, like Iceland. Mazama drills into hot, dry rock and opens a network of cracks by circulating cold water through it, then uses that network to carry heat back up, reaching temperatures that deliver far more energy per well. Where geology already cooperates, a field means dozens of wells, each returning only a few megawatts of power.",
+      "outperform": "",
+      "future": "There's heat beneath every country on Earth. If it can be reached reliably, clean, round-the-clock power could be produced far beyond the volcanic regions that have always had it, giving many more nations a steady source of zero-carbon energy. Places with no hot spring and no obvious geology could still light and warm their homes from the ground beneath them, through the night and through the winter."
+    }
+  },
+  {
+    "name": "Metafuels",
+    "slug": "metafuels",
+    "countries": [
+      "Switzerland"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Sustainable fuels (SAF & e-fuels)",
+    "yearFounded": 2019,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Brews clean jet fuel planes can already use",
+    "website": "https://metafuels.ch/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Airlines are being asked to use cleaner fuel, but there isn't nearly enough of it. Most of what exists is made from used cooking oil and animal fats, and there's only so much of that. Metafuels turns methanol into jet fuel that today's planes, engines and airports can take as a blend, with no changes to any of them. Those fats are collected from restaurants and bid for by soap makers; methanol can be made on purpose instead.",
+      "outperform": "",
+      "future": "Methanol can be made from renewable electricity and captured carbon, which means the supply of clean jet fuel could be built rather than scavenged. That could finally give airlines a realistic way to cut emissions from flying at the scale the world needs. For anyone who flies to see family, and for the places that depend on being easy to reach, the journey would sit more lightly on the sky it crosses."
+    }
+  },
+  {
+    "name": "MiAlgae",
+    "slug": "mialgae",
+    "countries": [
+      "UK"
+    ],
+    "sector": "agriculture-food",
+    "sectorLabel": "Agriculture & Food",
+    "subsector": "Alternative feed & aquaculture",
+    "yearFounded": 2016,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Distillery waste replaces wild fish",
+    "website": "https://mialgae.com/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "The omega-3 in fish feed and pet food comes mostly from wild fish caught in huge numbers for fish oil, rendered down rather than eaten by people. MiAlgae grows marine microalgae in the dark on the nutrient-rich liquid left over from whisky distilling, then harvests and dries it into a rich source of omega-3 without taking anything from the sea. The water that goes back to the distillery leaves cleaner than it arrived.",
+      "outperform": "",
+      "future": "If algae grown on waste can replace fish oil, the fishing pressure on wild stocks could ease, while the fish farming and pet food industries get a steady supply that doesn't depend on the ocean, or on a season that warm water can cut short. And distillery leftovers become something valuable. For the coastal places that live alongside those stocks, the small fish everything else in the sea feeds on get to stay where they are."
+    }
+  },
+  {
+    "name": "Mission Zero",
+    "slug": "mission-zero",
+    "countries": [
+      "UK"
+    ],
+    "sector": "climate-decarbonization",
+    "sectorLabel": "Climate & Decarbonization",
+    "subsector": "Direct air capture (DAC)",
+    "yearFounded": 2020,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Pulls carbon out of the air, without heat.",
+    "website": "http://www.missionzero.tech",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Pulling carbon dioxide out of the air usually takes enormous amounts of heat, so capture plants end up wherever cheap heat is: next to geothermal wells or gas. Mission Zero captures carbon in a water-based liquid and releases it using electricity instead, in compact units that fit inside a shipping container. What comes out is pure carbon dioxide, the same thing industrial buyers now take by tanker from someone else's factory.",
+      "outperform": "",
+      "future": "If capturing carbon only needs a plug, it can happen almost anywhere with a grid connection or a solar farm, right next to the businesses that want to use or store the carbon. Carbon removal could shift from a few giant plants to equipment that can be ordered, shipped and installed like any other machine. A container standing beside an aggregate works or a fuel plant is a far easier thing to picture in an ordinary town than a power station."
+    }
+  },
+  {
+    "name": "Mitti Labs",
+    "slug": "mitti-labs",
+    "countries": [
+      "India",
+      "US"
+    ],
+    "sector": "climate-decarbonization",
+    "sectorLabel": "Climate & Decarbonization",
+    "subsector": "Agricultural carbon & soil",
+    "yearFounded": 2023,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Pays rice farmers what satellites can prove.",
+    "website": "https://www.mittilabs.earth/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Flooded rice paddies release large amounts of methane, and draining fields at the right times can cut it. But proving it on millions of small farms is hard, since each family works about a hectare, too little for anyone to send an auditor to. Mitti Labs uses satellite radar to confirm when fields are drained, checks the results against gas measured in the fields themselves, and pays farmers for the methane they save.",
+      "outperform": "",
+      "future": "Rice produces close to a tenth of human methane emissions. If satellites can verify reductions cheaply, millions of smallholder farmers could be paid for climate-friendly farming, cutting emissions while boosting their incomes. For a family growing rice on a single hectare, that is money arriving for something they can do with the fields they already have, in the season they already work, without leaving the village or changing the crop."
+    }
+  },
+  {
+    "name": "Modvion",
+    "slug": "modvion",
+    "countries": [
+      "Sweden"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Wind energy technology",
+    "yearFounded": null,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Wooden towers that reach stronger wind.",
+    "website": "https://modvion.com/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Wind turbines produce more energy the higher they stand, but steel towers are limited in height because their sections must fit on roads. Modvion builds turbine towers from laminated Nordic spruce, pressed into curved modules that fit on a standard truck and are glued together on site. Developers who want to go higher today turn to concrete-and-steel hybrids, heavier and slower to raise, where a wooden tower stores carbon instead of carrying it.",
+      "outperform": "",
+      "future": "Taller towers made from wood could reach stronger winds on inland sites, producing more clean energy while storing carbon in the tower itself. That could open up new places for wind power, far from the ports where the biggest turbines are built today. A field reached only by a country road could then hold a turbine as tall as the ones that arrive by sea, and the region around it gets more power from the same patch of ground."
+    }
+  },
+  {
+    "name": "NetZeroNitrogen",
+    "slug": "netzeronitrogen",
+    "countries": [
+      "UK"
+    ],
+    "sector": "agriculture-food",
+    "sectorLabel": "Agriculture & Food",
+    "subsector": "Biological crop inputs & protection",
+    "yearFounded": 2021,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Lets rice make its own fertiliser.",
+    "website": "https://nzn2.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Rice farmers spend a big share of their income on synthetic fertiliser, and much of it is lost into the air and water. NetZeroNitrogen offers a naturally occurring bacterium that farmers add to the water they already soak seeds in. It lives inside the plant and turns nitrogen from the air into food for the crop, so instead of buying a sack of urea and spreading it by hand several times a season, a farmer does one thing they were doing anyway.",
+      "outperform": "",
+      "future": "If the cheapest option for farmers is also the cleanest, change happens on its own, with no subsidy needed to make it worth doing. A natural fertiliser that costs less than urea could raise farm incomes, cut emissions and protect rivers across the world's rice-growing regions. For a family in the Mekong delta, the money that used to leave with every sack stays in the household at the end of the season."
+    }
+  },
+  {
+    "name": "NEU Battery Materials",
+    "slug": "neu-battery-materials",
+    "countries": [
+      "Singapore"
+    ],
+    "sector": "circular-economy-materials",
+    "sectorLabel": "Circular Economy & Materials",
+    "subsector": "Battery materials & lithium recovery",
+    "yearFounded": 2021,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Battery waste becomes battery grade",
+    "website": "https://www.neumaterials.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "LFP batteries, now common in electric vehicles, are hard to recycle profitably because they contain no expensive metals like cobalt, so many end up stockpiled or burned. NEU Battery Materials uses a gentle electrochemical process to recover battery-grade lithium from them, using electricity and water. Crushed cells meet a liquid that lifts the lithium out at low voltage, with no furnace and no strong acid left to treat.",
+      "outperform": "",
+      "future": "As millions of LFP batteries reach the end of their lives, affordable recycling could turn a growing waste problem into a local source of lithium. It would make electric vehicles more circular and reduce the need for new mining. Lithium could go back into use near the places the old batteries were collected, rather than crossing the world to one of a handful of refineries and coming back as something new."
+    }
+  },
+  {
+    "name": "NuCicer",
+    "slug": "nucicer",
+    "countries": [
+      "US"
+    ],
+    "sector": "agriculture-food",
+    "sectorLabel": "Agriculture & Food",
+    "subsector": "Crop genetics & breeding",
+    "yearFounded": 2019,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "A chickpea that replaces processed protein.",
+    "website": "https://www.nucicer.com/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Most plant protein in food comes from peas or soy that are heavily processed to remove the starch, which takes energy and big factories. NuCicer breeds chickpeas with wild relatives gathered in south-east Turkey to produce seeds with about half as much protein again, reducing the need for that processing. A seed that reaches the mill already rich in protein means far less of what a maker buys is stripped away.",
+      "outperform": "",
+      "future": "If protein-rich chickpeas can be grown at scale, plant-based foods could become cheaper and simpler to make, starting in the field rather than the factory. That could help more people enjoy nutritious, sustainable protein. It would also mean the work of making protein begins in a growing season on a farm, rather than in a plant that first has to strip a cheaper seed back down to get there."
+    }
+  },
+  {
+    "name": "Octarine Bio",
+    "slug": "octarine-bio",
+    "countries": [
+      "Denmark"
+    ],
+    "sector": "circular-economy-materials",
+    "sectorLabel": "Circular Economy & Materials",
+    "subsector": "Sustainable textiles & dyes",
+    "yearFounded": 2018,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Pigments without the poison",
+    "website": "https://www.octarinebio.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Almost all the colour in our clothes comes from dyes made from petrochemicals, and dye waste often ends up in rivers. Octarine Bio uses microbes to grow natural pigments through fermentation, then uses enzymes to fine-tune the molecules so they dissolve and hold fast in existing dyeing machines, lasting through washing and sunlight. A mill can change what goes into the bath without changing the machines around it.",
+      "outperform": "",
+      "future": "If natural pigments can match synthetic dyes on price and performance, fashion brands could clean up one of the dirtiest parts of making clothes without factories needing new machines. Rivers near dyeing hubs could run clean again. Colour has long been the part of a garment nobody could design away, and it becomes something a brand chooses as freely as the cloth, and something a town downstream of a dye house no longer has to live with."
+    }
+  },
+  {
+    "name": "Oneka Technologies",
+    "slug": "oneka-technologies",
+    "countries": [
+      "Canada"
+    ],
+    "sector": "water-environment",
+    "sectorLabel": "Water & Environment",
+    "subsector": "Clean water access & desalination",
+    "yearFounded": 2015,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Buoys that use wave motion to pump and desalinate seawater",
+    "website": "https://www.onekawater.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Desalination plants need lots of power and produce concentrated brine that can harm marine life, putting them out of reach for many small coastal communities. Oneka's buoys use the motion of waves to pump seawater through filters and send fresh drinking water ashore, with no electricity needed to do it. There is no generator, no grid connection and nothing burning fuel, and what goes back to the sea is blended before it leaves.",
+      "outperform": "",
+      "future": "Wave-powered desalination could bring clean water to coastal towns and islands without power plants or big infrastructure. As droughts become more common, it offers a simple, renewable way to turn the ocean into a source of drinking water. For a small island or a dry coastal town that has spent years waiting on a power line and a permit, water could instead start arriving each day from something moored quietly just offshore, where the waves already do the work."
+    }
+  },
+  {
+    "name": "Ore Energy",
+    "slug": "ore-energy",
+    "countries": [
+      "Netherlands"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Long-duration energy storage",
+    "yearFounded": null,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Rust that keeps the lights on for days.",
+    "website": "https://www.oreenergy.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Solar and wind can fade for days at a time, and today gas plants stand by to fill the gap, held ready all year for a handful of still, cloudy spells. Ore Energy builds batteries that store electricity using iron and air, essentially rusting and un-rusting iron, which lets them hold power for days rather than hours. The containerised units breathe oxygen in to discharge and push it back out to charge.",
+      "outperform": "",
+      "future": "Storing clean energy for days could help grids get through long, still, cloudy spells without firing up gas plants. Made from iron, one of the most common metals on Earth, this kind of storage could make a fully renewable grid much more achievable. The length of the longest windless stretch would stop deciding what a country keeps idling in reserve, and what households pay for plants that rarely run."
+    }
+  },
+  {
+    "name": "Planetary",
+    "slug": "planetary",
+    "countries": [
+      "Switzerland"
+    ],
+    "sector": "agriculture-food",
+    "sectorLabel": "Agriculture & Food",
+    "subsector": "Alternative proteins & fermentation",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Grows protein that undercuts chicken.",
+    "website": "https://www.planetarygroup.ch/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Fermented protein is a promising alternative to meat, but large fermentation tanks are scarce and costly. Planetary builds fermentation plants right next to sugar mills, using the mills' leftovers to grow a protein-rich fungus, and licenses the design to other sugar producers. The mill's cheap side streams and steam feed the tanks next door, so the protein is grown where the cane already grows rather than shipped to a plant far away.",
+      "outperform": "",
+      "future": "If fermented protein can be made cheaply, right where sugar cane grows, it could become affordable enough to compete with chicken rather than sit above it as a premium. That could bring nutritious, sustainable protein to many more people around the world. It would arrive first in the countries that grow the cane, on the tables of people who were never going to pay extra for it, and who have the most to gain from a good meal costing less."
+    }
+  },
+  {
+    "name": "Planted",
+    "slug": "planted",
+    "countries": [
+      "US"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Next-gen solar & deployment",
+    "yearFounded": 2020,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Solar farms that follow the hillside.",
+    "website": "https://www.plantedsolar.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Most solar farms need flat land, so developers flatten hills and fields before building, which is slow, expensive and unpopular with neighbours. Planted designs each solar layout to follow the natural shape of the land, and uses robots to install the foundations without grading the site first. Dense rows run across slopes and irregular parcels, and the machines drive each post to the depth that piece of ground calls for.",
+      "outperform": "",
+      "future": "If solar can be built on slopes and awkward plots, far more land becomes usable and less farmland is lost. Projects could use less steel, move faster and win more local support, helping clean power grow in places that were written off before. For a county weighing up a hillside nobody farms, or a ravine on the edge of town, that turns land written off as unbuildable into somewhere the lights can come from."
+    }
+  },
+  {
+    "name": "PULSETRAIN",
+    "slug": "pulsetrain",
+    "countries": [
+      "Germany"
+    ],
+    "sector": "mobility-transport",
+    "sectorLabel": "Mobility & Transport",
+    "subsector": "Electric vehicles & components",
+    "yearFounded": 2024,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Keeps an electric car battery going even when one cell fails",
+    "website": "https://pulsetrain.com/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "An electric car battery is only as good as its weakest cell, and when a few cells fade the whole pack is often retired. PULSETRAIN builds the power electronics into the battery itself and controls every cell individually, so the pack keeps working even when some cells weaken or fail. The inverter, charger and management all sit inside the pack, which sends alternating current straight to the motor.",
+      "outperform": "",
+      "future": "Batteries that last longer mean fewer new ones, and less lithium and nickel mined for every car on the road. Used and mismatched cells could get a second life, and a car's performance could improve through software updates instead of new hardware. For a driver, that means a car that gets better over the years it is owned, and a battery that carries on long after one weak cell would once have ended it."
+    }
+  },
+  {
+    "name": "R3Robotics",
+    "slug": "r3robotics",
+    "countries": [
+      "Luxembourg"
+    ],
+    "sector": "circular-economy-materials",
+    "sectorLabel": "Circular Economy & Materials",
+    "subsector": "Disassembly & refurbishment robotics",
+    "yearFounded": 2021,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Robots turn junked EV systems into material mines",
+    "website": "https://r3robotics.ai/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Old electric vehicle batteries are mostly taken apart by hand, a slow and risky job at high voltage, or simply shredded, which mixes valuable materials together. R3 Robotics uses robots with machine vision that adapt to each battery design, dismantling packs and motors cleanly and safely. The robot maps the fasteners and seams of each pack and plans its own path, so the materials come out sorted rather than mixed.",
+      "outperform": "",
+      "future": "As millions of electric vehicles reach the end of their lives, robots could turn them into a steady source of sorted copper, aluminium and battery materials. Some batteries could also get a second life, making the shift to electric transport more circular. The metal already above ground in yesterday's cars would find its way into tomorrow's, instead of being dug out of a hillside somewhere far away all over again."
+    }
+  },
+  {
+    "name": "RecupeRe Metals",
+    "slug": "recupere-metals",
+    "countries": [
+      "France"
+    ],
+    "sector": "circular-economy-materials",
+    "sectorLabel": "Circular Economy & Materials",
+    "subsector": "Critical minerals & metals recovery",
+    "yearFounded": 2025,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Copper wire without the mining",
+    "website": "https://www.recupere-metals.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "The copper wire inside motors and generators must be extremely pure, so scrap copper usually goes back through energy-hungry refineries, mostly outside Europe, or gets downgraded into plumbing. RecupeRe Metals has developed a process that turns recycled copper directly into high-quality electrical wire. The grain structure is shaped through the mechanical processing itself, so the wire never goes back to the furnace.",
+      "outperform": "",
+      "future": "Electric cars, wind turbines and power grids all need copper. If recycled copper can go straight back into electrical use, Europe could rely less on mining and foreign refineries, keeping this valuable metal circulating closer to home. Copper that once dropped out of electrical duty into pipes and castings would keep doing the work it was made for, staying in the wires and coils of the places where it was first put to use."
+    }
+  },
+  {
+    "name": "Renasens",
+    "slug": "renasens",
+    "countries": [
+      "Sweden"
+    ],
+    "sector": "circular-economy-materials",
+    "sectorLabel": "Circular Economy & Materials",
+    "subsector": "Textile-to-textile recycling",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Blended textiles close the loop",
+    "website": "https://www.renasens.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Less than one per cent of old clothes are recycled into new ones, because most garments are blends of fibres like cotton and polyester, and dyed. Renasens uses carbon dioxide under pressure, without water, to remove dyes and separate blended fabrics back into clean fibres ready to be spun again. Under pressure it moves through fabric like a gas and dissolves like a solvent, so the fibres come out whole rather than broken down.",
+      "outperform": "",
+      "future": "If mixed, dyed clothes can be turned back into new textiles, the mountains of used clothing collected across Europe become a resource instead of waste. Fashion could finally start to close the loop. The bales piling up behind collection points across the continent would become something a spinner buys rather than something a town pays to burn, and the shirt someone wore out could come back as the one they buy next."
+    }
+  },
+  {
+    "name": "Reverion",
+    "slug": "reverion",
+    "countries": [
+      "Germany"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Biogas & bioenergy",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "A power plant that keeps its carbon.",
+    "website": "https://reverion.com/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Farm biogas plants usually burn their gas in engines that waste more than half the energy as heat. Reverion's system converts biogas into electricity without burning it, which is far more efficient, and separates out the carbon dioxide in a pure stream ready to be stored. Run in reverse, it can store surplus power as fuel. The gas is converted in a stack of ceramic cells rather than in a piston, so the same digester yields more.",
+      "outperform": "",
+      "future": "Small farms could become mini power plants that both supply flexible, clean electricity and remove carbon for good. Getting more out of the same biogas means the countryside could play a much bigger role in the energy transition. A village with a herd and a digester would have something to give the grid on a still winter evening, when the wind has dropped, and a way to put its own carbon safely out of circulation for good."
+    }
+  },
+  {
+    "name": "RIFT",
+    "slug": "rift",
+    "countries": [
+      "Netherlands"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Industrial heat decarbonization",
+    "yearFounded": 2020,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Clean, circular industrial heating from iron powder",
+    "website": "https://www.ironfueltechnology.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Factories that need high-temperature steam around the clock usually burn gas or coal, and often can't switch to electricity or hydrogen because the site sits far from any pipeline and holds no spare grid capacity. RIFT supplies boilers that burn fine iron powder, releasing heat as the metal oxidises. The leftover rust is collected and turned back into iron using low-carbon hydrogen, so the same metal can be used again and again.",
+      "outperform": "",
+      "future": "Iron powder can be shipped and stored like coal, but without the emissions, so hydrogen can be made where power costs least and used where the metal is regenerated. If this works at scale, factories could switch fuel without waiting on a pipeline or a grid upgrade, bringing clean heat to places those networks can't easily reach. For the towns built around those plants, the work stays and the smoke goes."
+    }
+  },
+  {
+    "name": "Sava Technology",
+    "slug": "sava-technology",
+    "countries": [
+      "UK"
+    ],
+    "sector": "healthcare-medicine",
+    "sectorLabel": "Healthcare & Medicine",
+    "subsector": "Medical devices & wearables",
+    "yearFounded": 2019,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Monitors blood sugar through a tiny skin patch",
+    "website": "https://www.sava.health",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Most people with diabetes still prick their fingers several times a day because continuous glucose monitors are expensive and often not covered by insurance. Sava is developing a small, affordable skin patch that sits shallower under the skin than today's monitors, tracks blood sugar continuously and sends the readings to a phone. Instead of one moment in the day, the person sees the whole trend and can act on it.",
+      "outperform": "",
+      "future": "If continuous monitoring becomes affordable, millions more people could manage diabetes with confidence, including in places where no monitor reaches the market today. In the future, the same patch could track other health signals too, among them lactate, ketones and cortisol, making personalised health insights part of everyday life. That is a quieter kind of care: fewer fingersticks, fewer surprises, more ordinary days."
+    }
+  },
+  {
+    "name": "Shellworks",
+    "slug": "shellworks",
+    "countries": [
+      "UK"
+    ],
+    "sector": "circular-economy-materials",
+    "sectorLabel": "Circular Economy & Materials",
+    "subsector": "Bioplastics & compostable packaging",
+    "yearFounded": 2019,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Plastic that grows and dies",
+    "website": "https://shellworks.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Most cosmetic jars and packaging are made from conventional plastic, and most 'compostable' alternatives only break down in industrial facilities that households cannot reach. Shellworks makes packaging from a material produced by bacteria fed on waste like used cooking oil, which store it inside their cells as an energy reserve. Compounded into pellets, it works on standard factory equipment and can break down in a home compost.",
+      "outperform": "",
+      "future": "If compostable packaging can match plastic on cost and performance, brands could switch without compromise, choosing a jar that survives a year on a shelf and still belongs in the garden heap. That could mean far less plastic waste piling up in landfills and nature. For anyone who has ever wondered where an empty jar ends up, the answer would finally be a simple one, and it would end in ordinary garden soil."
+    }
+  },
+  {
+    "name": "Source.ag",
+    "slug": "source-ag",
+    "countries": [
+      "Netherlands"
+    ],
+    "sector": "agriculture-food",
+    "sectorLabel": "Agriculture & Food",
+    "subsector": "AgTech & farm robotics",
+    "yearFounded": 2020,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Forecasts greenhouse harvest weeks ahead.",
+    "website": "https://www.source.ag/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Greenhouse growers still rely heavily on experts walking the crop and counting fruit by eye to plan harvests, and those experts are increasingly hard to find. Source.ag uses AI to combine greenhouse sensors, plant measurements and weather forecasts to predict harvests weeks ahead and manage watering. It works alongside the climate computer a site already runs, so a grower keeps the glasshouse and gains the forecast.",
+      "outperform": "",
+      "future": "If one expert can manage many more greenhouses with AI support, high-tech growing could spread far beyond the few countries that lead it today, where the best yields have clustered for a generation. More regions could grow fresh vegetables locally, efficiently and all year round. That means a tomato picked a short drive from the table, in places where winter has always meant shipping it halfway around the world."
+    }
+  },
+  {
+    "name": "Space Forge",
+    "slug": "space-forge",
+    "countries": [
+      "UK"
+    ],
+    "sector": "data-digital-infrastructure",
+    "sectorLabel": "Data & Digital Infrastructure",
+    "subsector": "Space manufacturing & materials",
+    "yearFounded": 2018,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Manufactures chips in orbit, ships them home",
+    "website": "https://www.spaceforge.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "The materials used in advanced chips work best when their crystals are nearly flawless, but gravity makes that hard to achieve on Earth, because convection and contact with the crucible leave defects behind. Space Forge sends a small satellite with a furnace into orbit to grow semiconductor crystals in the vacuum and weightlessness of space, then aims to bring them back to Earth under an unfolding, reusable heat shield.",
+      "outperform": "",
+      "future": "Crystals grown in space could lead to more efficient electronics for everything from power grids to communications, losing less energy every time current passes through them. If returning materials from orbit becomes routine, manufacturing in space could move from science fiction to industry. Orbit would slowly become somewhere we make the things we use down here, rather than only somewhere we look back down from."
+    }
+  },
+  {
+    "name": "Still Bright",
+    "slug": "still-bright",
+    "countries": [
+      "US"
+    ],
+    "sector": "circular-economy-materials",
+    "sectorLabel": "Circular Economy & Materials",
+    "subsector": "Critical minerals & metals recovery",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Refines copper without the furnace.",
+    "website": "https://www.stillbright.co",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Much of the world's copper has to be shipped to distant smelters that heat ore to extreme temperatures, and some ore is too impure or too dilute to process at all. Still Bright uses an electrochemical process that pulls copper out of ore at near room temperature, using electricity instead of furnaces. A vanadium liquid strips the copper and then cycles back through the cell for reuse, and the sulphur leaves as a separate stream.",
+      "outperform": "",
+      "future": "If copper can be refined cleanly right at the mine, deposits and old mine waste that were once written off could become valuable. That could help supply the copper the energy transition needs, with far fewer emissions. Refining would follow the ore rather than the trade routes, and the copper wiring inside a new home, a new car or a new stretch of grid could begin a great deal closer to where it finally ends up."
+    }
+  },
+  {
+    "name": "Strong by Form",
+    "slug": "strong-by-form",
+    "countries": [
+      "Spain"
+    ],
+    "sector": "circular-economy-materials",
+    "sectorLabel": "Circular Economy & Materials",
+    "subsector": "Bio-based chemicals & materials",
+    "yearFounded": 2018,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Concrete strength without the carbon",
+    "website": "https://strongbyform.com/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Timber is a low-carbon building material, but it mostly comes as flat panels and straight beams, sized by the weakest direction of a uniform board, so long spans and curved structures still rely on concrete and steel. Strong by Form lays wood fibres along the exact paths that loads travel, and shapes them with robots into strong, curved timber elements. Fibre sits only where the load runs, so little is spent holding up the part itself.",
+      "outperform": "",
+      "future": "Cement and steel together cause a large share of global emissions. If shaped timber can take on jobs only concrete can do today, architects could design ambitious buildings from wood, with the long spans and curves that used to mean pouring on site, and the same approach could make lighter parts for trains and vehicles. Buildings would come from forests rather than quarries, and would feel it from the inside."
+    }
+  },
+  {
+    "name": "Sway",
+    "slug": "sway",
+    "countries": [
+      "US"
+    ],
+    "sector": "circular-economy-materials",
+    "sectorLabel": "Circular Economy & Materials",
+    "subsector": "Bioplastics & compostable packaging",
+    "yearFounded": 2020,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Seaweed replacing plastic bags",
+    "website": "https://swaythefuture.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Plastic film for bags and packaging is cheap, fast to make and almost never recycled, partly because thin film wraps around the screens at sorting plants. Sway makes a seaweed-based material, compounded into pellets, that runs on the same equipment used to make plastic bags today, so manufacturers can switch without new investment. A converter keeps its blown-film lines and changes only what goes into them.",
+      "outperform": "",
+      "future": "If seaweed can replace plastic film on existing production lines, packaging could change one supplier at a time, without waiting for factories to be rebuilt. Seaweed farming could grow too, a crop that needs no fresh water, fertiliser or land. That is a harvest that adds nothing to the pressure on farmland or fresh water, and a mailer that can finish its life quietly in a compost heap rather than in a hedgerow."
+    }
+  },
+  {
+    "name": "Tandem PV",
+    "slug": "tandem-pv",
+    "countries": [
+      "US"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Next-gen solar & deployment",
+    "yearFounded": 2016,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Catches the light a solar panel misses.",
+    "website": "https://www.tandempv.com",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Most of the cost of a solar farm is in land, steel and installation, not the panels themselves, so more power from the same space makes a big difference. Tandem PV coats glass with a material called perovskite and laminates it onto standard silicon cells, catching light the silicon would otherwise waste as heat. The result is a standard-size module, so the same footprint of racking, cabling and crew time would yield more watts.",
+      "outperform": "",
+      "future": "More efficient panels mean more clean electricity from the same land and the same grid connections, without a new application to file. That could make solar even cheaper and help it grow faster in places where land and grid access are limited. For a town that has waited years on permits and a place in the queue, the power would come from ground already approved and already paid for, sooner than anybody dared to plan for."
+    }
+  },
+  {
+    "name": "Turaco",
+    "slug": "turaco",
+    "countries": [
+      "Kenya"
+    ],
+    "sector": "fintech-financial-inclusion",
+    "sectorLabel": "Fintech & Financial Inclusion",
+    "subsector": "Embedded & inclusive insurance",
+    "yearFounded": 2018,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Insurance for the price of a soda",
+    "website": "https://turaco.insure",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "For families earning day to day, a standalone insurance policy is out of reach, so a hospital bill often means borrowing or selling something they need. Turaco builds small health and life cover into things people already pay for, like a loan, a solar subscription or a mobile wallet, for a few extra coins a month. The premium comes off the same monthly payment, and Turaco handles the sign-up and the claim behind it.",
+      "outperform": "",
+      "future": "If this kind of cover reaches the millions of people already paying for loans and solar kits, insurance stops being a product for the few, and no longer needs an agent to travel out and collect it. A spell in hospital, or a death in the family, wouldn't have to push a household back into poverty. A shopkeeper could meet the bill, bury a parent properly, and still open again the next morning."
+    }
+  },
+  {
+    "name": "TURN2X",
+    "slug": "turn2x",
+    "countries": [
+      "Germany"
+    ],
+    "sector": "clean-energy",
+    "sectorLabel": "Clean Energy",
+    "subsector": "Sustainable fuels (SAF & e-fuels)",
+    "yearFounded": 2022,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Natural gas, minus the fossil part.",
+    "website": "https://turn2x.com/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Many factories run on equipment built for natural gas, with decades of working life left in it, and replacing it is expensive. TURN2X makes a clean version of that gas: it uses renewable electricity to split water into hydrogen, then combines it with carbon dioxide of biological origin to create methane that can flow through existing pipelines. Its first plant sits beside the solar farm that powers it, in Spain.",
+      "outperform": "",
+      "future": "Europe has a huge network of gas pipelines, storage caverns, import terminals and millions of burners. Clean synthetic gas could keep all of that in use as the continent moves away from fossil fuels, and let sunny regions ship their solar energy through pipes to where it's needed. A kiln in the north could run on light that fell in the south, over the same connection it has always used, and the pipes already in the ground would carry it there."
+    }
+  },
+  {
+    "name": "Unobravo",
+    "slug": "unobravo",
+    "countries": [
+      "Italy"
+    ],
+    "sector": "mental-health-wellness",
+    "sectorLabel": "Mental Health & Wellness",
+    "subsector": "Digital care delivery & remote monitoring",
+    "yearFounded": 2019,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Matches people to therapists and handles the paperwork",
+    "website": "https://www.unobravo.com/",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Finding the right therapist can be hard: public services have long waiting lists, and people often rely on a friend's recommendation and hope for the best. Unobravo matches people with licensed psychologists through a short questionnaire, offering a free first session and a fixed price for the rest. The questionnaire returns a short list from its own network, so the first conversation is with someone chosen for that person.",
+      "outperform": "",
+      "future": "If finding the right support becomes quick and affordable, more people could get help early, before problems grow. Public services could then focus on the most serious cases, making mental health care work better for everyone. For someone in Italy, Spain or France who has finally decided to ask for help, the wait would be a matter of days rather than a place on a ranked list, and the cost would be known before the first conversation."
+    }
+  },
+  {
+    "name": "Vibrant Planet",
+    "slug": "vibrant-planet",
+    "countries": [
+      "US"
+    ],
+    "sector": "nature-biodiversity",
+    "sectorLabel": "Nature & Biodiversity",
+    "subsector": "Geospatial & earth observation",
+    "yearFounded": 2020,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Decides which acre burns on purpose.",
+    "website": "https://www.vibrantplanet.net",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Preventing wildfires means planning where to thin forests and carry out controlled burns, but that planning is slow, done by hand and often stops at property lines. Vibrant Planet uses satellite mapping and fire modelling to help land managers plan the most effective treatments across whole landscapes. What comes back is a sequence of thinning and burning projects, ranked by how much risk each one actually removes.",
+      "outperform": "",
+      "future": "Faster, better planning could help communities, landowners and agencies work together to protect forests before fires strike, and re-plan each season rather than each budget cycle. That could mean healthier landscapes, safer homes and fewer devastating fire seasons. For a county that has lived through one, it is the difference between watching the weather every summer and knowing the work on the hillside above town is already done."
+    }
+  },
+  {
+    "name": "Voize",
+    "slug": "voize",
+    "countries": [
+      "Germany"
+    ],
+    "sector": "healthcare-medicine",
+    "sectorLabel": "Healthcare & Medicine",
+    "subsector": "AI clinical documentation",
+    "yearFounded": 2020,
+    "years": [
+      2026
+    ],
+    "returning": false,
+    "statement": "Writes patient records so nurses can focus on care",
+    "website": "https://www.voize.ai",
+    "visual": "",
+    "legacy": {
+      "solution": "",
+      "problem": "",
+      "description": ""
+    },
+    "current": {
+      "fix": "Care workers spend a big part of every shift writing up notes, at a shared desktop at the end of a round or after the shift ends, time taken away from the people they care for. Voize lets them simply speak into a phone after a visit, and its speech recognition turns what they say into the right entries in the resident's record. It runs on the handset, in care vocabulary and many accents, and syncs when a connection returns.",
+      "outperform": "",
+      "future": "With a major shortage of care workers on the horizon, giving time back to staff matters hugely. If paperwork no longer eats into every shift, care workers can focus on what they do best: looking after people. For the person in the room, that is a few more minutes of somebody's attention on an ordinary afternoon, given by someone who is not already counting down to the paperwork waiting at the end of the round."
     }
   }
 ]

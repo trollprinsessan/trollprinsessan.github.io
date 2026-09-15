@@ -37,7 +37,14 @@ export default function GoodNews() {
 
 /* the signup on its own - the field in the dock's slot and the consent - so
    the section and the footer carry the same form */
-export function GoodNewsForm({ className = "" }: { className?: string }) {
+export function GoodNewsForm({
+  className = "",
+  placeholder = "Email",
+}: {
+  className?: string;
+  /* the footer carries norrsken.org's own wording for the field */
+  placeholder?: string;
+}) {
   return (
     <form
       className={`mod-goodnews-form ${className}`}
@@ -51,7 +58,7 @@ export function GoodNewsForm({ className = "" }: { className?: string }) {
           type="email"
           name="email"
           required
-          placeholder="Email"
+          placeholder={placeholder}
           aria-label="Email address"
         />
         <button type="submit">Subscribe</button>

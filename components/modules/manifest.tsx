@@ -3,6 +3,8 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { NOMINATION_PARTNERS } from "./partners";
 import ElectroMark from "./electro-mark";
+import { iso3List } from "@/lib/countries";
+import { openCompany } from "@/lib/company-link";
 
 // Structure after the foot of u-p.co: a small numbered index on the left, the
 // panel's copy on the right, and a full-bleed horizontal image strip beneath.
@@ -252,19 +254,7 @@ function Body({
 
 /* the caption's short form of the geography: the three-letter code, so the
    name and the country hold one line under the plate */
-const ISO3: Record<string, string> = {
-  "United States": "USA", "United Kingdom": "GBR", Germany: "DEU", Sweden: "SWE",
-  France: "FRA", Kenya: "KEN", Spain: "ESP", Nigeria: "NGA", India: "IND",
-  Netherlands: "NLD", Denmark: "DNK", Singapore: "SGP", Switzerland: "CHE",
-  Israel: "ISR", Canada: "CAN", Norway: "NOR", Argentina: "ARG",
-  "South Africa": "ZAF", Australia: "AUS", Finland: "FIN", Ghana: "GHA",
-  Latvia: "LVA", "Hong Kong": "HKG", Rwanda: "RWA", Estonia: "EST", Italy: "ITA",
-  Turkey: "TUR", Indonesia: "IDN", Mexico: "MEX", Tanzania: "TZA", Austria: "AUT",
-  Malaysia: "MYS", Belgium: "BEL", Egypt: "EGY", Portugal: "PRT", Vietnam: "VNM",
-  Pakistan: "PAK", Lithuania: "LTU", Senegal: "SEN", Japan: "JPN", China: "CHN",
-};
-const iso = (geo: string) =>
-  geo.split(/\s*,\s*/).map((g) => ISO3[g] ?? g.slice(0, 3).toUpperCase()).join(", ");
+const iso = iso3List;
 
 export type Draw = {
   slug: string;
@@ -297,7 +287,7 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
   /* the contents, the links and the disclosure keep their own behaviour */
   const isType = (t: EventTarget | null) =>
     t instanceof Element &&
-    !!t.closest("a, button, summary, .mod-manifest-index");
+    !!t.closest("a, button, summary, .mod-manifest-index, .mod-manifest-draw-open");
   /* a roulette, not a cut: the plate runs through a handful of companies,
      each held a little longer than the last, before it lands. The same
      deceleration as the spread's spin. The stops are chosen up front so their
@@ -520,9 +510,18 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
               {/* the frame is drawn whether or not the company has a
                   picture, so a draw without one leaves a hole rather than
                   pulling the record up the page */}
+              {/* THE DRAWN COMPANY OPENS. The plate and its caption are the
+                  way in to it; anywhere else on the section still draws
+                  another. The picture is for the pointer, the caption is the
+                  button the keyboard reaches. */}
               <figure className="mod-manifest-draw-plate">
                 {one.visual && (
-                  <img src={one.visual} alt={one.name} />
+                  <img
+                    className="mod-manifest-draw-open"
+                    src={one.visual}
+                    alt={one.name}
+                    onClick={() => { if (!spinning) openCompany(one.slug); }}
+                  />
                 )}
               </figure>
               {/* the caption's line is always there and only its words come
@@ -530,13 +529,16 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
                   Mounting it only on landing took its height with it, and
                   everything under it - the mark, on a phone - jumped on
                   every spin. */}
-              <p
-                className="mod-manifest-draw-caption"
-                aria-label={spinning ? undefined : `${line1}. ${line2}`}
-              >
-                <span className="mod-manifest-draw-who" aria-hidden="true">
+              <p className="mod-manifest-draw-caption">
+                <button
+                  type="button"
+                  className="mod-manifest-draw-who mod-manifest-draw-open"
+                  onClick={() => openCompany(one.slug)}
+                  disabled={spinning || !written}
+                  aria-label={spinning ? undefined : `${line1}. ${line2}`}
+                >
                   {written}
-                </span>
+                </button>
               </p>
               <div className="mod-manifest-draw-record">
                 <p className="mod-manifest-draw-name">{one.name}</p>

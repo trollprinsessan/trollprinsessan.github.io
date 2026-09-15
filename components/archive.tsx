@@ -1,9 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { Company, Facets } from "@/lib/types";
-import { visualFor, cohortsFor, thumb } from "@/lib/art-direction";
+import { visualFor, cohortsFor, thumb, isLineArt, isClipart } from "@/lib/art-direction";
+import {
+  OPEN_COMPANY_EVENT,
+  companyFromUrl,
+  writeCompanyUrl,
+} from "@/lib/company-link";
 
 // client-only: reads image pixels + WebGL, must never run on the server
 
@@ -95,6 +100,32 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+/* the list's order: this edition first, then alphabetical */
+const recent = (c: Company) => (c.years.length ? Math.max(...c.years) : 0);
+const byEdition = (a: Company, b: Company) =>
+  recent(b) - recent(a) || a.name.localeCompare(b.name);
+
+/* SEARCH READS EVERYTHING THE EDITION WROTE.
+   Not the name and the one-liner alone: the sector, the subsector, the
+   countries (and the short forms the page sets them in), the website, the
+   campaigns, and both of the long texts. Accents are folded away and every
+   word has to be found, in any order - "kenya solar" finds a Kenyan solar
+   company wherever the two words sit. */
+const fold = (s: string) =>
+  s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+/* a key press meant for a field is not a step through the companies */
+function typing(e: KeyboardEvent) {
+  const t = e.target as HTMLElement | null;
+  return (
+    !!t &&
+    (t.tagName === "INPUT" ||
+      t.tagName === "TEXTAREA" ||
+      t.tagName === "SELECT" ||
+      t.isContentEditable)
+  );
+}
+
 function sections(c: Company) {
   // "Problem"/"Solution" renamed to the same phrasing the 2026 batch's own
   // fields use ("What they fix" / "What this means for the future") - the
@@ -111,14 +142,52 @@ function sections(c: Company) {
   ].filter((s) => s.body && s.body.trim());
 }
 
+/* PREVIOUS AND NEXT
+   The companies in the order the list is showing them, so a company can be
+   read after the one before it without going back to the list. The same two
+   words the Latest section steps with. */
+type Steps = {
+  prev: Company | null;
+  next: Company | null;
+  onStep: (dir: -1 | 1) => void;
+};
+
+function EntrySteps({ steps }: { steps: Steps }) {
+  return (
+    <nav className="entry-steps" aria-label="Companies">
+      <button
+        type="button"
+        className="entry-step"
+        onClick={() => steps.onStep(-1)}
+        disabled={!steps.prev}
+        aria-label={steps.prev ? `Previous: ${steps.prev.name}` : "Previous"}
+      >
+        Prev
+      </button>
+      <button
+        type="button"
+        className="entry-step"
+        onClick={() => steps.onStep(1)}
+        disabled={!steps.next}
+        aria-label={steps.next ? `Next: ${steps.next.name}` : "Next"}
+      >
+        Next
+      </button>
+    </nav>
+  );
+}
+
 /* The entry layout, shared by the modal and the Shuffle view so the two are
    the same object rather than two designs that resemble each other. `corner`
    is whatever control belongs in the top right: the close mark in the modal,
    the spin circle in Shuffle. */
-function EntryLayout({ c, corner, onImageClick, spread }: {
+function EntryLayout({ c, corner, onImageClick, spread, steps }: {
   c: Company;
   corner: React.ReactNode;
   onImageClick?: () => void;
+  /* the index panel sets Prev and Next under the name rather than beside
+     the close mark */
+  steps?: Steps;
   /* Shuffle: two leaves with their own vertical rhythm - the name over the
      picture on the verso, the lead, the body and the record on the recto.
      One grid cannot give two columns independent rows, so the leaves are
@@ -140,7 +209,8 @@ function EntryLayout({ c, corner, onImageClick, spread }: {
   ];
 
   const head = <header className="entry-head">{corner}</header>;
-  const name = <h2 className="entry-name">{c.name}</h2>;
+  /* the dialog is named by it */
+  const name = <h2 className="entry-name" id={`entry-name-${c.slug}`}>{c.name}</h2>;
   const statement = c.statement ? (
     <p className="entry-statement">{c.statement}</p>
   ) : null;
@@ -210,6 +280,7 @@ function EntryLayout({ c, corner, onImageClick, spread }: {
             lead line and body hung from the foot of the page */}
         <div className="entry-verso">
           {name}
+          {steps && <EntrySteps steps={steps} />}
           <div className="entry-record">
             <span className="entry-record-name">{c.name}</span>
             <div className="entry-record-values">
@@ -256,33 +327,83 @@ function EntryLayout({ c, corner, onImageClick, spread }: {
   );
 }
 
-function CompanyModal({ c, onClose, onShuffle, spinning }: {
+function CompanyModal({ c, onClose, onShuffle, spinning, steps }: {
   c: Company;
   onClose: () => void;
   /* the draw lives in here now: pressing the picture, or the control at the
      foot, rolls another company into the same plate without closing it */
   onShuffle?: () => void;
   spinning?: boolean;
+  steps: Steps;
 }) {
   const [out, setOut] = useState(false);
+  const articleRef = useRef<HTMLElement>(null);
+  const closing = useRef(false);
 
   /* matches the exit animation, so the plate is gone before it unmounts */
-  const close = () => { setOut(true); setTimeout(onClose, 540); };
+  const close = () => {
+    if (closing.current) return;
+    closing.current = true;
+    setOut(true);
+    setTimeout(onClose, 540);
+  };
 
+  /* the keys are bound once, so they read the current company through this */
+  const live = useRef({ close, steps });
+  live.current = { close, steps };
+
+  /* A DIALOG, FOR THE KEYBOARD TOO.
+     The focus goes into the plate when it opens and stays inside it - Tab
+     runs round its own controls - and it goes back to whatever opened it
+     when it closes, so the reader is where they were in the list. The arrow
+     keys step to the company before or after. */
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") close(); };
+    const opener = document.activeElement as HTMLElement | null;
+    articleRef.current?.focus({ preventScroll: true });
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { live.current.close(); return; }
+      if (e.key === "Tab") {
+        const root = articleRef.current;
+        if (!root) return;
+        const focusable = [
+          ...root.querySelectorAll<HTMLElement>("a[href], button:not([disabled])"),
+        ];
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        const at = document.activeElement;
+        if (e.shiftKey && (at === first || at === root)) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && (at === last || !root.contains(at))) {
+          e.preventDefault();
+          first.focus();
+        }
+        return;
+      }
+      if (typing(e)) return;
+      if (e.key === "ArrowLeft") { e.preventDefault(); live.current.steps.onStep(-1); }
+      else if (e.key === "ArrowRight") { e.preventDefault(); live.current.steps.onStep(1); }
+    };
     document.addEventListener("keydown", handler);
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", handler);
       document.body.style.overflow = "";
+      if (opener && opener !== document.body && document.contains(opener)) {
+        opener.focus({ preventScroll: true });
+      }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className={`entry-scrim${out ? " entry-scrim--out" : ""}`} onClick={close}>
       <article
+        ref={articleRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={`entry-name-${c.slug}`}
+        tabIndex={-1}
         className={`entry entry--spread entry--slot${slotFor(c.slug)}${
           out ? " entry--out" : ""
         }${spinning ? " entry--spinning" : ""}`}
@@ -293,7 +414,10 @@ function CompanyModal({ c, onClose, onShuffle, spinning }: {
           spread
           onImageClick={onShuffle}
           corner={
-            <button className="entry-close" onClick={close} aria-label="Close">✕</button>
+            <>
+              <EntrySteps steps={steps} />
+              <button className="entry-close" onClick={close} aria-label="Close">✕</button>
+            </>
           }
         />
         {onShuffle && (
@@ -318,7 +442,7 @@ export default function Archive({
   const [sector, setSector] = useState<Set<string>>(new Set());
   const [country, setCountry] = useState<Set<string>>(new Set());
   const [theme, setTheme] = useState<Set<string>>(new Set());
-  const [year, setYear] = useState<Set<string>>(new Set(["2025"]));
+  const [year, setYear] = useState<Set<string>>(new Set(["2026"]));
   const [query, setQuery] = useState("");
   /* the dock rides the foot of the window, but only while the list it belongs
      to is on screen - an observer rather than a scroll listener, so it costs
@@ -352,7 +476,6 @@ export default function Archive({
     return () => mq.removeEventListener("change", onChange);
   }, []);
   const { cols, phone, shows } = DENSITIES[density];
-  const [modal, setModal] = useState<Company | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   /* the sheet closes on Escape, and on a press anywhere off the dock: the
      list behind it is the result, and reaching for it means you are done */
@@ -373,9 +496,175 @@ export default function Archive({
   const spinTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
   useEffect(() => () => spinTimers.current.forEach(clearTimeout), []);
 
+  const haystacks = useMemo(() => {
+    const m = new Map<string, string>();
+    for (const c of companies) {
+      m.set(
+        c.slug,
+        fold(
+          [
+            c.name,
+            c.statement,
+            c.sectorLabel,
+            c.subsector,
+            ...c.countries,
+            ...c.countries.map(abbreviateCountry),
+            ...c.countries.map((x) => COUNTRY_NAMES[x] ?? ""),
+            c.website,
+            ...(c.themes ?? []),
+            ...cohortsFor(c.slug),
+            c.current.fix,
+            c.current.outperform,
+            c.current.future,
+          ]
+            .filter(Boolean)
+            .join("\n")
+        )
+      );
+    }
+    return m;
+  }, [companies]);
+
+  const filtered = useMemo(() => {
+    const terms = fold(query).split(/\s+/).filter(Boolean);
+    let list = companies.filter((c) => {
+      if (sector.size && !sector.has(c.sectorLabel)) return false;
+      if (country.size && !c.countries.some((x) => country.has(x))) return false;
+      if (theme.size && !(c.themes ?? []).some((x) => theme.has(x))) return false;
+      if (year.size && !c.years.some((x) => year.has(String(x)))) return false;
+      if (terms.length) {
+        const hay = haystacks.get(c.slug) ?? "";
+        if (!terms.every((t) => hay.includes(t))) return false;
+      }
+      return true;
+    });
+    list = [...list].sort(byEdition);
+    return list;
+  }, [companies, sector, country, year, theme, query, haystacks]);
+
+  /* THE OPEN COMPANY
+     One company is open at a time, in one of two places: the modal over the
+     page, or the panel beside the index (a sheet on a phone). It is kept by
+     its slug, and the slug is the page's address, so it can be linked to and
+     the back button closes it. */
+  const bySlug = useMemo(() => new Map(companies.map((c) => [c.slug, c])), [companies]);
+  const sortedAll = useMemo(() => [...companies].sort(byEdition), [companies]);
+  const [openSlug, setOpenSlug] = useState<string | null>(null);
+  const [surface, setSurface] = useState<"modal" | "panel">("modal");
+  const openRef = useRef<string | null>(null);
+  const surfaceRef = useRef(surface);
+  surfaceRef.current = surface;
+  /* whether this visit put the open company into the history: if it did,
+     closing steps back out of it; a company that arrived in the address is
+     closed by rewriting the address, so the back button still leaves */
+  const pushed = useRef(false);
+  const viewRef = useRef(view);
+  viewRef.current = view;
+  const dockOnRef = useRef(dockOn);
+  dockOnRef.current = dockOn;
+
+  /* the modal, unless the index is up and the list is on screen to hold the
+     panel - or it is a phone, where the panel is a sheet over anything */
+  const surfaceFor = (): "modal" | "panel" => {
+    const v = window.matchMedia("(max-width: 720px)").matches ? "index" : viewRef.current;
+    if (v !== "index") return "modal";
+    if (window.matchMedia("(max-width: 900px)").matches) return "panel";
+    return dockOnRef.current ? "panel" : "modal";
+  };
+
+  const showCompany = useCallback((slug: string, as?: "modal" | "panel") => {
+    if (!bySlug.has(slug)) return;
+    if (openRef.current) {
+      writeCompanyUrl(slug, "replace");
+    } else {
+      writeCompanyUrl(slug, "push");
+      pushed.current = true;
+    }
+    openRef.current = slug;
+    if (as) setSurface(as);
+    setOpenSlug(slug);
+  }, [bySlug]);
+
+  const closeCompany = useCallback(() => {
+    if (!openRef.current) return;
+    openRef.current = null;
+    setOpenSlug(null);
+    if (pushed.current) {
+      pushed.current = false;
+      window.history.back();
+    } else {
+      writeCompanyUrl(null, "replace");
+    }
+  }, []);
+
+  /* a panel whose row is filtered away goes with it */
+  useEffect(() => {
+    const slug = openRef.current;
+    if (slug && surfaceRef.current === "panel" && !filtered.some((c) => c.slug === slug)) {
+      closeCompany();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filtered]);
+
+  /* the address, on arrival and on back and forward */
+  useEffect(() => {
+    const slug = companyFromUrl();
+    if (slug && bySlug.has(slug)) {
+      openRef.current = slug;
+      pushed.current = false;
+      setSurface(surfaceFor());
+      setOpenSlug(slug);
+    }
+    const onPop = () => {
+      const next = companyFromUrl();
+      if (next && bySlug.has(next)) {
+        if (!openRef.current) setSurface(surfaceFor());
+        openRef.current = next;
+        pushed.current = true;
+        setOpenSlug(next);
+      } else if (openRef.current) {
+        openRef.current = null;
+        pushed.current = false;
+        setOpenSlug(null);
+      }
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bySlug]);
+
+  /* anything else on the page that asks for a company - the manifest's plate */
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      const slug = (e as CustomEvent<string>).detail;
+      showCompany(slug, openRef.current ? undefined : surfaceFor());
+    };
+    window.addEventListener(OPEN_COMPANY_EVENT, onOpen);
+    return () => window.removeEventListener(OPEN_COMPANY_EVENT, onOpen);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showCompany]);
+
+  const openCo = openSlug ? bySlug.get(openSlug) ?? null : null;
+  /* the steps run through the list as it is showing; a company that is not
+     in it (opened from the manifest past a search) steps through them all */
+  const sequence =
+    openSlug && filtered.some((c) => c.slug === openSlug) ? filtered : sortedAll;
+  const at = openSlug ? sequence.findIndex((c) => c.slug === openSlug) : -1;
+  const prevCo = at > 0 ? sequence[at - 1] : null;
+  const nextCo = at >= 0 && at < sequence.length - 1 ? sequence[at + 1] : null;
+  const steps: Steps = {
+    prev: prevCo,
+    next: nextCo,
+    onStep: (dir) => {
+      const to = dir < 0 ? prevCo : nextCo;
+      if (to) showCompany(to.slug);
+    },
+  };
+
   /* choosing a view or a stop puts the filter panel away: the panel is a
      detour off the row, and picking a view means you are done with it */
   const chooseView = (v: View) => {
+    if (v !== "index" && openRef.current && surfaceRef.current === "panel") closeCompany();
     setView(v);
     setFiltersOpen(false);
   };
@@ -383,21 +672,6 @@ export default function Archive({
     setDensity(d);
     setFiltersOpen(false);
   };
-
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    let list = companies.filter((c) => {
-      if (sector.size && !sector.has(c.sectorLabel)) return false;
-      if (country.size && !c.countries.some((x) => country.has(x))) return false;
-      if (theme.size && !(c.themes ?? []).some((x) => theme.has(x))) return false;
-      if (year.size && !c.years.some((x) => year.has(String(x)))) return false;
-      if (q && !(`${c.name} ${c.statement}`.toLowerCase().includes(q))) return false;
-      return true;
-    });
-    const recent = (c: Company) => (c.years.length ? Math.max(...c.years) : 0);
-    list = [...list].sort((a, b) => recent(b) - recent(a) || a.name.localeCompare(b.name));
-    return list;
-  }, [companies, sector, country, year, theme, query]);
 
   const activeFilterCount = sector.size + country.size + theme.size + year.size;
   const clearFilters = () => {
@@ -430,20 +704,27 @@ export default function Archive({
       elapsed += gap;
       const isLast = i === gaps.length - 1;
       spinTimers.current.push(setTimeout(() => {
-        setModal((current) => pick(isLast ? current?.slug : undefined));
-        if (isLast) setSpinning(false);
+        const landed = pick(isLast ? openRef.current ?? undefined : undefined);
+        openRef.current = landed.slug;
+        setOpenSlug(landed.slug);
+        /* the address takes the company it lands on, not every one it passes */
+        if (isLast) {
+          setSpinning(false);
+          writeCompanyUrl(landed.slug, "replace");
+        }
       }, elapsed));
     });
   };
 
   return (
     <>
-      {modal && (
+      {openCo && surface === "modal" && (
         <CompanyModal
-          c={modal}
-          onClose={() => setModal(null)}
+          c={openCo}
+          onClose={closeCompany}
           onShuffle={doSpin}
           spinning={spinning}
+          steps={steps}
         />
       )}
 
@@ -485,13 +766,6 @@ export default function Archive({
             view - with the grid's scale inside the view cell while the grid
             is up. */}
         <div className="controls-row">
-
-        {/* a readout, not a control: no box, because you cannot press it */}
-        <div className="ctl ctl--count">
-          <span className="ctl-count ctl-box">
-            {String(filtered.length).padStart(3, "0")}
-          </span>
-        </div>
 
         <div className="ctl ctl--filter">
           <button
@@ -605,9 +879,21 @@ export default function Archive({
         {filtered.length === 0 ? (
           <div className="empty">No companies match these filters.</div>
         ) : view === "grid" ? (
-          <Grid list={filtered} onSelect={setModal} cols={cols} phone={phone} shows={shows} />
+          <Grid
+            list={filtered}
+            onSelect={(c) => showCompany(c.slug, "modal")}
+            cols={cols}
+            phone={phone}
+            shows={shows}
+          />
         ) : (
-          <Index list={filtered} />
+          <Index
+            list={filtered}
+            open={surface === "panel" ? openCo : null}
+            onOpen={(slug) => (slug ? showCompany(slug, "panel") : closeCompany())}
+            steps={steps}
+            undocked={!dockOn}
+          />
         )}
       </div>
     </>
@@ -637,24 +923,58 @@ function slotFor(slug: string) {
 
 // atelier-amont.ch table: no thumbnails, pure text columns — name / statement /
 // sector / geography, each one line, dense single-baseline rows.
-function Index({ list }: { list: Company[] }) {
+function Index({ list, open, onOpen, steps, undocked }: {
+  list: Company[];
+  open: Company | null;
+  onOpen: (slug: string | null) => void;
+  steps: Steps;
+  /* opened from outside the list, with the dock down: the phone's sheet
+     comes to the foot of the window instead of resting on the bar */
+  undocked: boolean;
+}) {
   /* A row opens a panel on the right rather than unfolding under itself: the
      list keeps its place and the company is read beside it. The panel sits
      under the control row, which is sticky at the top of the page. */
-  const [open, setOpen] = useState<string | null>(null);
-  const shown = list.find((c) => c.slug === open) ?? null;
+  const isOpen = !!open;
+  const indexRef = useRef<HTMLDivElement>(null);
 
+  /* Escape closes; the arrow keys step to the company above or below */
+  const live = useRef({ onOpen, steps });
+  live.current = { onOpen, steps };
   useEffect(() => {
-    if (!open) return;
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(null); };
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { live.current.onOpen(null); return; }
+      if (typing(e)) return;
+      if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        live.current.steps.onStep(-1);
+      } else if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+        e.preventDefault();
+        live.current.steps.onStep(1);
+      }
+    };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
-  }, [open]);
+  }, [isOpen]);
 
-  /* a row that is filtered away must not leave its panel behind */
+  /* a step keeps its row on screen: under the mark at the head, above the
+     dock at the foot. Beside the list only - a phone's sheet covers it. */
+  const openSlug = open?.slug;
   useEffect(() => {
-    if (open && !list.some((c) => c.slug === open)) setOpen(null);
-  }, [list, open]);
+    if (!openSlug || window.matchMedia("(max-width: 900px)").matches) return;
+    const row = indexRef.current?.querySelector<HTMLElement>(
+      `[data-slug="${CSS.escape(openSlug)}"]`
+    );
+    if (!row) return;
+    const r = row.getBoundingClientRect();
+    const head = document.querySelector(".archive-masthead")?.getBoundingClientRect().height ?? 0;
+    const foot = document.querySelector(".dock")?.getBoundingClientRect().height ?? 0;
+    if (r.top < head) window.scrollBy({ top: r.top - head - 8 });
+    else if (r.bottom > window.innerHeight - foot) {
+      window.scrollBy({ top: r.bottom - (window.innerHeight - foot) + 8 });
+    }
+  }, [openSlug]);
 
   /* THE PANEL'S HEIGHT IS THE SCREEN LESS THE DOCK.
      The controls used to run under the masthead, so the panel hung from
@@ -662,7 +982,7 @@ function Index({ list }: { list: Company[] }) {
      panel runs from the top of the screen down to the dock. Measured rather
      than assumed: the dock is one row, but that row's height is the type's. */
   useEffect(() => {
-    if (!open) return;
+    if (!isOpen) return;
     const dock = document.querySelector(".dock");
     if (!dock) return;
     const place = () => {
@@ -675,19 +995,23 @@ function Index({ list }: { list: Company[] }) {
     place();
     window.addEventListener("resize", place);
     return () => window.removeEventListener("resize", place);
-  }, [open]);
+  }, [isOpen]);
 
   return (
     <div className={`index-view${open ? " index-view--open" : ""}`}>
-      <div className={`index${open ? " index--focused" : ""}`}>
+      <div ref={indexRef} className={`index${open ? " index--focused" : ""}`}>
         {list.map((c) => {
-          const isOpen = open === c.slug;
+          const rowOpen = open?.slug === c.slug;
           return (
-            <div key={c.slug} className={`index-item${isOpen ? " index-item--open" : ""}`}>
+            <div
+              key={c.slug}
+              data-slug={c.slug}
+              className={`index-item${rowOpen ? " index-item--open" : ""}`}
+            >
               <button
                 className="row"
-                aria-expanded={isOpen}
-                onClick={() => setOpen(isOpen ? null : c.slug)}
+                aria-expanded={rowOpen}
+                onClick={() => onOpen(rowOpen ? null : c.slug)}
               >
                 <div className="row-name">
                   {/* the phone's picture: one line tall, before the name.
@@ -703,6 +1027,7 @@ function Index({ list }: { list: Company[] }) {
                 </div>
                 <div className="row-statement">{c.statement}</div>
                 <div className="row-sector">{c.sectorLabel}</div>
+                {/* the index sets the place as codes, on its one track */}
                 <div className="row-geo">{abbreviateCountry(c.countries[0])}</div>
               </button>
             </div>
@@ -710,16 +1035,21 @@ function Index({ list }: { list: Company[] }) {
         })}
       </div>
 
-      {shown && (
-        <aside className="index-panel" key={shown.slug}>
+      {open && (
+        <aside
+          className={`index-panel${undocked ? " index-panel--undocked" : ""}`}
+          key={open.slug}
+          aria-label={open.name}
+        >
           <div className="entry entry--spread entry--panel">
             <EntryLayout
-              c={shown}
+              c={open}
               spread
+              steps={steps}
               corner={
                 <button
                   className="entry-close"
-                  onClick={() => setOpen(null)}
+                  onClick={() => onOpen(null)}
                   aria-label="Close"
                 >
                   ✕
@@ -736,6 +1066,13 @@ function Index({ list }: { list: Company[] }) {
 const COUNTRY_ABBREVIATIONS: Record<string, string> = {
   "United Kingdom": "UK",
   "United States": "US",
+};
+
+/* and the other way round, for the search: this edition's data writes the
+   two short forms, and a reader types the names */
+const COUNTRY_NAMES: Record<string, string> = {
+  UK: "United Kingdom Great Britain",
+  US: "United States USA America",
 };
 
 /* The campaign a company belongs to. The data marks the ones in neither as
@@ -785,7 +1122,15 @@ function Grid({ list, onSelect, cols, phone, shows }: {
               {visualFor(c) ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  className="card-thumb"
+                  className={`card-thumb${
+                    isLineArt(visualFor(c))
+                      ? " card-thumb--line"
+                      : visualFor(c).endsWith(".gif")
+                        ? " card-thumb--gif"
+                        : isClipart(visualFor(c))
+                          ? " card-thumb--clip"
+                          : ""
+                  }`}
                   src={visualFor(c)}
                   alt={c.name}
                   loading="lazy"
