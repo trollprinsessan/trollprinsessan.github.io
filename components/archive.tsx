@@ -722,7 +722,24 @@ export default function Archive({
   const bySlug = useMemo(() => new Map(companies.map((c) => [c.slug, c])), [companies]);
   const sortedAll = useMemo(() => [...companies].sort(byComposition), [companies, byComposition]);
   const [openSlug, setOpenSlug] = useState<string | null>(null);
-  const [surface, setSurface] = useState<"modal" | "panel">("modal");
+  const [chosenSurface, setSurface] = useState<"modal" | "panel">("modal");
+  /* A PHONE NEVER GETS THE SPREAD.
+     The surface is chosen when a company opens, off the window's width at
+     that moment - and a phone can report a desktop width in that moment (an
+     in-app browser, a page still settling its viewport, a turn of the
+     device). The spread laid out at a phone's width is a wreck, so the width
+     is watched, and at 900 and under the company is always the sheet,
+     whatever was chosen when it opened. */
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 900px)");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setNarrow(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setNarrow(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+  const surface = narrow ? "panel" : chosenSurface;
   const openRef = useRef<string | null>(null);
   const surfaceRef = useRef(surface);
   surfaceRef.current = surface;
@@ -730,6 +747,9 @@ export default function Archive({
      closing steps back out of it; a company that arrived in the address is
      closed by rewriting the address, so the back button still leaves */
   const pushed = useRef(false);
+  /* the company came in the address - someone sent a link - rather than
+     being opened from the list */
+  const arrivedByLink = useRef(false);
   const viewRef = useRef(view);
   viewRef.current = view;
   const dockOnRef = useRef(dockOn);
@@ -797,6 +817,7 @@ export default function Archive({
     if (slug && bySlug.has(slug)) {
       openRef.current = slug;
       pushed.current = false;
+      arrivedByLink.current = true;
       setSurface(surfaceFor());
       setOpenSlug(slug);
     }
@@ -937,6 +958,29 @@ export default function Archive({
       const to = dir < 0 ? prevCo : nextCo;
       if (to) showCompany(to.slug);
     },
+  };
+
+  /* A LINK'S COMPANY CLOSES ONTO THE LIST.
+     Someone who arrived on a phone from a link has not seen the page; closing
+     the sheet leaves them on the film at the top of it, with no sign of the
+     hundred below. So the first close of a linked company brings the list up,
+     under the mark, instead. */
+  const closeSheet = () => {
+    const fromLink = arrivedByLink.current;
+    arrivedByLink.current = false;
+    closeCompany();
+    if (!fromLink || !window.matchMedia("(max-width: 900px)").matches) return;
+    const list = listRef.current;
+    if (!list) return;
+    const mast = document.querySelector(".archive-masthead")?.getBoundingClientRect().height ?? 0;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    /* after the history step the close takes, or the restored position wins */
+    setTimeout(() => {
+      window.scrollTo({
+        top: list.getBoundingClientRect().top + window.scrollY - mast,
+        behavior: reduce ? "auto" : "smooth",
+      });
+    }, 60);
   };
 
   /* choosing a view or a stop puts the filter panel away: the panel is a
@@ -1217,7 +1261,7 @@ export default function Archive({
           <Index
             list={filtered}
             open={surface === "panel" ? openCo : null}
-            onOpen={(slug) => (slug ? showCompany(slug, "panel") : closeCompany())}
+            onOpen={(slug) => (slug ? showCompany(slug, "panel") : closeSheet())}
             steps={steps}
             undocked={!dockOn}
           />
@@ -1264,6 +1308,17 @@ function Index({ list, open, onOpen, steps, undocked }: {
      under the control row, which is sticky at the top of the page. */
   const isOpen = !!open;
   const indexRef = useRef<HTMLDivElement>(null);
+
+  /* the phone's sheet holds the page still behind it: the page under a sheet
+     scrolling along with a thumb read as the sheet coming loose */
+  useEffect(() => {
+    if (!isOpen || !window.matchMedia("(max-width: 900px)").matches) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [isOpen]);
 
   /* THE PICTURE FOLLOWS THE POINTER.
      The index is type only on a desktop; running the pointer down it brings
@@ -1467,6 +1522,11 @@ function Index({ list, open, onOpen, steps, undocked }: {
         />
       )}
 
+      {/* the band of page above the phone's sheet: a tap there puts it away */}
+      {open && (
+        <div className="index-sheet-scrim" aria-hidden="true" onClick={() => onOpen(null)} />
+      )}
+
       {open && (
         <aside
           ref={sheetRef}
@@ -1499,6 +1559,14 @@ function Index({ list, open, onOpen, steps, undocked }: {
                 </>
               }
             />
+          </div>
+          {/* on a phone, Prev and Next at the foot of the sheet: the rows are
+              under it, so this is the way on to the next company */}
+          <div className="sheet-steps">
+            <EntrySteps steps={steps} />
+            {/* on a phone the link to the company is here, at the right of the
+                foot, not squeezed between the name and the close */}
+            <CopyLink slug={open.slug} />
           </div>
         </aside>
       )}

@@ -2917,9 +2917,11 @@ html {
   }
   .loader-mark { --mark-grow: 4; }
 }
-/* the loader's mark is the real mark's box on a phone too, short of the Menu */
+/* the loader's mark is the real mark's box on a phone too: the masthead
+   stands 10 off the phone's foot, so the loader's mark does as well - a
+   mark 10px lower than the one it hands over to read as a double */
 @media (max-width: 720px) {
-  .loader-mark { right: calc(var(--pad) + 48px); }
+  .loader-mark { --mark-foot: 10px; }
 }
 
 /* MAKE EUROPE
@@ -3429,9 +3431,10 @@ html {
   /* the mark stands 10 off the phone's foot - the masthead measures
      itself, so the section above still comes out to one screen */
   .archive-masthead { padding-bottom: 10px; }
-  /* the Menu word keeps the top right corner to itself: the mark ends short
-     of it rather than running under it */
-  .archive-masthead { padding-right: calc(var(--pad) + 48px); }
+  /* the mark runs end to end, and the Menu word keeps clear of it by the mark
+     standing 32 down from its box's top: pinned at the head of the window,
+     the letters start under the word instead of beside it */
+  .archive-masthead { padding-top: 32px; }
   .mod-manifest-top {
     display: flex;
     flex-direction: column;
@@ -5722,6 +5725,43 @@ html {
 }
 /* a company swiped to on the phone comes in without rising again */
 .index-panel.index-panel--still { animation: none; }
+
+/* THE PHONE'S SHEET, AS A LINK OPENS IT */
+.index-sheet-scrim,
+.sheet-steps { display: none; }
+@media (max-width: 900px) {
+  /* the band of page left above the sheet (it is 86% of the screen tall, so
+     its top is always 14% down): a tap there closes it */
+  .index-sheet-scrim {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 14vh;
+    z-index: 59;
+  }
+  /* the one-liner is the company's line: under the plate, centred, in bold
+     italic, as the desktop's panel sets it */
+  .index-panel .entry--panel .entry-runhead {
+    display: block;
+    order: 4;
+    margin-top: 12px;
+    font-weight: 700;
+    font-style: italic;
+    text-align: center;
+  }
+  /* Prev and Next at the foot of the sheet, after the copy, and Copy link at
+     the right of the same line */
+  .sheet-steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--pad) 32px;
+  }
+  /* so the head holds only the name and the close */
+  .index-panel .entry-head .copy-link { display: none; }
+}
 @media (min-width: 721px) {
   .index-panel .entry--panel .entry-step { font-size: 14px; line-height: 16px; }
 }
@@ -5859,7 +5899,8 @@ html {
      panel ran 31px past the one screen and the mark moved on that tab. The
      tabs keep their 17 and take the full width of the column instead. */
 
-  .faq-row { padding-top: 8px; padding-bottom: 8px; }
+  /* tight on a phone: the questions read as one list, not a stack of cards */
+  .faq-row { padding-top: 4px; padding-bottom: 4px; }
 
   .mod-footer-links { row-gap: 15px; }
   .mod-footer-links a { position: relative; }

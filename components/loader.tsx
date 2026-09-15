@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Wordmark from "@/components/wordmark";
 import { PHOTO_THUMBS, PLAY_IMAGES, isLineArt, thumb } from "@/lib/art-direction";
 
@@ -80,6 +80,47 @@ const RUN_MS = VEIL;              // the layer leaves as the white does
 export default function Loader() {
   const [done, setDone] = useState(false);
 
+  /* THE LOADER'S MARK IS LAID ON THE REAL ONE, MEASURED.
+     Set from the window's edges it was the real mark's box only where the
+     window and the page are the same width - a scrollbar, a phone's own foot
+     spacing, and the two parted by a few pixels and the handover read as a
+     double. So it takes the masthead's own box: its left edge, its width,
+     and - while the masthead stands at the foot of the window, as it does
+     under the intro - its foot. */
+  const markRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const mark = markRef.current;
+    const mast = document.querySelector<HTMLElement>(".archive-masthead");
+    if (!mark || !mast) return;
+    const place = () => {
+      const r = mast.getBoundingClientRect();
+      const cs = getComputedStyle(mast);
+      const padL = parseFloat(cs.paddingLeft) || 0;
+      const padR = parseFloat(cs.paddingRight) || 0;
+      const padB = parseFloat(cs.paddingBottom) || 0;
+      mark.style.left = `${r.left + padL}px`;
+      mark.style.right = "auto";
+      mark.style.width = `${r.width - padL - padR}px`;
+      const foot = r.bottom - padB;
+      if (r.bottom <= window.innerHeight + 1 && r.bottom > window.innerHeight / 2) {
+        mark.style.bottom = `${window.innerHeight - foot}px`;
+      }
+    };
+    place();
+    /* re-laid whenever the masthead's box changes, which a window resize
+       does not always announce (a device turning, a viewport settling), and
+       once more just before the mark shows, whatever happened in between */
+    const ro = new ResizeObserver(place);
+    ro.observe(mast);
+    window.addEventListener("resize", place);
+    const again = setTimeout(place, Math.max(0, MARK_IN - 50));
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", place);
+      clearTimeout(again);
+    };
+  }, []);
+
   useEffect(() => {
     const root = document.documentElement;
     /* THE INTRO IS FOR THE FRONT DOOR. A visit to the page as it is - no
@@ -136,7 +177,7 @@ export default function Loader() {
           </figure>
         ))}
       </div>
-      <div className="loader-mark">
+      <div className="loader-mark" ref={markRef}>
         <Wordmark label="100" className="loader-mark-svg" />
       </div>
     </div>
