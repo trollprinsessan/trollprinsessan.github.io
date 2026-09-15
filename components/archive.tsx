@@ -3,12 +3,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { Company, Facets } from "@/lib/types";
-import { visualFor, cohortsFor, thumb, isLineArt, isClipart } from "@/lib/art-direction";
+import { visualFor, cohortsFor, thumb, isLineArt, isClipart, isPhoto } from "@/lib/art-direction";
 import {
   OPEN_COMPANY_EVENT,
   companyFromUrl,
   writeCompanyUrl,
 } from "@/lib/company-link";
+import { iso3List } from "@/lib/countries";
 
 // client-only: reads image pixels + WebGL, must never run on the server
 
@@ -1096,11 +1097,8 @@ function Grid({ list, onSelect, cols, phone, shows }: {
   phone: number;
   shows: string;
 }) {
-  /* Plates, after the Yoko Ono catalogue: the picture sits on the page with
-     air around it and the caption runs centred beneath it in the small
-     regular size - a plate number, the name in italic, then the facts, in
-     the book's own order and punctuation. Nothing is bold and nothing is
-     boxed; the pill tags are folded into the caption line. */
+  /* THE CARD: the picture, then the name and the place as a code, what
+     they do, and the sector and the campaigns as boxed tags. */
   return (
     <div
       className={`grid grid--${shows}`}
@@ -1110,12 +1108,10 @@ function Grid({ list, onSelect, cols, phone, shows }: {
       }}
     >
       {list.map((c) => {
-        const facts = [c.sectorLabel, abbreviateCountry(c.countries[0])]
-          .filter(Boolean)
-          .join(", ");
-        // the cohorts this company has been drawn into - the only marked
-        // thing on the card
-        const cohorts = cohortsFor(c.slug);
+        const code = iso3List(c.countries);
+        // the tags: the sector, then the campaigns this company has been
+        // drawn into, each in its own box
+        const tags = [c.sectorLabel, ...cohortsFor(c.slug)].filter(Boolean);
         return (
           <button key={c.slug} className="card" onClick={() => onSelect(c)}>
             <div className="card-media">
@@ -1129,7 +1125,9 @@ function Grid({ list, onSelect, cols, phone, shows }: {
                         ? " card-thumb--gif"
                         : isClipart(visualFor(c))
                           ? " card-thumb--clip"
-                          : ""
+                          : isPhoto(visualFor(c))
+                            ? " card-thumb--photo"
+                            : ""
                   }`}
                   src={visualFor(c)}
                   alt={c.name}
@@ -1140,18 +1138,15 @@ function Grid({ list, onSelect, cols, phone, shows }: {
               )}
             </div>
             <figcaption className="card-caption">
-              {/* the Latest card's own system: one size and one weight, with
-                  the hierarchy carried by case, spacing and a single grey.
-                  Name, then what and where, then what they do, then the
-                  campaign - the title / category / body / date pattern. */}
-              <span className="card-name">{c.name}</span>
-              {facts && <span className="card-facts">{facts}</span>}
+              <span className="card-head">
+                {code ? `${c.name}, ${code}` : c.name}
+              </span>
               {CARD_STATEMENT_ON && c.statement && (
                 <span className="card-statement">{c.statement}</span>
               )}
-              {cohorts.length > 0 && (
+              {tags.length > 0 && (
                 <span className="card-tags">
-                  {cohorts.map((t) => (
+                  {tags.map((t) => (
                     <span key={t} className="card-tag">{t}</span>
                   ))}
                 </span>

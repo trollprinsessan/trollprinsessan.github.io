@@ -866,27 +866,20 @@ main {
 
 /* WHAT EACH STOP SHOWS.
    The card gives up a line at each step in: sixteen across is plates alone,
-   twelve adds the name, eight the facts, six the statement. */
+   twelve adds the name, eight what they do, six the tags. */
 .grid--plates .card-caption { display: none; }
-.grid--names .card-facts,
-.grid--names .card-statement { display: none; }
-.grid--facts .card-statement { display: none; }
+.grid--names .card-statement,
+.grid--names .card-tags { display: none; }
+.grid--facts .card-tags { display: none; }
 
 /* and the type goes down with the card. At six across the caption is the
-   spec'd 15/11; at eight and twelve the card is 138 and 86 wide, and type set
-   for a 190px card reads as shouting on them. The name and its tags close up
-   as they shrink, so each caption stays one block rather than two lines with
-   a gap between. */
-.grid--facts .card-name {
+   spec'd 13/15; at eight and twelve the card is 157 and 100 wide, and type set
+   for a 215px card reads as shouting on them. */
+.grid--facts .card-head {
   font-size: 12px;
   line-height: 14px;
 }
-.grid--facts .card-facts {
-  font-size: 11px;
-  line-height: 13px;
-  margin-top: 1px;
-}
-.grid--names .card-name {
+.grid--names .card-head {
   font-size: 11px;
   line-height: 13px;
 }
@@ -1040,6 +1033,8 @@ main {
   /* it holds its place while the list scrolls past it */
   position: sticky;
   top: 0;
+  /* over the mark, which the list runs under */
+  z-index: 2;
   align-self: start;
   /* the screen less the dock at its foot - measured, see the effect in
      Index() */
@@ -1448,25 +1443,25 @@ main {
 .grid {
   display: grid;
   grid-template-columns: repeat(var(--gridcols), 1fr);
-  /* the rows sit on the tallest card in each of them, so a 40px gap read as
-     nearer 90 under the short ones */
-  gap: 24px var(--gutter);
+  /* the rows are one height now, so this is the air between a row's last
+     line and the next row's head: three lines of it, so a row reads as a
+     band and the caps at its foot belong to the card above, not below */
+  gap: 40px var(--gutter);
   /* one gutter between the parked mark and the first row */
   padding: var(--gutter) var(--pad) 0;
   align-items: start;
 }
 
-/* ONE LINE FOR EVERY CAPTION IN A ROW.
-   A card takes two of the grid's rows - its picture's and its caption's -
-   through a subgrid, so the picture band of a row is as tall as the tallest
-   picture in it and every caption in the row starts on the same line. The
-   pictures stand on their captions, the same 14 above each; it is their tops
-   that rag now, not the text. */
+/* THE CARD.
+   The picture in one frame, then the name and where it is, what they do,
+   and the tags in their boxes. A card takes two of the grid's rows through
+   a subgrid - frame and caption - and the frame is one size, so in any row
+   the frames and the captions each sit on one line. */
 .card {
   display: grid;
   grid-row: span 2;
   grid-template-rows: subgrid;
-  row-gap: 14px;
+  row-gap: 0;
   align-self: stretch;
   background: none;
   border: none;
@@ -1476,60 +1471,59 @@ main {
   color: inherit;
   font-family: inherit;
 }
-/* plates alone: no caption row to keep a gap for */
-.grid--plates .card { row-gap: 0; }
 
-/* Each plate fills the width of its column and keeps its own proportion: a
-   square stays square, a 4:3 stays 4:3. Nothing is cropped and nothing is
-   padded out to a common shape. */
+/* ONE FRAME FOR EVERY PICTURE: a 4:3 box the width of the column, so the
+   pictures in a row share a top and a foot. The photographs fill it, cropped
+   from their middle; the plates on no ground - cutouts, drawings, gifs - sit
+   inside it at their own proportion, centred. */
 .card-media {
   width: 100%;
-  align-self: end;
+  aspect-ratio: 4 / 3;
+  align-self: start;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-/* NO FRAME AND NO CROP.
-   Every picture at the proportion it was made in: a square stays square, a
-   3:2 stays 3:2, and nothing is contained in a box or cut to a common shape.
-   The price is that the rows rag at the foot - the captions in one row land
-   on different lines - and that is the right price for leaving the pictures
-   alone. */
 .card-thumb {
-  width: 100%;
-  height: auto;
   display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
 }
 /* THE PLATES AT ONE OPTICAL SIZE.
-   A line drawing runs edge to edge of its frame and read bigger than the
-   cutouts beside it: 17.5% smaller, still standing on its caption. A gif
-   carries a wide empty ground round its subject and read smaller: 15%
-   closer, from its middle, and then 10% closer again - a subject that
-   reaches its frame's foot laps over the caption, which is allowed. The
-   frame does not change, so no row and no caption moves. */
-.card-thumb--line {
-  transform: scale(0.825);
-  transform-origin: 50% 100%;
-}
+   A square line drawing is held by the frame's height, which already sets it
+   about a sixth under the frame's width - the reduction it used to need when
+   it ran edge to edge, so it takes none now. A gif carries a wide empty
+   ground round its subject and read smaller: 26.5% closer, from its middle,
+   lapping the frame's top and foot a little. The cutouts, trimmed to their
+   edges, still read a size under the photographs: 10% bigger. The frame does
+   not change, so no row and no caption moves. */
+.card-thumb--line { transform: none; }
 .card-thumb--gif { transform: scale(1.265); }
-/* the cutouts, trimmed to their edges, still read a size under the
-   photographs beside them: 10% bigger, standing on the caption like the
-   drawings */
-.card-thumb--clip {
-  transform: scale(1.1);
-  transform-origin: 50% 100%;
+.card-thumb--clip { transform: scale(1.1); }
+
+/* THE PHOTOGRAPHS ARE CROPPED TO 4:3: the full-frame pictures come as 3:2
+   and fill the frame from their middle. The panel and the modal still show
+   the whole frame. */
+.card-thumb--photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 /* nothing to show rather than an empty grey plate */
 .card-thumb--empty { display: none; }
 
-/* THE CAPTION
-   The Latest card's system, applied here: everything at one size and one
-   weight, and the hierarchy carried by case, by two spacing values, and by a
-   single grey for the least important line. Nothing changes size. */
+/* THE CAPTION: the name and the place, what they do, the tags. Three sizes,
+   one weight: 14, 13, 11. */
 .card-caption {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   font-family: var(--font);
-  font-size: 13px;
-  line-height: 15px;
   font-weight: 500;
   font-style: normal;
   letter-spacing: normal;
@@ -1537,74 +1531,53 @@ main {
   text-align: left;
   text-wrap: pretty;
 }
-/* the title */
-.card-name {
-  margin: 0;
-  font-size: 13px;
-  line-height: 15px;
-  font-weight: 500;
-  letter-spacing: normal;
+/* the name, a comma, and the place as its three-letter code, on one line */
+.card-head {
+  display: block;
+  margin: 0 0 3px;
+  font-size: 14px;
+  line-height: 16px;
   text-transform: none;
+  align-self: stretch;
 }
-/* the category: the last line of the card - name, what they do, then where
-   and in what - a step down and in caps, so it reads as the record rather
-   than as another sentence */
-/* THE RECORD: what it is and where it is, and nothing done to it. It was
-   caps with tracking; at 13 that weighed as much as the name and read as a
-   treatment. Plain is the point - the only marked thing on a card is the
-   cohort below. */
-.card-facts {
-  /* directly under the name, the record on its own line; then the
-     statement, a beat below */
-  margin-top: 1px;
-  /* the record steps down to 11 and the statement comes up to 13: what they
-     do reads before where they are */
-  font-size: 11px;
-  line-height: 13px;
-  letter-spacing: normal;
-  text-transform: none;
-}
-/* the body: what they do. Held at three lines so the cards keep their step;
-   the statements run a median of 69 characters. One blank line above it. */
+/* what they do. Held at three lines so the cards keep their step; the
+   statements run a median of 69 characters. */
 .card-statement {
-  /* tight under the name: the two belong together */
   font-size: 13px;
   line-height: 15px;
-  margin-top: 7px;
   min-height: 45px;
+  align-self: stretch;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-/* the campaign, where the Latest card puts its date: caps, grey */
-/* THE CLAIM: the edition saying this one belongs to a group it has drawn.
-   The dock's own slot fill, at card scale - a filled tag means the same thing
-   everywhere on the site, and it is the only tone the page has. */
+/* THE TAGS: the sector, then the campaigns the edition has drawn this one
+   into, each in a box - one hairline, no fill, no radius - the way the
+   filter's options will read. They wrap. */
 .card-tags {
-  order: 4;
-  margin-top: 6px;
+  margin-top: 3px;
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
 }
 .card-tag {
-  padding: 2px 6px 3px;
-  background: var(--slot);
+  display: inline-block;
+  /* 2 more over the type: the caps sit high in their line, and at 2 they
+     were nearly on the stroke */
+  padding: 4px 5px 2px;
+  border: 1px solid var(--ink);
   font-size: 11px;
   line-height: 13px;
   font-weight: 500;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--ink);
   white-space: nowrap;
 }
-/* the denser stops drop the cohort with the rest of the caption */
-.grid--names .card-tags,
-.grid--facts .card-tags { display: none; }
 
-/* the plate's caption underlines on hover, the way the book marks a heading */
-.card:hover .card-name {
+/* the name underlines on hover, the way the book marks a heading */
+.card:hover .card-head {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -1806,7 +1779,7 @@ main {
   position: relative;
   /* over the mark pinned at the foot of the window, which it uncovers as it
      scrolls away */
-  z-index: 1;
+  z-index: 2;
   width: 100%;
   /* the head is fixed over the page now, so the film has the whole window */
   height: 100vh;
@@ -2088,7 +2061,7 @@ html {
   position: relative;
   /* above the masthead that follows, so the artwork hanging out of the bottom
      of this section laps over the wordmark rather than under it */
-  z-index: 1;
+  z-index: 2;
   /* NO GROUND. The mark rides the foot of the window behind this section, and
      an opaque manifest hid it: transparent, the wordmark shows through the
      copy and the plate as they pass over it. */
@@ -2530,12 +2503,18 @@ html {
   bottom: 0;
   /* and at the head while the list scrolls: the rows run over it */
   top: 0;
-  /* UNDER everything it travels past. No ground of its own: the film and the
-     manifest lie over it and slide off, uncovering the mark rather than the
-     mark arriving - and the list, which comes after it, runs across it. */
-  z-index: -1;
-  /* nothing under the mark: its foot IS the foot of the window while it is
-     pinned, and the list starts immediately under it once it parks */
+  /* BETWEEN THE LIST'S TYPE AND ITS PICTURES. The film and the manifest lie
+     over it (their z is above this) and slide off, uncovering the mark
+     rather than the mark arriving. Then the list runs under it: its type is
+     gone the moment it enters the mark's band - the band has the page's own
+     ground, so nothing shows between the letters either - and its pictures,
+     the one thing on the list placed above this, travel over the mark. */
+  z-index: 1;
+  background: var(--bg);
+  /* it is over the rows and the cards now; the press goes through it */
+  pointer-events: none;
+  /* its foot IS the foot of the window while it is pinned, and the list
+     starts immediately under it once it parks */
   padding: 0 var(--pad);
 }
 
@@ -5508,26 +5487,15 @@ html {
    FINGER'S WORTH OF SCREEN ON A PHONE
    ============================================= */
 
-/* THE LIST READS THROUGH THE MARK.
-   The mark is stuck to the head of the window while the list runs over it,
-   and type crossing its black letters flips to white inside them. Each text
-   layer is drawn inverted and blended by difference: over the page's white
-   the two inversions cancel and it reads exactly as set; over the mark's
-   black it stays inverted. Text only - the plates in the grid lie over the
-   mark untouched. */
-.index,
-.card-caption,
-.archive-list > .empty {
-  filter: invert(1);
-  mix-blend-mode: difference;
-}
-/* on the pink ground a difference would turn the type green: there the list
-   runs over the mark as it did */
-html.ground-pink .index,
-html.ground-pink .card-caption,
-html.ground-pink .archive-list > .empty {
-  filter: none;
-  mix-blend-mode: normal;
+/* THE LIST RUNS UNDER THE MARK, ITS PICTURES OVER IT.
+   The mark is stuck to the head of the window while the list runs through
+   it. The rows' and the captions' type is not placed, so it passes behind
+   the letters and is gone while it is there; the pictures are placed above
+   the mark, so they travel over it. Nothing is blended or inverted. */
+.card-media,
+.row-thumb {
+  position: relative;
+  z-index: 2;
 }
 
 /* PREV AND NEXT, beside the close mark: the Latest section's two words,
