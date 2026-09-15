@@ -16,6 +16,19 @@ const SECTIONS = [
 
 export default function HeroMenu() {
   const [open, setOpen] = useState(false);
+  /* whether the film is under the word: a strip at the head of the window,
+     watched, so the word stands on the film in plain white */
+  const [onFilm, setOnFilm] = useState(true);
+  useEffect(() => {
+    const hero = document.querySelector(".mod-hero");
+    if (!hero) return;
+    const io = new IntersectionObserver(
+      ([e]) => setOnFilm(e.isIntersecting),
+      { rootMargin: "0px 0px -95% 0px" }
+    );
+    io.observe(hero);
+    return () => io.disconnect();
+  }, []);
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
@@ -23,7 +36,10 @@ export default function HeroMenu() {
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
   return (
-    <nav className={`mod-hero-menu${open ? " mod-hero-menu--open" : ""}`} aria-label="Sections">
+    <nav
+      className={`mod-hero-menu${open ? " mod-hero-menu--open" : ""}${onFilm ? " mod-hero-menu--on-film" : ""}`}
+      aria-label="Sections"
+    >
       <button
         className="mod-hero-menu-word"
         aria-expanded={open}

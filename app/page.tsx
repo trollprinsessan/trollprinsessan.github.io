@@ -9,7 +9,6 @@ import Partners from "@/components/modules/partners";
 import Faq from "@/components/modules/faq";
 import GoodNewsSection from "@/components/modules/good-news";
 import Footer from "@/components/modules/footer";
-import GoodNews from "@/components/good-news";
 import SnapAssist from "@/components/snap-assist";
 import HeroMenu from "@/components/modules/hero-menu";
 
@@ -65,7 +64,8 @@ export default function Home() {
           the hero, because a blend only sees what shares its stacking
           context, and the hero is one of its own. */}
       <HeroMenu />
-      <GoodNews />
+      {/* the floating Good News note is parked: the component stays in the
+          repo, it is just not on the page */}
       <SnapAssist />
     </>
   );

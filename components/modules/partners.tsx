@@ -46,8 +46,8 @@ export const LOGOS = [
   { file: "vaayu-logo-black.png", name: "Vaayu", h: 38 },
 ];
 
-// gigadesignstudio.com's logo wall: two rows, each an infinite marquee,
-// scrolling in opposite directions.
+// gigadesignstudio.com's logo wall: three rows, each an infinite marquee,
+// alternating direction row to row.
 function Row({ logos, reverse }: { logos: typeof LOGOS; reverse?: boolean }) {
   const doubled = [...logos, ...logos];
   return (
@@ -69,18 +69,17 @@ function Row({ logos, reverse }: { logos: typeof LOGOS; reverse?: boolean }) {
 }
 
 export default function Partners() {
-  const mid = Math.ceil(LOGOS.length / 2);
-  const rowA = LOGOS.slice(0, mid);
-  const rowB = LOGOS.slice(mid);
+  /* no title: the section is the logos alone, in three rows of a third each */
+  const third = Math.ceil(LOGOS.length / 3);
+  const rowA = LOGOS.slice(0, third);
+  const rowB = LOGOS.slice(third, third * 2);
+  const rowC = LOGOS.slice(third * 2);
 
   return (
-    <section className="mod-partners">
-      <div className="mod-section-header">
-        <h2 className="mod-section-title">Nomination Partners</h2>
-        <span className="mod-eyebrow-right">{LOGOS.length}+ organisations</span>
-      </div>
+    <section className="mod-partners" aria-label="Nomination partners">
       <Row logos={rowA} />
       <Row logos={rowB} reverse />
+      <Row logos={rowC} />
     </section>
   );
 }

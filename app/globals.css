@@ -403,18 +403,23 @@ main {
    screen. It is here only while the list is on screen: over the film and the
    manifest there is nothing for it to control, and the wordmark is using that
    edge. */
+:root {
+  /* the bar stands this far up off the foot of the window; everything that
+     keeps clear of the bar adds it */
+  --dock-lift: 20px;
+}
 .dock {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: var(--dock-lift);
   z-index: 40;
   /* NO BAR. The controls float over the list as four black slots; the
      rows run on underneath them. */
   background: none;
   /* out of the way until the list arrives - transform rather than display, so
      it slides rather than appears, and never affects the page's height */
-  transform: translateY(100%);
+  transform: translateY(calc(100% + var(--dock-lift)));
   transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
   /* no rule along its top: the slots are what say it is a bar */
 }
@@ -424,7 +429,7 @@ main {
 }
 /* the list keeps the bar's height clear at its foot, so the last row is
    never under it */
-.archive-list { padding-bottom: 92px; }
+.archive-list { padding-bottom: calc(92px + var(--dock-lift)); }
 
 /* the cells */
 .ctl {
@@ -1054,7 +1059,7 @@ main {
   z-index: 2;
   /* the screen less the mark at its head and the dock at its foot - both
      measured, see Archive() and the effect in Index() */
-  height: calc(100dvh - var(--index-panel-top, var(--masthead-h, 180px)) - var(--index-dock-h, 53px));
+  height: calc(100dvh - var(--index-panel-top, var(--masthead-h, 180px)) - var(--index-dock-h, 53px) - var(--dock-lift));
   min-width: 0;
   background: var(--bg);
   /* the whole company is meant to be read without scrolling: the panel holds
@@ -1267,8 +1272,8 @@ main {
     top: auto;
     /* on the dock, which is fixed at the foot, and 86% of the screen tall:
        the rest is the list, still there above it */
-    bottom: var(--index-dock-h, 53px);
-    height: calc(86vh - var(--index-dock-h, 53px));
+    bottom: calc(var(--index-dock-h, 53px) + var(--dock-lift));
+    height: calc(86vh - var(--index-dock-h, 53px) - var(--dock-lift));
     z-index: 60;
     width: auto;
     overflow-y: auto;
@@ -1532,6 +1537,10 @@ main {
    not change, so no row and no caption moves. */
 .card-thumb--line { transform: none; }
 .card-thumb--gif { transform: scale(1.265); }
+/* Ampd's crate sits small and high in its frame: a size up, a little lower */
+.card-thumb--gif[src$="/ampdenergy.gif"] { transform: translateY(6%) scale(1.39); }
+/* Sava's patch is wide and flat, so it fills its frame edge to edge: no zoom */
+.card-thumb--gif[src$="/savahealth.gif"] { transform: scale(0.95); }
 .card-thumb--clip { transform: scale(1.1); }
 
 /* THE PHOTOGRAPHS ARE CROPPED TO 4:3: the full-frame pictures come as 3:2
@@ -1782,8 +1791,6 @@ main {
   text-transform: uppercase;
   color: var(--ink);
 }
-/* 80 up, the title alone: the logos keep their place */
-.mod-partners .mod-section-title { position: relative; top: -80px; }
 /* twice the size on a phone: the container is a third the width, and
    the title was shrinking with it into a caption */
 @media (max-width: 720px) {
@@ -1912,17 +1919,18 @@ main {
   flex-direction: column;
   align-items: flex-end;
   font-family: var(--font);
-  font-size: 11px;
-  line-height: 13px;
+  /* 14/16 at every size */
+  font-size: 14px;
+  line-height: 16px;
   font-weight: 500;
   letter-spacing: normal;
   color: #fff;
   transition: opacity 1ms steps(1, end) 760ms;
 }
-/* 14/16 on desktop, with the index and the dock; 11/13 on a phone */
-@media (min-width: 721px) {
-  .mod-hero-menu { font-size: 14px; line-height: 16px; }
-}
+/* ON THE FILM IT STANDS IN FRONT: plain white, no blend. Difference turned
+   it a faint grey over the pale sky, so it read as behind the sign. The
+   blend comes back once the film has scrolled out from under it. */
+.mod-hero-menu--on-film { mix-blend-mode: normal; }
 .mod-hero-menu-word {
   background: none;
   border: none;
@@ -2561,6 +2569,10 @@ html {
   display: block;
   width: 100%;
   height: auto;
+  /* the drawing starts 6.676 units into its 1447-wide box, so the n's stem
+     stood that much right of the list's left edge: pulled back by exactly
+     that share of its own width, the ink starts on the edge at every size */
+  transform: translateX(calc(-6.676 / 1447 * 100%));
 }
 
 /* ---- manifest, as the book's spread ----
@@ -2785,6 +2797,9 @@ html {
   display: block;
   width: 100%;
   height: auto;
+  /* the real mark's own pull to the edge (see .manifest-logo-svg): without
+     it the two stood 6.5px apart at the handover and read as a double */
+  transform: translateX(calc(-6.676 / 1447 * 100%));
 }
 
 /* THE FILM PAINTS IN.
@@ -3543,18 +3558,11 @@ html {
    ============================================= */
 
 .mod-partners {
-  padding: clamp(80px, 10vw, 160px) 0 clamp(80px, 10vw, 160px);
+  /* 40 less above than below: the logos sit 40 higher */
+  padding: calc(clamp(80px, 10vw, 160px) - 40px) 0 clamp(80px, 10vw, 160px);
 }
-.mod-partners .mod-section-header {
-  padding: 0 var(--pad);
-  /* tighter to the marquee than the shared 64px default. The title gif has a
-     -7.04% bottom margin that pulls its own whitespace off, so this is the
-     real gap between the gif and the first row of logos. */
-  margin-bottom: 43px;
-}
-
-/* gigadesignstudio.com logo wall: two independent infinite marquees,
-   scrolling in opposite directions. Content is doubled so translateX(-50%)
+/* gigadesignstudio.com logo wall: three independent infinite marquees,
+   alternating direction row to row. Content is doubled so translateX(-50%)
    loops seamlessly — same technique as the nav ticker. */
 .mod-partners-marquee {
   overflow: hidden;
@@ -5564,8 +5572,9 @@ html {
 }
 .entry-step {
   font-family: var(--font);
-  font-size: 13px;
-  line-height: 15px;
+  /* Shuffle's size: the two controls at the plate's foot are one line */
+  font-size: 15px;
+  line-height: 17px;
   font-weight: 500;
   letter-spacing: normal;
   color: var(--ink);

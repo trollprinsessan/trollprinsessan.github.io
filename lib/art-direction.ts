@@ -106,6 +106,17 @@ export const PLAY_IMAGES = [
   "/n100/plantedsolar.webp",
   "/n100/turn2x.webp",
   "/n100/variantbio.webp",
+  /* Sep 15: Charm Industrial's new plate, and four companies' first */
+  "/n100/charmindustrial.webp",
+  "/n100/modvion.webp",
+  "/n100/hivehealth.webp",
+  "/n100/honeycoin.webp",
+  "/n100/turaco.webp",
+  "/n100/etalytics.webp",
+  "/n100/matter.webp",
+  "/n100/bees-bears.webp",
+  "/n100/nucicer.webp",
+  "/n100/reverion.webp",
 ]
 
 /* THE 2026 LIST'S OWN PICTURES, by slug - matched from the folder's file
@@ -131,7 +142,16 @@ export const ART_DIRECTION: Record<string, string> = {
   "blykalla": "/n100/blykalla.webp",
   "bound4blue": "/n100/bound4blue.gif",
   "cemvision": "/n100/cemvision2.webp",
-  "charm-industrial": "/n100/icharm.webp",
+  "charm-industrial": "/n100/charmindustrial.webp",
+  "hive-health": "/n100/hivehealth.webp",
+  "honeycoin": "/n100/honeycoin.webp",
+  "modvion": "/n100/modvion.webp",
+  "turaco": "/n100/turaco.webp",
+  "etalytics": "/n100/etalytics.webp",
+  "matter": "/n100/matter.webp",
+  "bees-bears": "/n100/bees-bears.webp",
+  "nucicer": "/n100/nucicer.webp",
+  "reverion": "/n100/reverion.webp",
   "cler": "/n100/cler.gif",
   "cradle": "/n100/cradle.webp",
   "decade-energy": "/n100/decade.webp",
@@ -263,7 +283,12 @@ export const PHOTOS = new Set([
   "/n100/junaai.webp",
   "/n100/mantle8.webp",
   "/n100/turn2x.webp",
-  "/n100/variantbio.webp",
+  /* variantbio is a cutout now, no longer a photograph */
+  "/n100/modvion.webp",
+  "/n100/etalytics.webp",
+  "/n100/matter.webp",
+  "/n100/bees-bears.webp",
+  "/n100/reverion.webp",
 ]);
 
 export function isPhoto(src: string | undefined) {

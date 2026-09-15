@@ -2,7 +2,28 @@
 
 import { useEffect, useState } from "react";
 import Wordmark from "@/components/wordmark";
-import { PHOTO_THUMBS } from "@/lib/art-direction";
+import { PHOTO_THUMBS, PLAY_IMAGES, isLineArt, thumb } from "@/lib/art-direction";
+
+/* the photographs and cutouts, with the line drawings and four of the
+   animated plates dealt in among them at even intervals - spread through the
+   field, never landing together in one row */
+const LOADER_LINES = PLAY_IMAGES.filter(isLineArt).map(thumb);
+const LOADER_GIFS = [
+  "/n100/spaceforge.gif",
+  "/n100/arcride.gif",
+  "/n100/ampdenergy.gif",
+  "/n100/arkeabio.gif",
+];
+function dealIn(base: string[], extra: string[]) {
+  const out = [...base];
+  const every = base.length / extra.length;
+  /* from the back, so an insert does not shift the places still to come */
+  for (let i = extra.length - 1; i >= 0; i--) {
+    out.splice(Math.round(every * i + every / 2), 0, extra[i]);
+  }
+  return out;
+}
+const LOADER_POOL = dealIn(dealIn(PHOTO_THUMBS, LOADER_LINES), LOADER_GIFS);
 
 /* THE LOADER
    The whole page, white, filled with the index's own pictures - they arrive
@@ -101,7 +122,7 @@ export default function Loader() {
             }}
           >
             {/* dealt round the pool so no two neighbours repeat in a row */}
-            <img src={PHOTO_THUMBS[i % PHOTO_THUMBS.length]} alt="" />
+            <img src={LOADER_POOL[i % LOADER_POOL.length]} alt="" />
           </figure>
         ))}
       </div>

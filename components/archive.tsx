@@ -455,6 +455,11 @@ export default function Archive({
      to is on screen - an observer rather than a scroll listener, so it costs
      nothing while you read */
   const [dockOn, setDockOn] = useState(false);
+  /* AND THE BAR ENDS WITH THE LIST: it stands at the foot of the window, so
+     it goes the moment the list's last row has passed up off that foot - a
+     second observer on a strip at the bottom of the screen. The panel beside
+     the index keeps to dockOn alone, so it stays in place past the last row. */
+  const [listAtFoot, setListAtFoot] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = listRef.current;
@@ -463,8 +468,16 @@ export default function Archive({
       ([e]) => setDockOn(e.isIntersecting),
       { rootMargin: "0px 0px -20% 0px" }
     );
+    const foot = new IntersectionObserver(
+      ([e]) => setListAtFoot(e.isIntersecting),
+      { rootMargin: "-95% 0px 0px 0px" }
+    );
     io.observe(el);
-    return () => io.disconnect();
+    foot.observe(el);
+    return () => {
+      io.disconnect();
+      foot.disconnect();
+    };
   }, []);
   /* six across, which is the grid the page has always opened on */
   const [density, setDensity] = useState(3);
@@ -811,7 +824,7 @@ export default function Archive({
           the screen. Shown only while the list is on screen - over the film
           and the manifest there is nothing for it to control, and the mark is
           using that edge. */}
-      <div className={`dock${dockOn ? " dock--on" : ""}${filtersOpen ? " dock--open" : ""}`}>
+      <div className={`dock${dockOn && listAtFoot ? " dock--on" : ""}${filtersOpen ? " dock--open" : ""}`}>
       {filtersOpen && (
         <div className="filter-panel">
           <div className="filter-panel-groups">
