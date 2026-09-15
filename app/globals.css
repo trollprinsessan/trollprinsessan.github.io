@@ -1090,8 +1090,9 @@ main {
   display: flex;
   flex-direction: column;
   /* the rows' own 2px, so the name sits on the index's first baseline */
-  /* 10 of air over the name and the close; the copy ends 20 above the dock */
-  padding: 12px var(--pad) 20px;
+  /* 10 of air over the name and the close; the copy ends 100 above the dock -
+     80 higher than it did, taken out of the plate's frame */
+  padding: 12px var(--pad) 100px;
   overflow: hidden;
   position: relative;
 }

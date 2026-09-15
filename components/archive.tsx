@@ -10,6 +10,7 @@ import {
   writeCompanyUrl,
 } from "@/lib/company-link";
 import { iso3List } from "@/lib/countries";
+import { composeOrder } from "@/lib/composition";
 
 // client-only: reads image pixels + WebGL, must never run on the server
 
@@ -101,10 +102,8 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-/* the list's order: this edition first, then alphabetical */
+/* the list's order: this edition first (composed, see lib/composition) */
 const recent = (c: Company) => (c.years.length ? Math.max(...c.years) : 0);
-const byEdition = (a: Company, b: Company) =>
-  recent(b) - recent(a) || a.name.localeCompare(b.name);
 
 /* SEARCH READS EVERYTHING THE EDITION WROTE.
    Not the name and the one-liner alone: the sector, the subsector, the
@@ -598,6 +597,19 @@ export default function Archive({
     setFiltersOpen(false);
   };
 
+  /* THE OPENING ORDER: the latest edition hung as a composed wall (see
+     lib/composition), earlier years after it alphabetically */
+  const composed = useCallback(() => {
+    const latest = Math.max(...companies.map(recent));
+    const m = new Map<string, number>();
+    composeOrder(companies.filter((c) => c.years.includes(latest))).forEach((s, i) => m.set(s, i));
+    return (a: Company, b: Company) =>
+      recent(b) - recent(a) ||
+      (m.get(a.slug) ?? Infinity) - (m.get(b.slug) ?? Infinity) ||
+      a.name.localeCompare(b.name);
+  }, [companies]);
+  const byComposition = useMemo(() => composed(), [composed]);
+
   const filtered = useMemo(() => {
     const terms = fold(query).split(/\s+/).filter(Boolean);
     let list = companies.filter((c) => {
@@ -613,9 +625,9 @@ export default function Archive({
     });
     list = shaken
       ? [...list].sort((a, b) => (shaken.get(a.slug) ?? 0) - (shaken.get(b.slug) ?? 0))
-      : [...list].sort(byEdition);
+      : [...list].sort(byComposition);
     return list;
-  }, [companies, sector, country, year, theme, query, haystacks, shaken]);
+  }, [companies, sector, country, year, theme, query, haystacks, shaken, byComposition]);
   /* the clip above re-measures when the list swaps to its empty line */
   useEffect(() => setEmpty(filtered.length === 0), [filtered.length]);
 
@@ -625,7 +637,7 @@ export default function Archive({
      its slug, and the slug is the page's address, so it can be linked to and
      the back button closes it. */
   const bySlug = useMemo(() => new Map(companies.map((c) => [c.slug, c])), [companies]);
-  const sortedAll = useMemo(() => [...companies].sort(byEdition), [companies]);
+  const sortedAll = useMemo(() => [...companies].sort(byComposition), [companies, byComposition]);
   const [openSlug, setOpenSlug] = useState<string | null>(null);
   const [surface, setSurface] = useState<"modal" | "panel">("modal");
   const openRef = useRef<string | null>(null);
