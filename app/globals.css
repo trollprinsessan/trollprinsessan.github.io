@@ -3442,7 +3442,20 @@ html {
     padding: 0 var(--pad);
   }
   .mod-manifest-index { order: 1; margin: 0 0 22px; }
-  .mod-manifest-body { order: 2; margin: 0; }
+  /* THE PLATE STANDS IN ONE PLACE, WHICHEVER PANEL IS OPEN.
+     The plate follows the copy, so a short panel (About) hung it high and a
+     long one lower; the copy block keeps at least the depth of the longest
+     panel's (The Process, 361 at a phone's width) and 10 of air under it, so
+     the plate and its caption start on the same line in every panel - where
+     Prompt What Matters has them. The roster opening still pushes, as it
+     should. */
+  .mod-manifest-body {
+    order: 2;
+    margin: 0;
+    box-sizing: content-box;
+    min-height: 361px;
+    padding-bottom: 10px;
+  }
   .mod-manifest-verso:has(.mod-manifest-gifline--plain) { order: 3; }
   /* the draw, under the copy: the plate whole at 4:3, its caption under
      it. No mark and no cursor - the wheel turns by itself here, and a tap
@@ -3460,15 +3473,13 @@ html {
        it - the longest panel (Prompt What Matters) has to fit the one
        screen with its picture, or the page shifts on that tab. */
     aspect-ratio: 16 / 9;
-    margin: 82px 0 0;
+    /* its line is set by the copy block's depth above, not by a gap */
+    margin: 0;
     justify-content: center;
   }
   .mod-manifest-draw-plate img { object-position: center; }
-  /* not on The Process: that panel's copy is long and its roster opens
-     under it - with the plate as well, the phone's one screen is gone and
-     every spin moved the page. The words alone there. */
-  .mod-manifest-top[data-panel="The Process"] .mod-manifest-draw-plate,
-  .mod-manifest-top[data-panel="The Process"] .mod-manifest-draw-caption { display: none; }
+  /* The Process carries the plate too, on the same line as the others: the
+     plate is 16:9 at a fixed width, so a spin never moves the page */
   /* the caption centred under the plate */
   .mod-manifest-draw-caption {
     position: static;

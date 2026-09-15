@@ -1326,8 +1326,9 @@ function Index({ list, open, onOpen, steps, undocked }: {
      what the companies look like without opening one. A pointer that hovers
      only - never a touch - and not while a company is open beside it. */
   const previewRef = useRef<HTMLImageElement>(null);
-  const pointer = useRef({ x: 0, y: 0 });
-  const [preview, setPreview] = useState<string | null>(null);
+  /* the picture and where it first stood; the pointer's later moves go
+     straight to the element, not through a render */
+  const [preview, setPreview] = useState<{ src: string; at: string } | null>(null);
   const canHover = useRef(false);
   useEffect(() => {
     canHover.current = window.matchMedia("(hover: hover) and (min-width: 901px)").matches;
@@ -1340,11 +1341,12 @@ function Index({ list, open, onOpen, steps, undocked }: {
   };
   const onIndexMove = (e: React.MouseEvent) => {
     if (!canHover.current || isOpen) return;
-    pointer.current = { x: e.clientX, y: e.clientY };
     const item = (e.target as Element).closest<HTMLElement>(".index-item");
     const c = item ? list.find((x) => x.slug === item.dataset.slug) : undefined;
     const src = c && visualFor(c) ? thumb(visualFor(c)) : null;
-    if (src !== preview) setPreview(src);
+    if (src !== (preview?.src ?? null)) {
+      setPreview(src ? { src, at: previewAt(e.clientX, e.clientY) } : null);
+    }
     if (previewRef.current) previewRef.current.style.transform = previewAt(e.clientX, e.clientY);
   };
 
@@ -1515,10 +1517,10 @@ function Index({ list, open, onOpen, steps, undocked }: {
         <img
           ref={previewRef}
           className="index-preview"
-          src={preview}
+          src={preview.src}
           alt=""
           aria-hidden="true"
-          style={{ transform: previewAt(pointer.current.x, pointer.current.y) }}
+          style={{ transform: preview.at }}
         />
       )}
 
