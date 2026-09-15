@@ -45,10 +45,21 @@ const LATEST = [
   },
 ];
 
+const GAP = 24;
+
 export default function Latest() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
+  /* the first card in view, for the counter */
+  const [at, setAt] = useState(0);
+
+  /* one card and its gap: what Prev, Next, the arrow keys and a drag's
+     landing all move by, so a card is never left half-cropped */
+  const stepOf = (el: HTMLElement) => {
+    const card = el.querySelector<HTMLElement>(".mod-latest-card");
+    return card ? card.offsetWidth + GAP : el.clientWidth / 2;
+  };
 
   const sync = useCallback(() => {
     const el = trackRef.current;
@@ -57,8 +68,10 @@ export default function Latest() {
     // card at that offset — so resting scrollLeft is the padding, not 0.
     // Tolerance has to clear it or the back arrow never reads as disabled.
     const pad = parseFloat(getComputedStyle(el).paddingLeft) || 0;
+    const end = el.scrollLeft >= el.scrollWidth - el.clientWidth - 2;
     setAtStart(el.scrollLeft <= pad + 2);
-    setAtEnd(el.scrollLeft >= el.scrollWidth - el.clientWidth - 2);
+    setAtEnd(end);
+    setAt(end ? LATEST.length - 1 : Math.round(el.scrollLeft / stepOf(el)));
   }, []);
 
   useEffect(() => {
@@ -73,13 +86,47 @@ export default function Latest() {
     };
   }, [sync]);
 
-  // page by exactly one card + gap, so cards never end up half-cropped
   const page = (dir: 1 | -1) => {
     const el = trackRef.current;
     if (!el) return;
-    const card = el.querySelector<HTMLElement>(".mod-latest-card");
-    const step = card ? card.offsetWidth + 24 : el.clientWidth / 2;
-    el.scrollBy({ left: dir * step, behavior: "smooth" });
+    el.scrollBy({ left: dir * stepOf(el), behavior: "smooth" });
+  };
+
+  /* THE TRACK TAKES A HAND.
+     A mouse can take hold of the cards and pull them along, the way a finger
+     already can; let go and the track settles on the nearest card. The snap
+     is lifted while the hand is on it, or it would fight every pixel. A drag
+     that travelled is not a click. Touch keeps the browser's own swipe. */
+  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== "mouse" || e.button !== 0) return;
+    const el = e.currentTarget;
+    drag.current = { x: e.clientX, left: el.scrollLeft, moved: false };
+    el.setPointerCapture(e.pointerId);
+    el.classList.add("is-dragging");
+  };
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const d = drag.current;
+    if (!d) return;
+    const dx = e.clientX - d.x;
+    if (Math.abs(dx) > 4) d.moved = true;
+    e.currentTarget.scrollLeft = d.left - dx;
+  };
+  const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    const d = drag.current;
+    if (!d) return;
+    drag.current = null;
+    const el = e.currentTarget;
+    const pad = parseFloat(getComputedStyle(el).paddingLeft) || 0;
+    const step = stepOf(el);
+    const target = Math.round((el.scrollLeft - pad) / step) * step + pad;
+    el.scrollTo({ left: target, behavior: "smooth" });
+    /* the snap comes back once the glide has landed */
+    setTimeout(() => el.classList.remove("is-dragging"), 450);
+    if (d.moved) {
+      const swallow = (ev: Event) => { ev.stopPropagation(); ev.preventDefault(); };
+      el.addEventListener("click", swallow, { capture: true, once: true });
+    }
   };
 
   return (
@@ -91,6 +138,10 @@ export default function Latest() {
           alt="The Latest Updates"
         />
         <div className="mod-latest-nav">
+          {/* where you are in the run */}
+          <span className="mod-latest-count" aria-live="polite">
+            {at + 1} / {LATEST.length}
+          </span>
           <button
             className="mod-latest-arrow"
             onClick={() => page(-1)}
@@ -110,7 +161,21 @@ export default function Latest() {
         </div>
       </div>
 
-      <div className="mod-latest-track" ref={trackRef}>
+      <div
+        className="mod-latest-track"
+        ref={trackRef}
+        /* in the tab order, so the arrow keys can page it */
+        tabIndex={0}
+        aria-label="The latest updates"
+        onKeyDown={(e) => {
+          if (e.key === "ArrowRight") { e.preventDefault(); page(1); }
+          else if (e.key === "ArrowLeft") { e.preventDefault(); page(-1); }
+        }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+      >
         {LATEST.map((item) => (
           <article key={item.title} className="mod-latest-card">
             <div className="mod-latest-media">

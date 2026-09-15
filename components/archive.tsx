@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { Company, Facets } from "@/lib/types";
 import { visualFor, cohortsFor, thumb, isLineArt, isClipart, isPhoto } from "@/lib/art-direction";
 import {
+  COMPANY_PARAM,
   OPEN_COMPANY_EVENT,
   companyFromUrl,
   writeCompanyUrl,
@@ -158,7 +159,7 @@ type Steps = {
   onStep: (dir: -1 | 1) => void;
 };
 
-function EntrySteps({ steps }: { steps: Steps }) {
+function EntrySteps({ steps, slug }: { steps: Steps; slug?: string }) {
   return (
     <nav className="entry-steps" aria-label="Companies">
       <button
@@ -179,7 +180,45 @@ function EntrySteps({ steps }: { steps: Steps }) {
       >
         Next
       </button>
+      {slug && <CopyLink slug={slug} />}
     </nav>
+  );
+}
+
+/* A LINK TO THE COMPANY, COPIED.
+   Every company already has an address (?company=slug); this puts it on the
+   clipboard and says so for a moment, in the word itself. */
+function CopyLink({ slug }: { slug: string }) {
+  const [copied, setCopied] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
+  const copy = async () => {
+    const url = new URL(window.location.pathname, window.location.origin);
+    url.searchParams.set(COMPANY_PARAM, slug);
+    try {
+      await navigator.clipboard.writeText(url.toString());
+    } catch {
+      /* no clipboard permission (an embed, an older browser): the old way,
+         through a field that is never seen */
+      const field = document.createElement("textarea");
+      field.value = url.toString();
+      field.setAttribute("readonly", "");
+      field.style.position = "fixed";
+      field.style.opacity = "0";
+      document.body.appendChild(field);
+      field.select();
+      const ok = document.execCommand("copy");
+      field.remove();
+      if (!ok) return;
+    }
+    setCopied(true);
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => setCopied(false), 1600);
+  };
+  return (
+    <button type="button" className="entry-step copy-link" onClick={copy} aria-live="polite">
+      {copied ? "Copied" : "Copy link"}
+    </button>
   );
 }
 
@@ -187,9 +226,13 @@ function EntrySteps({ steps }: { steps: Steps }) {
    the same object rather than two designs that resemble each other. `corner`
    is whatever control belongs in the top right: the close mark in the modal,
    the spin circle in Shuffle. */
-function EntryLayout({ c, corner, onImageClick, spread, steps }: {
+function EntryLayout({ c, corner, onImageClick, spread, steps, lead, rectoHead }: {
   c: Company;
   corner: React.ReactNode;
+  /* the modal: the one-liner leads the copy, in bold, and the recto's head
+     carries `rectoHead` instead. The index panel keeps its own order. */
+  lead?: boolean;
+  rectoHead?: React.ReactNode;
   onImageClick?: () => void;
   /* the index panel sets Prev and Next under the name rather than beside
      the close mark */
@@ -222,7 +265,19 @@ function EntryLayout({ c, corner, onImageClick, spread, steps }: {
   ) : null;
   const figure = (
     <figure
-      className={`entry-figure${onImageClick ? " entry-figure--action" : ""}`}
+      /* the kind of picture rides on the frame, so each kind can be hung its
+         own way on the plate */
+      className={`entry-figure${onImageClick ? " entry-figure--action" : ""}${
+        !visualFor(c)
+          ? ""
+          : visualFor(c).endsWith(".gif")
+            ? " entry-figure--gif"
+            : isLineArt(visualFor(c))
+              ? " entry-figure--line"
+              : isPhoto(visualFor(c))
+                ? " entry-figure--photo"
+                : " entry-figure--clip"
+      }`}
       onClick={onImageClick}
       title={onImageClick ? "New random company" : undefined}
     >
@@ -269,7 +324,7 @@ function EntryLayout({ c, corner, onImageClick, spread, steps }: {
           <dd>
           {c.website ? (
             <a href={c.website} target="_blank" rel="noopener noreferrer">
-            {c.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+            {c.website.replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/$/, "")}
             </a>
           ) : "—"}
           </dd>
@@ -295,13 +350,14 @@ function EntryLayout({ c, corner, onImageClick, spread, steps }: {
               {meta.length > 0 && <span>{meta.join(", ")}</span>}
               {c.website && (
                 <a href={c.website} target="_blank" rel="noopener noreferrer">
-                  {c.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                  {c.website.replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/$/, "")}
                 </a>
               )}
             </div>
           </div>
           <div className="entry-verso-foot">
-            {/* the lead line is on the recto now, over the plate */}
+            {/* in the modal the one-liner leads the copy, in bold */}
+            {lead && statement}
             {prose}
           </div>
         </div>
@@ -309,7 +365,12 @@ function EntryLayout({ c, corner, onImageClick, spread, steps }: {
             the record's own line, and the plate under them - the three things
             the reference spread puts on its picture page */}
         <div className="entry-recto">
-          <p className="entry-runhead">{c.statement}</p>
+          {lead ? (
+            /* the head of the recto: Prev and Next, on the plate's column */
+            <div className="entry-runhead entry-runhead--copy">{rectoHead}</div>
+          ) : (
+            <p className="entry-runhead">{c.statement}</p>
+          )}
           <p className="entry-plate-caption">
             {[c.countries.map(abbreviateCountry).join(", "), c.sectorLabel]
               .filter(Boolean)
@@ -418,14 +479,18 @@ function CompanyModal({ c, onClose, onShuffle, spinning, steps }: {
         <EntryLayout
           c={c}
           spread
+          lead
+          rectoHead={<EntrySteps steps={steps} />}
           onImageClick={onShuffle}
           corner={
             <button className="entry-close" onClick={close} aria-label="Close">✕</button>
           }
         />
         {/* at the foot of the plate, on one line: Prev and Next at its left
-            edge, Shuffle at its right */}
-        <EntrySteps steps={steps} />
+            edge, Shuffle at its right. Prev and Next are at the head. */}
+        <div className="entry-copy-foot">
+          <CopyLink slug={c.slug} />
+        </div>
         {onShuffle && (
           <button className="entry-spin" onClick={onShuffle}>Shuffle</button>
         )}
@@ -448,8 +513,12 @@ export default function Archive({
   const [sector, setSector] = useState<Set<string>>(new Set());
   const [country, setCountry] = useState<Set<string>>(new Set());
   const [theme, setTheme] = useState<Set<string>>(new Set());
-  const [year, setYear] = useState<Set<string>>(new Set(["2026"]));
+  /* the edition the page opens on: the year the filter starts with, and the
+     one Clear goes back to */
+  const latestYear = useMemo(() => String(Math.max(...companies.map(recent))), [companies]);
+  const [year, setYear] = useState<Set<string>>(() => new Set([latestYear]));
   const [query, setQuery] = useState("");
+  const searchRef = useRef<HTMLInputElement>(null);
   /* the dock rides the foot of the window, but only while the list it belongs
      to is on screen - an observer rather than a scroll listener, so it costs
      nothing while you read */
@@ -459,6 +528,7 @@ export default function Archive({
      second observer on a strip at the bottom of the screen. The panel beside
      the index keeps to dockOn alone, so it stays in place past the last row. */
   const [listAtFoot, setListAtFoot] = useState(false);
+  const [listShort, setListShort] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = listRef.current;
@@ -471,11 +541,22 @@ export default function Archive({
       ([e]) => setListAtFoot(e.isIntersecting),
       { rootMargin: "-95% 0px 0px 0px" }
     );
+    /* A LIST TOO SHORT TO REACH THE FOOT KEEPS ITS BAR. A search that leaves
+       two rows ends above the foot the moment it is on screen, and the bar
+       would leave with it - just when it is being reached for. So the ending
+       applies only to a list at least a window tall. */
+    const measure = () => setListShort(el.offsetHeight < window.innerHeight);
+    const ro = new ResizeObserver(measure);
+    measure();
     io.observe(el);
     foot.observe(el);
+    ro.observe(el);
+    window.addEventListener("resize", measure);
     return () => {
       io.disconnect();
       foot.disconnect();
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
     };
   }, []);
   /* six across, which is the grid the page has always opened on */
@@ -503,7 +584,9 @@ export default function Archive({
         `${Math.max(0, Math.round(foot))}px`
       );
       list
-        .querySelectorAll<HTMLElement>(":scope > .grid, .index-view > .index, :scope > .empty")
+        /* the grid only: the index's rows may run on behind the letters
+           and show through them */
+        .querySelectorAll<HTMLElement>(":scope > .grid, :scope > .empty")
         .forEach((el) => {
           const c = Math.max(0, Math.round(foot - el.getBoundingClientRect().top));
           el.style.clipPath = c > 0 ? `inset(${c}px 0 0 0)` : "";
@@ -746,6 +829,99 @@ export default function Archive({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showCompany]);
 
+  /* THE LIST HAS AN ADDRESS TOO.
+     How the list is being read - grid or index, how many a row, the filters
+     and the search - is written into the page's address as it changes, so a
+     refresh, the back button or a shared link comes back to the same list.
+     Only what differs from the opening state is written, so a plain visit
+     keeps a plain address; and it is rewritten in place, never pushed -
+     turning a filter on is not a page to go back to. */
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search);
+    const set = (k: string) =>
+      new Set((p.get(k) ?? "").split(",").map((s) => s.trim()).filter(Boolean));
+    /* eslint-disable react-hooks/set-state-in-effect */
+    if (p.has("q")) setQuery(p.get("q") ?? "");
+    if (p.has("sector")) setSector(set("sector"));
+    if (p.has("country")) setCountry(set("country"));
+    if (p.has("theme")) setTheme(set("theme"));
+    if (p.has("year")) setYear(p.get("year") === "all" ? new Set() : set("year"));
+    const d = DENSITIES.findIndex((x) => x.cols === Number(p.get("cols")));
+    if (d >= 0) setDensity(d);
+    if (p.get("view") === "index" && !window.matchMedia("(max-width: 720px)").matches) {
+      setView("index");
+    }
+    /* eslint-enable react-hooks/set-state-in-effect */
+  }, []);
+  const urlReady = useRef(false);
+  useEffect(() => {
+    /* the first pass would write the opening state over an address that has
+       not been read yet */
+    if (!urlReady.current) {
+      urlReady.current = true;
+      return;
+    }
+    const t = setTimeout(() => {
+      const url = new URL(window.location.href);
+      const put = (k: string, v: string | null) =>
+        v ? url.searchParams.set(k, v) : url.searchParams.delete(k);
+      const joined = (s: Set<string>) => (s.size ? [...s].join(",") : null);
+      const phoneWidth = window.matchMedia("(max-width: 720px)").matches;
+      put("view", !phoneWidth && view === "index" ? "index" : null);
+      put("cols", view === "grid" && density !== 3 ? String(DENSITIES[density].cols) : null);
+      put("q", query.trim() ? query : null);
+      put("sector", joined(sector));
+      put("country", joined(country));
+      put("theme", joined(theme));
+      put(
+        "year",
+        year.size === 1 && year.has(latestYear) ? null : year.size ? [...year].join(",") : "all"
+      );
+      const next = `${url.pathname}${url.search}${url.hash}`;
+      const now = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      if (next !== now) {
+        window.history.replaceState({ ...(window.history.state ?? {}) }, "", next);
+      }
+    }, 250);
+    return () => clearTimeout(t);
+  }, [view, density, query, sector, country, theme, year, latestYear]);
+
+  /* "/" GOES TO THE SEARCH from anywhere on the page, the way a catalogue's
+     does. If the list is not on screen it is brought up first, so the field is
+     in the bar at the foot when the caret lands in it. */
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "/" || typing(e) || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (openRef.current && surfaceRef.current === "modal") return;
+      e.preventDefault();
+      const list = listRef.current;
+      if (list && !dockOnRef.current) {
+        const mast = document.querySelector(".archive-masthead")?.getBoundingClientRect().height ?? 0;
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({
+          top: list.getBoundingClientRect().top + window.scrollY - mast,
+          behavior: reduce ? "auto" : "smooth",
+        });
+      }
+      searchRef.current?.focus({ preventScroll: true });
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+
+  /* what the search is taken out of: the list as the filters alone leave it */
+  const beforeSearch = useMemo(
+    () =>
+      companies.filter(
+        (c) =>
+          (!sector.size || sector.has(c.sectorLabel)) &&
+          (!country.size || c.countries.some((x) => country.has(x))) &&
+          (!theme.size || (c.themes ?? []).some((x) => theme.has(x))) &&
+          (!year.size || c.years.some((x) => year.has(String(x))))
+      ).length,
+    [companies, sector, country, theme, year]
+  );
+
   const openCo = openSlug ? bySlug.get(openSlug) ?? null : null;
   /* the steps run through the list as it is showing; a company that is not
      in it (opened from the manifest past a search) steps through them all */
@@ -775,12 +951,18 @@ export default function Archive({
     setFiltersOpen(false);
   };
 
-  const activeFilterCount = sector.size + country.size + theme.size + year.size;
+  /* THE OPENING YEAR IS NOT A FILTER YOU TURNED ON.
+     The page opens on this edition, so the Filter slot names it rather than
+     counting it; the count is only what the reader has added, and clearing
+     goes back to the edition rather than to every year at once. */
+  const yearIsOpening = year.size === 1 && year.has(latestYear);
+  const addedFilterCount =
+    sector.size + country.size + theme.size + (yearIsOpening ? 0 : year.size);
   const clearFilters = () => {
     setSector(new Set());
     setCountry(new Set());
     setTheme(new Set());
-    setYear(new Set());
+    setYear(new Set([latestYear]));
   };
 
   /* Shuffle is not a view: it draws one of the hundred straight into the
@@ -836,7 +1018,7 @@ export default function Archive({
           the screen. Shown only while the list is on screen - over the film
           and the manifest there is nothing for it to control, and the mark is
           using that edge. */}
-      <div className={`dock${dockOn && listAtFoot ? " dock--on" : ""}${filtersOpen ? " dock--open" : ""}`}>
+      <div className={`dock${dockOn && (listAtFoot || listShort) ? " dock--on" : ""}${filtersOpen ? " dock--open" : ""}`}>
       {filtersOpen && (
         <div className="filter-panel">
           <div className="filter-panel-groups">
@@ -851,7 +1033,7 @@ export default function Archive({
             <button
               className="filter-clear"
               onClick={clearFilters}
-              disabled={activeFilterCount === 0}
+              disabled={addedFilterCount === 0}
             >
               Clear all
             </button>
@@ -875,12 +1057,15 @@ export default function Archive({
             aria-expanded={filtersOpen}
             onClick={() => setFiltersOpen((v) => !v)}
           >
-            <span>Filter</span>
-            {/* how many are on, and a way to undo them all without opening
-                the sheet: the count, then a cross that clears */}
-            {activeFilterCount > 0 && (
+            <span>
+              Filter
+              {yearIsOpening ? ` · ${latestYear}` : year.size === 0 ? " · All years" : ""}
+            </span>
+            {/* how many the reader has added, and a way to undo them without
+                opening the sheet: the count, then a cross that clears */}
+            {addedFilterCount > 0 && (
               <span className="filter-trigger-count">
-                {activeFilterCount}
+                {addedFilterCount}
                 <span
                   role="button"
                   tabIndex={0}
@@ -915,22 +1100,39 @@ export default function Archive({
         <div className="ctl ctl--search">
           {/* the placeholder is drawn rather than native, so its three dots
               can blink in turn - the field reads as thinking while it waits */}
-          <div className="search-field ctl-box">
+          <div className={`search-field ctl-box${query !== "" ? " search-field--counting" : ""}`}>
             <input
+              ref={searchRef}
               className="search"
               aria-label="Search"
               placeholder=""
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              /* Escape empties the field; a second Escape lets go of it */
+              onKeyDown={(e) => {
+                if (e.key !== "Escape") return;
+                e.stopPropagation();
+                if (query) setQuery("");
+                else e.currentTarget.blur();
+              }}
             />
             {query === "" && (
               <span className="search-ghost" aria-hidden="true">
                 Search<i /><i /><i />
               </span>
             )}
+            {/* how many the search has left, out of what it was searching */}
+            {query !== "" && (
+              <span className="search-count" aria-live="polite">
+                {filtered.length} of {beforeSearch}
+              </span>
+            )}
           </div>
         </div>
 
+        {/* Shake and the view travel together after the search, shoulder to
+            shoulder, so the search can hold its own tracks */}
+        <div className="ctl-tail">
         {/* one press, a new order: the grid dealt again */}
         <div className="ctl ctl--shake">
           <button type="button" className="shake-trigger ctl-box" onClick={shake}>
@@ -979,6 +1181,7 @@ export default function Archive({
           </div>
         </div>
         </div>
+        </div>
       </div>
       </div>
 
@@ -986,7 +1189,22 @@ export default function Archive({
           is at the foot of the window, and when it is gone so is the bar */}
       <div ref={listRef} className="archive-list">
         {filtered.length === 0 ? (
-          <div className="empty">No companies match these filters.</div>
+          <div className="empty">
+            {query.trim()
+              ? `No companies match “${query.trim()}”.`
+              : "No companies match these filters."}
+            {/* the way out, right where the list ran dry */}
+            <button
+              type="button"
+              className="empty-clear"
+              onClick={() => {
+                setQuery("");
+                clearFilters();
+              }}
+            >
+              Clear search and filters
+            </button>
+          </div>
         ) : view === "grid" ? (
           <Grid
             list={filtered}
@@ -1046,6 +1264,94 @@ function Index({ list, open, onOpen, steps, undocked }: {
      under the control row, which is sticky at the top of the page. */
   const isOpen = !!open;
   const indexRef = useRef<HTMLDivElement>(null);
+
+  /* THE PICTURE FOLLOWS THE POINTER.
+     The index is type only on a desktop; running the pointer down it brings
+     each company's picture up beside the cursor, so the list can be read for
+     what the companies look like without opening one. A pointer that hovers
+     only - never a touch - and not while a company is open beside it. */
+  const previewRef = useRef<HTMLImageElement>(null);
+  const pointer = useRef({ x: 0, y: 0 });
+  const [preview, setPreview] = useState<string | null>(null);
+  const canHover = useRef(false);
+  useEffect(() => {
+    canHover.current = window.matchMedia("(hover: hover) and (min-width: 901px)").matches;
+  }, []);
+  const previewAt = (x: number, y: number) => {
+    /* beside the cursor, and to its left when the right edge is near */
+    const w = 220;
+    const left = x + 24 + w > window.innerWidth ? x - 24 - w : x + 24;
+    return `translate(${left}px, ${y + 16}px)`;
+  };
+  const onIndexMove = (e: React.MouseEvent) => {
+    if (!canHover.current || isOpen) return;
+    pointer.current = { x: e.clientX, y: e.clientY };
+    const item = (e.target as Element).closest<HTMLElement>(".index-item");
+    const c = item ? list.find((x) => x.slug === item.dataset.slug) : undefined;
+    const src = c && visualFor(c) ? thumb(visualFor(c)) : null;
+    if (src !== preview) setPreview(src);
+    if (previewRef.current) previewRef.current.style.transform = previewAt(e.clientX, e.clientY);
+  };
+
+  /* A SHEET YOU CAN THROW.
+     On a phone the sheet follows a finger down and closes past a threshold,
+     and a sideways swipe steps to the company before or after - the arrow
+     keys' job, for a thumb. A downward drag only takes the sheet when it is
+     already scrolled to its top, so reading down the copy still scrolls. A
+     company stepped to this way comes in without rising again. */
+  const sheetRef = useRef<HTMLElement>(null);
+  const [still, setStill] = useState<string | null>(null);
+  const touch = useRef<{ x: number; y: number; top: boolean; axis: "x" | "y" | null } | null>(null);
+  const onSheetTouchStart = (e: React.TouchEvent) => {
+    if (!window.matchMedia("(max-width: 900px)").matches) return;
+    const t = e.touches[0];
+    touch.current = {
+      x: t.clientX,
+      y: t.clientY,
+      top: (sheetRef.current?.scrollTop ?? 0) <= 0,
+      axis: null,
+    };
+  };
+  const onSheetTouchMove = (e: React.TouchEvent) => {
+    const s = touch.current;
+    const el = sheetRef.current;
+    if (!s || !el) return;
+    const t = e.touches[0];
+    const dx = t.clientX - s.x;
+    const dy = t.clientY - s.y;
+    if (!s.axis && Math.hypot(dx, dy) > 10) s.axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+    if (s.axis === "y" && s.top && dy > 0) {
+      el.style.animation = "none";
+      el.style.transition = "none";
+      el.style.transform = `translateY(${dy}px)`;
+    }
+  };
+  const onSheetTouchEnd = (e: React.TouchEvent) => {
+    const s = touch.current;
+    const el = sheetRef.current;
+    touch.current = null;
+    if (!s || !el) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - s.x;
+    const dy = t.clientY - s.y;
+    if (s.axis === "y" && s.top && dy > 0) {
+      el.style.transition = "transform 200ms ease-out";
+      if (dy > 110) {
+        el.style.transform = "translateY(100%)";
+        setTimeout(() => live.current.onOpen(null), 190);
+      } else {
+        el.style.transform = "";
+      }
+      return;
+    }
+    if (s.axis === "x" && Math.abs(dx) > 60) {
+      const to = dx < 0 ? live.current.steps.next : live.current.steps.prev;
+      if (to) {
+        setStill(to.slug);
+        live.current.steps.onStep(dx < 0 ? 1 : -1);
+      }
+    }
+  };
 
   /* Escape closes; the arrow keys step to the company above or below */
   const live = useRef({ onOpen, steps });
@@ -1108,7 +1414,12 @@ function Index({ list, open, onOpen, steps, undocked }: {
 
   return (
     <div className={`index-view${open ? " index-view--open" : ""}`}>
-      <div ref={indexRef} className={`index${open ? " index--focused" : ""}`}>
+      <div
+        ref={indexRef}
+        className={`index${open ? " index--focused" : ""}`}
+        onMouseMove={onIndexMove}
+        onMouseLeave={() => setPreview(null)}
+      >
         {list.map((c) => {
           const rowOpen = open?.slug === c.slug;
           return (
@@ -1144,11 +1455,30 @@ function Index({ list, open, onOpen, steps, undocked }: {
         })}
       </div>
 
+      {preview && !isOpen && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          ref={previewRef}
+          className="index-preview"
+          src={preview}
+          alt=""
+          aria-hidden="true"
+          style={{ transform: previewAt(pointer.current.x, pointer.current.y) }}
+        />
+      )}
+
       {open && (
         <aside
-          className={`index-panel${undocked ? " index-panel--undocked" : ""}`}
+          ref={sheetRef}
+          className={`index-panel${undocked ? " index-panel--undocked" : ""}${
+            still === open.slug ? " index-panel--still" : ""
+          }`}
           key={open.slug}
           aria-label={open.name}
+          onTouchStart={onSheetTouchStart}
+          onTouchMove={onSheetTouchMove}
+          onTouchEnd={onSheetTouchEnd}
+          onTouchCancel={onSheetTouchEnd}
         >
           <div className="entry entry--spread entry--panel">
             <EntryLayout
@@ -1156,14 +1486,17 @@ function Index({ list, open, onOpen, steps, undocked }: {
               spread
               corner={
                 /* no Prev and Next here: the rows beside it are the way
-                   through, and the arrow keys still step */
-                <button
-                  className="entry-close"
-                  onClick={() => onOpen(null)}
-                  aria-label="Close"
-                >
-                  ✕
-                </button>
+                   through, and the arrow keys (or a swipe) still step */
+                <>
+                  <CopyLink slug={open.slug} />
+                  <button
+                    className="entry-close"
+                    onClick={() => onOpen(null)}
+                    aria-label="Close"
+                  >
+                    ✕
+                  </button>
+                </>
               }
             />
           </div>

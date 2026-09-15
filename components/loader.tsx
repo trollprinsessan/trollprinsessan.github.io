@@ -81,8 +81,18 @@ export default function Loader() {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    /* the film waits behind the veil rather than assembling under it */
     const root = document.documentElement;
+    /* THE INTRO IS FOR THE FRONT DOOR. A visit to the page as it is - no
+       company, no list state, no section in the address - gets it; a link
+       into something, or coming back with the back button, does not. The
+       decision is made before the first paint by the script in the layout,
+       which marks the root; here the layer simply stands down. */
+    if (root.classList.contains("no-loader")) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setDone(true);
+      return;
+    }
+    /* the film waits behind the veil rather than assembling under it */
     root.classList.add("intro");
     /* the film starts painting under the mark, not after it */
     const v = setTimeout(() => root.classList.remove("intro"), VEIL);

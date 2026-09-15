@@ -470,18 +470,38 @@ main {
    The cells sit shoulder to shoulder on tracks 3 to 11 - the way last
    year's bar did - none of them stretched to a margin. Count and Filter
    and the view take what their words need; Search takes the rest. */
+/* THE SEARCH HOLDS THE PAGE'S TRACKS.
+   The row is laid on the page's own twelve tracks (a subgrid of the bar),
+   and the search takes tracks 4 to 7 exactly - the same in the grid and in
+   the index, so it never changes width when the view does. Filter stands
+   against its left edge, ending on track 4's line; Shake and the view follow
+   against its right. The slots keep their 2px between them: the neighbours
+   reach across the gutter to meet the search. */
 .controls-row {
-  grid-column: 3 / 11;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: center;
+  min-width: 0;
+}
+.ctl--filter {
+  grid-column: 1 / 4;
+  justify-self: end;
+  margin-right: calc(2px - var(--gutter));
+}
+.ctl--search { grid-column: 4 / 8; }
+.ctl-tail {
+  grid-column: 8 / -1;
+  justify-self: start;
   display: flex;
   align-items: center;
   gap: 2px;
-  min-width: 0;
+  margin-left: calc(2px - var(--gutter));
 }
 .ctl--count,
 .ctl--filter,
 .ctl--shake,
 .ctl--views { flex: 0 0 auto; }
-.ctl--search { flex: 1 1 auto; }
 .ctl--count .ctl-box,
 .ctl--filter .ctl-box,
 .ctl--shake .ctl-box,
@@ -772,6 +792,22 @@ main {
 /* the drawn one above replaces it; the native attribute stays for the
    accessibility tree and for browsers that skip the overlay */
 .search::placeholder { color: transparent; }
+/* the count while searching, at the far end of the field in the slot's grey */
+.search-count {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+  color: var(--slot-meta, rgba(255, 255, 255, 0.55));
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.search-field--counting .search { padding-right: 80px; }
 
 
 
@@ -866,7 +902,13 @@ main {
 /* THE DOCK ON A PHONE. */
 @media (max-width: 720px) {
   .controls { padding: 10px var(--pad); }
-  .controls-row { grid-column: 1 / -1; gap: var(--gutter); }
+  /* the phone's bar is one line of two slots, not laid on tracks */
+  .controls-row { grid-column: 1 / -1; display: flex; gap: var(--gutter); }
+  .ctl--filter,
+  .ctl--search,
+  .ctl-tail { grid-column: auto; justify-self: auto; margin: 0; }
+  .ctl--search { flex: 1 1 auto; }
+  .ctl-tail { display: none; }
   /* one line: the filter and the search. The count goes - the filter's own
      figure says what is applied - and so does the view: a phone reads the
      list as the index, with a picture on every line. */
@@ -1090,9 +1132,9 @@ main {
   display: flex;
   flex-direction: column;
   /* the rows' own 2px, so the name sits on the index's first baseline */
-  /* 10 of air over the name and the close; the copy ends 100 above the dock -
-     80 higher than it did, taken out of the plate's frame */
-  padding: 12px var(--pad) 100px;
+  /* 10 of air over the name and the close; the copy ends 50 above the dock,
+     and the plate takes the rest */
+  padding: 12px var(--pad) 50px;
   overflow: hidden;
   position: relative;
 }
@@ -1181,14 +1223,19 @@ main {
 }
 /* the record sits under the picture, where the plate's caption would be */
 .index-panel .entry--panel .entry-verso > .entry-record {
-  order: 4;
-  margin-top: 10px;
-  flex: 0 0 auto;
-}
-.index-panel .entry--panel .entry-runhead {
   order: 5;
   margin-top: 22px;
+  flex: 0 0 auto;
+}
+/* the one-liner is the plate's caption: straight under it, centred on the
+   measure, in bold italic */
+.index-panel .entry--panel .entry-runhead {
+  order: 4;
+  margin-top: 10px;
   font-weight: 700;
+  font-style: italic;
+  text-align: center;
+  flex: 0 0 auto;
 }
 .index-panel .entry--panel .entry-plate-caption { display: none; }
 /* the plate sits straight under the name, above the record: the picture is
@@ -1642,6 +1689,21 @@ main {
 }
 
 .empty { padding: 64px var(--pad); color: var(--meta); font-family: var(--mono); font-weight: 700; }
+/* the way out of an empty list, set as a tag is */
+.empty-clear {
+  display: block;
+  margin-top: 12px;
+  background: none;
+  border: 1px solid var(--ink);
+  padding: 3px 6px;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+}
+.empty-clear:hover { background: var(--ink); color: var(--bg); }
 
 /* ---- company detail ---- */
 .detail { max-width: 1120px; margin: 0 auto; padding: 0 var(--pad) clamp(80px, 10vw, 160px); }
@@ -1955,6 +2017,8 @@ main {
   text-decoration: none;
 }
 .mod-hero-menu a:hover { text-decoration: underline; text-underline-offset: 2px; }
+/* the section you are in */
+.mod-hero-menu a.is-current { text-decoration: underline; text-underline-offset: 2px; }
 .intro .mod-hero-menu { opacity: 0; transition: none; }
 
 .mod-hero-grain {
@@ -2813,6 +2877,8 @@ html {
    not. Held at nothing while the intro runs; the class going is what starts
    it. */
 .intro .mod-hero-media { clip-path: inset(0 0 100% 0); animation: none; }
+/* a link into the page, or the back button: no intro (see the layout) */
+.no-loader .loader { display: none; }
 .mod-hero-media {
   clip-path: inset(0 0 0 0);
   animation: film-paint 760ms step-end both;
@@ -2850,6 +2916,10 @@ html {
     gap: 12px;
   }
   .loader-mark { --mark-grow: 4; }
+}
+/* the loader's mark is the real mark's box on a phone too, short of the Menu */
+@media (max-width: 720px) {
+  .loader-mark { right: calc(var(--pad) + 48px); }
 }
 
 /* MAKE EUROPE
@@ -3359,6 +3429,9 @@ html {
   /* the mark stands 10 off the phone's foot - the masthead measures
      itself, so the section above still comes out to one screen */
   .archive-masthead { padding-bottom: 10px; }
+  /* the Menu word keeps the top right corner to itself: the mark ends short
+     of it rather than running under it */
+  .archive-masthead { padding-right: calc(var(--pad) + 48px); }
   .mod-manifest-top {
     display: flex;
     flex-direction: column;
@@ -3442,7 +3515,18 @@ html {
 
 .mod-latest-nav {
   display: flex;
+  align-items: center;
   gap: 8px;
+}
+/* where you are in the run, set with Prev and Next and a step before them */
+.mod-latest-count {
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+  color: var(--meta);
+  font-variant-numeric: tabular-nums;
+  margin-right: 8px;
 }
 .mod-latest-arrow {
   font-family: var(--font);
@@ -3473,6 +3557,17 @@ html {
   scrollbar-width: none;
 }
 .mod-latest-track::-webkit-scrollbar { display: none; }
+/* a mouse can take hold of the cards; the snap lets go while it does */
+@media (hover: hover) {
+  .mod-latest-track { cursor: grab; }
+}
+.mod-latest-track.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  user-select: none;
+}
+.mod-latest-track.is-dragging img { pointer-events: none; }
+.mod-latest-track:focus-visible { outline: 1px solid var(--ink); outline-offset: -1px; }
 
 .mod-latest-card {
   flex: 0 0 clamp(260px, 46vw, 560px);
@@ -4319,7 +4414,8 @@ html {
   grid-column: 1 / 7;
   grid-row: 2;
   align-self: start;
-  margin: 100px 0 0 calc((100% - 5 * var(--gutter)) / 6 + var(--gutter));
+  /* two whole tracks and their gutters: one column further in than it was */
+  margin: 100px 0 0 calc(2 * ((100% - 5 * var(--gutter)) / 6 + var(--gutter)));
   padding: 0;
   display: block;
   overflow: visible;
@@ -4376,7 +4472,8 @@ html {
   text-decoration-thickness: 1px;
 }
 .entry-plate-caption {
-  grid-column: 7 / 13;
+  /* one column in from the plate's edge */
+  grid-column: 8 / 13;
   grid-row: 2;
   align-self: start;
   margin: 0;
@@ -4473,6 +4570,25 @@ html {
 .entry--slot3 .entry-figure,
 .entry--slot4 .entry-figure { grid-column: 7 / 13; }
 
+/* CUTOUTS AND ANIMATIONS HANG IN THE MIDDLE OF THE PLATE.
+   Hard against the top right, an object with nothing under it read as pinned
+   in a corner. The cutouts and the gifs are centred in their band instead,
+   both ways; the line drawings keep the corner, where they sit like a print,
+   and so do the photographs. The index's panel hangs its own plates. */
+.entry--spread:not(.entry--panel) .entry-figure--clip img,
+.entry--spread:not(.entry--panel) .entry-figure--gif img {
+  object-position: center center;
+}
+/* and as large as the band allows: every cutout and gif was laid on its
+   canvas at 92% of it, so taking that air back (1 / 0.92) brings the object
+   out to the band's own edges - no further, or it runs into the copy */
+@media (min-width: 901px) {
+  .entry--spread:not(.entry--panel) .entry-figure--clip img,
+  .entry--spread:not(.entry--panel) .entry-figure--gif img {
+    transform: scale(1.08);
+  }
+}
+
 @keyframes plate-in {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -4509,6 +4625,8 @@ html {
   .entry--slot4 .entry-figure { grid-column: 1 / -1; grid-row: auto; }
   /* one column: the recto's second running head would only repeat the name */
   .entry-runhead { display: none; }
+  /* but Copy link, which has the recto's head in the modal, stays */
+  .entry-runhead--copy { display: block; }
   .entry--spread .entry-verso > .entry-record { margin-left: 0; }
   .entry--spread .entry-figure { height: auto; aspect-ratio: 1; justify-content: flex-start; }
   .entry--spread .entry-figure img { object-position: left top; }
@@ -5585,8 +5703,25 @@ html {
   cursor: pointer;
   white-space: nowrap;
 }
-.entry-step:hover:not(:disabled) { background: var(--ink); color: var(--bg); }
+/* under the pointer the word is underlined, not inverted */
+.entry-step:hover:not(:disabled) { text-decoration: underline; text-underline-offset: 2px; }
 .entry-step:disabled { color: var(--meta); cursor: default; }
+/* Copy link stands a step apart from Prev and Next */
+.entry-steps .copy-link { margin-left: 16px; }
+
+/* the index's picture beside the pointer (desktop) */
+.index-preview {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 30;
+  width: 220px;
+  height: 160px;
+  object-fit: contain;
+  pointer-events: none;
+}
+/* a company swiped to on the phone comes in without rising again */
+.index-panel.index-panel--still { animation: none; }
 @media (min-width: 721px) {
   .index-panel .entry--panel .entry-step { font-size: 14px; line-height: 16px; }
 }
@@ -5600,15 +5735,20 @@ html {
 .index-panel .entry--panel .entry-head { gap: 16px; }
 /* in the modal they stand at the foot of the plate's columns, on the
    Shuffle's line, at the plate's left edge - Shuffle keeps the right */
-.entry--spread > .entry-steps {
+.entry--spread > .entry-steps,
+.entry--spread > .entry-copy-foot {
   grid-column: 7 / 12;
   grid-row: 4;
   align-self: end;
   justify-self: start;
   z-index: 2;
 }
+/* Prev and Next at the recto's head start on the same column as Copy link at
+   its foot - the plate's own left edge */
+.entry--spread .entry-runhead--copy { grid-column: 7 / 13; }
 @media (max-width: 720px) {
-  .entry--spread > .entry-steps { grid-column: 1; grid-row: auto; justify-self: start; }
+  .entry--spread > .entry-steps,
+  .entry--spread > .entry-copy-foot { grid-column: 1; grid-row: auto; justify-self: start; }
 }
 
 /* opened from the manifest with the dock down, a phone's sheet comes to the
