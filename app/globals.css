@@ -474,11 +474,20 @@ main {
 }
 .ctl--count,
 .ctl--filter,
+.ctl--shake,
 .ctl--views { flex: 0 0 auto; }
 .ctl--search { flex: 1 1 auto; }
 .ctl--count .ctl-box,
 .ctl--filter .ctl-box,
+.ctl--shake .ctl-box,
 .ctl--views .ctl-box { width: auto; }
+/* SHAKE THE GRID: one word of a slot beside the search; pressing it deals
+   the list a new order. It deepens under the pointer like the filter. */
+.shake-trigger {
+  cursor: pointer;
+  white-space: nowrap;
+}
+.shake-trigger:hover { background: #222; }
 .filter-trigger { gap: 14px; }
 
 /* the readout: fixed-width figures, zero-padded, so it does not jump about
@@ -857,6 +866,7 @@ main {
      figure says what is applied - and so does the view: a phone reads the
      list as the index, with a picture on every line. */
   .ctl--count,
+  .ctl--shake,
   .ctl--views { display: none; }
   .filter-trigger { gap: 10px; }
   .filter-trigger-count { padding-right: 4px; }
@@ -1028,17 +1038,23 @@ main {
   grid-template-columns: 1fr;
   align-items: start;
 }
-.index-view--open { grid-template-columns: 60% 40%; }
+/* the panel takes four of the page's twelve tracks; the rows keep eight */
+.index-view--open { grid-template-columns: 2fr 1fr; }
 .index-panel {
-  /* it holds its place while the list scrolls past it */
-  position: sticky;
-  top: 0;
-  /* over the mark, which the list runs under */
+  /* FIXED, not stuck: it holds its place under the mark whatever the list
+     does - stuck to the list it was carried up under the mark when the rows
+     ran out. Out of the flow, so the rows keep their two thirds and the
+     panel takes the last third of the window on its own. */
+  position: fixed;
+  /* from the mark's foot, wherever the mark is - measured on scroll in
+     Archive(), so the panel never stands above the letters */
+  top: var(--index-panel-top, var(--masthead-h, 180px));
+  right: 0;
+  width: calc(100% / 3);
   z-index: 2;
-  align-self: start;
-  /* the screen less the dock at its foot - measured, see the effect in
-     Index() */
-  height: calc(100dvh - var(--index-dock-h, 53px));
+  /* the screen less the mark at its head and the dock at its foot - both
+     measured, see Archive() and the effect in Index() */
+  height: calc(100dvh - var(--index-panel-top, var(--masthead-h, 180px)) - var(--index-dock-h, 53px));
   min-width: 0;
   background: var(--bg);
   /* the whole company is meant to be read without scrolling: the panel holds
@@ -1069,8 +1085,8 @@ main {
   display: flex;
   flex-direction: column;
   /* the rows' own 2px, so the name sits on the index's first baseline */
-  /* 10 of air over the name and the close */
-  padding: 12px var(--pad) 30px;
+  /* 10 of air over the name and the close; the copy ends 20 above the dock */
+  padding: 12px var(--pad) 20px;
   overflow: hidden;
   position: relative;
 }
@@ -1148,10 +1164,12 @@ main {
 .index-panel .entry--panel .entry-verso > .entry-name {
   order: 2;
   margin-top: 0;
-  /* three times the index's own setting - the one thing in the panel that is
-     not 13/15 */
-  font-size: 39px;
-  line-height: 45px;
+  /* twice the index's own setting - the one thing in the panel that is not
+     13/15 - and kept clear of Prev, Next and the close in the corner, so a
+     long name wraps under them rather than running through them */
+  font-size: 30px;
+  line-height: 34px;
+  padding-right: 40px;
   font-weight: 500;
   letter-spacing: normal;
 }
@@ -1188,6 +1206,9 @@ main {
   contain: none;
   height: auto;
   min-height: 0;
+  /* THE PLATE TAKES THE ROOM: the copy sets its own height at the foot, and
+     the plate grows into whatever the panel has left above it */
+  flex: 1 1 0;
   display: flex;
   align-items: flex-start;
   /* centred on the measure: a square plate is only as wide as it is tall, and
@@ -1200,7 +1221,8 @@ main {
   width: auto;
   height: auto;
   max-width: 100%;
-  max-height: 40vh;
+  /* as tall as its frame, which is as tall as the copy leaves it */
+  max-height: 100%;
   object-fit: contain;
   object-position: center top;
 }
@@ -1208,11 +1230,19 @@ main {
   order: 6;
   margin-top: 22px;
   display: block;
-  /* takes whatever is left and clips: the lorem still runs about two and a
-     half times the live copy */
-  flex: 1 1 0;
+  /* its own height, and never scrolls: the whole company is read in one
+     screen, the copy set a size down (below), and the plate gives way to it */
+  flex: 0 1 auto;
   min-height: 0;
   overflow: hidden;
+}
+/* the record and the two copy blocks at 13/15 in the panel - a size under
+   the one-liner, so both blocks fit under the plate on a short window */
+.index-panel .entry--panel .entry-verso-foot .entry-block-body,
+.index-panel .entry--panel .entry-verso > .entry-record,
+.index-panel .entry--panel .entry-verso > .entry-record .entry-record-values {
+  font-size: 13px;
+  line-height: 15px;
 }
 .index-panel .entry--panel .entry-record-values { white-space: normal; }
 .index-panel .entry--panel .entry-block-body { text-align: left; hyphens: none; }
@@ -1447,8 +1477,8 @@ main {
      line and the next row's head: three lines of it, so a row reads as a
      band and the caps at its foot belong to the card above, not below */
   gap: 40px var(--gutter);
-  /* one gutter between the parked mark and the first row */
-  padding: var(--gutter) var(--pad) 0;
+  /* a gutter and ten between the parked mark and the first row */
+  padding: calc(var(--gutter) + 10px) var(--pad) 0;
   align-items: start;
 }
 
@@ -2426,11 +2456,18 @@ html {
    left edge, so the box is pulled back by exactly that - the INK lands on the
    copy's line, not the picture's own margin. No hover ground: it would sit
    behind a picture with its own edges. */
+.mod-manifest-reveal-summary {
+  /* as wide as the copy it sits under */
+  display: block;
+  width: 100%;
+}
 .mod-manifest-reveal-summary img {
   display: block;
-  width: 240px;
+  /* the copy's full measure, plus the file's own clear left edge (4.54% of
+     the picture), which is then pulled back so the INK spans the column */
+  width: calc(100% / 0.9546);
   height: auto;
-  margin-left: -10.9px;
+  margin-left: -4.76%;
 }
 .mod-manifest-reveal-summary:hover img { opacity: 0.65; }
 
@@ -2503,14 +2540,12 @@ html {
   bottom: 0;
   /* and at the head while the list scrolls: the rows run over it */
   top: 0;
-  /* BETWEEN THE LIST'S TYPE AND ITS PICTURES. The film and the manifest lie
-     over it (their z is above this) and slide off, uncovering the mark
-     rather than the mark arriving. Then the list runs under it: its type is
-     gone the moment it enters the mark's band - the band has the page's own
-     ground, so nothing shows between the letters either - and its pictures,
-     the one thing on the list placed above this, travel over the mark. */
+  /* OVER THE LIST, UNDER THE FILM AND THE MANIFEST. Those lie over it (their
+     z is above this) and slide off, uncovering the mark rather than the mark
+     arriving. Then the list runs under it and is cut at the mark's foot (see
+     the clip in Archive()), so it is gone the moment it enters the band. No
+     ground of its own: the letters stand on the page. */
   z-index: 1;
-  background: var(--bg);
   /* it is over the rows and the cards now; the press goes through it */
   pointer-events: none;
   /* its foot IS the foot of the window while it is pinned, and the list
@@ -3025,14 +3060,18 @@ html {
   color: var(--ink);
 }
 .mod-manifest-tab-label,
-/* the catalogue setting underlines the open one; nothing marks it here, and
-   at one class it lost to that rule. The 10px step the open and hovered tab
-   took is gone: the contents and the copy hold one edge. */
+/* the catalogue setting underlines the open one; the step is the only mark
+   here, and at one class it lost to that rule */
 .mod-manifest-tab--active .mod-manifest-tab-label,
 .mod-manifest-tab:hover .mod-manifest-tab-label {
   display: inline-block;
   text-transform: none;
   text-decoration: none;
+}
+/* THE OPEN TAB STEPS IN 10px. Only the tab: the copy under it keeps the
+   contents' edge, so nothing else on the section moves with it. */
+.mod-manifest-tab--active .mod-manifest-tab-label {
+  transform: translateX(10px);
 }
 
 /* THE COMPRESSED SHUFFLE
@@ -3061,13 +3100,34 @@ html {
 .mod-manifest-draw-cursor {
   position: fixed;
   z-index: 3;
-  /* off the pointer's own tip, the way a tool label sits */
-  transform: translate(14px, 10px);
+  /* THE POINTER IS A DOT. The native arrow is put away over the section
+     (below), and the word rides a small dot that sits exactly where the
+     pointer is, with "Shuffle" to its right. */
+  transform: translate(-3px, -50%);
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 15px;
   line-height: 17px;
   font-weight: 500;
   color: var(--ink);
+}
+.mod-manifest-draw-cursor::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+/* no arrow over the wheel: the dot is the pointer. The contents, the links
+   and the caption keep their own hand. */
+@media (min-width: 721px) {
+  .mod-manifest-top { cursor: none; }
+  .mod-manifest-top a,
+  .mod-manifest-top button,
+  .mod-manifest-index { cursor: pointer; }
 }
 /* THE PLATE IS A LAYER, NOT A COLUMN
    It takes its tracks off the grid - eight of them, running to the right
@@ -3240,12 +3300,11 @@ html {
 .mod-manifest-draw-caption {
   grid-area: auto;
   position: absolute;
-  /* the name and its country alone, on track 4, well up from the plate's
-     foot - the plate laps the mark now, and a caption under it landed on
-     the letters. 250 up from where it was. */
-  left: calc(var(--pad) + 3 * var(--l));
+  /* the name and its country alone, on track 7, on the contents' first
+     line - level with "About" */
+  left: calc(var(--pad) + 6 * var(--l));
   width: calc(3 * var(--t) + 2 * var(--gutter));
-  top: calc(140px + (100dvh - var(--masthead-h, 210px)) * 0.92 + 10px - 250px);
+  top: 100px;
   margin: 0;
   min-height: 34px;
   /* the copy's own size: the caption is the section's type, not a footnote */
@@ -4342,7 +4401,8 @@ html {
 }
 /* the domain stands off the facts by a line, as it does in print */
 .entry--spread .entry-verso > .entry-record .entry-record-values a {
-  margin-top: 17px;
+  /* on the record's own lines, no line of air above it */
+  margin-top: 0;
 }
 /* the copy hangs from the foot of the page */
 .entry-verso-foot {
@@ -4709,7 +4769,8 @@ html {
   pointer-events: none;
 }
 .mod-faq .mod-title-art--faq {
-  width: 100%;
+  /* a tenth under its column */
+  width: 90%;
   margin: 0;
 }
 /* GOOD NEWS
@@ -5487,16 +5548,11 @@ html {
    FINGER'S WORTH OF SCREEN ON A PHONE
    ============================================= */
 
-/* THE LIST RUNS UNDER THE MARK, ITS PICTURES OVER IT.
-   The mark is stuck to the head of the window while the list runs through
-   it. The rows' and the captions' type is not placed, so it passes behind
-   the letters and is gone while it is there; the pictures are placed above
-   the mark, so they travel over it. Nothing is blended or inverted. */
-.card-media,
-.row-thumb {
-  position: relative;
-  z-index: 2;
-}
+/* THE LIST IS CUT AT THE MARK'S FOOT. The mark is stuck to the head of the
+   window, and the list - type and pictures alike - is clipped to below its
+   foot as it scrolls up (Archive() sets the inset on the grid and the index
+   as the page moves), so it is gone the moment it enters the band. Nothing
+   is blended, nothing has a ground, nothing is placed above the mark. */
 
 /* PREV AND NEXT, beside the close mark: the Latest section's two words,
    inverting under the pointer the way its arrows do, grey when there is no
@@ -5529,10 +5585,20 @@ html {
 .entry[role="dialog"]:focus { outline: none; }
 /* in the index panel they stand under the name, on its left edge, and the
    close mark has the corner to itself */
-.index-panel .entry--panel .entry-verso > .entry-steps {
-  order: 2;
-  margin-top: 4px;
-  justify-content: flex-start;
+/* Prev and Next in the panel's head, beside the close mark: the copy keeps
+   the foot to itself */
+.index-panel .entry--panel .entry-head { gap: 16px; }
+/* in the modal they stand at the foot of the plate's columns, on the
+   Shuffle's line, at the plate's left edge - Shuffle keeps the right */
+.entry--spread > .entry-steps {
+  grid-column: 7 / 12;
+  grid-row: 4;
+  align-self: end;
+  justify-self: start;
+  z-index: 2;
+}
+@media (max-width: 720px) {
+  .entry--spread > .entry-steps { grid-column: 1; grid-row: auto; justify-self: start; }
 }
 
 /* opened from the manifest with the dock down, a phone's sheet comes to the
@@ -5546,7 +5612,6 @@ html {
 
 /* THE DRAWN COMPANY OPENS: the plate takes the pointer, the caption is a
    button set as the caption was */
-.mod-manifest-draw-plate img.mod-manifest-draw-open { cursor: pointer; }
 .mod-manifest-draw-who {
   display: inline;
   margin: 0;
@@ -5733,5 +5798,63 @@ html {
     content: "";
     position: absolute;
     inset: -14px -4px;
+  }
+}
+
+/* THE ROSTER IN THE PLATE'S PLACE (desktop).
+   Pressing "Nomination partners" no longer folds the copy away: the copy
+   stays, the drawn company goes, and the names take its tracks - 7 to 11,
+   level with the contents' first line - in black, dealt in one after
+   another 12ms apart, the way the wheel runs through the companies, only
+   faster. Nothing fades and nothing unfolds: a cut, then the deal. */
+@media (min-width: 721px) {
+  .mod-manifest-body { position: static; }
+  .mod-manifest-copy-fold--away { grid-template-rows: 1fr; }
+  .mod-manifest-partners-fold {
+    top: 100px;
+    /* tracks 7 to 12 - one more than the plate takes, so the longest names
+       hold one line */
+    left: calc(var(--pad) + 6 * var(--l));
+    width: calc(6 * var(--t) + 5 * var(--gutter));
+    grid-template-rows: 1fr;
+    transition: none;
+  }
+  /* out of sight rather than out of the tree when closed: the names have to
+     exist hidden for the deal to run when they turn visible */
+  .mod-manifest-reveal:not(.mod-manifest-reveal--open) .mod-manifest-partners-fold {
+    visibility: hidden;
+    pointer-events: none;
+  }
+  /* three tracks filled ROW BY ROW - a grid, not columns, so the deal runs
+     left to right along each line and the list fills up like rows of type
+     being set, rather than running down one column and then the next */
+  .mod-manifest-partners {
+    margin: 0;
+    columns: auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: 0;
+    color: var(--ink);
+    /* the copy's own size; one name a line, so the rows stay even - a name
+       too long for its track takes an ellipsis rather than a second line */
+    font-size: 15px;
+    line-height: 17px;
+  }
+  .mod-manifest-partners li {
+    visibility: hidden;
+    /* no transition on the way out: closed, the names are gone at once */
+    transition: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: normal;
+  }
+  .mod-manifest-reveal--open .mod-manifest-partners li {
+    visibility: visible;
+    transition: visibility 0s linear var(--d, 0s);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mod-manifest-partners li { transition-delay: 0s; }
   }
 }

@@ -133,10 +133,16 @@ function sections(c: Company) {
   // two data shapes are mutually exclusive per company, so a given company's
   // block list never carries both a current.* and a legacy.* entry under the
   // same label.
-  return [
+  // A returning company carries both this edition's text and an older
+  // year's: only the current one is shown, so the legacy blocks come in
+  // only when there is no current text at all.
+  const current = [
     { label: "What they fix", body: c.current.fix },
     { label: "What they outperform", body: c.current.outperform },
     { label: "What this means for the future", body: c.current.future },
+  ].filter((s) => s.body && s.body.trim());
+  if (current.length) return current;
+  return [
     { label: "What they fix", body: c.legacy.problem },
     { label: "What this means for the future", body: c.legacy.solution },
     { label: "Description", body: c.legacy.description },
@@ -415,12 +421,12 @@ function CompanyModal({ c, onClose, onShuffle, spinning, steps }: {
           spread
           onImageClick={onShuffle}
           corner={
-            <>
-              <EntrySteps steps={steps} />
-              <button className="entry-close" onClick={close} aria-label="Close">✕</button>
-            </>
+            <button className="entry-close" onClick={close} aria-label="Close">✕</button>
           }
         />
+        {/* at the foot of the plate, on one line: Prev and Next at its left
+            edge, Shuffle at its right */}
+        <EntrySteps steps={steps} />
         {onShuffle && (
           <button className="entry-spin" onClick={onShuffle}>Shuffle</button>
         )}
@@ -463,6 +469,47 @@ export default function Archive({
   /* six across, which is the grid the page has always opened on */
   const [density, setDensity] = useState(3);
   const [view, setView] = useState<View>("grid");
+  /* THE LIST IS CUT AT THE MARK'S FOOT.
+     The mark is stuck to the head of the window while the list runs up
+     under it. Rather than give the mark a ground, the list itself is clipped
+     to below the mark's foot - the grid, or the index's rows - so whatever
+     enters the band is gone, type and pictures alike, and the letters stand
+     on the page. Measured on every scroll, one frame at a time; the panel
+     beside the index is a sibling of the rows, so it is not cut. */
+  const [empty, setEmpty] = useState(false);
+  useEffect(() => {
+    const mast = document.querySelector<HTMLElement>(".archive-masthead");
+    const list = listRef.current;
+    if (!mast || !list) return;
+    const cut = () => {
+      const foot = mast.getBoundingClientRect().bottom;
+      /* and the panel beside the index hangs from the mark's foot wherever
+         that is - stuck at the head, or parked lower while the list is only
+         just arriving - so it is never above the mark */
+      document.documentElement.style.setProperty(
+        "--index-panel-top",
+        `${Math.max(0, Math.round(foot))}px`
+      );
+      list
+        .querySelectorAll<HTMLElement>(":scope > .grid, .index-view > .index, :scope > .empty")
+        .forEach((el) => {
+          const c = Math.max(0, Math.round(foot - el.getBoundingClientRect().top));
+          el.style.clipPath = c > 0 ? `inset(${c}px 0 0 0)` : "";
+        });
+    };
+    let raf = 0;
+    const ask = () => {
+      if (!raf) raf = requestAnimationFrame(() => { raf = 0; cut(); });
+    };
+    cut();
+    window.addEventListener("scroll", ask, { passive: true });
+    window.addEventListener("resize", ask);
+    return () => {
+      window.removeEventListener("scroll", ask);
+      window.removeEventListener("resize", ask);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [view, empty]);
   /* a phone opens on the index and stays there: the switch is not on the
      phone's bar, and each row carries a thumbnail the height of its line
      instead. Set after mount rather than read at render, so the static page
@@ -526,6 +573,18 @@ export default function Archive({
     return m;
   }, [companies]);
 
+  /* SHAKE THE GRID: one press deals the hundred a new order, and they keep
+     it through every filter and search until the next press. A key a
+     company, drawn once a shake; the list sorts on the keys instead of the
+     edition's order. */
+  const [shaken, setShaken] = useState<Map<string, number> | null>(null);
+  const shake = () => {
+    const keys = new Map<string, number>();
+    for (const c of companies) keys.set(c.slug, Math.random());
+    setShaken(keys);
+    setFiltersOpen(false);
+  };
+
   const filtered = useMemo(() => {
     const terms = fold(query).split(/\s+/).filter(Boolean);
     let list = companies.filter((c) => {
@@ -539,9 +598,13 @@ export default function Archive({
       }
       return true;
     });
-    list = [...list].sort(byEdition);
+    list = shaken
+      ? [...list].sort((a, b) => (shaken.get(a.slug) ?? 0) - (shaken.get(b.slug) ?? 0))
+      : [...list].sort(byEdition);
     return list;
-  }, [companies, sector, country, year, theme, query, haystacks]);
+  }, [companies, sector, country, year, theme, query, haystacks, shaken]);
+  /* the clip above re-measures when the list swaps to its empty line */
+  useEffect(() => setEmpty(filtered.length === 0), [filtered.length]);
 
   /* THE OPEN COMPANY
      One company is open at a time, in one of two places: the modal over the
@@ -597,6 +660,19 @@ export default function Archive({
       writeCompanyUrl(null, "replace");
     }
   }, []);
+
+  /* THE PANEL GOES WITH THE LIST: it is fixed to the window, so once the
+     list has scrolled off the screen it would hang over The Latest and
+     everything after. When the list leaves - not before it has arrived, so
+     a company opened from the manifest with the list still below stays -
+     the panel closes. */
+  const wasOn = useRef(dockOn);
+  useEffect(() => {
+    if (wasOn.current && !dockOn && openRef.current && surfaceRef.current === "panel") {
+      closeCompany();
+    }
+    wasOn.current = dockOn;
+  }, [dockOn, closeCompany]);
 
   /* a panel whose row is filtered away goes with it */
   useEffect(() => {
@@ -830,6 +906,13 @@ export default function Archive({
           </div>
         </div>
 
+        {/* one press, a new order: the grid dealt again */}
+        <div className="ctl ctl--shake">
+          <button type="button" className="shake-trigger ctl-box" onClick={shake}>
+            Shake the grid
+          </button>
+        </div>
+
         {/* only the grid has a density; the index is one row a company */}
         <div className="ctl ctl--views">
           {/* Grid or Index in one cell, the open one white. While the grid
@@ -1046,8 +1129,9 @@ function Index({ list, open, onOpen, steps, undocked }: {
             <EntryLayout
               c={open}
               spread
-              steps={steps}
               corner={
+                /* no Prev and Next here: the rows beside it are the way
+                   through, and the arrow keys still step */
                 <button
                   className="entry-close"
                   onClick={() => onOpen(null)}

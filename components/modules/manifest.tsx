@@ -229,8 +229,12 @@ function Body({
           <div className="mod-manifest-partners-fold" aria-hidden={!partnersOpen}>
             <div className="mod-manifest-partners-clip">
               <ul className="mod-manifest-partners" id="nomination-partners">
-                {NOMINATION_PARTNERS.map((name) => (
-                  <li key={name}>{name}</li>
+                {NOMINATION_PARTNERS.map((name, i) => (
+                  /* dealt a ROW at a time, three names to a row, 30ms apart:
+                     the roulette's flicker, run fast, with nothing fading */
+                  <li key={name} style={{ ["--d" as string]: `${Math.floor(i / 3) * 30}ms` }}>
+                    {name}
+                  </li>
                 ))}
               </ul>
             </div>
@@ -515,14 +519,10 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
                   another. The picture is for the pointer, the caption is the
                   button the keyboard reaches. */}
               <figure className="mod-manifest-draw-plate">
-                {one.visual && (
-                  <img
-                    className="mod-manifest-draw-open"
-                    src={one.visual}
-                    alt={one.name}
-                    onClick={() => { if (!spinning) openCompany(one.slug); }}
-                  />
-                )}
+                {/* the picture is part of the wheel: a press on it draws
+                    another, like anywhere else on the section. The caption
+                    under it is the way in to the company. */}
+                {one.visual && <img src={one.visual} alt={one.name} />}
               </figure>
               {/* the caption's line is always there and only its words come
                   and go: cut in once the wheel lands, blank while it turns.
