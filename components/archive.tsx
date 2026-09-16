@@ -728,7 +728,7 @@ export default function Archive({
      that moment - and a phone can report a desktop width in that moment (an
      in-app browser, a page still settling its viewport, a turn of the
      device). The spread laid out at a phone's width is a wreck, so the width
-     is watched, and at 900 and under the company is always the sheet,
+     is watched, and at 900 and under the index's sheet takes the company,
      whatever was chosen when it opened. */
   const [narrow, setNarrow] = useState(false);
   useEffect(() => {
@@ -739,7 +739,10 @@ export default function Archive({
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
   }, []);
-  const surface = narrow ? "panel" : chosenSurface;
+  /* ...but only where the sheet can actually appear: beside the index. A
+     tablet in the grid (721-900) keeps the modal, or a press on a card would
+     open nothing at all. A phone is on the index either way (above). */
+  const surface = narrow && view === "index" ? "panel" : chosenSurface;
   const openRef = useRef<string | null>(null);
   const surfaceRef = useRef(surface);
   surfaceRef.current = surface;
