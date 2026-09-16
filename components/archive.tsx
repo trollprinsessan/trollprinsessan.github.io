@@ -1323,35 +1323,10 @@ function Index({ list, open, onOpen, steps, undocked }: {
     };
   }, [isOpen]);
 
-  /* THE PICTURE FOLLOWS THE POINTER.
-     The index is type only on a desktop; running the pointer down it brings
-     each company's picture up beside the cursor, so the list can be read for
-     what the companies look like without opening one. A pointer that hovers
-     only - never a touch - and not while a company is open beside it. */
-  const previewRef = useRef<HTMLImageElement>(null);
-  /* the picture and where it first stood; the pointer's later moves go
-     straight to the element, not through a render */
-  const [preview, setPreview] = useState<{ src: string; at: string } | null>(null);
-  const canHover = useRef(false);
-  useEffect(() => {
-    canHover.current = window.matchMedia("(hover: hover) and (min-width: 901px)").matches;
-  }, []);
-  const previewAt = (x: number, y: number) => {
-    /* beside the cursor, and to its left when the right edge is near */
-    const w = 220;
-    const left = x + 24 + w > window.innerWidth ? x - 24 - w : x + 24;
-    return `translate(${left}px, ${y + 16}px)`;
-  };
-  const onIndexMove = (e: React.MouseEvent) => {
-    if (!canHover.current || isOpen) return;
-    const item = (e.target as Element).closest<HTMLElement>(".index-item");
-    const c = item ? list.find((x) => x.slug === item.dataset.slug) : undefined;
-    const src = c && visualFor(c) ? thumb(visualFor(c)) : null;
-    if (src !== (preview?.src ?? null)) {
-      setPreview(src ? { src, at: previewAt(e.clientX, e.clientY) } : null);
-    }
-    if (previewRef.current) previewRef.current.style.transform = previewAt(e.clientX, e.clientY);
-  };
+  /* NO PICTURE ON HOVER. The index carried a plate that came up as the
+     pointer ran down the names - beside the cursor, then parked in one place
+     - and either way it was one thing too many over a list this dense. The
+     index is type, and a company's picture arrives when you open it. */
 
   /* A SHEET YOU CAN THROW.
      On a phone the sheet follows a finger down and closes past a threshold,
@@ -1477,8 +1452,6 @@ function Index({ list, open, onOpen, steps, undocked }: {
       <div
         ref={indexRef}
         className={`index${open ? " index--focused" : ""}`}
-        onMouseMove={onIndexMove}
-        onMouseLeave={() => setPreview(null)}
       >
         {list.map((c) => {
           const rowOpen = open?.slug === c.slug;
@@ -1514,18 +1487,6 @@ function Index({ list, open, onOpen, steps, undocked }: {
           );
         })}
       </div>
-
-      {preview && !isOpen && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          ref={previewRef}
-          className="index-preview"
-          src={preview.src}
-          alt=""
-          aria-hidden="true"
-          style={{ transform: preview.at }}
-        />
-      )}
 
       {/* the band of page above the phone's sheet: a tap there puts it away */}
       {open && (

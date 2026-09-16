@@ -471,25 +471,23 @@ main {
    year's bar did - none of them stretched to a margin. Count and Filter
    and the view take what their words need; Search takes the rest. */
 /* THE SEARCH HOLDS THE PAGE'S TRACKS.
-   The row is laid on the page's own twelve tracks (a subgrid of the bar),
-   and the search takes tracks 4 to 7 exactly - the same in the grid and in
-   the index, so it never changes width when the view does. Filter stands
-   against its left edge, ending on track 4's line; Shake and the view follow
-   against its right. The slots keep their 2px between them: the neighbours
-   reach across the gutter to meet the search. */
+   The row is one measure on the page's tracks, and it is centred: it takes
+   the middle eight, tracks 3 to 10, with two tracks of air standing either
+   side of it. Filter and the tail take what their words need and the search
+   takes the rest, so the instrument is one unbroken run of slots rather than
+   a row of cells with air between them. It reaches the gutter's width past
+   its tracks at both ends, evenly, the way the slots have always met. */
 .controls-row {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: subgrid;
+  grid-column: 3 / 11;
+  display: flex;
+  gap: 2px;
   align-items: center;
   min-width: 0;
-}
-.ctl--filter {
-  grid-column: 1 / 4;
-  justify-self: end;
+  margin-left: calc(2px - var(--gutter));
   margin-right: calc(2px - var(--gutter));
 }
-.ctl--search { grid-column: 4 / 8; }
+.ctl--filter { flex: 0 0 auto; }
+.ctl--search { flex: 1 1 auto; min-width: 0; }
 /* THE BAR MAKES ROOM FOR THE PANEL.
    With a company open beside the index, the right half of the window is the
    panel - so the instrument pulls in off it: every cell slides a column left
@@ -506,25 +504,23 @@ main {
     --listtrack: calc((var(--list) - 2 * var(--pad) - 11 * var(--gutter)) / 12);
     display: flex;
     gap: 2px;
+    grid-column: 1 / -1;
+    margin-right: 0;
     margin-left: calc(2 * (var(--listtrack) + var(--gutter)));
     width: calc(var(--list) - 2 * var(--pad) - 2 * (var(--listtrack) + var(--gutter)));
   }
   .dock--panel .ctl--filter,
   .dock--panel .ctl-tail {
-    grid-column: auto;
-    justify-self: auto;
     margin: 0;
     flex: 0 0 auto;
   }
-  .dock--panel .ctl--search { grid-column: auto; flex: 1 1 auto; }
+  .dock--panel .ctl--search { flex: 1 1 auto; }
 }
 .ctl-tail {
-  grid-column: 8 / -1;
-  justify-self: start;
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: 2px;
-  margin-left: calc(2px - var(--gutter));
 }
 .ctl--count,
 .ctl--filter,
@@ -5759,17 +5755,6 @@ html {
 /* Copy link stands a step apart from Prev and Next */
 .entry-steps .copy-link { margin-left: 16px; }
 
-/* the index's picture beside the pointer (desktop) */
-.index-preview {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 30;
-  width: 220px;
-  height: 160px;
-  object-fit: contain;
-  pointer-events: none;
-}
 /* a company swiped to on the phone comes in without rising again */
 .index-panel.index-panel--still { animation: none; }
 
