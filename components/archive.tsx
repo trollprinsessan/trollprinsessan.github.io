@@ -1065,7 +1065,7 @@ export default function Archive({
           the screen. Shown only while the list is on screen - over the film
           and the manifest there is nothing for it to control, and the mark is
           using that edge. */}
-      <div className={`dock${dockOn && (listAtFoot || listShort) ? " dock--on" : ""}${filtersOpen ? " dock--open" : ""}`}>
+      <div className={`dock${dockOn && (listAtFoot || listShort) ? " dock--on" : ""}${filtersOpen ? " dock--open" : ""}${openCo && surface === "panel" ? " dock--panel" : ""}`}>
       {filtersOpen && (
         <div className="filter-panel">
           <div className="filter-panel-groups">
@@ -1551,19 +1551,21 @@ function Index({ list, open, onOpen, steps, undocked }: {
               spread
               corner={
                 /* no Prev and Next here: the rows beside it are the way
-                   through, and the arrow keys (or a swipe) still step */
-                <>
-                  <CopyLink slug={open.slug} />
-                  <button
-                    className="entry-close"
-                    onClick={() => onOpen(null)}
-                    aria-label="Close"
-                  >
-                    ✕
-                  </button>
-                </>
+                   through, and the arrow keys (or a swipe) still step. The
+                   corner is the close mark's alone; Copy link stands under
+                   the copy below. */
+                <button
+                  className="entry-close"
+                  onClick={() => onOpen(null)}
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
               }
             />
+            <div className="panel-copy">
+              <CopyLink slug={open.slug} />
+            </div>
           </div>
           {/* on a phone, Prev and Next at the foot of the sheet: the rows are
               under it, so this is the way on to the next company */}

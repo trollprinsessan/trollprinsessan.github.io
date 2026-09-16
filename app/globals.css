@@ -490,6 +490,34 @@ main {
   margin-right: calc(2px - var(--gutter));
 }
 .ctl--search { grid-column: 4 / 8; }
+/* THE BAR MAKES ROOM FOR THE PANEL.
+   With a company open beside the index, the right half of the window is the
+   panel - so the instrument pulls in off it: every cell slides a column left
+   and the search gives up a track, the whole row ending on track 7's line
+   rather than running under the plate. */
+@media (min-width: 901px) {
+  .dock--panel .controls-row {
+    /* THE INDEX'S OWN TRACKS, NARROWED. With a company open the rows keep two
+       thirds of the window and the panel takes the last third, so the rows'
+       twelve tracks are computed on that two thirds. The bar takes the same
+       measure as the rows' text: it starts on the one-liner's column (track 3)
+       and ends where the rows end. */
+    --list: calc((100% + 2 * var(--pad)) * 2 / 3);
+    --listtrack: calc((var(--list) - 2 * var(--pad) - 11 * var(--gutter)) / 12);
+    display: flex;
+    gap: 2px;
+    margin-left: calc(2 * (var(--listtrack) + var(--gutter)));
+    width: calc(var(--list) - 2 * var(--pad) - 2 * (var(--listtrack) + var(--gutter)));
+  }
+  .dock--panel .ctl--filter,
+  .dock--panel .ctl-tail {
+    grid-column: auto;
+    justify-self: auto;
+    margin: 0;
+    flex: 0 0 auto;
+  }
+  .dock--panel .ctl--search { grid-column: auto; flex: 1 1 auto; }
+}
 .ctl-tail {
   grid-column: 8 / -1;
   justify-self: start;
@@ -4524,6 +4552,14 @@ html {
   /* on the record's own lines, no line of air above it */
   margin-top: 0;
 }
+/* THE DOMAIN IS THE ONE THING IN THE RECORD YOU CAN PRESS, and it is
+   underlined always - the record's other lines are facts, this one is a way
+   out of the page, and it says so before you reach for it. */
+.entry-record-values a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
 /* the copy hangs from the foot of the page */
 .entry-verso-foot {
   display: flex;
@@ -5736,6 +5772,18 @@ html {
 }
 /* a company swiped to on the phone comes in without rising again */
 .index-panel.index-panel--still { animation: none; }
+
+/* the link to the company under the copy, where the reader ends up - the
+   corner is the close mark's alone. The phone's sheet carries its own at the
+   foot (see .sheet-steps), so this one is desktop only. */
+.index-panel .entry--panel .panel-copy {
+  order: 7;
+  margin-top: 16px;
+  flex: 0 0 auto;
+}
+@media (max-width: 900px) {
+  .index-panel .entry--panel .panel-copy { display: none; }
+}
 
 /* THE PHONE'S SHEET, AS A LINK OPENS IT */
 .index-sheet-scrim,
