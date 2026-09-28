@@ -315,6 +315,12 @@ function EntryLayout({ c, corner, onImageClick, spread, steps, lead, rectoHead }
           <dt>Sector</dt>
           <dd>{c.sectorLabel || "—"}</dd>
         </div>
+        {cohortsFor(c.slug).length > 0 && (
+          <div className="entry-spec-cell">
+            <dt>Campaign</dt>
+            <dd>{cohortsFor(c.slug).join(", ")}</dd>
+          </div>
+        )}
         <div className="entry-spec-cell">
           <dt>Meta</dt>
           <dd>{meta.length ? meta.join(", ") : "—"}</dd>
@@ -348,8 +354,26 @@ function EntryLayout({ c, corner, onImageClick, spread, steps, lead, rectoHead }
               <span>{c.countries.map(abbreviateCountry).join(", ")}</span>
               {c.sectorLabel && <span>{c.sectorLabel}</span>}
               {meta.length > 0 && <span>{meta.join(", ")}</span>}
+              {/* the campaign, a line of the record like the rest - and the
+                  line is kept when there is none, so the website stands on
+                  the same line for every company */}
+              {/* not in the modal: there the campaign is the caption over the
+                  plate */}
+              {!lead && (
+                <span className="entry-tags">
+                  {cohortsFor(c.slug).map((t) => (
+                    <span key={t} className="entry-tag">{t}</span>
+                  ))}
+                </span>
+              )}
+              {/* a line's break, always, before the website */}
               {c.website && (
-                <a href={c.website} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={c.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="entry-record-site--apart"
+                >
                   {c.website.replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/$/, "")}
                 </a>
               )}
@@ -371,11 +395,10 @@ function EntryLayout({ c, corner, onImageClick, spread, steps, lead, rectoHead }
           ) : (
             <p className="entry-runhead">{c.statement}</p>
           )}
-          <p className="entry-plate-caption">
-            {[c.countries.map(abbreviateCountry).join(", "), c.sectorLabel]
-              .filter(Boolean)
-              .join(", ")}
-          </p>
+          {/* the caption over the plate names the campaign, and only that:
+              a company in neither leaves the line empty (the line itself
+              stays, so the plate does not move up) */}
+          <p className="entry-plate-caption">{cohortsFor(c.slug).join(", ")}</p>
           {figure}
         </div>
       </>
@@ -605,6 +628,15 @@ export default function Archive({
       if (raf) cancelAnimationFrame(raf);
     };
   }, [view, empty]);
+  /* IN THE GRID THE MARK STAYS WHERE IT IS. It parks above the list and
+     scrolls away with the page, rather than holding the head of the window
+     while the cards run up under it. The index keeps it stuck at the head. */
+  useEffect(() => {
+    const mast = document.querySelector<HTMLElement>(".archive-masthead");
+    if (!mast) return;
+    mast.classList.toggle("archive-masthead--loose", view === "grid");
+    return () => mast.classList.remove("archive-masthead--loose");
+  }, [view]);
   /* a phone opens on the index and stays there: the switch is not on the
      phone's bar, and each row carries a thumbnail the height of its line
      instead. Set after mount rather than read at render, so the static page
@@ -698,7 +730,7 @@ export default function Archive({
     let list = companies.filter((c) => {
       if (sector.size && !sector.has(c.sectorLabel)) return false;
       if (country.size && !c.countries.some((x) => country.has(x))) return false;
-      if (theme.size && !(c.themes ?? []).some((x) => theme.has(x))) return false;
+      if (theme.size && !cohortsFor(c.slug).some((x) => theme.has(x))) return false;
       if (year.size && !c.years.some((x) => year.has(String(x)))) return false;
       if (terms.length) {
         const hay = haystacks.get(c.slug) ?? "";
@@ -784,12 +816,13 @@ export default function Archive({
     if (!openRef.current) return;
     openRef.current = null;
     setOpenSlug(null);
-    if (pushed.current) {
-      pushed.current = false;
-      window.history.back();
-    } else {
-      writeCompanyUrl(null, "replace");
-    }
+    /* CLOSING NEVER STEPS BACK. It used to go back a step in the history to
+       take ?company off the address, and the browser answered by restoring
+       the scroll position that step was saved with - the page jumped, and
+       mid-scroll it fought your hand. The address is simply rewritten; the
+       page stays exactly where you are. */
+    pushed.current = false;
+    writeCompanyUrl(null, "replace");
   }, []);
 
   /* THE PANEL GOES WITH THE LIST: it is fixed to the window, so once the
@@ -804,6 +837,29 @@ export default function Archive({
     }
     wasOn.current = dockOn;
   }, [dockOn, closeCompany]);
+
+  /* SCROLLING BACK UP CLOSES THE COMPANY (desktop, beside the index). The
+     panel belongs to the list: once the mark comes down off the head of the
+     window - you are going back up the page, out of the list - the company
+     closes. Measured from the highest the mark has stood while this company
+     was open, so a company opened with the list only just arrived closes on
+     the first real move up, and a company opened deep in the list does not
+     close while you move about inside it. */
+  useEffect(() => {
+    if (!openSlug || view !== "index") return;
+    if (!window.matchMedia("(min-width: 901px)").matches) return;
+    const mast = document.querySelector<HTMLElement>(".archive-masthead");
+    if (!mast) return;
+    let highest = mast.getBoundingClientRect().bottom;
+    const onScroll = () => {
+      if (surfaceRef.current !== "panel") return;
+      const foot = mast.getBoundingClientRect().bottom;
+      if (foot < highest) highest = foot;
+      if (foot - highest > 120) closeCompany();
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [openSlug, view, closeCompany]);
 
   /* a panel whose row is filtered away goes with it */
   useEffect(() => {
@@ -940,7 +996,7 @@ export default function Archive({
         (c) =>
           (!sector.size || sector.has(c.sectorLabel)) &&
           (!country.size || c.countries.some((x) => country.has(x))) &&
-          (!theme.size || (c.themes ?? []).some((x) => theme.has(x))) &&
+          (!theme.size || cohortsFor(c.slug).some((x) => theme.has(x))) &&
           (!year.size || c.years.some((x) => year.has(String(x))))
       ).length,
     [companies, sector, country, theme, year]
@@ -1318,8 +1374,12 @@ function Index({ list, open, onOpen, steps, undocked }: {
     if (!isOpen || !window.matchMedia("(max-width: 900px)").matches) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    /* the sheet is the whole screen: the Menu, fixed over everything, would
+       stand on its close */
+    document.documentElement.classList.add("sheet-open");
     return () => {
       document.body.style.overflow = prev;
+      document.documentElement.classList.remove("sheet-open");
     };
   }, [isOpen]);
 
@@ -1426,6 +1486,78 @@ function Index({ list, open, onOpen, steps, undocked }: {
     }
   }, [openSlug]);
 
+  /* THE SLOTS ARE AS TALL AS THE LONGEST COMPANY NEEDS, AT THIS WIDTH.
+     So nothing in the panel moves from one company to the next, every piece
+     of text has a slot sized for the longest of the list - measured, not
+     guessed, because how many lines a paragraph takes depends on how wide the
+     panel is. A hidden copy of the open panel is filled with each company's
+     one-liner, record and copy in turn; the tallest of each is written to the
+     page as a slot height. Once per panel width. */
+  const measuredAt = useRef(0);
+  useEffect(() => {
+    if (!isOpen || window.matchMedia("(max-width: 900px)").matches) return;
+    const root = document.documentElement;
+    const measure = () => {
+      const panel = sheetRef.current;
+      if (!panel || !panel.parentElement) return;
+      const width = Math.round(panel.getBoundingClientRect().width);
+      if (width === measuredAt.current) return;
+      const probe = panel.cloneNode(true) as HTMLElement;
+      probe.setAttribute("aria-hidden", "true");
+      probe.style.cssText =
+        "visibility:hidden;pointer-events:none;animation:none;height:auto;overflow:visible;" +
+        "--slot-name:0px;--slot-runhead:0px;--slot-record:0px;--slot-foot:0px";
+      panel.parentElement.appendChild(probe);
+      const q = <T extends HTMLElement>(sel: string) => probe.querySelector<T>(sel);
+      const name = q(".entry-verso > .entry-name");
+      const runhead = q(".entry-runhead");
+      const values = q(".entry-record-values");
+      const record = q(".entry-verso > .entry-record");
+      const bodies = [...probe.querySelectorAll<HTMLElement>(".entry-block-body")];
+      const foot = q(".entry-verso > .entry-verso-foot");
+      const max = { name: 0, runhead: 0, record: 0, foot: 0 };
+      const line = (text: string, cls?: string) => {
+        const el = document.createElement(cls === "a" ? "a" : "span");
+        if (cls && cls !== "a") el.className = cls;
+        if (cls === "a") el.className = "entry-record-site--apart";
+        el.textContent = text;
+        return el;
+      };
+      for (const c of list) {
+        if (name) name.textContent = c.name;
+        if (runhead) runhead.textContent = c.statement;
+        if (values) {
+          const meta = c.subsector.split(/\s*[,&]\s*/).map((x) => x.trim()).filter(Boolean);
+          const tags = document.createElement("span");
+          tags.className = "entry-tags";
+          tags.textContent = cohortsFor(c.slug).join(" ");
+          values.replaceChildren(
+            line(c.countries.map(abbreviateCountry).join(", ")),
+            ...(c.sectorLabel ? [line(c.sectorLabel)] : []),
+            ...(meta.length ? [line(meta.join(", "))] : []),
+            tags,
+            ...(c.website ? [line(c.website.replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/$/, ""), "a")] : [])
+          );
+        }
+        const texts = sections(c).filter((x) => x.label !== "Description").map((x) => x.body);
+        bodies.forEach((b, i) => (b.textContent = texts[i] ?? ""));
+        max.name = Math.max(max.name, name?.offsetHeight ?? 0);
+        max.runhead = Math.max(max.runhead, runhead?.offsetHeight ?? 0);
+        max.record = Math.max(max.record, record?.offsetHeight ?? 0);
+        max.foot = Math.max(max.foot, foot?.scrollHeight ?? 0);
+      }
+      probe.remove();
+      measuredAt.current = width;
+      root.style.setProperty("--slot-name", `${max.name}px`);
+      root.style.setProperty("--slot-runhead", `${max.runhead}px`);
+      root.style.setProperty("--slot-record", `${max.record}px`);
+      root.style.setProperty("--slot-foot", `${max.foot}px`);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [isOpen, list]);
+
   /* THE PANEL'S HEIGHT IS THE SCREEN LESS THE DOCK.
      The controls used to run under the masthead, so the panel hung from
      their bottom edge; they are in the fixed dock at the foot now, so the
@@ -1447,8 +1579,10 @@ function Index({ list, open, onOpen, steps, undocked }: {
     return () => window.removeEventListener("resize", place);
   }, [isOpen]);
 
+  const panelCo = open;
+
   return (
-    <div className={`index-view${open ? " index-view--open" : ""}`}>
+    <div className={`index-view${panelCo ? " index-view--open" : ""}`}>
       <div
         ref={indexRef}
         className={`index${open ? " index--focused" : ""}`}
@@ -1479,6 +1613,8 @@ function Index({ list, open, onOpen, steps, undocked }: {
                   {c.name}
                 </div>
                 <div className="row-statement">{c.statement}</div>
+                {/* the campaign, on its own column */}
+                <div className="row-campaign">{cohortsFor(c.slug).join(", ")}</div>
                 <div className="row-sector">{c.sectorLabel}</div>
                 {/* the index sets the place as codes, on its one track */}
                 <div className="row-geo">{abbreviateCountry(c.countries[0])}</div>
@@ -1493,14 +1629,14 @@ function Index({ list, open, onOpen, steps, undocked }: {
         <div className="index-sheet-scrim" aria-hidden="true" onClick={() => onOpen(null)} />
       )}
 
-      {open && (
+      {panelCo && (
         <aside
           ref={sheetRef}
           className={`index-panel${undocked ? " index-panel--undocked" : ""}${
-            still === open.slug ? " index-panel--still" : ""
+            still === panelCo.slug ? " index-panel--still" : ""
           }`}
-          key={open.slug}
-          aria-label={open.name}
+          key={panelCo.slug}
+          aria-label={panelCo.name}
           onTouchStart={onSheetTouchStart}
           onTouchMove={onSheetTouchMove}
           onTouchEnd={onSheetTouchEnd}
@@ -1508,7 +1644,7 @@ function Index({ list, open, onOpen, steps, undocked }: {
         >
           <div className="entry entry--spread entry--panel">
             <EntryLayout
-              c={open}
+              c={panelCo}
               spread
               corner={
                 /* no Prev and Next here: the rows beside it are the way
@@ -1525,7 +1661,7 @@ function Index({ list, open, onOpen, steps, undocked }: {
               }
             />
             <div className="panel-copy">
-              <CopyLink slug={open.slug} />
+              <CopyLink slug={panelCo.slug} />
             </div>
           </div>
           {/* on a phone, Prev and Next at the foot of the sheet: the rows are
@@ -1534,7 +1670,7 @@ function Index({ list, open, onOpen, steps, undocked }: {
             <EntrySteps steps={steps} />
             {/* on a phone the link to the company is here, at the right of the
                 foot, not squeezed between the name and the close */}
-            <CopyLink slug={open.slug} />
+            <CopyLink slug={panelCo.slug} />
           </div>
         </aside>
       )}

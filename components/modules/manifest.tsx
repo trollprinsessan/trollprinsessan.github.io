@@ -50,36 +50,31 @@ const PANELS = [
     ],
     partners: true,
   },
-  // These two are the themes themselves, not Norrsken's activity around them.
-  // The lines are the open letters' own; they already say it better than a
-  // paraphrase would.
+  // These two are the themes themselves, not Norrsken's activity around them:
+  // why the theme matters, what it is, and how it gets done - rather than
+  // what we did. Cut to about three fifths of the long versions.
   {
     key: "Electro Union",
     // this panel swaps the vortex for the campaign's own mark
     image: { file: "Electro-union-logo.svg", ground: "plain", alt: "" },
-    // The campaign and its outcome, not the problem statement. The two dates
-    // are stated in sequence and left there: the Commission's plan is not
-    // claimed as ours, and the 50/46 gap is shown rather than smoothed over.
     body: [
-      "In April 2026, Norrsken published [an open letter](https://www.norrsken.org/goodnews/make-europe-the-electro-union) asking the EU to commit to running more than half its economy on clean, domestic electricity by 2040. More than 100 organisations signed it: companies, funds and industry bodies.",
-      "In July the European Commission published its Electrification Action Plan, setting an indicative target of 46% by 2040. Electricity is about 23% of final energy use today.",
-      // "electro-continent" is the letter's own spelling, and it now lands once,
-      // at the end, as the payoff. It was closing the paragraph above too.
-      "Scroll down and you'll find *27 builders* of the Electro Union. Shaping the grid, storage, domestic generation, electrified industry and transport, and the materials all of it runs on. All to make Europe the first electro-continent.",
+      "Electro Union is the case for Europe as the world's first electro-continent: a majority of its economy running on clean electricity it makes itself. Around 90% of Europe's economy could run on electricity using technology that already exists. Less than a quarter of it does.",
+      "That gap leaves Europe exposed, in its third energy price shock in four years, running on fuel it does not own, shipped through waters it does not control. And it costs: European industry pays roughly twice what American industry pays for electricity, so every factory, startup and data centre starts behind.",
+      "Solar has fallen more than ninety percent in a decade. Unlike fuel, renewables get cheaper with every unit built. Fuel is paid for every month, forever, at a price set somewhere else. Grids, batteries and machines are bought once. After that, the energy is yours.",
+      "The European Commission unveiled an Electrification Action Plan in July 2026, with the goal of making Europe the world's first electro-continent, doubling the current share from 23% to 46% by 2040.",
+      // the count is the grid's: what you get when you press this tab
+      "In here you'll find the 28 builders, making Europe the Electro Union.",
     ],
   },
   {
     key: "Prompt What Matters",
     // this panel turns the section pink; the others leave it white
     ground: "pink",
-    // Same shape as Electro Union: what we did, the numbers, then why these
-    // companies are on the list. It closes on the letter's own last line,
-    // which names the campaign, the way "electro-continent" closes the panel
-    // above.
     body: [
-      "In June 2025 we pledged \u20ac300m from Norrsken VC, Norrsken Launcher and Norrsken Accelerator to startups using AI on climate, health, food, education and society.",
-      "In 2024 AI startups raised over $110bn, about a third of all venture funding worldwide. Most of it went to productivity and convenience. If this wave runs like the ones before it, 80% of those companies disappear. The biggest returns come from fixing the biggest problems.",
-      "Scroll down and you'll find *25 companies* where AI is an integral part of the product, pointed at global problems at scale. This is a historic moment for innovation. Let's make sure we *prompt what actually matters.*",
+      "This generation has been handed something close to godlike power, and we are mostly using it to make porn and sales agents.",
+      "In 2025, AI startups took more than two hundred billion dollars in venture funding, roughly half of every venture dollar on earth, most of it chasing productivity, convenience and three more co-pilots.",
+      "Meanwhile the hard things are suddenly solvable. AI can optimise an entire energy system and find a drug candidate. Imagine a hundred million virtual health workers in systems that cannot hire fast enough.",
+      "The world does not need another sales agent. It needs *bigger prompts.*",
     ],
   },
 ];
