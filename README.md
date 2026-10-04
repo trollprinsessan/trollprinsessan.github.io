@@ -34,11 +34,10 @@ npm run embed -- https://<where-the-files-are-served>
 ```
 
 The output folder (`dist-embed/<date>_<commit>/`) holds the bundle, the
-public files, a `vercel.json` (cross-origin access, no indexing) and
-`EMBED-SNIPPET.html`: the three lines that go in the host page's embed
-element. On Vercel, set the build command to
-`npm run embed -- https://$VERCEL_PROJECT_PRODUCTION_URL dist` and the output
-directory to `dist`.
+public files and `EMBED-SNIPPET.html`: the three lines that go in the host
+page's embed element. On Vercel nothing needs setting: `vercel.json` at the
+repository's root names the build command, the output directory and the
+response headers (cross-origin access for the host page, no indexing).
 
 ## Where things are
 
