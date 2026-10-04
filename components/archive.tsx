@@ -4,19 +4,17 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import type { Company, Facets } from "@/lib/types";
-import { visualFor, cohortsFor, thumb, isLineArt, isClipart, isPhoto, web, rowThumb } from "@/lib/art-direction";
+import { visualFor, cohortsFor, isLineArt, isPhoto, web, rowThumb } from "@/lib/art-direction";
 import {
   COMPANY_PARAM,
   OPEN_COMPANY_EVENT,
   companyFromUrl,
   writeCompanyUrl,
 } from "@/lib/company-link";
-import { countryName, iso3List } from "@/lib/countries";
+import { countryName } from "@/lib/countries";
 import { composeOrder } from "@/lib/composition";
-/* listview-v#: which card the grid draws — see components/variants */
-import { DECK, VARIANTS, useToggle, useVersion } from "@/components/settings/registry";
 import { flyFrom, rowParts } from "@/components/variants/parts/fly";
-import { ORIGINAL_GAPS, SHUFFLE_GAPS } from "@/components/variants/parts/shuffle";
+import { SHUFFLE_GAPS } from "@/components/variants/parts/shuffle";
 /* listview-v4-v6: the contents page, the chapters, the card lying down */
 import GridChapters from "@/components/variants/listview-v5/chapters";
 import CardGrid from "@/components/variants/parts/cards";
@@ -25,7 +23,7 @@ import { useDecode, useWasSpinning } from "@/components/variants/parts/decode";
 import { Arrows } from "@/components/variants/page-v4/company-side";
 import { Badges, Logos, inCampaigns } from "@/components/variants/badge/badge";
 /* listview-v3: the company beside the grid, and the index sorting by its columns */
-import { SortHead, sortCompanies, type Sort } from "@/components/variants/listview-v3/sort";
+import { type Sort } from "@/components/variants/listview-v3/sort";
 
 // client-only: reads image pixels + WebGL, must never run on the server
 
@@ -81,7 +79,6 @@ function FilterGroup({ title, value, options, onChange, wide }: {
   );
 }
 
-
 type View = "index" | "grid";
 
 /* THE DENSITY SLIDER
@@ -100,22 +97,6 @@ const DENSITIES = [
   { cols: 8, phone: 2, shows: "facts" },
   { cols: 6, phone: 2, shows: "full" },
 ];
-
-/* Shuffle is parked for now - the control is hidden, the draw is kept. */
-const SHUFFLE_ON = false;
-
-/* The card's statement is parked while the tight grid is tried. Flip to bring
-   it back. */
-const CARD_STATEMENT_ON = true;
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
 
 /* the list's order: this edition first (composed, see lib/composition) */
 const recent = (c: Company) => (c.years.length ? Math.max(...c.years) : 0);
@@ -474,21 +455,8 @@ function CompanyModal({ c, onClose, onShuffle, spinning, steps }: {
   const [out, setOut] = useState(false);
   const articleRef = useRef<HTMLElement>(null);
   const closing = useRef(false);
-  /* modal-v2: the original sheet, with Shuffle only on the
-     picture (the manifest's pointer over it) and the name decoding when
-     Prev, Next or another company brings another one - not when Shuffle
-     does */
-  const modalVersion = useVersion("modal");
-  const v2 = VARIANTS && modalVersion !== "v1";
-  /* modal-v3: the steps are arrows at the sheet's middle */
-  const arrows = VARIANTS && (modalVersion === "v3" || modalVersion === "v4");
-  /* modal-v4: the campaign is a line of the record, straight over the
-     website, and not a caption over the plate */
-  const tight = VARIANTS && ["v4", "v5", "v6", "v7", "v8"].includes(modalVersion);
-  /* modal-v6: two columns - the words at the left, the picture at the right */
-  const twoCol = VARIANTS && ["v6", "v7", "v8"].includes(modalVersion);
   const wasSpinning = useWasSpinning(spinning);
-  const { shown: nameText, busy } = useDecode(c.name, !v2 || !!spinning || wasSpinning.current);
+  const { shown: nameText, busy } = useDecode(c.name, (!!spinning) || wasSpinning.current);
 
   /* matches the exit animation, so the plate is gone before it unmounts */
   const close = () => {
@@ -554,9 +522,7 @@ function CompanyModal({ c, onClose, onShuffle, spinning, steps }: {
         aria-modal="true"
         aria-labelledby={`entry-name-${c.slug}`}
         tabIndex={-1}
-        className={`entry entry--spread entry--slot${slotFor(c.slug)}${
-          out ? " entry--out" : ""
-        }${spinning ? " entry--spinning" : ""}${busy ? " entry--decoding" : ""}${arrows ? " entry--arrows" : ""}${tight ? " entry--tight" : ""}${twoCol ? " entry--v6" : ""}${(modalVersion === "v7" || modalVersion === "v8") && VARIANTS ? " entry--v7" : ""}${modalVersion === "v8" && VARIANTS ? " entry--v8" : ""}`}
+        className={`entry entry--spread entry--slot${slotFor(c.slug)}${out ? " entry--out" : ""}${spinning ? " entry--spinning" : ""}${busy ? " entry--decoding" : ""} entry--tight entry--v6 entry--v7 entry--v8`}
         onClick={(e) => e.stopPropagation()}
       >
         <EntryLayout
@@ -565,9 +531,9 @@ function CompanyModal({ c, onClose, onShuffle, spinning, steps }: {
           lead
           rectoHead={<EntrySteps steps={steps} />}
           onImageClick={onShuffle}
-          nameText={v2 ? nameText : undefined}
-          drawPointer={v2}
-          campaignInRecord={tight}
+          nameText={nameText}
+          drawPointer={true}
+          campaignInRecord={true}
           corner={
             <button className="entry-close" onClick={close} aria-label="Close">✕</button>
           }
@@ -577,15 +543,11 @@ function CompanyModal({ c, onClose, onShuffle, spinning, steps }: {
         <div className="entry-copy-foot">
           <CopyLink slug={c.slug} />
         </div>
-        {onShuffle && !v2 && (
-          <button className="entry-spin" onClick={onShuffle}>Shuffle</button>
-        )}
-        {arrows && <Arrows steps={steps} className="nk-arrow--modal" />}
+
       </article>
     </div>
   );
 }
-
 
 /* THE LIST IN ANOTHER HOST (page-v2). The list's state, its views
    and its companies stay here; a host gives it a frame of its own - a tab off
@@ -627,7 +589,6 @@ export type ListHost = {
   frame: (parts: { list: React.ReactNode; controls: ListControls }) => React.ReactNode;
 };
 
-
 export default function Archive({
   companies,
   facets,
@@ -661,16 +622,12 @@ export default function Archive({
     setTheme: (v: Set<string>) => void;
   }) => React.ReactNode;
 }) {
-  const listview = useVersion("listview");
-  const pageVersion = useVersion("page");
   /* the category view (the page's slider) */
   const [cat, setCat] = useState(false);
   /* the card is cardstyle-v#, its tags tagstyle-v# - chosen apart from
      the list; the list's version decides the layout: chapters in listview-v5,
      a plain grid in the rest. */
-  const ListGrid = !VARIANTS ? Grid : listview === "v5" || cat ? GridChapters : CardGrid;
-  /* listview-v3: a company opens beside the grid too, and the index sorts */
-  const side = listview === "v3";
+  const ListGrid = cat ? GridChapters : CardGrid;
   const [sort, setSort] = useState<Sort>(null);
   const hosted = !!host;
   const beside = !!aside;
@@ -758,7 +715,7 @@ export default function Archive({
       /* whether the mark is still on screen - the side view does
          not scroll on its own until it has gone, so nothing in it can run
          up under the mark */
-      if (VARIANTS) {
+      {
         const gone = foot <= 1;
         document.documentElement.toggleAttribute("data-nk-mast-gone", gone);
         if (!gone) {
@@ -772,19 +729,13 @@ export default function Archive({
         /* and the page's list head and chapters, which run under it too */
         .querySelectorAll<HTMLElement>(":scope > .grid, :scope > .empty, :scope > .chapters, :scope > .p5lead")
         .forEach((el) => {
-          /* switch gridcut off: the cards run on behind the
-             letters, on no ground */
-          const off = VARIANTS && document.documentElement.dataset.tGridcut === "off";
-          const c = off ? 0 : Math.max(0, Math.round(foot - el.getBoundingClientRect().top));
-          el.style.clipPath = c > 0 ? `inset(${c}px 0 0 0)` : "";
+          el.style.clipPath = 0 > 0 ? `inset(${0}px 0 0 0)` : "";
         });
       /* switch rowcut: the index's rows cut at the mark's
          foot too, so nothing reads through the letters */
       const rows = list.querySelector<HTMLElement>(":scope > .index-view > .index");
       if (rows) {
-        const on = document.documentElement.dataset.tRowcut === "on";
-        const c = on ? Math.max(0, Math.round(foot - rows.getBoundingClientRect().top)) : 0;
-        rows.style.clipPath = c > 0 ? `inset(${c}px 0 0 0)` : "";
+        rows.style.clipPath = 0 > 0 ? `inset(${0}px 0 0 0)` : "";
       }
     };
     let raf = 0;
@@ -924,10 +875,8 @@ export default function Archive({
     list = shaken
       ? [...list].sort((a, b) => (shaken.get(a.slug) ?? 0) - (shaken.get(b.slug) ?? 0))
       : [...list].sort(byComposition);
-    /* listview-v3: a column's order over the list's own */
-    if (side) list = sortCompanies(list, sort);
     return list;
-  }, [companies, sector, country, year, theme, query, haystacks, shaken, byComposition, side, sort]);
+  }, [companies, sector, country, year, theme, query, haystacks, shaken, byComposition, sort]);
   /* the clip above re-measures when the list swaps to its empty line */
   useEffect(() => setEmpty(filtered.length === 0), [filtered.length]);
 
@@ -974,14 +923,8 @@ export default function Archive({
   viewRef.current = view;
   const dockOnRef = useRef(dockOn);
   dockOnRef.current = dockOn;
-
-  /* the modal, unless the index is up and the list is on screen to hold the
-     panel - or it is a phone, where the panel is a sheet over anything */
-  /* switch sideviewphone: on a phone every company opens in the
-     side view, from the grid as from the index */
-  const sideOnPhone = useToggle("sideviewphone") && VARIANTS;
-  const sideOnPhoneRef = useRef(sideOnPhone);
-  sideOnPhoneRef.current = sideOnPhone;
+  const sideOnPhoneRef = useRef(true);
+  sideOnPhoneRef.current = true;
   const phoneSide = () =>
     !!beside && sideOnPhoneRef.current && window.matchMedia("(max-width: 720px)").matches;
 
@@ -1020,27 +963,16 @@ export default function Archive({
     pushed.current = false;
     writeCompanyUrl(null, "replace");
   }, []);
-
-  /* THE PANEL GOES WITH THE LIST: it is fixed to the window, so once the
-     list has scrolled off the screen it would hang over The Latest and
-     everything after. When the list leaves - not before it has arrived, so
-     a company opened from the manifest with the list still below stays -
-     the panel closes. */
-  /* sideview-v6 and -v12: the original panel stays open whatever
-     the page does; it rides the mark's foot down the window and comes back
-     with it */
-  const sideviewChoice = useVersion("sideview");
-  const panelStays = VARIANTS && (sideviewChoice === "v6" || sideviewChoice === "v12");
   const wasOn = useRef(dockOn);
   useEffect(() => {
     /* page-v2 to -v5: the company stays open whatever the page does - it
        and the list stand as they were left, scrolled away from or back to;
        in a host's tab the panel goes with the tab */
-    if (!beside && !panelStays && !hosted && wasOn.current && !dockOn && openRef.current && surfaceRef.current === "panel") {
+    if ((!beside) && !hosted && wasOn.current && !dockOn && openRef.current && surfaceRef.current === "panel") {
       closeCompany();
     }
     wasOn.current = dockOn;
-  }, [dockOn, closeCompany, beside, hosted, panelStays]);
+  }, [dockOn, closeCompany, beside, hosted]);
 
   /* SCROLLING BACK UP CLOSES THE COMPANY (desktop, beside the index). The
      panel belongs to the list: once the mark comes down off the head of the
@@ -1051,7 +983,7 @@ export default function Archive({
      close while you move about inside it. */
   useEffect(() => {
     /* in a host's tab the page is not what scrolls; the tab closing does it */
-    if (hosted || beside || panelStays || !openSlug || (view !== "index" && !side)) return;
+    if ((hosted || beside) || !openSlug || (view !== "index" && true)) return;
     if (!window.matchMedia("(min-width: 901px)").matches) return;
     const mast = document.querySelector<HTMLElement>(".archive-masthead");
     if (!mast) return;
@@ -1064,7 +996,7 @@ export default function Archive({
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [openSlug, view, closeCompany, hosted, side, beside, panelStays]);
+  }, [openSlug, view, closeCompany, hosted, beside]);
 
   /* a panel whose row is filtered away goes with it */
   useEffect(() => {
@@ -1077,15 +1009,7 @@ export default function Archive({
 
   /* the address, on arrival and on back and forward */
   useEffect(() => {
-    /* (not in use: DECK is off) a reload with no company is ever open when the
-       page loads by a reload - the address's company is taken off it and
-       the page starts closed, in every version. A link someone was sent
-       (Copy link) still opens its company. */
-    const reload =
-      DECK &&
-      (performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined)?.type === "reload";
-    if (reload && companyFromUrl()) writeCompanyUrl(null, "replace");
-    const slug = reload ? null : companyFromUrl();
+    const slug = companyFromUrl();
     if (slug && bySlug.has(slug)) {
       openRef.current = slug;
       pushed.current = false;
@@ -1167,7 +1091,7 @@ export default function Archive({
     if (p.has("theme")) setTheme(set("theme"));
     /* one edition at a time in the page's dock; an address with "all"
        comes back to the latest edition there */
-    if (p.has("year")) setYear(p.get("year") === "all" ? (VARIANTS ? new Set([latestYear]) : new Set()) : set("year"));
+    if (p.has("year")) setYear(p.get("year") === "all" ? (new Set([latestYear])) : set("year"));
     const d = DENSITIES.findIndex((x) => x.cols === Number(p.get("cols")));
     if (d >= 0) setDensity(d);
     if (p.get("view") === "index" && !window.matchMedia("(max-width: 720px)").matches) {
@@ -1247,14 +1171,10 @@ export default function Archive({
   );
 
   const openCo = openSlug ? bySlug.get(openSlug) ?? null : null;
-  /* listview-v3: while a company stands beside the list, the page knows it -
-     the panel runs the window's full height and the mark keeps to the list's
-     two thirds (components/variants/listview-v3/panel.css) */
-  const sideOpen = side && !!openCo && surface === "panel";
   useEffect(() => {
-    document.documentElement.classList.toggle("nk-side-open", sideOpen);
+    document.documentElement.classList.toggle("nk-side-open", false);
     return () => document.documentElement.classList.remove("nk-side-open");
-  }, [sideOpen]);
+  }, []);
   /* and any company beside the list, for page-v4's own rule */
   const panelOpen = !!openCo && surface === "panel";
   useEffect(() => {
@@ -1305,12 +1225,12 @@ export default function Archive({
   const chooseView = (v: View) => {
     /* listview-v3 keeps its panel beside the grid as well, so a company open
        beside one view stays open beside the other */
-    if (v !== "index" && !side && openRef.current && surfaceRef.current === "panel") closeCompany();
+    if ((v !== "index") && openRef.current && surfaceRef.current === "panel") closeCompany();
     /* THE PLACE IN THE LIST IS KEPT. The grid is many times the
        index's height, so the same scroll position is another company - or
        past the list altogether. The first company under the mark is noted
        before the view changes and brought back to the same height after. */
-    if (VARIANTS && v !== viewRef.current && !hosted) {
+    if ((v !== viewRef.current) && !hosted) {
       const list = listRef.current;
       const head = Math.max(0, document.querySelector(".archive-masthead")?.getBoundingClientRect().bottom ?? 0);
       const lr = list?.getBoundingClientRect();
@@ -1350,7 +1270,7 @@ export default function Archive({
   const yearIsOpening = year.size === 1 && year.has(latestYear);
   const addedFilterCount =
     /* the page's year is the edition read, not a filter on it */
-    sector.size + country.size + theme.size + (yearIsOpening || VARIANTS ? 0 : year.size);
+    sector.size + country.size + theme.size + 0;
   const clearFilters = () => {
     setSector(new Set());
     setCountry(new Set());
@@ -1381,7 +1301,7 @@ export default function Archive({
     /* page-v2 and later: it picks up speed, runs a while at its
        fastest - 24 ms a company - then brakes, the last three steps
        slowest; about 1.2 s. The original page keeps the original cadence. */
-    const gaps = pageVersion === "v1" ? ORIGINAL_GAPS : SHUFFLE_GAPS;
+    const gaps = SHUFFLE_GAPS;
     let elapsed = 0;
     gaps.forEach((gap, i) => {
       elapsed += gap;
@@ -1413,7 +1333,7 @@ export default function Archive({
      is at the foot of the window, and when it is gone so is the bar */
   const listEl = (
     <div ref={listRef} className="archive-list">
-      {VARIANTS && <CategoryChrome theme={theme} cat={view === "grid" && (cat || listview === "v5")} open={spinning ? undefined : openSlug} index={view === "index"} hosted={hosted} />}
+      <CategoryChrome theme={theme} cat={view === "grid" && (cat || false)} open={spinning ? undefined : openSlug} index={view === "index"} hosted={hosted} />
       {lead && lead({ companies, list: filtered, year, theme, setTheme })}
       {filtered.length === 0 ? (
         <div className="empty">
@@ -1432,44 +1352,7 @@ export default function Archive({
             Clear search and filters
           </button>
         </div>
-      ) : view === "grid" && side ? (
-        /* listview-v3, and page-v4: the company opens beside the grid - the
-           index's own keys and sheet with the rows left out; page-v4 draws
-           its own view of the company instead of the index's panel */
-        <>
-          {ListGrid === Grid ? (
-            <Grid
-              list={filtered}
-              onSelect={(c) => showCompany(c.slug, "panel")}
-              cols={cols}
-              phone={phone}
-              shows={shows}
-            />
-          ) : (
-            <ListGrid
-              list={filtered}
-              onSelect={(c) => showCompany(c.slug, "panel")}
-              cols={cols}
-              phone={phone}
-              shows={shows}
-              open={surface === "panel" ? openSlug : null}
-            />
-          )}
-          {surface === "panel" && openCo && (
-            <Index
-              list={[]}
-              open={openCo}
-              onOpen={(slug) => (slug ? showCompany(slug, "panel") : closeSheet())}
-              steps={steps}
-              undocked={!dockOn}
-              scroller={host?.scroller}
-              modalLike={!beside}
-              onShuffle={doSpin}
-              panelless={beside}
-            />
-          )}
-        </>
-      ) : view === "grid" ? (
+      ) : (view === "grid" ? (
         <ListGrid
           list={filtered}
           onSelect={(c) => showCompany(c.slug, phoneSide() ? "panel" : "modal")}
@@ -1485,14 +1368,14 @@ export default function Archive({
           steps={steps}
           undocked={!dockOn}
           scroller={host?.scroller}
-          head={side ? <SortHead sort={sort} onSort={setSort} /> : undefined}
+          head={undefined}
           spinning={spinning}
-          modalLike={side}
-          onShuffle={side ? doSpin : undefined}
+          modalLike={false}
+          onShuffle={undefined}
           panelless={beside}
           compact={compact}
         />
-      )}
+      ))}
     </div>
   );
 
@@ -1736,12 +1619,6 @@ export default function Archive({
     </>
   );
 }
-
-/* Where the plate lands. Five positions across the band above the prose: the
-   picture is somewhere different for every company, and the place is a
-   property of the company rather than of the click, so it does not move
-   under you while you read. */
-const PLATE_SLOTS = 5;
 function slotFor(slug: string) {
   // fnv-1a, then avalanche: a plain *31 hash mod 6 clustered badly because
   // 31 % 6 is 1, so the whole thing collapsed to a digit sum
@@ -1753,10 +1630,8 @@ function slotFor(slug: string) {
   h ^= h >>> 15;
   h = Math.imul(h, 0x2545f491) >>> 0;
   h = (h ^ (h >>> 13)) >>> 0;
-  return h % PLATE_SLOTS;
+  return h % 5;
 }
-
-
 
 // atelier-amont.ch table: no thumbnails, pure text columns — name / statement /
 // sector / geography, each one line, dense single-baseline rows.
@@ -1783,18 +1658,6 @@ function Index({ list, open, onOpen, steps, undocked, scroller, head, modalLike 
   /* Shuffle is running: the marked row moves, the page does not */
   spinning?: boolean;
 }) {
-  const fly = useToggle("flyin") && VARIANTS;
-  /* sideview-v6: the original panel, the gymbs centred under the picture and
-     the record left-set under the gymbs */
-  const sideviewVersion = useVersion("sideview");
-  /* sideview-v12: v6, with the record set right, more air round the
-     one-liner, the website straight under the record, and Prev / Next at
-     the right of Copy link */
-  const sideview12 = VARIANTS && sideviewVersion === "v12";
-  const sideview6 = VARIANTS && (sideviewVersion === "v6" || sideview12);
-  /* listview-v4-v6: the campaign as its badge in the rows too */
-  const listview = useVersion("listview");
-  const marks = listview === "v4" || listview === "v5" || listview === "v6";
   /* A row opens a panel on the right rather than unfolding under itself: the
      list keeps its place and the company is read beside it. The panel sits
      under the control row, which is sticky at the top of the page. */
@@ -1949,9 +1812,6 @@ function Index({ list, open, onOpen, steps, undocked, scroller, head, modalLike 
   const measuredAt = useRef(0);
   useEffect(() => {
     if (!isOpen || window.matchMedia("(max-width: 900px)").matches) return;
-    /* sideview-v6 and -v12 set the panel in one column with no
-       fixed slots: nothing to measure, and the panel opens at once */
-    if (sideview6) return;
     const root = document.documentElement;
     const measure = () => {
       const panel = sheetRef.current;
@@ -2012,7 +1872,7 @@ function Index({ list, open, onOpen, steps, undocked, scroller, head, modalLike 
     measure();
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
-  }, [isOpen, list, sideview6]);
+  }, [isOpen, list]);
 
   /* THE PANEL'S HEIGHT IS THE SCREEN LESS THE DOCK.
      The controls used to run under the masthead, so the panel hung from
@@ -2039,7 +1899,7 @@ function Index({ list, open, onOpen, steps, undocked, scroller, head, modalLike 
   /* sideview-v12: the name decodes as the modal's does when Prev,
      Next or another row brings another company - not when it first opens
      (its letters fly in, parts/fly.ts) */
-  const { shown: panelName, busy: panelBusy } = useDecode(panelCo?.name ?? "", !sideview12);
+  const { shown: panelName, busy: panelBusy } = useDecode(panelCo?.name ?? "", true);
 
   return (
     <div className={`index-view${panelCo ? " index-view--open" : ""}`}>
@@ -2064,7 +1924,7 @@ function Index({ list, open, onOpen, steps, undocked, scroller, head, modalLike 
                      fly into the company's view */
                   /* with a company already open, another row steps to it as
                      Prev and Next do: the name decodes in place */
-                  if (!rowOpen && !open && fly) flyFrom(e.currentTarget, () => onOpen(c.slug), rowParts(e.currentTarget));
+                  if ((!rowOpen && !open)) flyFrom(e.currentTarget, () => onOpen(c.slug), rowParts(e.currentTarget));
                   else onOpen(rowOpen ? null : c.slug);
                 }}
               >
@@ -2088,7 +1948,7 @@ function Index({ list, open, onOpen, steps, undocked, scroller, head, modalLike 
                   </div>
                 )}
                 <div className="row-campaign">
-                  {marks ? <Badges slug={c.slug} size="s" /> : cohortsFor(c.slug).join(", ")}
+                  <Badges slug={c.slug} size="s" />
                 </div>
                 <div className="row-sector">{c.sectorLabel}</div>
                 {/* the index sets the place as codes, on its one track */}
@@ -2117,15 +1977,15 @@ function Index({ list, open, onOpen, steps, undocked, scroller, head, modalLike 
           onTouchEnd={onSheetTouchEnd}
           onTouchCancel={onSheetTouchEnd}
         >
-          <div className={`entry entry--spread entry--panel${modalLike ? " entry--panel-v3" : ""}${sideview6 ? " entry--panel-nk6" : ""}${sideview12 ? " entry--panel-nk12" : ""}${sideview12 && panelBusy ? " entry--decoding" : ""}`}>
+          <div className={`entry entry--spread entry--panel${modalLike ? " entry--panel-v3" : ""}`}>
             <EntryLayout
               c={panelCo}
               spread
-              gymbs={sideview6}
+              gymbs={false}
               /* the decoding letters only while it decodes: in the first frame
                  the decode has not begun, and the name must be there to be
                  flown to */
-              nameText={sideview12 && panelBusy ? panelName : undefined}
+              nameText={undefined}
               /* listview-v3: the modal's own pieces - Prev and Next at the head,
                  the one-liner leading the copy - stacked in the panel's column */
               lead={modalLike}
@@ -2146,7 +2006,7 @@ function Index({ list, open, onOpen, steps, undocked, scroller, head, modalLike 
             />
             <div className="panel-copy">
               <CopyLink slug={panelCo.slug} />
-              {sideview12 && <EntrySteps steps={steps} />}
+
               {modalLike && onShuffle && (
                 <button type="button" className="entry-spin" onClick={onShuffle}>Shuffle</button>
               )}
@@ -2181,82 +2041,8 @@ const COUNTRY_NAMES: Record<string, string> = {
 /* The campaign a company belongs to. The data marks the ones in neither as
    "No category"; that is bookkeeping, not a label, so it is never shown. */
 const NO_THEME = new Set(["no category", "none", "n/a", "-", ""]);
-function themesOf(c: Company) {
-  return (c.themes ?? [])
-    .map((t) => t.trim())
-    .filter((t) => t && !NO_THEME.has(t.toLowerCase()));
-}
 
 function abbreviateCountry(country?: string) {
   if (!country) return country;
   return COUNTRY_ABBREVIATIONS[country] ?? country;
-}
-
-function Grid({ list, onSelect, cols, phone, shows }: {
-  list: Company[];
-  onSelect: (c: Company) => void;
-  cols: number;
-  phone: number;
-  shows: string;
-}) {
-  /* THE CARD: the picture, then the name and the place as a code, what
-     they do, and the sector and the campaigns as boxed tags. */
-  return (
-    <div
-      className={`grid grid--${shows}`}
-      style={{
-        ["--gridcols" as string]: cols,
-        ["--gridcols-phone" as string]: phone,
-      }}
-    >
-      {list.map((c) => {
-        const code = iso3List(c.countries);
-        // the tags: the sector, then the campaigns this company has been
-        // drawn into, each in its own box
-        const tags = [c.sectorLabel, ...cohortsFor(c.slug)].filter(Boolean);
-        return (
-          <button key={c.slug} className="card" onClick={() => onSelect(c)}>
-            <div className="card-media">
-              {visualFor(c) ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  className={`card-thumb${
-                    isLineArt(visualFor(c))
-                      ? " card-thumb--line"
-                      : visualFor(c).endsWith(".gif")
-                        ? " card-thumb--gif"
-                        : isClipart(visualFor(c))
-                          ? " card-thumb--clip"
-                          : isPhoto(visualFor(c))
-                            ? " card-thumb--photo"
-                            : ""
-                  }`}
-                  src={web(visualFor(c))}
-                  alt={c.name}
-                  loading="lazy"
-                />
-              ) : (
-                <div className="card-thumb--empty" />
-              )}
-            </div>
-            <figcaption className="card-caption">
-              <span className="card-head">
-                {code ? `${c.name}, ${code}` : c.name}
-              </span>
-              {CARD_STATEMENT_ON && c.statement && (
-                <span className="card-statement">{c.statement}</span>
-              )}
-              {tags.length > 0 && (
-                <span className="card-tags">
-                  {tags.map((t) => (
-                    <span key={t} className="card-tag">{t}</span>
-                  ))}
-                </span>
-              )}
-            </figcaption>
-          </button>
-        );
-      })}
-    </div>
-  );
 }

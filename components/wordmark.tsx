@@ -1,11 +1,4 @@
-// Shared "norrsken" letterforms + condensed "100" numeral — the single source
-// of truth for the wordmark glyphs, used by both the animated masthead logo
-// (manifest-logo.tsx) and the static nav title. No hooks: safe in server or
-// client components. Paint via `color` (fill: currentColor), not a fill prop,
-// so callers can drive it with plain CSS (incl. mix-blend-mode contexts).
 
-const HNC =
-  '"HelveticaNeue-CondensedBold", "Helvetica Neue Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif';
 
 export default function Wordmark({
   label = "100",
@@ -67,7 +60,7 @@ export default function Wordmark({
              settled "100" - a mid-count number keeps its cells. */
           dx={label === "100" ? "0 3.6 37.6" : undefined}
           style={{
-            fontFamily: HNC,
+            fontFamily: '"HelveticaNeue-CondensedBold", "Helvetica Neue Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif',
             fontWeight: 700,
             fontStretch: "condensed",
             fontVariantNumeric: "tabular-nums",

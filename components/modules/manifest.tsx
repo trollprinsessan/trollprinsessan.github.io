@@ -6,10 +6,8 @@ import { NOMINATION_PARTNERS } from "./partners";
 import ElectroMark from "./electro-mark";
 import { iso3List } from "@/lib/countries";
 import { openCompany } from "@/lib/company-link";
-/* manifest-v#: v2 draws only from the section's right half */
-import { VARIANTS, useToggle, useVersion } from "@/components/settings/registry";
 import { flyFrom } from "@/components/variants/parts/fly";
-import { ORIGINAL_GAPS, SHUFFLE_GAPS } from "@/components/variants/parts/shuffle";
+import { SHUFFLE_GAPS } from "@/components/variants/parts/shuffle";
 
 // Structure after the foot of u-p.co: a small numbered index on the left, the
 // panel's copy on the right, and a full-bleed horizontal image strip beneath.
@@ -151,20 +149,7 @@ type Panel = (typeof PANELS)[number];
    a funnel for The Process - 1,400 in, 100 out - a croissant for Electro
    Union, a prompt for Prompt What Matters */
 function TabIcon({ k }: { k: string }) {
-  /* tabsign-v2: one sign for every tab, a filled circle */
-  const same = useVersion("tabsign") === "v2";
-  if (same) return <span className="nk-tabicon" aria-hidden="true">{"\u25CF"}</span>;
-  if (k === "Electro Union")
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img className="nk-tabicon nk-tabicon--img" src="/manifest-images/croissant.webp" alt="" aria-hidden="true" />
-    );
-  const sign = k === "About" ? "?" : k === "The Process" ? "\u25BD" : ":^)";
-  return (
-    <span className={`nk-tabicon${k === "Prompt What Matters" ? " nk-tabicon--mono" : ""}`} aria-hidden="true">
-      {sign}
-    </span>
-  );
+  return <span className="nk-tabicon" aria-hidden="true">{"\u25CF"}</span>;
 }
 
 /* a paragraph's words as they read: the counts as their numbers, the
@@ -186,7 +171,6 @@ function Body({
   partnersOpen: boolean;
   onPartners: () => void;
 }) {
-  const version = useVersion("manifest");
   return (
     <>
       {/* THE FOLD. While the roster is open the copy folds away above the
@@ -255,12 +239,7 @@ function Body({
                 the words are the picture */}
             {/* manifest-v2 and later: the same words set in the page's
                 bold, as wide as the title art */}
-            {version !== "v1" ? (
-              <span className="nk-np">Nomination partners</span>
-            ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={web("/title-gifs/nomination-partners.gif")} alt="Nomination partners" />
-            )}
+            <span className="nk-np">Nomination partners</span>
           </button>
           {/* the roster hangs from the label, across the section: it is
               placed off the section's tracks but takes its top from where
@@ -296,11 +275,7 @@ function Body({
   );
 }
 
-/* the caption's short form of the geography: the three-letter code, so the
-   name and the country hold one line under the plate */
-const iso = iso3List;
-
-export type Draw = {
+type Draw = {
   slug: string;
   name: string;
   statement: string;
@@ -310,7 +285,6 @@ export type Draw = {
 };
 
 export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
-  const version = useVersion("manifest");
   /* manifest-v2: the Shuffle is exactly everything right of the
      copy on a desktop - from its right edge, a gutter on, whatever lies
      there, bar the drawn company's name, which opens it - and exactly the
@@ -320,9 +294,6 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
      links. */
   const inDraw = (e: React.MouseEvent) => {
     const t = e.target as Element | null;
-    /* manifest-v2 and later: every version past the original shares the
-       draw - only the text differs between them */
-    if (version === "v1") return !isType(t);
     if (t?.closest?.(".mod-manifest-draw-open")) return false;
     /* and it ends just above the mark: where the norrsken100 rides the foot
        of the window over the section, the list's mark is not the draw */
@@ -370,19 +341,15 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
      from under it without a leave - the word stayed, over the list and the
      company's x */
   useEffect(() => {
-    if (version === "v1" || !mark) return;
+    if ((!mark)) return;
     const off = () => setMark(null);
     window.addEventListener("scroll", off, { passive: true, once: true });
     return () => window.removeEventListener("scroll", off);
-  }, [version, mark]);
+  }, [mark]);
   useEffect(() => {
     if (draw.length) setDrawn(Math.floor(Math.random() * draw.length));
   }, [draw.length]);
   const one = draw[drawn];
-  /* the contents, the links and the disclosure keep their own behaviour */
-  const isType = (t: EventTarget | null) =>
-    t instanceof Element &&
-    !!t.closest("a, button, summary, .mod-manifest-index, .mod-manifest-draw-open");
   /* a roulette, not a cut: the plate runs through a handful of companies,
      each held a little longer than the last, before it lands. The same
      deceleration as the spread's spin. The stops are chosen up front so their
@@ -394,7 +361,6 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
   /* the nomination partners: one name a line, in columns, standing in for the
      plate while they are open. Closed again when the panel changes. */
   const [partnersOpen, setPartnersOpen] = useState(false);
-  const npInPlace = useToggle("partnersinplate") && version !== "v1";
   useEffect(() => setPartnersOpen(false), [active]);
   /* once the wheel has landed the caption is written in three beats: the
      name, then the comma, then the country. Nothing while it turns. The
@@ -418,7 +384,7 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
     setSpinning(true);
     /* the variants shuffle with the list's cadence, so the shuffle looks the
        same wherever it is pressed */
-    const gaps = VARIANTS ? SHUFFLE_GAPS : ORIGINAL_GAPS;
+    const gaps = SHUFFLE_GAPS;
     const stops: number[] = [];
     let last = drawn;
     for (let i = 0; i < gaps.length; i++) {
@@ -442,12 +408,6 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
       );
     });
   };
-
-  /* ON A PHONE THE WHEEL TURNS ITSELF.
-     There is no pointer to ride and no room for a mark, so the draw runs on
-     its own: every six seconds while the section is on screen and the tab
-     is in front, another company. A tap on the section still draws at once. */
-  const tabShuffle = useToggle("tabshuffle");
   const anotherRef = useRef(another);
   anotherRef.current = another;
 
@@ -455,15 +415,7 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
   useEffect(() => {
     if (!window.matchMedia("(max-width: 720px)").matches) return;
     /* the variants shuffle only when asked to */
-    if (VARIANTS) return;
-    const id = setInterval(() => {
-      const el = sectionRef.current;
-      if (!el || document.visibilityState !== "visible") return;
-      const r = el.getBoundingClientRect();
-      const onScreen = r.bottom > 0 && r.top < window.innerHeight;
-      if (onScreen) anotherRef.current();
-    }, 6000);
-    return () => clearInterval(id);
+    return;
   }, []);
 
   /* The ground belongs to the page, not to this section, so the class goes on
@@ -498,20 +450,14 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
   const ground = panel.ground;
   useEffect(() => {
     const root = document.documentElement;
-    if (VARIANTS) {
-      /* the panel only asks for its ground; the runtime decides the page's
-         (settings/runtime.tsx), since the list's choice outranks the panel's */
-      if (ground) root.dataset.nkPanelGround = ground;
-      else delete root.dataset.nkPanelGround;
-      window.dispatchEvent(new Event("nk:ground"));
-      return () => {
-        delete root.dataset.nkPanelGround;
-        window.dispatchEvent(new Event("nk:ground"));
-      };
-    }
-    if (ground) root.classList.add(`ground-${ground}`);
+    /* the panel only asks for its ground; the runtime decides the page's
+       (settings/runtime.tsx), since the list's choice outranks the panel's */
+    if (ground) root.dataset.nkPanelGround = ground;
+    else delete root.dataset.nkPanelGround;
+    window.dispatchEvent(new Event("nk:ground"));
     return () => {
-      if (ground) root.classList.remove(`ground-${ground}`);
+      delete root.dataset.nkPanelGround;
+      window.dispatchEvent(new Event("nk:ground"));
     };
   }, [ground]);
 
@@ -567,7 +513,7 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
                 style={{
                   left: `${c.x}%`,
                   /* manifest-v2 and later: the shower starts sooner */
-                  animationDelay: `${version === "v1" ? c.delay : c.delay * 0.35}s`,
+                  animationDelay: `${c.delay * 0.35}s`,
                   animationDuration: `${c.fall}s`,
                   ["--spin" as string]: `${c.spin}deg`,
                 }}
@@ -583,7 +529,7 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
           >
             {art.file.endsWith(".svg") ? (
               <ElectroMark src={`/manifest-images/${art.file}`} />
-            ) : VARIANTS && art === MANIFEST_GIF ? null : (
+            ) : (art === MANIFEST_GIF) ? null : (
               /* the vortex is parked (globals.css: its leaf is not drawn), so
                  past the original it is not fetched either */
               <img src={`/manifest-images/${art.file}`} alt={art.alt ?? ""} />
@@ -606,8 +552,7 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
           {/* every panel's copy, set unseen in the copy's own place, so the
               layout (settings/runtime.tsx) can choose one type size that
               fits them all - the panels share it */}
-          {VARIANTS &&
-            PANELS.map((p) => (
+          {PANELS.map((p) => (
               <div key={p.key} className="mod-manifest-body nk-measure" aria-hidden="true">
                 <div className="mod-manifest-copy-clip">
                   {p.body.map((para) => (
@@ -623,7 +568,7 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
               other */}
           {/* the roster in the picture's place (switch partnersinplate): the copy
               stays, the names stand where the picture's caption stands */}
-          {partnersOpen && npInPlace && (
+          {partnersOpen && (
             <div className="mod-manifest-draw nk-np-place">
               <div className="mod-manifest-draw-caption nk-np-list" id="nomination-partners-place">
                 <ul>
@@ -682,14 +627,13 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
                     /* with the cards that fly into the modal, the caption and
                        the picture fly into it too */
                     const caption = e.currentTarget;
-                    const cardstyle = document.documentElement.dataset.vCardstyle ?? "";
-                    if (VARIANTS && document.documentElement.dataset.tFlyin === "on" && ["v3", "v3b", "v9", "v10", "v11"].includes(cardstyle)) {
+                    {
                       const plate = caption.closest(".mod-manifest-draw")?.querySelector<HTMLElement>(".mod-manifest-draw-plate img") ?? null;
                       flyFrom(caption, () => openCompany(one.slug), [
                         ["name", caption, ".entry-name", 0, "letters"],
                         ["picture", plate, ".entry-figure img", 60, "img"],
                       ]);
-                    } else openCompany(one.slug);
+                    }
                   }}
                   disabled={spinning || !written}
                   aria-label={spinning ? undefined : `${line1}. ${line2}`}
@@ -715,7 +659,7 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
                     onClick={() => {
                       /* switch tabshuffle: another panel draws another
                          company, as a press on Shuffle does */
-                      if (VARIANTS && tabShuffle && i !== active) anotherRef.current();
+                      if ((i !== active)) anotherRef.current();
                       setActive(i);
                     }}
                     aria-current={i === active}
@@ -724,7 +668,7 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     {/* manifest-v2 and later: the open panel wears its sign */}
-                    {version !== "v1" && i === active && <TabIcon k={p.key} />}
+                    {(i === active) && <TabIcon k={p.key} />}
                     <span className="mod-manifest-tab-label">{p.key}</span>
                   </button>
                 </li>

@@ -30,42 +30,19 @@ import { cohortsFor } from "@/lib/art-direction";
 
    s = a tag's size (cards, rows), m = a line's (caption, key), l = a head's. */
 
-export type Size = "s" | "m" | "l";
+type Size = "s" | "m" | "l";
 type Key = "eu" | "pwm";
 
 const KEYS: Record<string, Key> = { "Electro Union": "eu", "Prompt What Matters": "pwm" };
-const SHORT: Record<Key, string> = { eu: "EU", pwm: "PWM" };
-const RING: Record<Key, string> = {
-  eu: "ELECTRO UNION • MAKE EUROPE • ",
-  pwm: "PROMPT WHAT MATTERS • BIGGER PROMPTS • ",
-};
-
-/* a root path, as every picture on the site is; a build served under a base
-   path has them rewritten (scripts/snapshot.mjs). A tracing of the logo - to
-   be replaced by the campaign's own vector file when it is available */
-const EU_LOGO = "/badges/electro-union.svg";
 /* the strip's rows, longer than any strip: cut at both ends, as the logo is */
 const ROW = ":^...".repeat(16) + ":^.";
-
-/* THE STAR of the logo, and the cursor a prompt waits with */
-function Star() {
-  return (
-    <svg className="nkb-star" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 1.6l3.05 7.1 7.7.66-5.84 5.05 1.75 7.53L12 17.9l-6.66 4.04 1.75-7.53L1.25 9.36l7.7-.66z" />
-    </svg>
-  );
-}
-function Cursor() {
-  return <span className="nkb-cursor" aria-hidden="true" />;
-}
-const Sign = ({ k }: { k: Key }) => (k === "eu" ? <Star /> : <Cursor />);
 
 /* THE LOGOS. Electro Union as the traced file; Prompt What Matters set in
    type - the pink strip, the name in the typewriter face between two rows
    of :^... cut at the strip's ends - so it is sharp at any size */
 function EuLogo() {
   // eslint-disable-next-line @next/next/no-img-element
-  return <img className="nkb-eulogo" src={EU_LOGO} alt="" />;
+  return <img className="nkb-eulogo" src={"/badges/electro-union.svg"} alt="" />;
 }
 function PwmLogo() {
   return (
@@ -80,110 +57,13 @@ const Logo = ({ k }: { k: Key }) => (k === "eu" ? <EuLogo /> : <PwmLogo />);
 /* a campaign's logo by its key, for the category view's sticker */
 export const CampaignLogo = Logo;
 
-/* v5: the ring. The words run once round the circle; the sign sits in it */
-function Seal({ k, ring }: { k: Key; ring: boolean }) {
-  const id = `nkb-ring-${k}`;
-  return (
-    <span className="nkb-seal">
-      {ring && (
-        <svg className="nkb-sealring" viewBox="0 0 100 100" aria-hidden="true">
-          <defs>
-            <path id={id} d="M50 50 m-38 0 a38 38 0 1 1 76 0 a38 38 0 1 1 -76 0" />
-          </defs>
-          <circle cx="50" cy="50" r="48.5" className="nkb-sealdisc" />
-          <text className="nkb-sealtext">
-            <textPath href={`#${id}`} textLength="236">
-              {RING[k]}
-            </textPath>
-          </text>
-          <circle cx="50" cy="50" r="26" className="nkb-sealin" />
-        </svg>
-      )}
-      <span className="nkb-sealsign">
-        <Sign k={k} />
-      </span>
-    </span>
-  );
-}
-
 export function Badge({ name, size = "s" }: { name: string; size?: Size }) {
-  const v = useVersion("badge");
   const k = KEYS[name];
   if (!k) return null;
-  const cls = `nkb nkb--${v} nkb--${k} nkb--${size}`;
+  const cls = `nkb nkb--v1 nkb--${k} nkb--${size}`;
 
   /* v1: the original, in words */
-  if (v === "v1") return <span className={cls}>{name}</span>;
-
-  if (v === "v2") {
-    if (size === "l")
-      return (
-        <span className={cls} role="img" aria-label={name}>
-          <Logo k={k} />
-        </span>
-      );
-    return (
-      <span className={cls} role="img" aria-label={name} title={name}>
-        <span className="nkb-in">{size === "s" ? SHORT[k] : name}</span>
-      </span>
-    );
-  }
-
-  if (v === "v3") {
-    return (
-      <span className={cls} role="img" aria-label={name} title={name}>
-        {size === "l" ? (
-          <>
-            <span className="nkb-in">{k === "eu" ? "Electro" : "Prompt What"}</span>
-            <span className="nkb-in">{k === "eu" ? "Union" : "Matters"}</span>
-          </>
-        ) : (
-          <span className="nkb-in">{size === "s" ? SHORT[k] : name}</span>
-        )}
-      </span>
-    );
-  }
-
-  if (v === "v4") {
-    return (
-      <span className={cls} role="img" aria-label={name} title={name}>
-        {k === "eu" && <Sign k={k} />}
-        {size !== "s" && <span className="nkb-name">{name}</span>}
-        {k === "pwm" && <Sign k={k} />}
-      </span>
-    );
-  }
-
-  if (v === "v5") {
-    return (
-      <span className={cls} role="img" aria-label={name} title={name}>
-        <Seal k={k} ring={size === "l"} />
-        {size !== "s" && <span className="nkb-name">{name}</span>}
-      </span>
-    );
-  }
-
-  /* v6: the logos. Whole from medium up; at a tag's size what still reads -
-     Electro Union's star and letters over its red arc, Prompt What Matters'
-     strip with its letters */
-  return (
-    <span className={cls} role="img" aria-label={name} title={name}>
-      {size === "s" ? (
-        k === "eu" ? (
-          <span className="nkb-eumini">
-            <Star />
-            <span className="nkb-in">EU</span>
-          </span>
-        ) : (
-          <span className="nkb-pwmlogo">
-            <span className="nkb-pwmname">PWM</span>
-          </span>
-        )
-      ) : (
-        <Logo k={k} />
-      )}
-    </span>
-  );
+  return <span className={cls}>{name}</span>;
 }
 
 /* THE STAMPS: on the cards of listview-v4 and later, each campaign's logo

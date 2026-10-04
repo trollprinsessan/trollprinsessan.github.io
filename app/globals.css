@@ -206,12 +206,6 @@ a { color: inherit; text-decoration: none; }
    (5-12px) and a small outer margin (10-20px), and place content by naming
    column LINES rather than by arbitrary widths. Content hangs on the same
    lines everywhere, which is what makes those pages read as one document. */
-.grid-12 {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: var(--gutter);
-  padding: 0 var(--pad);
-}
 
 main {
   padding-top: 0;
@@ -247,94 +241,6 @@ main {
    page, one scroll away, and a bar naming them was carrying weight the scroll
    already carries. --nav-h is the band's height and the one token: the film
    below is sized off it and the archive's controls stick under it. */
-.site-nav {
-  /* OVER the page, not above it: fixed rather than sticky, so it takes no
-     room in the flow and the film runs to the very top of the window. */
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 60;
-  height: var(--nav-h);
-  box-sizing: border-box;
-  /* no ground: the mark sits straight on whatever the page is showing, and
-     inverts it. The blend is on the header because the header is the
-     stacking context - inside it there is nothing to blend against. */
-  background: none;
-  mix-blend-mode: difference;
-  color: var(--ink);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 var(--pad);
-}
-.site-nav-mark {
-  display: block;
-  color: inherit;
-}
-.site-nav-mark-svg {
-  display: block;
-  /* the mark is 1447:189, so 85 across is 11 down */
-  width: 85px;
-  height: auto;
-  /* white, so the header's difference inverts whatever is behind it: black
-     against the page, white against the film */
-  color: #fff;
-}
-@media (max-width: 720px) {
-  .site-nav-top { height: 26px; }
-}
-
-.site-nav-ticker-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  height: 25px;
-  padding: 0 10px;
-  overflow: hidden;
-}
-
-.site-nav-live {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-  font-family: var(--font);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  color: #000;
-}
-.site-nav-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 0;
-  background: #f00;
-  flex-shrink: 0;
-}
-
-.site-nav-ticker {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-}
-.site-nav-ticker-track {
-  display: flex;
-  white-space: nowrap;
-  animation: nav-ticker 40s linear infinite;
-  font-family: var(--font);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: none;
-  color: #000;
-}
-
-@keyframes nav-ticker {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
 
 /* the menu slides down and overlaps the page below the header, rather than
    taking over the whole screen as a centered modal. Not blended — this
@@ -350,7 +256,6 @@ main {
    Replaces the earlier arrangement where the whole page slid down 50vh to
    reveal a black panel behind it. */
 
-
 /* Pinned, not merely overflow-hidden. `top` is set inline to -scrollY by the
    nav so the view stays exactly where it was, and taking body out of flow
    stops the 50vh slide from growing the document under the reader. */
@@ -358,13 +263,9 @@ main {
   main { transition: none; }
 }
 
-
 /* one size throughout: the close word is set exactly like the links */
 
 /* ---- masthead ---- */
-.masthead {
-  padding: var(--pad);
-}
 .wordmark {
   font-size: clamp(40px, 11vw, 150px);
   font-family: var(--black);
@@ -372,16 +273,6 @@ main {
   font-weight: 900;
   letter-spacing: normal;
   text-transform: uppercase;
-}
-.wordmark .slash { color: var(--meta); }
-.lede {
-  margin-top: clamp(16px, 3vw, 32px);
-  max-width: 52ch;
-  font-family: var(--font);
-  font-size: clamp(16px, 2vw, 22px);
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: normal;
 }
 
 /* ---- controls ---- */
@@ -522,11 +413,9 @@ main {
   align-items: center;
   gap: 2px;
 }
-.ctl--count,
 .ctl--filter,
 .ctl--shake,
 .ctl--views { flex: 0 0 auto; }
-.ctl--count .ctl-box,
 .ctl--filter .ctl-box,
 .ctl--shake .ctl-box,
 .ctl--views .ctl-box { width: auto; }
@@ -538,19 +427,6 @@ main {
 }
 .shake-trigger:hover { background: #222; }
 .filter-trigger { gap: 14px; }
-
-/* the readout: fixed-width figures, zero-padded, so it does not jump about
-   as the list is filtered. In a slot like the rest - bare figures over the
-   list were unreadable once the bar had no ground. */
-.ctl-count {
-  font-family: var(--font);
-  font-size: 13px;
-  line-height: 15px;
-  font-weight: 500;
-  color: var(--bg);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
 
 /* ONE INSTRUMENT, FOUR CONTROLS AND A READOUT.
    Every control is a drawn box: one hairline, one height, one type size, on
@@ -759,7 +635,6 @@ main {
   font-variant-numeric: tabular-nums;
 }
 
-
 /* the statement column — the widest, so the placeholder never clips */
 /* the field holds the drawn placeholder over the input */
 .search-field { position: relative; }
@@ -832,24 +707,6 @@ main {
   white-space: nowrap;
 }
 .search-field--counting .search { padding-right: 80px; }
-
-
-
-
-
-
-
-
-/* wheel-picker: fixed-height scroll-snap viewport; options fade toward the
-   edges (mask), two hairlines bracket the centered selection row. Drag/scroll
-   OR click both select — whichever settles nearest the center wins. */
-
-
-
-
-
-
-.count { white-space: nowrap; margin-left: auto; color: var(--muted); font-family: var(--font); font-size: 11px; font-weight: 700; letter-spacing: normal; }
 
 /* climaxbooks' filter idiom: radio + label, one type size, no glyphs. */
 /* THE SWITCH AND THE SCALE.
@@ -936,7 +793,6 @@ main {
   /* one line: the filter and the search. The count goes - the filter's own
      figure says what is applied - and so does the view: a phone reads the
      list as the index, with a picture on every line. */
-  .ctl--count,
   .ctl--shake,
   .ctl--views { display: none; }
   .filter-trigger { gap: 10px; }
@@ -945,44 +801,8 @@ main {
   .archive-list { padding-top: 5px; }
 }
 
-/* WHAT EACH STOP SHOWS.
-   The card gives up a line at each step in: sixteen across is plates alone,
-   twelve adds the name, eight what they do, six the tags. */
-.grid--plates .card-caption { display: none; }
-.grid--names .card-statement,
-.grid--names .card-tags { display: none; }
-.grid--facts .card-tags { display: none; }
-
-/* and the type goes down with the card. At six across the caption is the
-   spec'd 13/15; at eight and twelve the card is 157 and 100 wide, and type set
-   for a 215px card reads as shouting on them. */
-.grid--facts .card-head {
-  font-size: 12px;
-  line-height: 14px;
-}
-.grid--names .card-head {
-  font-size: 11px;
-  line-height: 13px;
-}
-
-.shuffle-btn {
-  font-family: var(--font);
-  font-size: 11px;
-  letter-spacing: normal;
-  font-weight: 700;
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  color: var(--muted);
-  white-space: nowrap;
-}
-.shuffle-btn:hover { color: var(--ink); }
-
 /* ---- index view ---- */
 .index { display: block; }
-
-
 
 /* atelier-amont.ch pattern: pure text table, no thumbnails, uneven CSS-grid
    columns, one weight throughout, no dividers or hover-fill — separation is
@@ -1269,7 +1089,6 @@ main {
   .index-panel .entry--panel .entry-statement,
   .index-panel .entry--panel .entry-block-body,
   .ctl-box,
-  .ctl-count,
   .search-ghost,
   .views-opt,
   .filter-group-title,
@@ -1373,7 +1192,6 @@ main {
 .index-panel .entry--panel .entry-block-body { text-align: left; hyphens: none; }
 .index-panel .entry--panel .entry-spin { display: none; }
 
-
 /* THE PANEL ON A PHONE
    There is no room to push anything aside at this width, so the panel stops
    being a column and becomes a sheet over the list, from the control row to
@@ -1448,58 +1266,7 @@ main {
   font-weight: 500;
 }
 
-/* Detail inherits the row's own grid, so the image lands directly under the
-   sector column and the prose under name + statement. Restyled on the same
-   record/label conventions the company pages use (EntryLayout): no filled
-   pill, no uppercase, no circle - a hairline spec table instead of the tags
-   and the round CTA. */
-.row-detail {
-  display: grid;
-  grid-template-columns: var(--namecol) 1fr calc(2 * var(--metacol) + var(--gutter)) var(--metacol);
-  gap: var(--gutter);
-  padding: 6px var(--pad) 44px;
-  align-items: start;
-}
-
 /* the statement column only — same measure as the row's own statement text */
-/* nine-track nested grid, starting flush with the statement column above it
-   (and the Search field on the same line) - track 1 here sits exactly where
-   row-statement's own left edge sits, since row-detail-text occupies that
-   same outer track. Problem and Solution kept their widths from the earlier
-   2-5/6-9 spec, just shifted one track left so nothing is indented off that
-   shared edge. */
-.row-detail-text {
-  grid-column: 2;
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  column-gap: var(--gutter);
-  row-gap: 14px;
-  align-items: start;
-}
-/* five tracks each rather than four, so the two blocks fill the measure
-   instead of leaving a track hanging off the end */
-.row-detail-block:nth-of-type(1) { grid-column: 1 / 6; }
-.row-detail-block:nth-of-type(2) { grid-column: 6 / 11; }
-.row-detail-block {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-/* the same setting as .entry-block-body: one size and one weight for every
-   piece of prose on the site */
-.row-detail p {
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 15px;
-  letter-spacing: normal;
-  color: var(--ink);
-  margin: 0;
-  /* ranged left: at this measure the forced word spacing opened rivers */
-  text-align: left;
-  hyphens: none;
-  -webkit-hyphens: none;
-}
 
 /* ---- the modal inverts ----
    The plate is a black page: the archive behind it is veiled to near-white,
@@ -1513,7 +1280,6 @@ main {
 .entry:not(.entry--spread) .entry-statement,
 .entry:not(.entry--spread) .entry-spec dt,
 .entry:not(.entry--spread) .entry-spec dd,
-.entry:not(.entry--spread) .entry-block-label,
 .entry:not(.entry--spread) .entry-block-body,
 .entry:not(.entry--spread) .entry-close {
   color: var(--bg);
@@ -1528,66 +1294,6 @@ main {
   background: var(--bg);
   color: var(--ink);
 }
-
-/* just the picture now, hard left on the name column */
-.row-detail-meta {
-  grid-column: 1;
-  grid-row: 1;
-}
-.row-detail-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  /* measured: the picture's top edge on the same topline as the record's
-     first value ("Newcomer") and the block heads */
-  margin-top: 2.7px;
-}
-
-/* the record: the same six fields and hairline rules as the company pages'
-   .entry-spec, narrowed to fit two meta columns rather than a half-page
-   measure - label stacked over value instead of side by side, since there
-   isn't the width here for a two-column split. Sits where the round CTA
-   used to, with the URL as the last row rather than a separate button. */
-.row-detail-spec {
-  grid-column: 3 / -1;
-  grid-row: 1;
-}
-/* the record with its labels struck out - Newcomer, a year, the sectors and
-   a domain each say what they are. The dt stays in the DOM so the dl is still
-   a real definition list for anything reading it aloud. */
-.row-detail-spec-cell {
-  display: block;
-  padding: 2px 0;
-}
-.row-detail-spec dt {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-.row-detail-spec dd {
-  min-width: 0;
-  margin: 0;
-  font-family: var(--font);
-  font-size: 13px;
-  line-height: 15px;
-  font-weight: 500;
-  color: var(--ink);
-}
-.row-detail-spec dd a {
-  color: inherit;
-  /* the one live thing in the record - it should look like a link */
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 1px;
-  padding: 0 2px;
-  margin: 0 -2px;
-  word-break: break-all;
-}
-.row-detail-spec dd a:hover { background: var(--ink); color: var(--bg); }
-
 
 /* ---- grid view — uniform cards, 5+ per row ---- */
 /* PLATES
@@ -1625,93 +1331,6 @@ main {
   color: inherit;
   font-family: inherit;
 }
-
-/* ONE FRAME FOR EVERY PICTURE: a 4:3 box the width of the column, so the
-   pictures in a row share a top and a foot. The photographs fill it, cropped
-   from their middle; the plates on no ground - cutouts, drawings, gifs - sit
-   inside it at their own proportion, centred. */
-.card-media {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  align-self: start;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.card-thumb {
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-}
-/* THE PLATES AT ONE OPTICAL SIZE.
-   A square line drawing is held by the frame's height, which already sets it
-   about a sixth under the frame's width - the reduction it used to need when
-   it ran edge to edge, so it takes none now. A gif carries a wide empty
-   ground round its subject and read smaller: 26.5% closer, from its middle,
-   lapping the frame's top and foot a little. The cutouts, trimmed to their
-   edges, still read a size under the photographs: 10% bigger. The frame does
-   not change, so no row and no caption moves. */
-.card-thumb--line { transform: none; }
-.card-thumb--gif { transform: scale(1.265); }
-/* Ampd's crate sits small and high in its frame: a size up, a little lower */
-.card-thumb--gif[src$="/ampdenergy.gif"] { transform: translateY(6%) scale(1.39); }
-/* Sava's patch is wide and flat, so it fills its frame edge to edge: no zoom */
-.card-thumb--gif[src$="/savahealth.gif"] { transform: scale(0.95); }
-.card-thumb--clip { transform: scale(1.1); }
-
-/* THE PHOTOGRAPHS ARE CROPPED TO 4:3: the full-frame pictures come as 3:2
-   and fill the frame from their middle. The panel and the modal still show
-   the whole frame. */
-.card-thumb--photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-/* nothing to show rather than an empty grey plate */
-.card-thumb--empty { display: none; }
-
-/* THE CAPTION: the name and the place, what they do, the tags. Three sizes,
-   one weight: 14, 13, 11. */
-.card-caption {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  font-family: var(--font);
-  font-weight: 500;
-  font-style: normal;
-  letter-spacing: normal;
-  color: var(--ink);
-  text-align: left;
-  text-wrap: pretty;
-}
-/* the name, a comma, and the place as its three-letter code, on one line */
-.card-head {
-  display: block;
-  margin: 0 0 3px;
-  font-size: 14px;
-  line-height: 16px;
-  text-transform: none;
-  align-self: stretch;
-}
-/* what they do. Held just short of three lines, so the tags sit 7px closer
-   under the usual two - a statement that does run to three pushes its tags
-   down by what it needs rather than running into them. The statements run a
-   median of 69 characters. */
-.card-statement {
-  font-size: 13px;
-  line-height: 15px;
-  min-height: 38px;
-  align-self: stretch;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
 /* THE TAGS: the sector, then the campaigns the edition has drawn this one
    into, each in a box - one hairline, no fill, no radius - the way the
    filter's options will read. They wrap. */
@@ -1748,10 +1367,6 @@ main {
 }
 
 /* the name underlines on hover, the way the book marks a heading */
-.card:hover .card-head {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
 
 @media (min-width: 1500px) { :root { --gridcols: 7; } }
 @media (min-width: 1900px) { :root { --gridcols: 8; } }
@@ -1871,7 +1486,6 @@ main {
 
 @media (max-width: 720px) {
   .row { grid-template-columns: 1fr; gap: 6px; }
-  .row .meta { justify-content: flex-start; }
 }
 
 /* =============================================
@@ -1883,19 +1497,6 @@ main {
   text-align: center;
   padding-bottom: 0;
   margin-bottom: 64px;
-}
-
-.mod-eyebrow {
-  font-family: var(--font);
-  font-size: 44px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  color: var(--ink);
-}
-
-.mod-eyebrow-right {
-  display: none;
 }
 
 /* Animated section titles. Each asset is cropped differently, so the widths
@@ -1923,26 +1524,8 @@ main {
 .mod-section-header {
   container-type: inline-size;
 }
-.mod-section-title {
-  /* the block is as wide as its longest word and no wider, so it wraps to
-     one word a line and sits centred on that word - a fixed third spilled
-     right as soon as the type outgrew it */
-  margin: 0 auto;
-  width: min-content;
-  text-align: center;
-  font-family: var(--font);
-  font-size: 6.2cqw;
-  line-height: 0.88;
-  font-weight: 500;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  color: var(--ink);
-}
 /* twice the size on a phone: the container is a third the width, and
    the title was shrinking with it into a caption */
-@media (max-width: 720px) {
-  .mod-section-title { font-size: 12.4cqw; }
-}
 
 /* the-latest.gif 1280x720 with alpha, ink box measured across the animation at
    y264-468 and x41: 1.29 cap units of empty frame above, 1.22 below, 0.20 to
@@ -2125,78 +1708,6 @@ main {
   100% { background-position: 0 0; }
 }
 
-.mod-hero-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #111;
-}
-
-.mod-hero-placeholder span {
-  font-family: var(--font);
-  font-size: 13px;
-  line-height: 15px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  color: #444;
-}
-
-.mod-hero-overlay {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  padding: clamp(20px, 2.5vw, 36px);
-}
-
-.mod-hero-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.mod-hero-label {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-}
-
-.mod-hero-center {
-  display: flex;
-  align-items: center;
-}
-
-.mod-hero-number {
-  font-family: var(--black);
-  font-size: clamp(140px, 38vw, 560px);
-  font-weight: 900;
-  line-height: 0.85;
-  letter-spacing: normal;
-  color: #fff;
-  margin: 0;
-}
-
-.mod-hero-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-.mod-hero-tagline {
-  font-family: var(--mono);
-  font-size: clamp(10px, 1.1vw, 14px);
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-}
-
 /* =============================================
    02 — MANIFEST
    ============================================= */
@@ -2297,24 +1808,6 @@ html {
    Three running heads across the top, the contents down the far margin, one
    narrow justified column left of centre, the plate on the right with its
    caption under it. */
-.mod-manifest-runheads {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: baseline;
-  padding: 0 var(--pad);
-  margin-bottom: clamp(48px, 9vh, 130px);
-  font-family: var(--font);
-  font-size: 11px;
-  line-height: 13px;
-  font-weight: 500;
-  letter-spacing: normal;
-  color: var(--ink);
-}
-.mod-manifest-runheads span:nth-child(2) { justify-self: center; }
-.mod-manifest-runheads span:nth-child(3) {
-  justify-self: end;
-  text-transform: uppercase;
-}
 
 .mod-manifest-top {
   display: grid;
@@ -2365,28 +1858,6 @@ html {
 
 /* the text column, centred on the page with its title over it: six tracks of
    twelve, so its middle sits on the page's middle */
-/* the catalogue's measure: pp. 58-59 set the body on about 47 characters,
-   which is what makes the column read as a book page rather than a web
-   column. At 18px that is roughly 430px, so the copy takes four of the
-   twelve tracks rather than six - the same setting, just bigger. */
-.mod-manifest-col { grid-column: 5 / 9; grid-row: 1; }
-.mod-manifest-head {
-  margin: 0;
-  font-family: var(--font);
-  font-size: 18px;
-  line-height: 1.28;
-  font-weight: 500;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  text-align: center;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  color: var(--ink);
-  /* the book leaves a clear band between the centred header block and the
-     body, not a line's worth */
-  margin-bottom: 2.2em;
-}
-
 
 /* the plate, under the text on the same measure: with the column centred
    there is no right-hand page for it to sit on any more */
@@ -2496,10 +1967,6 @@ html {
 }
 
 /* text sits above the gif */
-.mod-manifest-col {
-  position: relative;
-  z-index: 1;
-}
 .mod-manifest-gifline img {
   display: block;
   mix-blend-mode: multiply;
@@ -2561,7 +2028,6 @@ html {
   filter: invert(1) hue-rotate(180deg);
 }
 
-
 /* The one expressive device in an otherwise single-size, single-weight system
    — exactly how climaxbooks marks titles. A real italic cut, not a slant:
    Arial MT ships one, so nothing is synthesised. */
@@ -2582,7 +2048,6 @@ html {
   font-variant-numeric: tabular-nums;
   font-style: normal;
 }
-
 
 /* Inline disclosure — a native <details>, so it toggles and announces itself
    without any JS. Same 16.5px/700 as everything else; hover colour is the
@@ -2760,8 +2225,6 @@ html {
   display: flex;
   flex-direction: column;
 }
-.mod-manifest-runheads { display: none; }
-.mod-manifest-head { display: none; }
 .mod-manifest-top {
   flex: 1 1 auto;
   min-height: 0;
@@ -3203,9 +2666,6 @@ html {
   text-align: left;
 }
 .mod-manifest-tab { justify-items: start; text-align: left; }
-/* stacked, the page has one foot: the recto's page number would otherwise
-   land mid-page under the copy */
-.mod-manifest-recto .entry-foot--recto { display: none; }
 /* the contents: not numbered - the numbers live in the foot. Set exactly as
    the copy is: regular, sentence case, black. */
 .mod-manifest-tab {
@@ -3752,7 +3212,6 @@ html {
   .mod-latest-card { flex: 0 0 82vw; }
 }
 
-
 /* =============================================
    04 — PARTNERS
    ============================================= */
@@ -3809,329 +3268,16 @@ html {
    05 — ALUMNI MOMENTUM
    ============================================= */
 
-.mod-alumni {
-  padding: clamp(80px, 10vw, 160px) var(--pad);
-}
-
-.mod-alumni-table {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  background: var(--line);
-}
-
-.mod-alumni-row {
-  display: grid;
-  grid-template-columns: 180px 1fr 160px 100px;
-  background: var(--bg);
-}
-
-.mod-alumni-row > * {
-  padding: 16px 14px;
-  border-right: 1px solid var(--line);
-}
-
-.mod-alumni-row > *:last-child { border-right: none; }
-
-.mod-alumni-head {
-  background: var(--bg);
-}
-
-.mod-alumni-head > * {
-  font-family: var(--font);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  color: var(--meta);
-  padding: 10px 14px;
-}
-
-.mod-alumni-coname {
-  font-size: 13px;
-  line-height: 15px;
-  font-weight: 700;
-  letter-spacing: normal;
-}
-
-.mod-alumni-sector {
-  font-family: var(--font);
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--meta);
-  margin-top: 4px;
-  letter-spacing: normal;
-}
-
-.mod-alumni-update {
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.4;
-  letter-spacing: normal;
-  color: var(--ink);
-}
-
-.mod-alumni-metric-number {
-  font-family: var(--black);
-  font-size: 22px;
-  font-weight: 900;
-  letter-spacing: normal;
-}
-
-.mod-alumni-metric-label {
-  font-family: var(--font);
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--meta);
-  margin-top: 4px;
-  letter-spacing: normal;
-  text-transform: uppercase;
-}
-
-.mod-alumni-edition {
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--meta);
-}
-
-.mod-alumni-note {
-  margin-top: 14px;
-  font-family: var(--font);
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--meta);
-  letter-spacing: normal;
-}
-
-@media (max-width: 720px) {
-  .mod-alumni-row { grid-template-columns: 1fr 1fr; }
-  .mod-alumni-row > *:nth-child(3),
-  .mod-alumni-row > *:nth-child(4) { display: none; }
-}
-
 /* =============================================
    06 — COLLECTIVE IMPACT
    ============================================= */
-
-.mod-impact {
-  padding: clamp(80px, 10vw, 160px) var(--pad);
-}
-
-.mod-impact .mod-section-header {
-  margin-bottom: 64px;
-}
-
-.mod-impact-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-}
-
-.mod-impact-stat {
-  padding: 32px 24px;
-}
-
-.mod-impact-number {
-  font-size: clamp(36px, 5vw, 64px);
-  font-family: var(--black);
-  font-weight: 900;
-  color: var(--ink);
-  letter-spacing: normal;
-  line-height: 1;
-}
-
-.mod-impact-label {
-  font-family: var(--font);
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--meta);
-  letter-spacing: normal;
-  text-transform: uppercase;
-  margin-top: 10px;
-  line-height: 1.4;
-}
-
-@media (max-width: 720px) {
-  .mod-impact-grid { grid-template-columns: repeat(2, 1fr); }
-}
 
 /* =============================================
    07 — COMMUNITY PHOTOS
    ============================================= */
 
-/* =============================================
-   08 — NETWORK (merged alumni + community)
-   ============================================= */
-
-.mod-network {
-  padding: clamp(80px, 10vw, 160px) var(--pad);
-}
-
-.mod-network-split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-.mod-network-feature {
-  background: #f0f0f0;
-  min-height: 560px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
-}
-
 /* sphere variant of the feature slot: no grey plate, no min-height box —
    the canvas is round and sizes itself to the column. */
-.mod-network-feature--sphere {
-  background: none;
-  min-height: 0;
-  aspect-ratio: 1;
-  border-radius: 0;
-  cursor: grab;
-}
-.mod-network-feature--sphere:active {
-  cursor: grabbing;
-}
-
-.mod-network-feature img {
-  width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;
-}
-
-.mod-network-placeholder {
-  font-family: var(--font);
-  font-size: 13px;
-  line-height: 15px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  color: var(--meta);
-}
-
-.mod-network-entries {
-  padding: 0 0 0 clamp(24px, 4vw, 56px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.mod-network-entry {
-  display: grid;
-  grid-template-columns: 90px 1fr;
-  gap: 6px 16px;
-  padding: 28px 0;
-}
-.mod-network-entry:first-child {
-  padding-top: 0;
-}
-.mod-network-entry-date {
-  font-family: var(--font);
-  font-size: 13px;
-  line-height: 15px;
-  font-weight: 700;
-  letter-spacing: normal;
-  color: var(--meta);
-}
-.mod-network-entry-name {
-  grid-column: 2;
-  font-family: var(--font);
-  font-size: 13px;
-  line-height: 15px;
-  font-weight: 700;
-  letter-spacing: normal;
-  color: var(--ink);
-}
-.mod-network-entry-update {
-  grid-column: 2;
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 15px;
-  letter-spacing: normal;
-  color: var(--ink);
-}
-.mod-network-entry-tags {
-  grid-column: 2;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
-}
-.mod-network-entry-tag {
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  color: #fff;
-  background: var(--ink);
-  border-radius: 0;
-  padding: 6px 12px;
-  line-height: 15px;
-}
-
-@media (max-width: 720px) {
-  .mod-network-split { grid-template-columns: 1fr; }
-  .mod-network-feature { min-height: 300px; }
-  .mod-network-entries { padding: 32px 0 0; }
-  .mod-network-entry { grid-template-columns: 1fr; }
-  .mod-network-entry-date { grid-column: 1; }
-  .mod-network-entry-name,
-  .mod-network-entry-update,
-  .mod-network-entry-tags { grid-column: 1; }
-}
-
-.mod-community {
-  padding: clamp(80px, 10vw, 160px) var(--pad);
-}
-
-.mod-community-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  grid-template-rows: 280px 280px;
-  gap: 1px;
-  background: var(--line);
-}
-
-.mod-community-cell {
-  background: #f0f0f0;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mod-community-cell img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.mod-community-cell--tall {
-  grid-row: 1 / 3;
-}
-
-.mod-community-placeholder {
-  font-family: var(--font);
-  font-size: 13px;
-  line-height: 15px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  color: var(--meta);
-}
-
-@media (max-width: 720px) {
-  .mod-community-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(3, 200px);
-  }
-  .mod-community-cell--tall { grid-row: auto; }
-}
 
 /* ---- the company modal ----
    judithkakon.com's proportions: a plate centred in the viewport on a layer
@@ -4242,8 +3388,6 @@ html {
   z-index: 1;
 }
 
-
-
 /* the header block: the book sets the title of a show at BODY size, in caps
    and underlined, with the place and the date centred under it - not at
    display scale. Three centred lines and nothing else. */
@@ -4295,7 +3439,6 @@ html {
   text-transform: none;
   text-align: left;
 }
-
 
 /* the body: one column, ranged left, the paragraphs parted by a blank line -
    no justification and no indent, exactly as the reference sets them */
@@ -4433,8 +3576,6 @@ html {
   animation: plate-in 520ms cubic-bezier(0.22, 1, 0.36, 1) 260ms both;
 }
 
-
-
 .entry--spread .entry-figure img {
   width: 100%;
   height: 100%;
@@ -4470,17 +3611,6 @@ html {
    the entry inside is laid out at full size the whole time, so the page is
    revealed top-down rather than squashed into shape. The plate follows the
    type in (see plate-in), as before. */
-.entry-fold {
-  overflow: hidden;
-  animation: entry-fold 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-@keyframes entry-fold {
-  from { height: 0; }
-  to   { height: calc(100dvh - var(--shuffle-head, 330px)); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .entry-fold { animation: none; }
-}
 
 /* THE PRINTED SPREAD
    Measured off the book's own company spread (Asset Cool). Everything in
@@ -4759,7 +3889,6 @@ html {
   .entry--spread .entry-figure img { object-position: left top; }
 }
 
-
 @keyframes entry-open {
   from { transform: translate(-50%, calc(-50% + 10px)); opacity: 0; }
   to   { transform: translate(-50%, -50%); opacity: 1; }
@@ -4955,15 +4084,6 @@ html {
    that they no longer have to share the row */
 .entry-block:nth-of-type(1) { grid-column: 1 / 6; grid-row: 1; }
 .entry-block:nth-of-type(2) { grid-column: 1 / 6; grid-row: 2; }
-.entry-block-label {
-  font-family: var(--font);
-  font-size: 13px;
-  line-height: 15px;
-  font-weight: 500;
-  font-style: normal;
-  text-transform: uppercase;
-  color: var(--ink);
-}
 .entry-block-body {
   margin: 0;
   font-family: var(--font);
@@ -4978,7 +4098,6 @@ html {
   hyphens: none;
   -webkit-hyphens: none;
 }
-
 
 @media (max-width: 900px) {
   .entry { width: 94vw; height: 94vh; }
@@ -5197,66 +4316,8 @@ html {
   display: block;
 }
 
-.faq-intro-label {
-  font-family: var(--font);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  color: var(--meta);
-  margin-bottom: 16px;
-}
-
-.faq-intro-heading {
-  font-family: var(--font);
-  font-size: 56px;
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: normal;
-  color: var(--ink);
-  text-transform: uppercase;
-  padding-bottom: 24px;
-}
-
 /* full-width stat bar underneath the FAQ list — separation is whitespace
    only now, no dividers (matches the Index view's rule: no lines, just gap) */
-.faq-stats {
-  list-style: none;
-  display: flex;
-  gap: 48px;
-  margin-top: clamp(48px, 6vw, 88px);
-}
-
-.faq-stat {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.faq-stat-number {
-  font-family: var(--font);
-  font-size: clamp(32px, 4vw, 56px);
-  font-weight: 900;
-  letter-spacing: normal;
-  line-height: 1;
-  color: var(--ink);
-}
-
-.faq-stat-label {
-  font-family: var(--font);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  color: var(--meta);
-  line-height: 1.4;
-}
-
-@media (max-width: 720px) {
-  .faq-stats { flex-wrap: wrap; gap: 24px 0; }
-  .faq-stat { flex: 1 1 45%; }
-}
 
 /* Index-view treatment: dense text rows, one weight, no dividers —
    separation is whitespace only, hover swaps to the true italic cut. */
@@ -5314,7 +4375,6 @@ html {
   line-height: 17px;
   transition: font-style 0s; /* instant swap — no faux-slant tween */
 }
-
 
 /* ---- open/close: one shared easing so height, copy and marker move as a
    single gesture rather than three independent animations ---- */
@@ -5467,7 +4527,6 @@ html {
   .mod-footer-mark { margin-top: 40px; }
 }
 
-
 /* =============================================
    MOBILE — Index, Shuffle and the filter panel
    Each of these is laid out on a multi-column desktop grid that has no room
@@ -5518,20 +4577,6 @@ html {
   /* the open row inverts whole */
   .index-item--open .row-geo,
   .index-item--open .row-sector { color: var(--bg); }
-
-  /* ---- Index detail: one column, everything full width ---- */
-  .row-detail {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    padding: 14px var(--pad) 32px;
-  }
-  .row-detail-meta,
-  .row-detail-text,
-  .row-detail-spec { grid-column: 1; grid-row: auto; }
-  .row-detail-img { max-width: 220px; margin-top: 0; }
-  .row-detail-text { grid-template-columns: 1fr; row-gap: 18px; }
-  .row-detail-block:nth-of-type(1),
-  .row-detail-block:nth-of-type(2) { grid-column: 1; }
 
   /* ---- The company record: modal and Shuffle are the same object, so at
      this width they take the same single stack — head, name, statement,
@@ -5680,41 +4725,6 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .goodnews { animation: none; }
 }
-.goodnews-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-.goodnews-head button {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font: inherit;
-  text-transform: none;
-  color: var(--meta);
-  transition: color 120ms ease;
-}
-.goodnews-head button:hover { color: var(--ink); }
-.goodnews-body {
-  margin: 17px 0 0;
-  color: var(--ink);
-}
-.goodnews-link {
-  display: inline-block;
-  margin-top: 17px;
-  color: var(--ink);
-  /* caps and underlined, the mark every other link on the page carries */
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 1px;
-}
-.goodnews-link:hover { background: var(--ink); color: var(--bg); }
 @media (max-width: 720px) {
   .goodnews { width: auto; left: var(--pad); right: var(--pad); }
 }
@@ -5757,46 +4767,9 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .goodnews { animation: none; }
 }
-.goodnews-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-.goodnews-head button {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font: inherit;
-  text-transform: none;
-  color: var(--meta);
-  transition: color 120ms ease;
-}
-.goodnews-head button:hover { color: var(--ink); }
-.goodnews-body {
-  margin: 17px 0 0;
-  color: var(--ink);
-}
-.goodnews-link {
-  display: inline-block;
-  margin-top: 17px;
-  color: var(--ink);
-  /* caps and underlined, the mark every other link on the page carries */
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 1px;
-}
-.goodnews-link:hover { background: var(--ink); color: var(--bg); }
 @media (max-width: 720px) {
   .goodnews { width: auto; left: var(--pad); right: var(--pad); }
 }
-
-
 
 /* =============================================
    THE LIST THROUGH THE MARK, THE COMPANY'S STEPS, THE FOOTER, AND A

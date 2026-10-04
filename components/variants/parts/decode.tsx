@@ -3,17 +3,6 @@
 import "./decode.css";
 import { useEffect, useRef, useState } from "react";
 
-/* THE NAME DECODES. When a company view goes from one company to
-   the next - Prev, Next, another company pressed in the list - the name
-   does not just change: each letter runs through other letters on its own
-   and lands on its own, left to right but not in step, in under half a
-   second. Shuffle does not decode: it rolls and lands.
-   While a name decodes, the view says so (busy), so the rest of it can wait
-   white until the name has landed. */
-
-const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-const RUN_MS = 420;
-
 export function useDecode(text: string, skip: boolean) {
   const [shown, setShown] = useState(text);
   const [busy, setBusy] = useState(false);
@@ -36,7 +25,7 @@ export function useDecode(text: string, skip: boolean) {
     let raf = 0;
     setBusy(true);
     const tick = (now: number) => {
-      const t = (now - start) / RUN_MS;
+      const t = (now - start) / 420;
       if (t >= 1) {
         setShown(text);
         setBusy(false);
@@ -44,7 +33,7 @@ export function useDecode(text: string, skip: boolean) {
       }
       setShown(
         [...text]
-          .map((ch, i) => (ch === " " || t >= lands[i] ? ch : GLYPHS[Math.floor(Math.random() * GLYPHS.length)]))
+          .map((ch, i) => (ch === " " || t >= lands[i] ? ch : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".length)]))
           .join("")
       );
       raf = requestAnimationFrame(tick);
@@ -55,7 +44,7 @@ export function useDecode(text: string, skip: boolean) {
       cancelAnimationFrame(raf);
       setShown(text);
       setBusy(false);
-    }, RUN_MS + 200);
+    }, 420 + 200);
     return () => {
       cancelAnimationFrame(raf);
       clearTimeout(done);

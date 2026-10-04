@@ -16,9 +16,9 @@ import { CampaignLogo, NO_CAMPAIGN } from "@/components/variants/badge/badge";
    category view the chapter scrolled to - and each has its switch in
    Show/hide. */
 
-export type CatKey = "eu" | "pwm" | "more";
+type CatKey = "eu" | "pwm" | "more";
 const MORE = 100 - ELECTRO_UNION.length - PROMPT_WHAT_MATTERS.length;
-export const CATS: Record<CatKey, { theme: string; line: string }> = {
+const CATS: Record<CatKey, { theme: string; line: string }> = {
   eu: {
     theme: "Electro Union",
     line: `In here you'll find the ${ELECTRO_UNION.length} builders, making Europe the Electro Union.`,
@@ -29,7 +29,7 @@ export const CATS: Record<CatKey, { theme: string; line: string }> = {
   },
   more: { theme: NO_CAMPAIGN, line: `${MORE} more ways to fix the future.` },
 };
-export const catOfTheme = (t: string): CatKey | null =>
+const catOfTheme = (t: string): CatKey | null =>
   (Object.keys(CATS) as CatKey[]).find((k) => CATS[k].theme === t) ?? null;
 
 /* THE THIRD CHAPTER'S STICKER: it has no logo of its own, so it gets one -
@@ -68,12 +68,6 @@ export default function CategoryChrome({
   /* in page-v2's drawer: the banner heads the drawer, under its row */
   hosted?: boolean;
 }) {
-  const banner = useToggle("banner");
-  const sticker = useToggle("sticker");
-  const ground = useToggle("categorybg");
-  /* bannerlevel off: the banner shows only once the list has come up under
-     the mark; on, it rides under the mark all the way */
-  const always = useToggle("bannerlevel");
   const [onList, setOnList] = useState(false);
   useEffect(() => {
     const check = () => {
@@ -117,18 +111,9 @@ export default function CategoryChrome({
   /* the banner's height, for a bar that stands under it (dockstyle-v2, -v3) */
   useEffect(() => {
     const root = document.documentElement;
-    if (!banner) {
-      root.style.setProperty("--nk-banner-h", "0px");
-      return;
-    }
-    const el = document.querySelector<HTMLElement>(".nkban");
-    if (!el) return;
-    const put = () => root.style.setProperty("--nk-banner-h", `${Math.round(el.getBoundingClientRect().height)}px`);
-    put();
-    const ro = new ResizeObserver(put);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [banner]);
+    root.style.setProperty("--nk-banner-h", "0px");
+    return;
+  }, []);
 
   /* the chapter whose stretch is under the mark's foot */
   useEffect(() => {
@@ -156,13 +141,6 @@ export default function CategoryChrome({
       clearInterval(t);
     };
   }, [cat]);
-
-  /* THE PAGE'S GROUND FOLLOWS THE LIST'S CHOICE: the open company's category
-     first, else the category the filter picks. Prompt What Matters turns the
-     page pink, Electro Union sets its logo behind the list (switch eubg),
-     and everything else is the plain page. The runtime reads the wish off
-     the root (settings/runtime.tsx). */
-  const euGround = useToggle("eubg");
   const wish: CatKey | null = open ? catOfSlug(open) : fromFilter;
   useEffect(() => {
     if (open === undefined) return;
@@ -180,33 +158,14 @@ export default function CategoryChrome({
     },
     []
   );
-  const euUp = euGround && index && open !== undefined && wish === "eu" && atList;
-
-  /* switch more56 off: the third stretch is no category - no line, no
-     ground, no sticker of its own */
-  const say56 = useToggle("more56");
+  const euUp = index && open !== undefined && wish === "eu" && atList;
   const found = fromFilter ?? scrolled;
-  const current = !say56 && found === "more" ? null : found;
-  const lines = current ? [CATS[current].line] : (Object.keys(CATS) as CatKey[]).filter((k) => say56 || k !== "more").map((k) => CATS[k].line);
-  /* the text twice over, so the roll runs on without a seam */
-  const run = [...lines, ...lines];
+  const current = (found === "more") ? null : found;
+  const lines = current ? [CATS[current].line] : (Object.keys(CATS) as CatKey[]).filter((k) => k !== "more").map((k) => CATS[k].line);
 
   return (
     <>
-      {banner && (
-        <div
-          className={`nkban nkban--${current ?? "all"}${hosted ? " nkban--hosted" : ""}${
-            always || hosted || onList ? "" : " nkban--away"
-          }`} aria-label={lines.join(" ")}>
-          <div className="nkban-track" aria-hidden="true">
-            {run.map((l, i) => (
-              <span key={i} className="nkban-line">
-                {l}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
+
       {/* the top dock's room, under the banner (shown by dock-bar.css) */}
       {!hosted && <div className="nk-dockroom" aria-hidden="true" />}
       {/* THE CATEGORY'S GROUND: its logo, faint, behind the whole list, held
@@ -217,20 +176,7 @@ export default function CategoryChrome({
           <CampaignLogo k="eu" />
         </div>
       )}
-      {ground && current && atList && !(euUp && current === "eu") && (
-        <div className={`nkbg nkbg--${current}`} aria-hidden="true">
-          {current === "more" ? <MoreSticker /> : <CampaignLogo k={current} />}
-        </div>
-      )}
-      {sticker &&
-        current &&
-        mast &&
-        createPortal(
-          <span key={current} className={`nkstick nkstick--${current}`} aria-hidden="true">
-            {current === "more" ? <MoreSticker size="s" /> : <CampaignLogo k={current} />}
-          </span>,
-          mast
-        )}
+
     </>
   );
 }

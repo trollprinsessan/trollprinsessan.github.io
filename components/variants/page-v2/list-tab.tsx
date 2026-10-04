@@ -6,7 +6,6 @@ import "./list-tab.css";
 import "./compact.css";
 import Archive, { type ListControls, type ListHost } from "@/components/archive";
 import type { Company, Facets } from "@/lib/types";
-import { useToggle, useVersion } from "@/components/settings/registry";
 import { ELECTRO_UNION, PROMPT_WHAT_MATTERS } from "@/lib/art-direction";
 import { NO_CAMPAIGN } from "@/components/variants/badge/badge";
 
@@ -169,7 +168,6 @@ export function Controls({
   };
 
   const yearIsOpening = c.year.size === 1 && c.year.has(c.latestYear);
-  const say56 = useToggle("more56");
   const groups: {
     key: Exclude<Drop, "all" | null>;
     title: string;
@@ -199,7 +197,7 @@ export function Controls({
       title: "Theme",
       value: c.theme,
       /* the third chapter only with the switch more56 on: it is no category */
-      options: [...c.facets.themes.filter((t) => t !== NO_CAMPAIGN), ...(say56 ? [NO_CAMPAIGN] : [])],
+      options: [...c.facets.themes.filter((t) => t !== NO_CAMPAIGN), ...([])],
       onChange: c.setTheme,
       single: true,
       labelOf: themeLabel,
@@ -461,11 +459,6 @@ export default function ListTab({
   mode?: "tab" | "scroll";
 }) {
   const scrollMode = mode === "scroll";
-  /* the row in the drawer (dockstyle): v2 and v3 under the drawer's top, every
-     other version at its foot while it is up; the handle stays on the top */
-  const dockstyle = useVersion("dockstyle");
-  const dockplace = useVersion("dockplace");
-  const dockPlace = dockstyle === "v2" || dockstyle === "v3" || dockplace === "v2" ? "top" : "bottom";
   const [open, setOpenState] = useState(false);
   const openRef = useRef(false);
   /* where the page stands when the list is up under the mark, where the mark
@@ -771,7 +764,7 @@ export default function ListTab({
     frame: ({ list, controls }) => (
       <div
         ref={tabRef}
-        className={`p2tab${open ? " is-open" : ""}${scrollMode ? " p2tab--scroll" : ""} p2tab--dock-${dockPlace}`}
+        className={`p2tab${open ? " is-open" : ""}${scrollMode ? " p2tab--scroll" : ""} p2tab--dock-bottom`}
         hidden={intro}
         role="region"
         aria-label="The List"

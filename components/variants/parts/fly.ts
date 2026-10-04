@@ -1,25 +1,6 @@
-/* THE CARD'S PARTS FLY INTO THE MODAL (cardstyle-v3, cardstyle-v3b).
-   A press on a card opens the modal as it always opens, and over it each
-   part of the card travels on its own from where it stood on the card to
-   where the modal sets it: the name letter by letter, starting first; then
-   the picture, the one-liner, the sector, the country and the campaign,
-   each leaving a little later and so travelling a little faster. While they
-   are in flight the modal's copy is written out line by line, and the
-   website last. Everything lands at the same moment (RUN), and the modal
-   has its full size well before that.
 
-   Nothing in the modal's own markup is changed: the travelling parts are
-   copies in a layer over the page, the modal's own parts are held
-   transparent until their copies land, and the writing is a set of covers
-   drawn back off the lines. */
-
-const RUN = 720;
-const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
-/* when the modal has settled, and the writing can start */
-const SETTLED = 260;
-const LINK = 110;
 /* words hand over to the modal's own over the last stretch of the run */
-const HANDOVER = RUN * 0.78;
+const HANDOVER = 720 * 0.78;
 
 const TEXT_PROPS = [
   "fontFamily",
@@ -101,7 +82,7 @@ function whenOpen(done: (entry: HTMLElement | null) => void) {
 
 /* what may leave: an element, where the modal sets it, when it leaves,
    and how it travels */
-export type Part = [key: string, from: HTMLElement | null, to: string, delay: number, kind: Flight["kind"]];
+type Part = [key: string, from: HTMLElement | null, to: string, delay: number, kind: Flight["kind"]];
 
 /* a card's parts, in the order they leave */
 function cardParts(card: HTMLElement): Part[] {
@@ -118,7 +99,7 @@ function cardParts(card: HTMLElement): Part[] {
 }
 
 /* where each part lands: in the modal, or in the side view */
-export const TO = {
+const TO = {
   name: ".entry-name, .cside-title",
   picture: ".entry-figure img, .cside-picture img",
   gymbs: ".entry-statement, .cside-gymbs",
@@ -200,7 +181,7 @@ export function flyFrom(card: HTMLElement, open: () => void, parts?: Part[]) {
     }
     for (const c of clones) layer.appendChild(c.el);
     /* the card's own part is gone from the card while its copy travels */
-    f.from.animate([{ opacity: 0 }, { opacity: 0 }], { duration: RUN, fill: "none" });
+    f.from.animate([{ opacity: 0 }, { opacity: 0 }], { duration: 720, fill: "none" });
     made.push({ f, clones });
   }
   document.body.appendChild(layer);
@@ -239,7 +220,7 @@ export function flyFrom(card: HTMLElement, open: () => void, parts?: Part[]) {
 
     for (const { f, clones } of made) {
       const to = target(f.to);
-      const run = RUN - f.delay;
+      const run = 720 - f.delay;
       if (!to) {
         for (const c of clones) c.el.animate([{ opacity: 1 }, { opacity: 0 }], { delay: f.delay, duration: run / 2, fill: "both" });
         continue;
@@ -250,13 +231,13 @@ export function flyFrom(card: HTMLElement, open: () => void, parts?: Part[]) {
         /* on the element itself, and by a mark it carries: the modal's name
            can be drawn anew while the letters are in flight (it decodes),
            and the new element must wait as well */
-        hold(to, RUN);
+        hold(to, 720);
         to.setAttribute("data-nk-awaiting", "");
         waiting.push(to);
       }
       else
-        to.animate([{ opacity: 0 }, { opacity: 0, offset: HANDOVER / RUN }, { opacity: 1 }], {
-          duration: RUN,
+        to.animate([{ opacity: 0 }, { opacity: 0, offset: HANDOVER / 720 }, { opacity: 1 }], {
+          duration: 720,
           fill: "none",
         });
       const tr = to.getBoundingClientRect();
@@ -268,7 +249,7 @@ export function flyFrom(card: HTMLElement, open: () => void, parts?: Part[]) {
           /* letters the modal's name does not have (a caption's ", SWE")
              fade where they are */
           if (i >= ends.length) {
-            c.el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: RUN / 3, fill: "both" });
+            c.el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 720 / 3, fill: "both" });
             return;
           }
           const e = ends[i].r;
@@ -291,7 +272,7 @@ export function flyFrom(card: HTMLElement, open: () => void, parts?: Part[]) {
               { transform: `translate(0, 0) scale(${k})` },
               { transform: `translate(${e.left - c.r.left}px, ${e.top - c.r.top}px) scale(1)` },
             ],
-            { delay, duration: RUN - delay, easing: EASE, fill: "both" }
+            { delay, duration: 720 - delay, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "both" }
           );
         });
         continue;
@@ -315,7 +296,7 @@ export function flyFrom(card: HTMLElement, open: () => void, parts?: Part[]) {
             { left: `${c.r.left}px`, top: `${c.r.top}px`, width: `${c.r.width}px`, height: `${c.r.height}px` },
             { left: `${box.left}px`, top: `${box.top}px`, width: `${box.width}px`, height: `${box.height}px` },
           ],
-          { delay: f.delay, duration: run, easing: EASE, fill: "both" }
+          { delay: f.delay, duration: run, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "both" }
         );
         continue;
       }
@@ -350,7 +331,7 @@ export function flyFrom(card: HTMLElement, open: () => void, parts?: Part[]) {
         land.backgroundColor = "rgba(0, 0, 0, 0)";
         land.boxShadow = "inset 0 0 0 1px rgba(0, 0, 0, 0)";
       }
-      c.el.animate([from, land], { delay: f.delay, duration: run, easing: EASE, fill: "both" });
+      c.el.animate([from, land], { delay: f.delay, duration: run, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "both" });
     }
 
     /* THE WRITING: the record's remaining line and the copy from the moment
@@ -391,11 +372,11 @@ export function flyFrom(card: HTMLElement, open: () => void, parts?: Part[]) {
         });
       });
     };
-    const writeEnd = RUN - LINK;
+    const writeEnd = 720 - 110;
     const meta = target(".entry-record-values > span:nth-of-type(3):not(.entry-record-campaign):not(.entry-tags), .cside-info > span:nth-of-type(3)");
-    cover(meta, SETTLED, 90);
-    cover(target(".entry-blocks, .cside-text"), SETTLED, writeEnd - SETTLED);
-    cover(target(".entry-record-values a, .cside-site"), writeEnd, LINK);
+    cover(meta, 260, 90);
+    cover(target(".entry-blocks, .cside-text"), 260, writeEnd - 260);
+    cover(target(".entry-record-values a, .cside-site"), writeEnd, 110);
 
     for (const a of opening) {
       a.currentTime = 0;
@@ -408,6 +389,6 @@ export function flyFrom(card: HTMLElement, open: () => void, parts?: Part[]) {
       root.removeAttribute("data-nk-flying");
       for (const el of waiting) el.removeAttribute("data-nk-awaiting");
     };
-    layer.animate([{ opacity: 1 }, { opacity: 1 }], { duration: RUN + 20 }).finished.then(done, done);
+    layer.animate([{ opacity: 1 }, { opacity: 1 }], { duration: 720 + 20 }).finished.then(done, done);
   });
 }

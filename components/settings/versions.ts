@@ -72,11 +72,6 @@ export const SWITCHES: Record<string, boolean> = {
 /* the card line's thickness, in px */
 export const LINE_WIDTH = "2";
 
-/* every part past its first layout: the page as designed, not the first draft */
-export const VARIANTS = true;
-/* no in-page controls for the settings */
-export const DECK = false;
-
 /* the settings as attributes for <html>, there from the first paint */
 export function rootAttributes(): Record<string, string> {
   const out: Record<string, string> = {};

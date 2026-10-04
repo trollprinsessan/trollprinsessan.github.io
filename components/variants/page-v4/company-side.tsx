@@ -6,7 +6,6 @@ import "./company-side.css";
 import type { Company } from "@/lib/types";
 import { visualFor, cohortsFor, isLineArt, isPhoto, web } from "@/lib/art-direction";
 import { Badges } from "@/components/variants/badge/badge";
-import { useToggle, useVersion } from "@/components/settings/registry";
 import { useDecode } from "@/components/variants/parts/decode";
 
 /* PAGE-V4: THE COMPANY BESIDE THE LIST. The modal's own pieces - its design,
@@ -35,7 +34,7 @@ import { useDecode } from "@/components/variants/parts/decode";
    The data is read the way the original modal reads it (EntryLayout in
    archive.tsx), so what one shows the other shows. */
 
-export type SideSteps = {
+type SideSteps = {
   prev: Company | null;
   next: Company | null;
   onStep: (dir: -1 | 1) => void;
@@ -61,7 +60,7 @@ function metaOf(c: Company) {
   ];
 }
 
-export function Title({ c, name }: { c: Company; name?: string }) {
+function Title({ c, name }: { c: Company; name?: string }) {
   return (
     <h2 className="cside-title" id={`cside-name-${c.slug}`} aria-label={c.name}>
       {name ?? c.name}
@@ -70,7 +69,7 @@ export function Title({ c, name }: { c: Company; name?: string }) {
 }
 
 /* TOOLS: the close - an x, just the letter. Shuffle is on the picture. */
-export function Tools({ onClose, onShuffle, copy }: { onClose: () => void; onShuffle?: () => void; copy?: string }) {
+function Tools({ onClose, onShuffle, copy }: { onClose: () => void; onShuffle?: () => void; copy?: string }) {
   return (
     <div className="cside-tools">
       {/* sideview-v7: Copy link up by the x */}
@@ -110,7 +109,7 @@ export function Arrows({ steps, className = "" }: { steps: SideSteps; className?
   );
 }
 
-export function Nav({ steps, slug }: { steps: SideSteps; slug: string }) {
+function Nav({ steps, slug }: { steps: SideSteps; slug: string }) {
   return (
     <nav className="cside-nav" aria-label="Companies">
       <button
@@ -136,7 +135,7 @@ export function Nav({ steps, slug }: { steps: SideSteps; slug: string }) {
   );
 }
 
-export function Info({ c, campaign = false }: { c: Company; campaign?: boolean }) {
+function Info({ c, campaign = false }: { c: Company; campaign?: boolean }) {
   const meta = metaOf(c);
   return (
     <div className="cside-info">
@@ -154,7 +153,7 @@ export function Info({ c, campaign = false }: { c: Company; campaign?: boolean }
   );
 }
 
-export function Caption({ c, badges = false }: { c: Company; badges?: boolean }) {
+function Caption({ c, badges = false }: { c: Company; badges?: boolean }) {
   const campaigns = cohortsFor(c.slug);
   /* the line is held when there is none, so the plate stands on the same
      line for every company; page-v5 sets the campaign as its badge */
@@ -171,7 +170,7 @@ export function Caption({ c, badges = false }: { c: Company; badges?: boolean })
    it the cursor is the manifest's - the dot with "Shuffle" beside it,
    following the pointer (the original .mod-manifest-draw-cursor). Gone the
    moment the pointer leaves or the page moves. */
-export function Picture({ c, onClick }: { c: Company; onClick?: () => void }) {
+function Picture({ c, onClick }: { c: Company; onClick?: () => void }) {
   const src = visualFor(c);
   const kind = !src ? "none" : src.endsWith(".gif") ? "gif" : isLineArt(src) ? "line" : isPhoto(src) ? "photo" : "clip";
   const [mark, setMark] = useState<{ x: number; y: number } | null>(null);
@@ -229,11 +228,11 @@ function CopyLink({ slug }: { slug: string }) {
   );
 }
 
-export function Gymbs({ c }: { c: Company }) {
+function Gymbs({ c }: { c: Company }) {
   return c.statement ? <p className="cside-gymbs">{c.statement}</p> : null;
 }
 
-export function Text({ c }: { c: Company }) {
+function Text({ c }: { c: Company }) {
   return (
     <div className="cside-text">
       {blocksOf(c).map((b, i) => (
@@ -242,22 +241,6 @@ export function Text({ c }: { c: Company }) {
     </div>
   );
 }
-
-/* THE COLUMN: the pieces in their areas, beside the list. It comes in from
-   the right and goes back out the same way, fast, and never fades: the
-   company it showed is held while it goes, so the slide out has something
-   to carry. Another company pressed while one is open folds the
-   open one out and the new one in, quicker still; the roulette's companies
-   run through it in place. While it is there the page knows it
-   (html.nk-cside), so the list and the mark make room.
-
-   ONLY AT THE LIST. Beside the list (a wide window) it is part of the list's
-   stretch of page, so it is only ever seen with the list. Over the page (a
-   narrow window, a phone) it is laid over everything - so there it waits
-   until the list is up, and folds away again when the page is taken back
-   up above it: a reload with a company in the address, short of the list,
-   shows no company. It stays open all the while. */
-const SLIDE_MS = 220;
 
 /* whether the list holds the middle of the window */
 function useAtList() {
@@ -310,18 +293,12 @@ export default function CompanySide({
 }) {
   const wide = useWide();
   const atList = useAtList();
-  /* the company to show: the open one - over the page, only at the list */
-  /* switch sideviewphone: on a phone the view covers the screen, so it shows
-     wherever the page stands - opened from the manifest as from the list */
-  const anywhere = useToggle("sideviewphone");
-  const want = wide || atList || anywhere ? c : null;
+  const want = c;
   const [shown, setShown] = useState<Company | null>(null);
   const [leaving, setLeaving] = useState(false);
   const ref = useRef<HTMLElement>(null);
   /* the roulette's last step comes as it stops: still a step of it */
   const wasSpinning = useRef(false);
-  /* sideview-v3: the picture straight under the name, the record under it */
-  const order = useVersion("sideview");
   /* FROM ONE COMPANY TO ANOTHER: no fold out and in - the column
      stays, the name decodes in its place and the rest waits white until it
      has landed. Shuffle does not decode: it rolls and lands. */
@@ -342,7 +319,7 @@ export default function CompanySide({
          shrinks under the moving mark - laid out at the column's shortest
          (the mark whole over it) and held there; the room the column gains
          as the mark goes is left between the copy and the foot */
-      const pic13 = order === "v13" ? el.querySelector<HTMLElement>(".cside-picture") : null;
+      const pic13 = el.querySelector<HTMLElement>(".cside-picture");
       const short13 = !!pic13 && window.matchMedia("(min-width: 901px)").matches;
       if (pic13) {
         pic13.style.removeProperty("height");
@@ -364,20 +341,6 @@ export default function CompanySide({
       }
     };
     const fitAt = () => {
-      /* sideview-v7 to -v9 scroll instead: nothing is squeezed or set smaller */
-      if (order === "v7" || order === "v8" || order === "v9") return;
-      /* sideview-v10 has no scroll of its own: the picture gives way first
-         (its CSS), then the type, a size at a time */
-      if (order === "v10" || order === "v11") {
-        /* sideview-v11 scrolls: nothing given way */
-        if (order === "v11") return;
-        const over = () => el.scrollHeight > el.clientHeight + 1;
-        for (const fs of [15, 14, 13, 12, 11]) {
-          if (!over()) return;
-          el.style.setProperty("--cside-fs", `${fs - 1}px`);
-        }
-        return;
-      }
       const pic = el.querySelector<HTMLElement>(".cside-picture");
       const over = () => el.scrollHeight > el.clientHeight + 1;
       if (pic) {
@@ -394,7 +357,7 @@ export default function CompanySide({
     fit();
     window.addEventListener("resize", fit);
     return () => window.removeEventListener("resize", fit);
-  }, [shown, order]);
+  }, [shown]);
 
   useEffect(() => {
     if (want) {
@@ -408,7 +371,7 @@ export default function CompanySide({
     const t = setTimeout(() => {
       setShown(null);
       setLeaving(false);
-    }, SLIDE_MS);
+    }, 220);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [want]);
@@ -452,7 +415,7 @@ export default function CompanySide({
   return (
     <aside
       ref={ref}
-      className={`cside cside--${order}${order === "v8" || order === "v9" || order === "v10" || order === "v11" ? " cside--v7" : ""}${order === "v11" ? " cside--v10" : ""}${leaving ? " cside--out" : ""}${busy ? " cside--decoding" : ""}${spinning ? " cside--spinning" : ""}`}
+      className={`cside cside--v13${leaving ? " cside--out" : ""}${busy ? " cside--decoding" : ""}${spinning ? " cside--spinning" : ""}`}
       aria-labelledby={`cside-name-${shown.slug}`}
     >
       <div className="cside-head">
@@ -461,11 +424,11 @@ export default function CompanySide({
             letters flying in from the card must find the whole name to
             land on */}
         <Title c={shown} name={busy ? name : undefined} />
-        <Tools onClose={onClose} onShuffle={onShuffle} copy={order === "v7" || order === "v8" ? shown.slug : undefined} />
+        <Tools onClose={onClose} onShuffle={onShuffle} copy={undefined} />
       </div>
       <div className="cside-top">
         <div className="cside-facts">
-          <Info c={shown} campaign={order === "v11"} />
+          <Info c={shown} campaign={false} />
           <Caption c={shown} badges={badges} />
         </div>
         <Picture c={shown} onClick={onShuffle} />
@@ -474,7 +437,7 @@ export default function CompanySide({
       <Text c={shown} />
       <Nav steps={steps} slug={shown.slug} />
       {/* sideview-v4: the steps are arrows at the column's middle */}
-      {order === "v4" && <Arrows steps={steps} />}
+
     </aside>
   );
 }

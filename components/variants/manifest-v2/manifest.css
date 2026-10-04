@@ -72,8 +72,6 @@
   font-weight: 700;
   text-align: center;
 }
-.nk-tabicon--mono { font-family: Menlo, Monaco, "Courier New", monospace; font-size: 0.9em; min-width: 2.2em; }
-.nk-tabicon--img { width: 1.4em; height: auto; vertical-align: -0.2em; }
 
 /* the switch: soft snapping (settings/softsnap.tsx) takes the page's snap */
 html[data-t-softsnap="on"] { scroll-snap-type: none; }

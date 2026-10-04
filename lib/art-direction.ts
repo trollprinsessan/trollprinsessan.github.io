@@ -137,7 +137,7 @@ export const PLAY_IMAGES = [
    names to the names in "2026 List-Website data final.csv". Companies from
    earlier years are still dealt a picture from the pool below as a stand-in;
    a 2026 company never is (see visualFor). */
-export const ART_DIRECTION: Record<string, string> = {
+const ART_DIRECTION: Record<string, string> = {
   /* the photobook's pictures where the site had another or none (the book
      is the reference; scripts/bokbilder.py makes the files) */
   "djamo": "/n100/djamo.webp",
@@ -274,7 +274,7 @@ export function hasOwnPlate(c: Company) {
    or the gif. These come in at 5:4, 4:3 and 3:2 and are all shown at 4:3 in
    the grid, cropped in CSS, so the photos sit at one proportion and at about
    the mass of the objects beside them. */
-export const PHOTOS = new Set([
+const PHOTOS = new Set([
   "/n100/ore-energy.webp",
   "/n100/axle-energy-2.webp",
   "/n100/blykalla.webp",
@@ -349,12 +349,12 @@ export function isClipart(src: string | undefined) {
   return !!src && !PHOTOS.has(src) && !LINE_ART.has(src);
 }
 
-export function isPhotographic(src: string) {
+function isPhotographic(src: string) {
   return !LINE_ART.has(src) && !src.endsWith(".gif");
 }
 
 /* the photographs and cutouts alone - the ones that are neither drawn nor moving */
-export const PHOTO_POOL = PLAY_IMAGES.filter(isPhotographic);
+const PHOTO_POOL = PLAY_IMAGES.filter(isPhotographic);
 
 /* 320px copies of the same files, for the places that draw them small - the
    loader's field and the contact sheet. The full plates are 1600px, and
@@ -366,47 +366,19 @@ export function thumb(src: string) {
   return src.replace("/n100/", "/n100/thumb/");
 }
 export const PHOTO_THUMBS = PHOTO_POOL.map(thumb);
-
-/* THE WEB-WEIGHT COPIES (scripts/optimize-images.py writes them beside the
-   originals). The names above stay the originals' - what a picture is, and
-   how it is set, is read off them - and these give the file to load:
-
-     web       an animation as animated WebP: same size, frames and timing
-     cardSrc   the picture at the grid card's size
-     rowThumb  the index row's thumbnail; a still for an animation
-
-   The animations are named as their sources (.gif); only the WebP copies
-   are shipped. */
-const ORIGINALS = false;
 export function web(src: string) {
-  if (ORIGINALS || !src.endsWith(".gif")) return src;
+  if ((!src.endsWith(".gif"))) return src;
   return src.replace(/\.gif$/, ".anim.webp");
 }
 export function cardSrc(src: string) {
-  if (ORIGINALS || !src.startsWith("/n100/")) return src;
+  if ((!src.startsWith("/n100/"))) return src;
   /* an animation has no smaller copy: scaled down it weighs as much */
   if (src.endsWith(".gif")) return web(src);
   return src.endsWith(".webp") ? src.replace("/n100/", "/n100/card/") : src;
 }
 export function rowThumb(src: string) {
-  if (ORIGINALS || !src.endsWith(".gif")) return thumb(src);
+  if ((!src.endsWith(".gif"))) return thumb(src);
   return src.replace("/n100/", "/n100/thumb/").replace(/\.gif$/, ".webp");
-}
-
-/* the same hash as pick(), against the photographic pool only: a company
-   keeps its picture, and the contact sheet never draws a line plate */
-export function photoFor(slug: string) {
-  const named = ART_DIRECTION[slug];
-  if (named && isPhotographic(named)) return named;
-  let h = 0x811c9dc5;
-  for (let i = 0; i < slug.length; i++) {
-    h ^= slug.charCodeAt(i);
-    h = Math.imul(h, 0x01000193) >>> 0;
-  }
-  h ^= h >>> 15;
-  h = Math.imul(h, 0x2545f491) >>> 0;
-  h = (h ^ (h >>> 13)) >>> 0;
-  return PHOTO_POOL[h % PHOTO_POOL.length];
 }
 
 /* THE ELECTRO UNION.

@@ -24,14 +24,7 @@
   vertical-align: middle;
 }
 /* the pink on the pink page keeps an edge of ink */
-html.ground-pink .nkb--pwm:is(.nkb--v3, .nkb--v2:not(.nkb--l)),
-html.ground-pink .nkb--pwm .nkb-pwmlogo,
-html.ground-pink .nkb--v5.nkb--pwm .nkb-seal { box-shadow: inset 0 0 0 1px var(--nkb-pwm-ink); }
-
-@keyframes nkb-blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
-}
+html.ground-pink .nkb--pwm .nkb-pwmlogo { box-shadow: inset 0 0 0 1px var(--nkb-pwm-ink); }
 
 /* v1: THE ORIGINAL - the campaign in words, in whatever it stands in; as a head,
    the modal's name size */
@@ -68,147 +61,11 @@ html.ground-pink .nkb--v5.nkb--pwm .nkb-seal { box-shadow: inset 0 0 0 1px var(-
 .nkb--l .nkb-pwmlogo { font-size: 14px; }
 .nkb--m .nkb-pwmlogo { font-size: 8px; }
 
-/* v2: THE OVAL - the ellipse of the logo's red arcs, the letters in it */
-.nkb--v2:not(.nkb--l) {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid;
-  border-radius: 50%;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  line-height: 1;
-}
-.nkb--v2.nkb--eu:not(.nkb--l) {
-  color: var(--nkb-eu);
-  background: #fff;
-  border-color: var(--nkb-eu-red);
-  font-style: italic;
-}
-.nkb--v2.nkb--pwm:not(.nkb--l) {
-  color: var(--nkb-pwm-ink);
-  background: var(--nkb-pwm);
-  border-color: var(--nkb-pwm-ink);
-  font-family: var(--nkb-mono);
-  letter-spacing: 0;
-}
-.nkb--v2.nkb--s { font-size: 8px; height: 13px; padding: 0 5px; }
-.nkb--v2.nkb--m { font-size: 10px; height: 22px; padding: 0 14px; border-width: 1.5px; }
-.nkb--v2.nkb--l { display: inline-block; line-height: 0; }
-.nkb--v2.nkb--l .nkb-pwmlogo { line-height: 1.5; }
-
-/* v3: THE PLATE - the dock's filled slot: Electro Union white on its blue
-   over a red rule, Prompt What Matters on its pink in its typewriter */
-.nkb--v3 {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  line-height: 1;
-}
-.nkb--v3.nkb--eu { background: var(--nkb-eu); color: #fff; font-style: italic; box-shadow: inset 0 -2px 0 var(--nkb-eu-red); }
-.nkb--v3.nkb--pwm { background: var(--nkb-pwm); color: var(--nkb-pwm-ink); font-family: var(--nkb-mono); letter-spacing: 0; }
-.nkb--v3.nkb--s { font-size: 8px; padding: 2.5px 3px 3px; }
-.nkb--v3.nkb--m { font-size: 10px; padding: 6px 7px 7px; }
-.nkb--v3.nkb--l { font-size: 30px; line-height: 28px; letter-spacing: 0.01em; padding: 10px 12px 14px; }
-.nkb--v3.nkb--eu.nkb--l { box-shadow: inset 0 -5px 0 var(--nkb-eu-red); }
-.nkb--v3.nkb--pwm.nkb--l { letter-spacing: 0; }
-
-/* v4: THE SIGN - the logo's star, the prompt's cursor; the name beside it
-   from medium up */
-.nkb--v4 {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3em;
-  font-weight: 500;
-}
-.nkb-star { display: block; width: 1em; height: 1em; fill: var(--nkb-eu); flex: none; }
-.nkb-cursor {
-  display: inline-block;
-  flex: none;
-  width: 0.56em;
-  height: 1em;
-  background: var(--nkb-pwm);
-  box-shadow: inset 0 0 0 1px var(--nkb-pwm-ink);
-}
-.nkb--v4.nkb--s { font-size: 12px; }
-.nkb--v4.nkb--m { font-size: 14px; line-height: 16px; }
-.nkb--v4.nkb--l { font-size: 42px; line-height: 48px; gap: 0.22em; }
-.nkb--v4.nkb--l .nkb-cursor { box-shadow: inset 0 0 0 2px var(--nkb-pwm-ink); }
-.nkb--v4.nkb--pwm.nkb--m { gap: 0.12em; }
-.nkb--v4.nkb--pwm.nkb--l { gap: 0.08em; }
-.nkb--v4:not(.nkb--s) .nkb-cursor { animation: nkb-blink 1.06s infinite; }
-
 /* v5: THE SEAL - a disc, the sign in it; the ring of words when large */
-.nkb--v5 {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4em;
-  font-weight: 500;
-}
-.nkb-seal {
-  position: relative;
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-}
-.nkb--v5.nkb--eu .nkb-seal { background: var(--nkb-eu); box-shadow: inset 0 0 0 1.5px var(--nkb-eu-red); }
-.nkb--v5.nkb--pwm .nkb-seal { background: var(--nkb-pwm); box-shadow: inset 0 0 0 1px var(--nkb-pwm-ink); }
-.nkb--v5.nkb--eu .nkb-star { fill: #fff; }
-.nkb--v5.nkb--pwm .nkb-cursor { background: var(--nkb-pwm-ink); box-shadow: none; }
-.nkb--v5.nkb--s .nkb-seal { width: 15px; height: 15px; font-size: 8px; }
-.nkb--v5.nkb--m { font-size: 14px; line-height: 16px; }
-.nkb--v5.nkb--m .nkb-seal { width: 22px; height: 22px; font-size: 11px; }
-.nkb--v5.nkb--l { font-size: 42px; line-height: 48px; gap: 18px; }
-.nkb--v5.nkb--l .nkb-seal { width: 108px; height: 108px; font-size: 28px; background: none; box-shadow: none; }
-.nkb-sealsign { position: relative; display: flex; }
-.nkb-sealring {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  animation: nkb-turn 28s linear infinite;
-}
-@keyframes nkb-turn { to { transform: rotate(1turn); } }
-.nkb--eu .nkb-sealdisc { fill: var(--nkb-eu); stroke: var(--nkb-eu-red); stroke-width: 3; }
-.nkb--pwm .nkb-sealdisc { fill: var(--nkb-pwm); stroke: var(--nkb-pwm-ink); stroke-width: 1; }
-.nkb-sealtext { font-family: Arial, Helvetica, sans-serif; font-weight: 700; }
-.nkb--eu .nkb-sealtext { fill: #fff; font-size: 10px; font-style: italic; }
-.nkb--pwm .nkb-sealtext { fill: var(--nkb-pwm-ink); font-size: 8.4px; }
-.nkb-sealin { fill: none; stroke-width: 1.5; }
-.nkb--eu .nkb-sealin { stroke: var(--nkb-eu-red); }
-.nkb--pwm .nkb-sealin { stroke: var(--nkb-pwm-ink); stroke-width: 1; }
-.nkb--v5.nkb--l .nkb-cursor { animation: nkb-blink 1.06s infinite; }
 
 /* v6: THE LOGOS - whole from medium up (above); at a tag's size Electro
    Union's star and letters over the red arc, Prompt What Matters' strip
    with its three letters */
-.nkb--v6 { display: inline-flex; align-items: center; line-height: 0; }
-.nkb-eumini {
-  display: inline-flex;
-  align-items: center;
-  gap: 1px;
-  padding: 0 3px 1px 1px;
-  border-bottom: 1.5px solid var(--nkb-eu-red);
-  border-radius: 0 0 50% 50% / 0 0 100% 100%;
-  color: var(--nkb-eu);
-  font-size: 10px;
-  line-height: 12px;
-  font-weight: 700;
-  font-style: italic;
-}
-.nkb-eumini .nkb-star { width: 10px; height: 10px; }
-.nkb--v6.nkb--s .nkb-pwmlogo { font-size: 8.5px; line-height: 1; padding: 2px 4px; }
-
-@media (prefers-reduced-motion: reduce) {
-  .nkb-cursor,
-  .nkb-sealring { animation: none !important; }
-}
 
 /* THE STAMPS (listview-v4 and on): the campaigns' logos stuck on the head of a
    card's picture, a little askew and a little over its edge - Electro Union

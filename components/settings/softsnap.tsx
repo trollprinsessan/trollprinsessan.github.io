@@ -3,17 +3,8 @@
 import { useEffect } from "react";
 import { useToggle } from "./registry";
 
-/* SOFT SNAP. The page's CSS scroll snap takes hold from far off, and snaps
-   back when a manifest tab changes the page's height. With the switch on,
-   the CSS snap is off (manifest-v2/manifest.css) and this takes its place:
-   only when a scroll comes to rest close to a stop - within 56px - does the
-   page glide the rest of the way. A press on a tab never scrolls. */
-const NEAR = 56;
-
 export default function SoftSnap() {
-  const on = useToggle("softsnap");
   useEffect(() => {
-    if (!on) return;
     let t: ReturnType<typeof setTimeout> | null = null;
     let ours = 0;
     const stops = () => {
@@ -42,7 +33,7 @@ export default function SoftSnap() {
       const y = window.scrollY;
       const near = stops()
         .map((s) => ({ s, d: Math.abs(s - y) }))
-        .filter((x) => x.d > 2 && x.d < NEAR)
+        .filter((x) => x.d > 2 && x.d < 56)
         .sort((a, b) => a.d - b.d)[0];
       if (!near) return;
       ours = Date.now() + 700;
@@ -57,6 +48,6 @@ export default function SoftSnap() {
       window.removeEventListener("scroll", onScroll);
       if (t) clearTimeout(t);
     };
-  }, [on]);
+  }, []);
   return null;
 }

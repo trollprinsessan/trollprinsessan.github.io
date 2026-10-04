@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Wordmark from "@/components/wordmark";
-import { VARIANTS, useVersion } from "@/components/settings/registry";
 import { PHOTO_THUMBS, PLAY_IMAGES, cardSrc, isLineArt, thumb } from "@/lib/art-direction";
 
 /* the photographs and cutouts, with the line drawings and four of the
@@ -25,65 +24,22 @@ function dealIn(base: string[], extra: string[]) {
   return out;
 }
 const LOADER_POOL = dealIn(dealIn(PHOTO_THUMBS, LOADER_LINES), LOADER_GIFS.map(cardSrc));
-
-/* THE LOADER
-   The whole page, white, filled with the index's own pictures - they arrive
-   row by row, the way a contact sheet arrives as it loads, and leave again on
-   the same wave just as fast. The wordmark is what is left in the middle.
-
-   The wave is one CSS timeline and it ends itself: the last keyframe
-   hides the layer, so the page underneath is reachable whether or not this
-   component's JavaScript ever runs. What the script adds is the part CSS
-   cannot do - taking the layer OUT of the page afterwards. Left in, it is a
-   fixed full-viewport layer holding eighty-four pictures above everything
-   else, and any re-render replays the whole wave over whatever you were
-   reading.
-
-   It plays on EVERY load. There was a once-a-session guard here; it is gone
-   while the intro is being designed. If it should stop nagging returning
-   visitors, that is a sessionStorage flag read at the top of this effect -
-   nothing else needs to change.
-
-   Twelve to a row, and a row lands as one - the delays are computed off that
-   here rather than read off the DOM. */
-
-const COLS = 12;
-const ROWS = 7;
-const CELLS = COLS * ROWS;
-
-/* THE CLOCK, in one place. The CSS reads the two per-cell delays off the
-   markup, so these numbers are the only ones. */
-const LEAD = 170;                // a beat of empty page before row one, so
-                                 // the first row is seen ARRIVING rather than
-                                 // being there from the first frame
-const ROW_STEP = 94;             // a row lands every 94ms
-const OUT_STEP = 150;            // and leaves slower than it arrived
-const HOLD = 100;                // the field stands complete - barely a beat
+const CELLS = 12 * 7;                // the field stands complete - barely a beat
                                  // before the first row is taken away again
-const CLEAR = LEAD + (ROWS - 1) * ROW_STEP + HOLD; // the first row leaves
-const LAST_GONE = CLEAR + (ROWS - 1) * OUT_STEP; // the last row leaves
-/* THE MARK IS UNCOVERED BY THE ROWS, NOT REVEALED AFTER THEM.
-   It comes in over the last two row-steps, half at each: when one row is
-   still standing you are seeing half the mark, and when that row goes you
-   are seeing all of it. */
-const MARK_STEPS = 2;
-const MARK_IN = LAST_GONE - MARK_STEPS * OUT_STEP;
-const REST = 240;                 // the mark stands there, whole, on white -
+const CLEAR = 170 + (7 - 1) * 94 + 100; // the first row leaves
+const LAST_GONE = CLEAR + (7 - 1) * 150;
+const MARK_IN = LAST_GONE - 2 * 150;                 // the mark stands there, whole, on white -
                                   // just long enough to register. It cannot
                                   // be less than nothing: the mark is black
                                   // and the film is dark, so the film cannot
                                   // begin before the mark has been seen.
 /* and only THEN the white goes and the film starts painting - from the top
    down, so the last thing it reaches is the mark it covers */
-const VEIL = LAST_GONE + REST;
+const VEIL = LAST_GONE + 240;
 const RUN_MS = VEIL;              // the layer leaves as the white does
 
 export default function Loader() {
   const [done, setDone] = useState(false);
-  /* hero-v3: the white leaves row by row with the pictures, so
-     the film shows behind wherever a row has gone - known from the first
-     render, before the settings are written on the root */
-  const behind = useVersion("hero") === "v3";
 
   /* THE LOADER'S MARK IS LAID ON THE REAL ONE, MEASURED.
      Set from the window's edges it was the real mark's box only where the
@@ -131,7 +87,6 @@ export default function Loader() {
      has ended parts the two and both show. The real one is the page's: the
      loader's goes the moment the page moves. */
   useEffect(() => {
-    if (!VARIANTS) return;
     const onScroll = () => {
       if (window.scrollY < 2 || !markRef.current) return;
       markRef.current.style.visibility = "hidden";
@@ -169,18 +124,18 @@ export default function Loader() {
 
   return (
     <div
-      className={`loader${behind ? " loader--behind" : ""}`}
+      className={`loader loader--behind`}
       aria-hidden="true"
       /* the CSS reads its delays off these, so the clock above is the only
          place any of these numbers live */
       style={{
         ["--t-mark" as string]: `${MARK_IN}ms`,
-        ["--t-mark-run" as string]: `${MARK_STEPS * OUT_STEP}ms`,
-        ["--mark-steps" as string]: MARK_STEPS,
+        ["--t-mark-run" as string]: `${2 * 150}ms`,
+        ["--mark-steps" as string]: 2,
         ["--t-veil" as string]: `${VEIL}ms`,
         ["--t-clear" as string]: `${CLEAR}ms`,
-        ["--t-out-run" as string]: `${ROWS * OUT_STEP}ms`,
-        ["--rows" as string]: ROWS,
+        ["--t-out-run" as string]: `${7 * 150}ms`,
+        ["--rows" as string]: 7,
       }}
     >
       <div className="loader-sheet">
@@ -191,8 +146,8 @@ export default function Loader() {
             /* a whole row at a time, in AND out: the field fills row by row
                and empties the same way */
             style={{
-              ["--in" as string]: `${LEAD + Math.floor(i / COLS) * ROW_STEP}ms`,
-              ["--out" as string]: `${CLEAR + Math.floor(i / COLS) * OUT_STEP}ms`,
+              ["--in" as string]: `${170 + Math.floor(i / 12) * 94}ms`,
+              ["--out" as string]: `${CLEAR + Math.floor(i / 12) * 150}ms`,
             }}
           >
             {/* dealt round the pool so no two neighbours repeat in a row */}

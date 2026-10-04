@@ -11,7 +11,7 @@ export function getCompany(slug: string): Company | undefined {
 // The curated themes. These are editorial groupings rather than anything
 // derived from the data — no company record carries a `themes` value yet, so
 // selecting one currently returns nothing until the companies are tagged.
-export const THEMES = ["Electro Union", "Prompt What Matters"];
+const THEMES = ["Electro Union", "Prompt What Matters"];
 
 export function getFacets(list: Company[] = companies): Facets {
   const sectors = [...new Set(list.map((c) => c.sectorLabel).filter(Boolean))].sort();

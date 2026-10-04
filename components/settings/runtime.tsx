@@ -93,7 +93,6 @@ export default function Runtime() {
       const left = range.getBoundingClientRect().left;
       if (left > right) root.style.setProperty("--nk-menu-gap", `${Math.round(left - right)}px`);
 
-
     };
     const ask = () => {
       if (!raf) raf = requestAnimationFrame(measure);
@@ -122,17 +121,15 @@ export default function Runtime() {
     const root = document.documentElement;
     let raf = 0;
     let last = "";
-    const MAX_PICTURE = 880;
     const layout = (force: boolean) => {
       raf = 0;
-      const layoutV = root.dataset.vMlayout;
-      if ((layoutV !== "v10" && layoutV !== "v11") || !window.matchMedia("(min-width: 721px)").matches) return;
+      if ((!window.matchMedia("(min-width: 721px)").matches)) return;
       const section = document.getElementById("manifest");
       const copy = document.querySelector<HTMLElement>(".mod-manifest-body");
       const menu = document.querySelector<HTMLElement>(".mod-manifest-index");
       const mast = document.querySelector<HTMLElement>(".archive-masthead");
       if (!section || !copy || !menu || !mast) return;
-      const key = `${layoutV === "v11" ? copy.textContent?.length : ""}|${window.innerWidth}|${window.innerWidth}x${window.innerHeight}|${root.dataset.vManifest}|${!!document.querySelector(".nk-np-list")}|${document.querySelector(".mod-manifest-draw-caption")?.textContent}`;
+      const key = `${copy.textContent?.length}|${window.innerWidth}|${window.innerWidth}x${window.innerHeight}|v2|${!!document.querySelector(".nk-np-list")}|${document.querySelector(".mod-manifest-draw-caption")?.textContent}`;
       if (!force && key === last) return;
       last = key;
 
@@ -143,10 +140,6 @@ export default function Runtime() {
       const margin = menu.getBoundingClientRect().left;
       const gap = parseFloat(getComputedStyle(root).getPropertyValue("--nk-menu-gap")) || 16;
       const right = window.innerWidth - margin;
-      const MIN_PICTURE = 200;
-      /* a third column only where the picture stays large beside it - on a
-         very wide window; elsewhere the copy keeps two columns */
-      const ROOM_FOR_THIRD = 480;
 
       /* the copy: two columns as long as it can; a third only on a very
          wide window; past that, a size smaller, a step at a time */
@@ -164,7 +157,7 @@ export default function Runtime() {
         match();
         return bodies.every((b) => b.getBoundingClientRect().height <= room);
       };
-      const leaves = () => copy.getBoundingClientRect().right + gap + ROOM_FOR_THIRD <= right;
+      const leaves = () => copy.getBoundingClientRect().right + gap + 480 <= right;
       let cols = 2;
       root.style.setProperty("--nk-copy-cols", "2");
       /* with the roster up the picture's box is the roster's, and it needs
@@ -186,14 +179,12 @@ export default function Runtime() {
       /* mlayout-v11: the type settled over all the panels in two columns,
          the panel on screen takes one column, three quarters as wide, where
          it fits in one */
-      if (layoutV === "v11") {
-        root.style.setProperty("--nk-copy-cols", "1");
-        if (copy.getBoundingClientRect().height > room) root.style.setProperty("--nk-copy-cols", "2");
-      }
+            root.style.setProperty("--nk-copy-cols", "1");
+      if (copy.getBoundingClientRect().height > room) root.style.setProperty("--nk-copy-cols", "2");
 
       /* the picture's box: from the copy's step to the right margin */
       const start = copy.getBoundingClientRect().right + gap;
-      const width = Math.max(MIN_PICTURE, Math.min(MAX_PICTURE, right - start));
+      const width = Math.max(200, Math.min(880, right - start));
       for (const el of document.querySelectorAll<HTMLElement>(
         ".mod-manifest-draw-caption, .mod-manifest-draw-plate, .mod-manifest-verso"
       )) {
@@ -223,7 +214,7 @@ export default function Runtime() {
     /* a tab changes the copy, a draw the picture, without a resize */
     const t = setInterval(() => ask(false), 250);
     const placed = setInterval(() => {
-      if (root.dataset.vMlayout === "v10" || root.dataset.vMlayout === "v11") layout(true);
+      layout(true);
     }, 1500);
     return () => {
       window.removeEventListener("resize", onResize);
@@ -242,7 +233,7 @@ export default function Runtime() {
       raf = 0;
       const art = document.querySelector<HTMLElement>(".mod-faq .mod-title-art--faq");
       const top = document.querySelector<HTMLElement>(".mod-faq .faq-top");
-      if (root.dataset.vFaq !== "v3" || !art || !top || !window.matchMedia("(min-width: 901px)").matches) {
+      if ((!art) || !top || !window.matchMedia("(min-width: 901px)").matches) {
         top?.style.removeProperty("--nk-faq-shift");
         return;
       }

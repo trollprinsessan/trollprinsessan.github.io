@@ -1,15 +1,4 @@
-/* THE CARD GROWS INTO THE MODAL (cardstyle-v8).
-   A press on a card lays a copy of it - its white ground and shadow, and
-   each of its parts - over the page where the card stands, opens the modal
-   unseen, and then moves the copy into the modal: the ground grows to the
-   sheet, and the name, the picture, the one-liner and the tags each travel
-   to where the modal sets them, while the copy's other words fade. When
-   they land the modal shows and the copy lifts away. Nothing of the
-   original modal is changed; it only waits hidden (html[data-nk-growing])
-   while the copy is in flight. */
 
-const RUN = 520;
-const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 
 /* each part of the card, and where the modal puts it */
 const PARTS: { from: string; to: string; kind: "text" | "img" }[] = [
@@ -103,14 +92,14 @@ export function growFrom(card: HTMLElement, open: () => void) {
         { left: `${r0.left}px`, top: `${r0.top}px`, width: `${r0.width}px`, height: `${r0.height}px` },
         { left: `${t.left}px`, top: `${t.top}px`, width: `${t.width}px`, height: `${t.height}px` },
       ],
-      { duration: RUN, easing: EASE, fill: "forwards" }
+      { duration: 520, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "forwards" }
     );
     for (const f of flights) {
       const target = entry.querySelector<HTMLElement>(f.to);
       const to = target?.getBoundingClientRect();
       if (!to || !to.width) {
         /* nowhere for it in the modal: it fades where it is */
-        f.clone.animate([{ opacity: 1 }, { opacity: 0 }], { duration: RUN / 2, fill: "forwards" });
+        f.clone.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 520 / 2, fill: "forwards" });
         continue;
       }
       const dx = to.left - f.from.left;
@@ -121,7 +110,7 @@ export function growFrom(card: HTMLElement, open: () => void) {
             { left: `${f.from.left}px`, top: `${f.from.top}px`, width: `${f.from.width}px`, height: `${f.from.height}px` },
             { left: `${to.left}px`, top: `${to.top}px`, width: `${to.width}px`, height: `${to.height}px` },
           ],
-          { duration: RUN, easing: EASE, fill: "forwards" }
+          { duration: 520, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "forwards" }
         );
       } else {
         /* words travel, and hand over to the modal's own once they land */
@@ -132,7 +121,7 @@ export function growFrom(card: HTMLElement, open: () => void) {
             { transform: "translate(0, 0) scale(1)" },
             { transform: `translate(${dx}px, ${dy}px) scale(${size})` },
           ],
-          { duration: RUN, easing: EASE, fill: "forwards" }
+          { duration: 520, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "forwards" }
         );
       }
     }

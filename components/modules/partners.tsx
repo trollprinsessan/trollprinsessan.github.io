@@ -9,7 +9,7 @@
 // Formula: h = clamp(18, sqrt(4160 / ar) * clamp(0.85, (0.33 / ink)^0.25, 1.15), 58)
 // where ar is the trimmed aspect ratio and ink the share of the trimmed box
 // that is drawn. Regenerate if logos change.
-export const LOGOS = [
+const LOGOS = [
   { file: "world-fund.png", name: "World Fund", h: 19 },
   { file: "sequoia.png", name: "Sequoia Capital", h: 22 },
   { file: "softbank.png", name: "SoftBank", h: 25 },

@@ -47,12 +47,7 @@ const LATEST = [
   },
 ];
 
-const GAP = 24;
-
 export default function Latest() {
-  /* latest-v3: the arrows at the run's sides, half way down, and
-     the run as wide as the logo, a card landing just inside the left arrow */
-  const sides = useVersion("latest") === "v3";
   const trackRef = useRef<HTMLDivElement>(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
@@ -63,7 +58,7 @@ export default function Latest() {
      landing all move by, so a card is never left half-cropped */
   const stepOf = (el: HTMLElement) => {
     const card = el.querySelector<HTMLElement>(".mod-latest-card");
-    return card ? card.offsetWidth + GAP : el.clientWidth / 2;
+    return card ? card.offsetWidth + 24 : el.clientWidth / 2;
   };
 
   const sync = useCallback(() => {
@@ -167,27 +162,7 @@ export default function Latest() {
         </div>
       </div>
 
-      {sides ? (
-        <div className="nk-latest-stage">
-          <button
-            className="nk-latest-side nk-latest-side--prev"
-            onClick={() => page(-1)}
-            disabled={atStart}
-            aria-label="Previous"
-          >
-            ←
-          </button>
-          {track()}
-          <button
-            className="nk-latest-side nk-latest-side--next"
-            onClick={() => page(1)}
-            disabled={atEnd}
-            aria-label="Next"
-          >
-            →
-          </button>
-        </div>
-      ) : (
+      {(
         track()
       )}
     </section>

@@ -10,7 +10,7 @@ import { visualFor, cohortsFor, isPhoto, isLineArt } from "@/lib/art-direction";
    pulled forward in proportion, so none is left over to clump at the foot. */
 
 /* the first two rows at six across, in this order */
-export const OPENING = [
+const OPENING = [
   "blykalla",
   "mialgae",
   "turn2x",
@@ -24,9 +24,6 @@ export const OPENING = [
   "amatera",
   "metafuels",
 ];
-
-/* composed for the grid's opening density */
-const COLS = 6;
 
 function kindOf(c: Company) {
   const v = visualFor(c);
@@ -60,13 +57,13 @@ export function composeOrder(list: Company[]): string[] {
 
   while (rest.length) {
     const p = placed.length;
-    const col = p % COLS;
+    const col = p % 6;
     /* the neighbours already hung: left, above, and the two upper diagonals */
     const neighbours: [Company | undefined, number][] = [
       [col > 0 ? placed[p - 1] : undefined, 1],
-      [placed[p - COLS], 1],
-      [col > 0 ? placed[p - COLS - 1] : undefined, 0.5],
-      [col < COLS - 1 ? placed[p - COLS + 1] : undefined, 0.5],
+      [placed[p - 6], 1],
+      [col > 0 ? placed[p - 6 - 1] : undefined, 0.5],
+      [col < 6 - 1 ? placed[p - 6 + 1] : undefined, 0.5],
     ];
     let best = 0;
     let bestScore = Infinity;

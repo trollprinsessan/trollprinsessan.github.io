@@ -1,18 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
-
-/* THE SNAP, MADE DECISIVE ON A PHONE.
-   CSS proximity snapping only catches a scroll that ends a little way off a
-   snap point - the browser decides how little, and on a phone a flick runs
-   past that band more often than not. This finishes the job: when a scroll
-   ends within reach of either of the page's two views - the mark at the foot
-   of the screen, or the mark at its head with the list under it - the page
-   settles onto it. It never fires mid-list: past the second view there is
-   nothing to settle on, so the list scrolls free.
-
-   Phone only. On desktop the CSS band is enough, and a wheel is not a flick. */
-const REACH = 0.42; // of the screen, either side of a view
+import { useEffect } from "react"; // of the screen, either side of a view
 
 export default function SnapAssist() {
   useEffect(() => {
@@ -22,35 +10,10 @@ export default function SnapAssist() {
     let timer: ReturnType<typeof setTimeout> | null = null;
     let settling = false;
 
-    const views = () => {
-      const reveal = document.querySelector(".reveal-end");
-      const archive = document.querySelector("#archive");
-      const mast = document.querySelector(".archive-masthead");
-      if (!reveal || !archive || !mast) return [];
-      const vh = window.innerHeight;
-      const foot = reveal.getBoundingClientRect().bottom + window.scrollY - vh;
-      const head =
-        archive.getBoundingClientRect().top +
-        window.scrollY -
-        mast.getBoundingClientRect().height;
-      return [foot, head];
-    };
-
     const settle = () => {
       if (settling) return;
       /* the page's soft snap takes over while its switch is on */
-      if (document.documentElement.dataset.tSoftsnap === "on") return;
-      const y = window.scrollY;
-      const reach = window.innerHeight * REACH;
-      let best: number | null = null;
-      for (const v of views()) {
-        const d = Math.abs(v - y);
-        if (d > 2 && d < reach && (best === null || d < Math.abs(best - y))) best = v;
-      }
-      if (best === null) return;
-      settling = true;
-      window.scrollTo({ top: best, behavior: "smooth" });
-      setTimeout(() => (settling = false), 600);
+      return;
     };
 
     /* scrollend where it exists; a quiet 120ms after the last scroll event

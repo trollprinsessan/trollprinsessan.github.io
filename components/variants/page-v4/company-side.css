@@ -277,12 +277,6 @@ html.nk-cside .grid--v2.grid--side { padding-right: var(--pad); }
   .cside-title { font-size: 30px; line-height: 34px; }
 }
 
-/* sideview-v3: the picture straight under the name, then the record, then the
-   copy */
-.cside:is(.cside--v3, .cside--v4) .cside-picture { order: -1; margin-top: var(--cside-gap-info); }
-.cside:is(.cside--v3, .cside--v4) .cside-facts .cside-info { margin-top: var(--cside-gap-picture); }
-.cside:is(.cside--v3, .cside--v4)[data-tight] .cside-picture { margin-top: 0; }
-
 /* while the name decodes, the rest of the column waits white */
 .cside--decoding > :not(.cside-head),
 .cside--decoding .cside-tools { visibility: hidden; }
@@ -319,59 +313,7 @@ html.nk-cside .grid--v2.grid--side { padding-right: var(--pad); }
 .nk-arrow:disabled { color: var(--meta); cursor: default; }
 .nk-arrow--prev { left: 2px; }
 .nk-arrow--next { right: 2px; }
-.cside--v4 .cside-nav .cside-step:not(.cside-copy) { display: none; }
-.cside--v4 .cside-nav .cside-copy { margin-left: 0; }
-/* sideview-v4: a lane each side for the arrows, so they never sit on the words */
-.cside--v4 { --cside-pad: 40px; }
-.cside--v4 .nk-arrow { font-size: 24px; padding: 10px 4px; }
-
-/* sideview-v5: name, picture, the gymbs centred under it, then the record
-   left-set under the gymbs, then the copy */
-.cside--v5 .cside-top,
-.cside--v5 .cside-facts { display: contents; }
-.cside--v5 .cside-picture { order: 1; margin-top: var(--cside-gap-info); }
-.cside--v5 .cside-gymbs { order: 2; text-align: center; margin: 14px 0 0; }
-.cside--v5 .cside-info { order: 3; margin: 14px 0 0; white-space: normal; }
-.cside--v5 .cside-caption { order: 4; }
-.cside--v5 .cside-text { order: 5; margin-top: var(--cside-gap-copy); }
-.cside--v5 .cside-nav { order: 6; }
-
-/* sideview-v7: v5's order, and
-   - Copy link and the x at the head's right, on the copy's right edge
-   - the gymbs bold italic, centred under the picture
-   - the record in one block, the campaign straight under the website
-   - the copy narrower: two thirds of the column
-   - Prev at the foot's left, Next at its right; Copy link not down there */
-.cside--v7 .cside-top,
-.cside--v7 .cside-facts { display: contents; }
-.cside--v7 .cside-tools { align-self: first baseline; gap: 16px; margin-right: 0; }
-.cside--v7 .cside-tools .cside-step { padding: 0; }
-.cside--v7 .cside-picture { order: 1; margin-top: var(--cside-gap-info); }
-.cside--v7 .cside-gymbs { order: 2; text-align: center; font-style: italic; margin: 14px 0 0; }
-.cside--v7 .cside-info { order: 3; margin: 18px 0 0; white-space: normal; }
-.cside--v7 .cside-site { margin-top: 0; }
-.cside--v7 .cside-caption { order: 4; margin: 0; min-height: 0; }
-.cside--v7 .cside-text { order: 5; margin-top: var(--cside-gap-copy); width: calc(100% * 2 / 3); }
-.cside--v7 .cside-nav { order: 6; justify-content: space-between; margin-top: auto; padding-top: 1lh; }
-.cside--v7 .cside-nav .cside-copy { display: none; }
-/* nothing gives way, and the column scrolls when it runs long, so Prev and
-   Next are always reached at its foot */
-.cside--v7 { overflow-y: auto; overscroll-behavior: contain; }
-.cside--v7 > *,
-.cside--v7 .cside-top > *,
-.cside--v7 .cside-facts > * { flex-shrink: 0; }
-/* the picture inside the grid's margins, as the words are */
-.cside--v7 .cside-picture { margin-left: 0; margin-right: 0; }
-
-/* sideview-v8: v7, the whole column narrower - a third less - and the
-   picture, the record and the copy all on the one width, edge to edge, so
-   everything in the column aligns */
-.cside--v8 .cside-text { width: 100%; }
-.cside--v8 .cside-title { font-size: 34px; line-height: 40px; }
 /* on a phone the column is the screen: the copy takes its whole width */
-@media (max-width: 900px) {
-  .cside--v7 .cside-text { width: 100%; }
-}
 
 /* markmode-v4: over the grid the mark is stuck to the head of the window (on
    no ground - the cards are cut at its foot); over the index it is not
@@ -379,112 +321,19 @@ html.nk-cside .grid--v2.grid--side { padding-right: var(--pad); }
 html:is([data-v-markmode="v4"], [data-v-markmode="v5"])[data-nk-view="grid"] .archive-masthead { top: 0; }
 html:is([data-v-markmode="v4"], [data-v-markmode="v5"])[data-nk-view="index"] .archive-masthead { top: auto; }
 
-/* sideview-v9: v7, with the record under the copy, more air between the
-   one-liner and the copy, and at the foot Copy link at the left, Prev and
-   Next together at the right */
-.cside--v9 .cside-text { order: 3; margin-top: 30px; }
-.cside--v9 .cside-info { order: 4; margin-top: 30px; }
-.cside--v9 .cside-caption { order: 5; }
-.cside--v9.cside--v7 .cside-nav { justify-content: flex-end; gap: 16px; }
-.cside--v9.cside--v7 .cside-nav .cside-copy { display: inline-block; order: -1; margin: 0 auto 0 0; }
-
-/* sideview-v10: modal-v6 in one column - the name at the left and the close
-   mark at the right on one line, then the picture, the one-liner, the
-   record, the copy, and at the foot Copy link at the left, Prev and Next at
-   the right. The one-liner and the record set as the modal sets them. */
-.cside--v10 .cside-head { align-items: first baseline; }
-.cside--v10 .cside-close {
-  font-size: 0;
-  padding: 4px 0 4px 8px;
-}
-.cside--v10 .cside-close::after { content: "\2715"; font-size: 10px; line-height: 1; }
-.cside--v10 .cside-picture { order: 1; margin-top: 22px; }
-.cside--v10 .cside-gymbs { order: 2; text-align: left; font-style: normal; font-weight: 700; margin: 22px 0 0; }
-.cside--v10 .cside-info { order: 3; margin: 18px 0 0; white-space: normal; }
-.cside--v10 .cside-site { margin-top: 0; text-decoration: underline; text-underline-offset: 2px; }
-.cside--v10 .cside-caption { order: 4; margin: 0; min-height: 0; }
-.cside--v10 .cside-caption:empty { display: none; }
-.cside--v10 .cside-text { order: 5; margin-top: 24px; width: 100%; }
-.cside--v10.cside--v7 .cside-nav { order: 6; justify-content: flex-end; gap: 16px; }
-.cside--v10.cside--v7 .cside-nav .cside-copy { display: inline-block; order: -1; margin: 0 auto 0 0; }
-/* sideview-v10, as the modal sets it: the name as written, not in capitals;
-   the record one block with the campaign before the website; and the view
-   white whatever the page's ground */
-.cside.cside--v10 { --bg: #fff; --meta: #999; --muted: #999; background: #fff; }
-.cside--v10 .cside-title { text-transform: none; }
-.cside--v10 .cside-info { display: contents; }
-.cside--v10 .cside-info > span { order: 3; }
-.cside--v10 .cside-info > span:first-child { margin-top: 18px; }
-.cside--v10 .cside-caption { order: 4; }
-.cside--v10 .cside-site { order: 5; align-self: flex-start; }
-.cside--v10 .cside-text { order: 6; }
-.cside--v10.cside--v7 .cside-nav { order: 7; }
-
 /* sideview-v10 on a desktop: stuck to the mark's foot wherever it is - under
    the mark while the mark is on screen, at the window's head once it has
    gone - so nothing white stands over it, and it goes up with the list and
    the mark. No scroll of its own: the column is the window's height under
    the mark, the picture gives way, then the type (company-side.tsx). */
-@media (min-width: 901px) {
-  html.nk-cside #archive > .cside.cside--v10 {
-    top: var(--index-panel-top, 0px) !important;
-    /* the window under the mark - and no shorter as the mark comes back
-       down the window: then it goes down with the list, whole */
-    height: calc(100dvh - min(var(--index-panel-top, 0px), var(--masthead-h, 194px))) !important;
-    margin-top: 0 !important;
-    overflow: hidden;
-  }
-  .cside--v10 .cside-picture {
-    flex: 0 1 auto;
-    min-height: 120px;
-    overflow: hidden;
-  }
-  .cside--v10 .cside-picture img { max-height: 100%; object-fit: contain; object-position: left top; }
-  .cside--v10 > :not(.cside-picture) { flex-shrink: 0; }
-}
 /* a phone: the view scrolls, and only the view */
-@media (max-width: 900px) {
-  .cside.cside--v10 { overflow-y: auto; overscroll-behavior: contain; }
-}
 
 /* sideview-v11: sideview-v10 set as modal-v7 is - a wider column with more air
    at both sides, the record set to the right (its words set left), 40px
    over and under the one-liner - and it scrolls, so the foot with Copy link,
    Prev and Next is always within reach */
-.cside--v11 { --cside-pad: 56px; }
-@media (min-width: 901px) {
-  html.nk-cside #archive > .cside.cside--v11 {
-    height: calc(100dvh - var(--index-panel-top, 0px)) !important;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-  }
-  .cside--v11 .cside-picture { flex: none; min-height: 0; overflow: visible; }
-  .cside--v11 .cside-picture img { max-height: none; }
-}
-.cside--v11 .cside-info { display: flex; flex-direction: column; order: 3; align-self: flex-end; width: max-content; max-width: 100%; text-align: left; margin-top: 40px; }
-.cside--v11 .cside-info > span:first-child { margin-top: 0; }
-.cside--v11 .cside-caption { display: none; }
-.cside--v11 .cside-gymbs { margin-top: 40px; }
-.cside--v11 .cside-text { margin-top: 40px; }
-.cside--v11.cside--v7 .cside-nav { padding-bottom: 8px; }
-@media (max-width: 900px) {
-  .cside--v11 { --cside-pad: var(--pad); }
-}
 /* the dock at the window's foot lies over the column's foot: room for it,
    so the last line scrolls clear of it */
-@media (min-width: 901px) {
-  .cside.cside--v11 { padding-bottom: calc(var(--nk-dock-h, 28px) + 44px); }
-}
-/* sideview-v11: the picture three quarters of its height - a 2:1 frame where
-   it was 3:2, so it follows the column's width and is never taller; the
-   picture fitted whole into it */
-.cside--v11 .cside-picture { aspect-ratio: 2 / 1; }
-.cside--v11 .cside-picture img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
-/* sideview-v11: a smaller picture - three quarters of the 2:1 frame's
-   height again (8:3) - and the close mark full black, drawn heavier */
-.cside--v11 .cside-picture { aspect-ratio: 8 / 3; }
-.cside--v11 .cside-close { color: #000; opacity: 1; }
-.cside--v11 .cside-close::after { color: #000; font-size: 13px; font-weight: 700; }
 
 /* sideview-v13: v2's column - name, record, picture, one-liner, copy - with
    the motion of v11 and v12: it rises into place on the modal's clock

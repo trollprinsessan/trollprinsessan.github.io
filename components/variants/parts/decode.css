@@ -69,18 +69,6 @@
 
 /* modal-v3: the arrows, fixed at the sheet's middle (the sheet is their
    containing block on a desktop, being transformed); Prev and Next go */
-.entry--arrows .entry-steps { display: none; }
-.entry .nk-arrow--modal { position: fixed; }
-@media (max-width: 720px) {
-  /* on a phone the sheet keeps a lane each side for the arrows, and they sit
-     at the middle of what shows of it */
-  .entry .nk-arrow--modal { top: calc(50% + (var(--masthead-h, 56px) + var(--nk-banner-h, 0px)) / 2); }
-}
-@media (max-width: 720px) {
-  .entry .nk-arrow--modal { padding: 10px 4px; font-size: 22px; left: auto; }
-  .entry .nk-arrow--modal.nk-arrow--prev { left: 2px; }
-  .entry .nk-arrow--modal.nk-arrow--next { right: 2px; }
-}
 
 /* sideview-v6: the original panel in one column - name, picture, the gymbs
    centred under it, the record left-set under the gymbs, the copy. The
@@ -151,7 +139,6 @@ html:is([data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-m
   .entry.entry--v6 .entry-plate-caption { display: none !important; }
   .entry.entry--v6 .entry-copy-foot { grid-column: 2; grid-row: 5; justify-self: start; margin-top: 18px !important; }
   .entry.entry--v6 .entry-runhead--copy { grid-column: 2; grid-row: 5; justify-self: end; margin-top: 18px !important; }
-  .entry.entry--v6 .nk-arrow--modal { display: none; }
 }
 
 /* modal-v7: modal-v6 with the left side a tenth narrower - the right side
