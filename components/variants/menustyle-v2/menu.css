@@ -1,0 +1,29 @@
+/* ── menustyle-v2: the Menu black on white plates ──────────────────────────────
+   menustyle-v1 is the original: white by difference. This one sets the word
+   black on a white plate exactly its own size, and the sections, when they
+   fold out, black on one even white plate behind all of them together - no
+   padding, no margin, each plate as big as its words. The lines are the
+   type's 14, not 16, and the two pixels go into the gaps, so every word
+   stands where it stood. Everything here waits on html[data-v-menustyle="v2"],
+   so the original rules are untouched. */
+html[data-v-menustyle="v2"] .mod-hero-menu {
+  /* a pixel lower: the word's plate is 14 high, the original line 16 */
+  top: 15px;
+  mix-blend-mode: normal;
+  color: #000;
+}
+html[data-v-menustyle="v2"] .mod-hero-menu-word {
+  background: #fff;
+  line-height: 14px;
+}
+html[data-v-menustyle="v2"] .mod-hero-menu-list {
+  margin-top: 15px;
+  row-gap: 2px;
+  background: #fff;
+  color: #000;
+}
+html[data-v-menustyle="v2"] .mod-hero-menu a { line-height: 14px; }
+@media (max-width: 720px) {
+  /* the original's 19 + the 2 each line gives up */
+  html[data-v-menustyle="v2"] .mod-hero-menu-list { row-gap: 21px; }
+}

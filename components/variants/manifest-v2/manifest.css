@@ -1,0 +1,245 @@
+/* ── manifest-v2 to -v5 ────────────────────────────────────────────────────
+   Every version past the original (v1) draws the same way - the Shuffle is
+   exactly what lies right of the copy (desktop) or under it (phone), it
+   ends above the mark, and the pointer is the ordinary one off it - and
+   shows the picture at the original size. Only the copy differs between
+   them:
+
+     v2  the original copy, in the original column
+     v3  two columns, every panel
+     v4  a wider column
+     v5  wider, in two columns
+
+   Waits on html[data-v-manifest]; the original rules are untouched. */
+@media (min-width: 721px) {
+  :is(html[data-v-manifest="v2"], html[data-v-manifest="v3"], html[data-v-manifest="v4"], html[data-v-manifest="v5"]) .mod-manifest-top[data-off-draw] { cursor: auto; }
+  :is(html[data-v-manifest="v2"], html[data-v-manifest="v3"], html[data-v-manifest="v4"], html[data-v-manifest="v5"]) .mod-manifest-top[data-off-draw] :is(a, button, .mod-manifest-index) { cursor: pointer; }
+  :is(html[data-v-manifest="v2"], html[data-v-manifest="v3"], html[data-v-manifest="v4"], html[data-v-manifest="v5"]) .mod-manifest-top:not([data-off-draw]) :is(a, button, .mod-manifest-index):not(.mod-manifest-draw-open) { cursor: none; }
+}
+
+/* NOMINATION PARTNERS in the page's bold, as wide as its column: the line
+   is 12.01 ems wide in the bold cut, so 100/12.01 of the column's width
+   sets it edge to edge at any size */
+.mod-manifest-reveal-summary:has(.nk-np) {
+  container-type: inline-size;
+  /* never wider than the copy above it: one column of it */
+  max-width: 100%;
+}
+.mod-manifest-body > .mod-manifest-reveal .mod-manifest-reveal-summary:has(.nk-np) { text-decoration: none; }
+.nk-np {
+  display: block;
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: calc(100cqw / 12.01);
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--ink);
+}
+.mod-manifest-reveal-summary:hover .nk-np { opacity: 0.65; }
+
+/* THE COPY AND ITS LINKS NEARER THE PAGE'S LEFT MARGIN, a little higher:
+   placed from the first track instead of the second, at the original
+   width, with 80 over the links rather than 100 - so The Process clears
+   the mark under it */
+@media (min-width: 721px) {
+  :is(html[data-v-manifest="v2"], html[data-v-manifest="v3"], html[data-v-manifest="v4"], html[data-v-manifest="v5"]) .mod-manifest-index {
+    grid-column: 1 / 6;
+    margin-top: 80px;
+  }
+  html[data-v-manifest="v2"] .mod-manifest-body { grid-column: 1 / 4; }
+  /* then half a track in from the margin - midway between the original
+     (v1) position and the first track - each keeping its width */
+  :is(html[data-v-manifest="v2"], html[data-v-manifest="v3"], html[data-v-manifest="v4"], html[data-v-manifest="v5"]) :is(.mod-manifest-index, .mod-manifest-body) {
+    position: relative;
+    left: calc(((100vw - 2 * var(--pad) - 11 * var(--gutter)) / 12 + var(--gutter)) / 2);
+  }
+}
+
+/* THE OPEN PANEL'S SIGN, before its name (manifest-v2 and later) */
+/* the sign stands before the name on its line and pushes it right - the
+   original tab is one grid column, which would set it over the name */
+.mod-manifest-tab:has(.nk-tabicon) { display: flex; align-items: baseline; }
+/* the sign is the open tab's mark: it takes the place of the 10px step */
+.mod-manifest-tab:has(.nk-tabicon) .mod-manifest-tab-label { transform: none; }
+.mod-manifest-tab .nk-tabicon { min-width: 0; text-align: left; flex: none; }
+.nk-tabicon {
+  display: inline-block;
+  min-width: 1.1em;
+  margin-right: 0.35em;
+  font-weight: 700;
+  text-align: center;
+}
+.nk-tabicon--mono { font-family: Menlo, Monaco, "Courier New", monospace; font-size: 0.9em; min-width: 2.2em; }
+.nk-tabicon--img { width: 1.4em; height: auto; vertical-align: -0.2em; }
+
+/* the switch: soft snapping (settings/softsnap.tsx) takes the page's snap */
+html[data-t-softsnap="on"] { scroll-snap-type: none; }
+
+/* NOMINATION PARTNERS AS THE COPY (switch partnersplain): the size of the text
+   round it, only bold and in capitals */
+html[data-t-partnersplain="on"] .nk-np {
+  display: inline;
+  font-size: inherit;
+  line-height: inherit;
+  text-transform: uppercase;
+  white-space: normal;
+}
+/* under the pointer it is marked, as the open row of the index is */
+html[data-t-partnersplain="on"] .mod-manifest-reveal-summary:hover .nk-np {
+  opacity: 1;
+  background: var(--ink);
+  color: var(--bg);
+}
+
+/* THE DRAWN COMPANY'S NAME ON THE MENU'S FIRST LINE, in every version and
+   every layout: its top is the top of the first link. Where the links stand
+   under the copy (mlayout-v4) it is level with the copy's first line. */
+@media (min-width: 721px) {
+  html:is([data-v-manifest="v2"], [data-v-manifest="v3"], [data-v-manifest="v4"], [data-v-manifest="v5"]) .mod-manifest-draw-caption { top: 82px; }
+}
+
+/* mlayout-v9: v8, the copy in two columns over the same width, justified -
+   the last line of a paragraph set left. The steps between the menu and the
+   copy, the two columns, and the copy and the picture are all one gutter. */
+@media (min-width: 721px) {
+  html:is([data-v-mlayout="v9"], [data-v-mlayout="v10"], [data-v-mlayout="v11"]) .mod-manifest-copy-clip {
+    columns: 2;
+    column-gap: var(--gutter);
+  }
+  html:is([data-v-mlayout="v9"], [data-v-mlayout="v10"], [data-v-mlayout="v11"]) .mod-manifest-copy-clip p { break-inside: avoid-column; }
+}
+html:is([data-v-mlayout="v9"], [data-v-mlayout="v10"], [data-v-mlayout="v11"]) .mod-manifest-body p {
+  text-align: justify;
+  text-align-last: left;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+/* NOMINATION PARTNERS IN THE PICTURE'S PLACE (switch partnersinplate): the copy
+   stays where it is, the roster in the body does not open, and the names
+   stand where the picture's caption stands - its left, its top, its width -
+   in two columns, cut in a row at a time */
+html[data-t-partnersinplate="on"]:not([data-v-manifest="v1"]) .mod-manifest-copy-fold--away { grid-template-rows: 1fr; }
+html[data-t-partnersinplate="on"]:not([data-v-manifest="v1"]) .mod-manifest-partners-fold { display: none; }
+.nk-np-list ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  columns: 2;
+  column-gap: var(--gutter);
+}
+.nk-np-list li {
+  break-inside: avoid;
+  animation: nk-np-in 1ms steps(1, end) both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes nk-np-in { from { visibility: hidden; } to { visibility: visible; } }
+.nk-np-list { pointer-events: auto; }
+/* three columns on a desktop, so the roster ends above the mark */
+@media (min-width: 721px) {
+  .nk-np-list ul { columns: 3; font-size: 13px; line-height: 15px; }
+}
+
+/* ── mlayout-v10: the responsive manifest ──────────────────────────────────
+   Menu, copy and picture side by side from the left margin, a step apart.
+   The copy keeps its type and its column width and takes a column more
+   rather than run down behind the mark parked at the window's foot. The
+   picture fills the rest of the row up to the menu's margin on the right,
+   up to a maximum, and may lie over the mark. The numbers that depend on
+   the copy's length and the window's size - the copy's columns, the
+   picture's left and width, the room above the mark - are set by
+   settings/runtime.tsx, once per panel and window size. */
+@media (min-width: 721px) {
+  html:is([data-v-mlayout="v10"], [data-v-mlayout="v11"]):is([data-v-manifest="v2"], [data-v-manifest="v3"], [data-v-manifest="v4"], [data-v-manifest="v5"]) .mod-manifest-body {
+    grid-column: 3 / span calc(2 * var(--nk-copy-cols, 2));
+    grid-row: 1;
+    margin-top: 81px;
+  }
+  html:is([data-v-mlayout="v10"], [data-v-mlayout="v11"]):is([data-v-manifest="v2"], [data-v-manifest="v3"], [data-v-manifest="v4"], [data-v-manifest="v5"]) .mod-manifest-copy-clip { columns: var(--nk-copy-cols, 2); }
+  html:is([data-v-mlayout="v10"], [data-v-mlayout="v11"]):is([data-v-manifest="v2"], [data-v-manifest="v3"], [data-v-manifest="v4"], [data-v-manifest="v5"]) :is(.mod-manifest-draw-caption, .mod-manifest-draw-plate, .mod-manifest-verso:has(.mod-manifest-gifline--plain)) {
+    position: absolute;
+    left: var(--nk-pic-left, 0px);
+    width: var(--nk-pic-w, 0px);
+    right: auto;
+    transform: none;
+    grid-column: 1 / -1;
+  }
+  html:is([data-v-mlayout="v10"], [data-v-mlayout="v11"]):is([data-v-manifest="v2"], [data-v-manifest="v3"], [data-v-manifest="v4"], [data-v-manifest="v5"]) .mod-manifest-draw-caption { top: 82px; min-height: 0; }
+  html:is([data-v-mlayout="v10"], [data-v-mlayout="v11"]):is([data-v-manifest="v2"], [data-v-manifest="v3"], [data-v-manifest="v4"], [data-v-manifest="v5"]) .mod-manifest-draw-plate {
+    top: 110px;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    justify-content: flex-start;
+  }
+  html:is([data-v-mlayout="v10"], [data-v-mlayout="v11"]):is([data-v-manifest="v2"], [data-v-manifest="v3"], [data-v-manifest="v4"], [data-v-manifest="v5"]) .mod-manifest-draw-plate img { object-position: left top; }
+  html:is([data-v-mlayout="v10"], [data-v-mlayout="v11"]):is([data-v-manifest="v2"], [data-v-manifest="v3"], [data-v-manifest="v4"], [data-v-manifest="v5"]) .mod-manifest-verso:has(.mod-manifest-gifline--plain) { top: 110px; }
+  /* the link under the copy's last column, that column's width */
+  html:is([data-v-mlayout="v10"], [data-v-mlayout="v11"]):is([data-v-manifest="v2"], [data-v-manifest="v3"], [data-v-manifest="v4"], [data-v-manifest="v5"]) .mod-manifest-body > .mod-manifest-reveal {
+    margin-left: calc((100% + var(--gutter)) * (1 - 1 / var(--nk-copy-cols, 2)));
+    width: calc((100% - (var(--nk-copy-cols, 2) - 1) * var(--gutter)) / var(--nk-copy-cols, 2));
+  }
+  html:is([data-v-mlayout="v10"], [data-v-mlayout="v11"]):is([data-v-manifest="v2"], [data-v-manifest="v3"], [data-v-manifest="v4"], [data-v-manifest="v5"]) .mod-manifest-body > .mod-manifest-reveal .mod-manifest-reveal-summary:has(.nk-np) { width: 100%; max-width: none; text-align: left; }
+  /* the roster in the picture's box: as many columns as keep it above the
+     mark */
+  html:is([data-v-mlayout="v10"], [data-v-mlayout="v11"]) .nk-np-list ul {
+    columns: auto;
+    column-width: calc(var(--nk-np-fs, 13) * 10px);
+    column-fill: auto;
+    height: calc(var(--nk-copy-room, 560px) - 1px);
+    overflow: hidden;
+    font-size: calc(var(--nk-np-fs, 13) * 1px);
+    line-height: calc(var(--nk-np-fs, 13) * 1px + 2px);
+  }
+  /* the copy a size smaller only where a column more would not leave the
+     picture its room */
+  html:is([data-v-mlayout="v10"], [data-v-mlayout="v11"]):not([data-v-manifest="v1"]) .mod-manifest-body {
+    font-size: calc(var(--nk-copy-fs, 15) * 1px);
+    line-height: calc(var(--nk-copy-fs, 15) * 1px + 2px);
+  }
+  html:is([data-v-mlayout="v10"], [data-v-mlayout="v11"]):not([data-v-manifest="v1"]) .mod-manifest-body p { font-size: inherit; line-height: inherit; }
+}
+
+/* the panels' copy set unseen for measuring: in the copy's place, taking no
+   room and no pointer */
+.nk-measure {
+  position: absolute !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+@media (max-width: 720px) {
+  .nk-measure { display: none !important; }
+}
+.nk-measure-np { margin-top: 24px; }
+
+/* mlayout-v11: in one column the copy is three of the grid's tracks - three
+   quarters of the two columns' four */
+@media (min-width: 721px) {
+  html[data-v-mlayout="v11"]:not([data-v-manifest="v1"]) .mod-manifest-body {
+    grid-column: 3 / span calc(2 * var(--nk-copy-cols, 2) + (var(--nk-copy-cols, 2) - 2) * -1 * 1);
+  }
+}
+
+/* switch namezone: the drawn company's name takes the pointer well round its
+   words - a wide margin on every side that opens the company and is not the
+   Shuffle - so a press meant for the name never draws another. Laid on, not
+   laid out: nothing moves. */
+html[data-t-namezone="on"] .mod-manifest-draw-who { position: relative; }
+html[data-t-namezone="on"] .mod-manifest-draw-who:not(:disabled)::before {
+  content: "";
+  position: absolute;
+  inset: -28px -48px;
+}
+
+/* switch phoneplate: on a phone the picture follows the copy - straight
+   under it, at the one step that parts everything under the copy - rather
+   than standing on a held line a long panel's depth down. The nomination
+   partners' link, the picture and the open list all keep that same step. */
+@media (max-width: 720px) {
+  html[data-t-phoneplate="on"] .mod-manifest-body { min-height: 0; padding-bottom: 0; }
+  html[data-t-phoneplate="on"] .mod-manifest-body > .mod-manifest-reveal,
+  html[data-t-phoneplate="on"] .mod-manifest-top .mod-manifest-draw-plate,
+  html[data-t-phoneplate="on"] .mod-manifest-top .nk-np-list { margin-top: 22px !important; }
+}

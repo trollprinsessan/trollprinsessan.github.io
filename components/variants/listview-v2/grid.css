@@ -1,0 +1,126 @@
+/* ── listview-v2: the card as the book's index entry ─────────────────────────
+   Rides on listview-v1's .grid - the same tracks, gutter, padding and row air -
+   and only replaces the card. Everything here is under .grid--v2, so nothing
+   of the original card is touched and this file can go, or be ported, on its
+   own. */
+
+/* A CARD TAKES THREE OF THE GRID'S ROWS through a subgrid - the picture, the
+   words, the sections - so in any row the pictures share a line, the names
+   under them another, and the sections a third, however long each one-liner
+   runs. */
+.grid--v2 .entry2 {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  align-self: stretch;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  color: var(--ink);
+  font-family: var(--font);
+  font-weight: 500;
+  letter-spacing: normal;
+  text-wrap: pretty;
+}
+
+/* THE WORDS, under the picture: the name, and under it where the book puts
+   the page number, the one-liner in italic - the true italic cut, not a
+   slant. One size for both, as the book sets name and number. Held to three
+   lines. */
+.grid--v2 .entry2-text {
+  grid-row: 2;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  padding-top: 12px;
+  font-size: 14px;
+  line-height: 16px;
+}
+.grid--v2 .entry2-gymbs {
+  font-style: italic;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.grid--v2 .entry2:hover .entry2-name {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* EVERY MOTIF ON ONE LINE. One frame for all of them, 3:2 - the
+   photographs' own shape, so they fill it - and every motif fitted into it
+   whole, at its own proportion, standing on the frame's foot. A motif near
+   square is held by the frame's height and gets air at its sides; a wide one
+   is held by the sides and stands lower; the foot is the same for all, so
+   the distance from each motif to its name is the same. The motif is the
+   drawing, cutout or scene itself - the file's empty canvas round it is cut
+   away first (motif-boxes.json), so nothing stands on air. */
+.grid--v2 .entry2-media {
+  grid-row: 1;
+  align-self: start;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  container-type: size;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+/* the motif's box: as wide as it can be without passing the frame's height */
+.grid--v2 .entry2-motif {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  width: min(100cqw, calc(100cqh * var(--r)));
+  aspect-ratio: var(--r);
+}
+/* the file inside it, moved and scaled so only the motif shows */
+.grid--v2 .entry2-thumb {
+  position: absolute;
+  display: block;
+  max-width: none;
+  height: auto;
+}
+
+/* THE SECTIONS, under the words: sector, campaigns, country, one to a line,
+   in the tags' 11 - plain, no boxes */
+.grid--v2 .entry2-sections {
+  grid-row: 3;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  padding-top: 12px;
+  font-size: 11px;
+  line-height: 13px;
+}
+
+/* WHAT EACH STOP SHOWS: sixteen and twelve across keep the name, and only
+   the name; eight adds the one-liner, six the sections - and the type goes
+   down with the card */
+.grid--v2-plates .entry2-gymbs,
+.grid--v2-plates .entry2-sections { display: none; }
+.grid--v2-names .entry2-gymbs,
+.grid--v2-names .entry2-sections { display: none; }
+.grid--v2-facts .entry2-sections { display: none; }
+.grid--v2-facts .entry2-text {
+  font-size: 12px;
+  line-height: 14px;
+}
+.grid--v2-plates .entry2-text,
+.grid--v2-names .entry2-text {
+  font-size: 11px;
+  line-height: 13px;
+}
+
+/* LISTAN-V3: A COMPANY OPEN BESIDE THE GRID. The panel takes the window's
+   last third, as it does beside the index, so the cards keep the first two;
+   the open one is underlined. */
+.grid--v2.grid--side { padding-right: calc(100% / 3); }
+/* the other cards keep their black type - never grey */
+.grid--side .entry2--open .entry2-name {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

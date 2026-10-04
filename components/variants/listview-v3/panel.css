@@ -1,0 +1,129 @@
+/* ── listview-v3: the company beside the list, as the modal is, in one column ──
+   The modal's own pieces and settings - Prev and Next at the
+   head, the name, the record one fact to a line and indented, the plate's
+   caption and the plate, the one-liner in bold leading the copy, Copy link
+   and Shuffle at the foot - stacked in the panel's third of the window, the
+   picture in the middle. A size under the modal: the name 30 not 42, the
+   rest 14/16 not 15/17. Everything is under .entry--panel-v3 (one more class
+   than the original panel rules), so the original panel is untouched. */
+
+.index-view .index-panel .entry--panel.entry--panel-v3 {
+  padding: 12px var(--pad) 16px;
+}
+
+/* the order down the column */
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-runhead--copy { order: 1; }
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-verso > .entry-name { order: 2; }
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-verso > .entry-record { order: 3; }
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-plate-caption { order: 4; }
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-figure { order: 5; }
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-verso > .entry-verso-foot { order: 6; }
+.index-view .index-panel .entry--panel.entry--panel-v3 > .panel-copy { order: 7; }
+
+/* PREV AND NEXT at the head, as on the modal's recto, clear of the close */
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-runhead--copy {
+  min-height: 0;
+  margin: 0;
+  padding-right: 40px;
+  font-weight: 500;
+  font-style: normal;
+  text-align: left;
+}
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-runhead--copy .entry-steps {
+  display: flex;
+  gap: 16px;
+}
+
+/* THE NAME, the modal's setting a size down */
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-verso > .entry-name {
+  margin-top: 14px;
+  font-size: 30px;
+  line-height: 34px;
+  padding-right: 0;
+}
+
+/* THE RECORD, as the modal sets it: one fact to a line, indented a third of
+   the measure (the modal's two of six tracks), the domain underlined */
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-verso > .entry-record {
+  margin: 22px 0 0 calc(100% / 3);
+}
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-verso > .entry-record .entry-record-values {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  white-space: nowrap;
+}
+
+/* the plate's caption, back, over the plate */
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-plate-caption {
+  display: block;
+  margin-top: 22px;
+  min-height: 16px;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+/* THE PLATE in the middle, taking what the words leave */
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-figure {
+  margin-top: 10px;
+  align-items: center;
+  justify-content: center;
+}
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-figure img {
+  object-position: center center;
+}
+
+/* THE COPY: the one-liner in bold leading it, justified, as on the modal */
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-verso > .entry-verso-foot {
+  margin-top: 22px;
+}
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-verso-foot .entry-statement {
+  margin: 0 0 8px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 16px;
+}
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-block-body {
+  text-align: justify;
+  text-align-last: left;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+/* COPY LINK AND SHUFFLE on the foot line, left and right */
+.index-view .index-panel .entry--panel.entry--panel-v3 > .panel-copy {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 16px;
+}
+.index-view .index-panel .entry--panel.entry--panel-v3 .entry-spin {
+  display: inline;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+/* FROM THE TOP OF THE WINDOW TO ITS FOOT, while a company stands beside the
+   list - and the mark keeps to the list's two thirds, so it heads the list
+   rather than running over the panel. The panel's own head starts under the
+   Menu, which rides the corner over it. A phone keeps its whole-screen sheet. */
+@media (min-width: 901px) {
+  html.nk-side-open .index-panel {
+    top: 0;
+    height: 100dvh;
+    padding-top: 36px;
+  }
+  /* page-v2 and later: back up the page the mark is its whole width
+     (company-side.css, THE MARK FOLLOWS THE LIST); the original page
+     (page-v1) keeps it at two thirds */
+  html.nk-side-open:not([data-v-page="v1"]):not(.nk-mast-wide) .archive-masthead {
+    width: calc(100% * 2 / 3);
+  }
+  /* in page-v2's tab the panel runs from under the tab's row to the foot */
+  html.nk-side-open .p2tab .index-panel {
+    top: var(--index-panel-top);
+    height: calc(100dvh - var(--index-panel-top));
+    padding-top: 0;
+  }
+}

@@ -1,0 +1,34 @@
+/* ── listview-v3: the index's head, a sort switch per column ────────────────
+   On the rows' own twelve tracks (.row), in the rows' own type; the column
+   that sorts is black with its mark, the others in the page's grey. The head
+   does not step on hover the way a row does - it is not a company. */
+.index-head .row--head {
+  cursor: default;
+  padding-top: 6px;
+  padding-bottom: 10px;
+}
+.index-head .row--head > .sort-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--meta);
+}
+.index-head .row--head > .sort-btn:hover,
+.index-head .row--head > .sort-btn--on { color: var(--ink); }
+.index-head .row:hover > * { transform: none; }
+.index-head .sort-mark {
+  display: block;
+  flex: none;
+  width: 10px;
+  height: 10px;
+  overflow: visible;
+}
+.index-head .sort-mark--up { transform: rotate(180deg); }
+/* a phone's index is names and pictures; no head */
+@media (max-width: 720px) {
+  .index-head { display: none; }
+}

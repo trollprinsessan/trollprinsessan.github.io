@@ -1,0 +1,260 @@
+/* while a modal's name decodes, the rest of the sheet waits white */
+.entry--decoding * { visibility: hidden; }
+.entry--decoding .entry-name,
+.entry--decoding .entry-name *,
+.entry--decoding .entry-close { visibility: visible; }
+/* the Shuffle word over the modal's picture rides above the sheet */
+.nk-modal-cursor { z-index: 300; }
+
+/* ── modal-v2 on a phone ──
+   The original sheet puts the picture and the copy in the same rows of its
+   grid on a phone, so the frame has no height and the copy runs over the
+   picture.
+   Here the sheet is one column in reading order, the picture 4:3; and it
+   stands under the mark and the banner rather than over the whole screen,
+   so the list, the mark and the banner are still seen above it. */
+@media (max-width: 720px) {
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim { background: transparent; }
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry {
+    top: calc(var(--masthead-h, 56px) + var(--nk-banner-h, 0px));
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: auto;
+    max-width: none;
+    height: auto;
+    max-height: none;
+    transform: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+    border-top: 1px solid var(--ink);
+  }
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry :is(.entry-verso, .entry-recto, .entry-verso-foot) { display: contents; }
+  /* nothing gives way - the sheet scrolls instead - and the reading order is
+     the side view's: the name, the picture, the record, the copy */
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry * { flex-shrink: 0; }
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry .entry-head { order: 0; }
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry .entry-name { order: 1; }
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry .entry-figure { order: 2; }
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry .entry-plate-caption { order: 3; }
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry .entry-record { order: 4; margin: 0; }
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry .entry-statement { order: 5; }
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry .entry-blocks { order: 6; height: auto; overflow: visible; }
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry .entry-runhead { order: 7; }
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry .entry-copy-foot { order: 8; }
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry .entry-figure {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    flex: none;
+    margin: 0;
+  }
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry .entry-figure img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+  /* the sheet comes up from the foot, never fades */
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry { animation: nk-sheet-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+  html:is([data-v-modal="v2"], [data-v-modal="v3"], [data-v-modal="v4"], [data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry.entry--out { animation: nk-sheet-out 200ms cubic-bezier(0.4, 0, 1, 1) both; }
+}
+@keyframes nk-sheet-in { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes nk-sheet-out { from { transform: none; opacity: 1; } to { transform: translateY(8px); opacity: 0; } }
+
+/* modal-v3: the arrows, fixed at the sheet's middle (the sheet is their
+   containing block on a desktop, being transformed); Prev and Next go */
+.entry--arrows .entry-steps { display: none; }
+.entry .nk-arrow--modal { position: fixed; }
+@media (max-width: 720px) {
+  /* on a phone the sheet keeps a lane each side for the arrows, and they sit
+     at the middle of what shows of it */
+  .entry .nk-arrow--modal { top: calc(50% + (var(--masthead-h, 56px) + var(--nk-banner-h, 0px)) / 2); }
+}
+@media (max-width: 720px) {
+  .entry .nk-arrow--modal { padding: 10px 4px; font-size: 22px; left: auto; }
+  .entry .nk-arrow--modal.nk-arrow--prev { left: 2px; }
+  .entry .nk-arrow--modal.nk-arrow--next { right: 2px; }
+}
+
+/* sideview-v6: the original panel in one column - name, picture, the gymbs
+   centred under it, the record left-set under the gymbs, the copy. The
+   original rules set the order and the boxes at a higher specificity,
+   hence the !important throughout. */
+.index-panel .entry.entry--panel-nk6 { display: flex !important; flex-direction: column; }
+.index-panel .entry.entry--panel-nk6 :is(.entry-verso, .entry-recto, .entry-verso-foot) { display: contents !important; }
+.index-panel .entry.entry--panel-nk6 * { flex-shrink: 0; }
+.index-panel .entry.entry--panel-nk6 .entry-head { order: 0 !important; }
+.index-panel .entry.entry--panel-nk6 .entry-name { order: 1 !important; min-height: 0 !important; }
+.index-panel .entry.entry--panel-nk6 :is(.entry-runhead, .entry-plate-caption) { display: none !important; }
+.index-panel .entry.entry--panel-nk6 .entry-figure { order: 2 !important; margin: 12px 0 0 !important; width: 100% !important; height: auto !important; max-height: none !important; aspect-ratio: 3 / 2; }
+.index-panel .entry.entry--panel-nk6 .entry-figure img { width: 100% !important; height: 100% !important; max-height: none !important; object-fit: contain; }
+.index-panel .entry.entry--panel-nk6 .entry-statement { order: 3 !important; text-align: center !important; align-self: stretch; width: 100%; margin: 14px 0 0 !important; }
+.index-panel .entry.entry--panel-nk6 .entry-record { order: 4 !important; margin: 14px 0 0 !important; padding: 0 !important; text-align: left; min-height: 0 !important; }
+.index-panel .entry.entry--panel-nk6 .entry-blocks { order: 5 !important; margin-top: 20px !important; }
+
+/* modal-v4: the record in one block - the campaign its last line, the
+   website straight under it - and no caption over the plate */
+.entry--tight.entry--spread .entry-verso > .entry-record .entry-record-values a.entry-record-site--apart { margin-top: 0; }
+.entry--tight .entry-plate-caption { visibility: hidden; }
+
+/* modal-v5: the sheet is white whatever the page's ground, and Prev and Next
+   are words at the head of the picture's column */
+html:is([data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-modal="v8"]) .entry-scrim .entry { --bg: #fff; --meta: #999; --muted: #999; background: #fff; }
+
+/* ── modal-v6: two columns. At the left the name, the one-liner, the record
+   and the copy; at the right the close mark, the picture, and under it Copy
+   link at the left and Prev / Next at the right. The original sheet's
+   placements are set aside; its type is kept. ── */
+@media (min-width: 721px) {
+  .entry-scrim .entry.entry--v6 {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    column-gap: calc(2 * var(--gutter));
+    row-gap: 0;
+    align-items: start;
+    overflow-y: auto;
+  }
+  .entry.entry--v6 :is(.entry-verso, .entry-recto, .entry-verso-foot) { display: contents !important; }
+  .entry.entry--v6 > *,
+  .entry.entry--v6 :is(.entry-verso, .entry-recto, .entry-verso-foot) > * {
+    position: static !important;
+    transform: none !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+  .entry.entry--v6 .entry-name { grid-column: 1; grid-row: 1; }
+  .entry.entry--v6 .entry-statement { grid-column: 1; grid-row: 2; margin-top: 22px !important; }
+  .entry.entry--v6 .entry-record { grid-column: 1; grid-row: 3; margin-top: 18px !important; padding: 0 !important; }
+  .entry.entry--v6 .entry-blocks { grid-column: 1; grid-row: 4; margin-top: 24px !important; height: auto !important; overflow: visible !important; }
+  .entry.entry--v6 .entry-head { grid-column: 2; grid-row: 1; justify-self: end; display: flex; }
+  .entry.entry--v6 .entry-close { border: 0; width: auto; height: auto; padding: 4px 0 4px 8px; }
+  .entry.entry--v6 .entry-close:hover { background: none; color: var(--ink); text-decoration: underline; }
+  .entry.entry--v6 .entry-figure {
+    grid-column: 2;
+    grid-row: 2 / 5;
+    align-self: start;
+    height: auto !important;
+    aspect-ratio: 4 / 3;
+    margin-top: 22px !important;
+    display: block;
+  }
+  .entry.entry--v6 .entry-figure img { width: 100%; height: 100%; object-fit: contain; object-position: center top; }
+  .entry.entry--v6 .entry-plate-caption { display: none !important; }
+  .entry.entry--v6 .entry-copy-foot { grid-column: 2; grid-row: 5; justify-self: start; margin-top: 18px !important; }
+  .entry.entry--v6 .entry-runhead--copy { grid-column: 2; grid-row: 5; justify-self: end; margin-top: 18px !important; }
+  .entry.entry--v6 .nk-arrow--modal { display: none; }
+}
+
+/* modal-v7: modal-v6 with the left side a tenth narrower - the right side
+   keeps its width, so the step between them grows - the record set to the
+   right of the left side (its words set left, its right edge on the
+   side's), and more air over and under the one-liner */
+@media (min-width: 721px) {
+  .entry-scrim .entry.entry--v6.entry--v7 {
+    grid-template-columns:
+      calc((100% - 2 * var(--gutter)) / 2 * 0.9)
+      minmax(0, 1fr)
+      calc((100% - 2 * var(--gutter)) / 2);
+    column-gap: 0;
+  }
+  .entry.entry--v7 :is(.entry-name, .entry-statement, .entry-record, .entry-blocks) { grid-column: 1; }
+  .entry.entry--v7 :is(.entry-head, .entry-figure, .entry-copy-foot, .entry-runhead--copy) { grid-column: 3; }
+  .entry.entry--v7 .entry-statement { margin-top: 40px !important; }
+  .entry.entry--v7 .entry-record {
+    margin-top: 40px !important;
+    justify-self: end;
+    width: max-content !important;
+    text-align: left;
+  }
+  .entry.entry--v7 .entry-record-values { align-items: flex-start; text-align: left; }
+}
+/* modal-v7: as much air under the record as over it */
+@media (min-width: 721px) {
+  .entry.entry--v7 .entry-blocks { margin-top: 40px !important; }
+}
+
+/* sideview-v12: sideview-v6, with more air over and under the one-liner, the
+   record set right (its words set left) with the website straight under it,
+   and Prev / Next at the right of Copy link's line */
+.index-panel .entry.entry--panel-nk12 .entry-statement { margin-top: 28px !important; }
+.index-panel .entry.entry--panel-nk12 .entry-record {
+  margin-top: 28px !important;
+  align-self: flex-end;
+  width: max-content !important;
+  max-width: 100%;
+}
+.index-panel .entry--panel-nk12 .entry-record-values a.entry-record-site--apart { margin-top: 0 !important; }
+@media (min-width: 901px) {
+  .index-panel .entry--panel-nk12 .panel-copy {
+    display: flex !important;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .index-panel .entry--panel-nk12 .panel-copy .entry-steps { display: flex; gap: 8px; margin: 0; position: static; }
+}
+.index-panel .entry--panel-nk12 .entry-record-values > .entry-tags:empty { display: none; }
+
+/* sideview-v12: the picture twice its height, following the panel's width;
+   and the panel runs down to the dock wherever its top is - with the mark
+   gone it starts at the window's head and ends at the dock, so nothing of
+   the page's ground stands empty under its foot. Longer content scrolls
+   in the panel. */
+.index-panel .entry.entry--panel-nk12 .entry-figure {
+  flex: none !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  aspect-ratio: 8 / 5;
+}
+/* sideview-v12: the picture 15% lower (8:4.25), and more air over and under
+   the record */
+.index-panel .entry.entry--panel-nk12 .entry-figure { aspect-ratio: 32 / 17; }
+.index-panel .entry.entry--panel-nk12 .entry-record { margin-top: 40px !important; }
+.index-panel .entry.entry--panel-nk12 .entry-blocks { margin-top: 40px !important; }
+/* sideview-v12: the close mark a black cross alone, no frame round it */
+.index-panel .entry--panel-nk12 .entry-close {
+  border: 0;
+  width: auto;
+  height: auto;
+  padding: 4px 0 4px 8px;
+  color: #000;
+  font-size: 13px;
+  font-weight: 700;
+  background: none;
+}
+.index-panel .entry--panel-nk12 .entry-close:hover { background: none; color: #000; }
+
+/* sideview-v12 opens as the modal does - a short rise into place on the
+   modal's clock - rather than sliding in from the right */
+@keyframes nk-panel-open {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+/* modal-v8: modal-v7 with the left side set as modal-v5 sets it - the name
+   at the head, the record a third in under it, and the one-liner and the copy
+   hung from the foot, level with the picture's foot. The right side, the foot
+   line and the motion are modal-v7's. */
+@media (min-width: 721px) {
+  .entry-scrim .entry.entry--v8 { grid-template-rows: auto auto minmax(0, 1fr) auto auto auto; }
+  .entry.entry--v8 .entry-name { grid-row: 1; }
+  .entry.entry--v8 .entry-record {
+    grid-row: 2;
+    justify-self: start;
+    margin: 104px 0 0 40% !important;
+    width: auto !important;
+  }
+  .entry.entry--v8 .entry-statement { grid-row: 4; margin: 0 0 9px !important; }
+  .entry.entry--v8 .entry-blocks { grid-row: 5; margin-top: 0 !important; }
+  .entry.entry--v8 .entry-figure { grid-row: 2 / 6; }
+  .entry.entry--v8 :is(.entry-copy-foot, .entry-runhead--copy) { grid-row: 6; }
+}

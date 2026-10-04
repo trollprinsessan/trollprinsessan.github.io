@@ -1,0 +1,13 @@
+/node_modules
+/.next
+/out
+/build
+next-env.d.ts
+*.tsbuildinfo
+.DS_Store
+.env*.local
+.vercel
+
+# the embed builds, one folder each, built by scripts/embed.mjs
+/dist-embed/
+/dist/

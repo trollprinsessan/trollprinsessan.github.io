@@ -1,0 +1,60 @@
+/* ── latest-v2 and faq-v2 ───────────────────────────────────────
+   CSS alone, waiting on html[data-v-latest] and html[data-v-faq]. */
+
+/* latest-v2: no "3 / 6" by the arrows */
+html[data-v-latest="v2"] .mod-latest-count { display: none; }
+
+/* latest-v3: no Prev / Next and no count up by the title; an arrow each side
+   of the run, half way down it. The run is as wide as the logo, and between
+   the arrows: a card lands with its left edge just inside the left arrow. */
+.nk-latest-stage {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 36px;
+  align-items: center;
+  margin: 24px var(--pad) 0;
+}
+.nk-latest-stage .mod-latest-track { padding: 0; scroll-padding: 0; }
+.nk-latest-side {
+  padding: 10px 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+}
+.nk-latest-side--prev { text-align: left; }
+.nk-latest-side--next { text-align: right; }
+.nk-latest-side:disabled { opacity: 0.2; cursor: default; }
+@media (max-width: 720px) {
+  .nk-latest-stage { grid-template-columns: 28px minmax(0, 1fr) 28px; }
+  .nk-latest-side { font-size: 22px; }
+  .nk-latest-stage .mod-latest-card { flex-basis: 100%; }
+}
+
+/* THE QUESTIONS IN BOLD, over the answers they open (switch boldfaq) */
+html[data-t-boldfaq="on"] .faq-title { font-weight: 700; }
+/* and the links in the answers, heavier than the copy round them */
+html[data-t-boldfaq="on"] .faq-body a { font-weight: 700; }
+
+/* switch faqroomphone: on a phone, more room between the FAQ mark and the
+   first question */
+@media (max-width: 900px) {
+  html[data-t-faqroomphone="on"]:is([data-v-faq="v2"], [data-v-faq="v3"]) .faq-list { margin-top: 56px; }
+}
+
+/* faq-v3: faq-v2, the questions the manifest's step to the right of the FAQ
+   mark, running to the right margin (--nk-faq-shift, measured by
+   settings/runtime.tsx) */
+@media (min-width: 901px) {
+  html[data-v-faq="v3"] .faq-list { margin-top: -112px; }
+  html[data-v-faq="v3"] .mod-faq .faq-top {
+    grid-column: 1 / -1;
+    margin-left: var(--nk-faq-shift, 0px);
+    margin-right: var(--nk-faq-right, 0px);
+  }
+}
+@media (max-width: 900px) {
+  html[data-v-faq="v3"] .faq-list { margin-top: 24px; }
+}

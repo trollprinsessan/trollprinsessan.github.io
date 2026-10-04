@@ -1,0 +1,22 @@
+/* ── the company panel slides in, never fades ────────────────────
+   A company view folds out and in, fast - no fade, no shift in opacity, no
+   shadow. page-v4 and later draw their own view (page-v4/company-side.css);
+   this file does the same for the original panel where the other page
+   versions show it, and for listview-v3's panel: in from the right, not lifted
+   off the page by a shadow. Applies only on the chosen versions
+   (html[data-v-*]), so the original (v1) is untouched.
+
+   THE SHEET IS LEFT AS THE ORIGINAL: its own scrim, rise and fade, with no
+   slide from the right. Only the panel slides. */
+:is(html[data-v-page="v2"], html[data-v-page="v3"], html[data-v-page="v4"], html[data-v-page="v5"], html[data-v-listview="v3"]) .index-panel {
+  box-shadow: none;
+  animation: nk-panel-in 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes nk-panel-in {
+  from { transform: translateX(100%); }
+  to { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(html[data-v-page], html[data-v-listview="v3"]) :is(.entry-scrim .entry, .index-panel) { animation: none; }
+}

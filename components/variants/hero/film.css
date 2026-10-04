@@ -1,0 +1,29 @@
+/* ── hero-v2/v3: the film as video ───────────────────────────── */
+
+/* a phone: the 9:16 cut fills its frame, as the original picture does there */
+@media (max-width: 720px) {
+  .mod-hero-media video.nk-film {
+    height: 100%;
+    transform: none;
+    object-position: center;
+  }
+}
+
+/* HERO-V3: THE FILM BEHIND THE INTRO. It is there from the first frame,
+   under the intro's white - which goes away a row at a time, on the rows'
+   own clock, as the pictures on it leave, so the film shows wherever a row
+   has gone. The film is not painted in again afterwards: it was already
+   there. (The loader carries .loader--behind from its first render.) */
+html:has(.loader--behind) .mod-hero-media,
+html[data-v-hero="v3"] .mod-hero-media {
+  clip-path: none;
+  animation: none;
+}
+.loader--behind::before {
+  animation: nk-veil-rows var(--t-out-run) steps(var(--rows), end) both;
+  animation-delay: var(--t-clear);
+}
+@keyframes nk-veil-rows {
+  from { clip-path: inset(0 0 0 0); visibility: visible; }
+  to { clip-path: inset(100% 0 0 0); visibility: hidden; }
+}

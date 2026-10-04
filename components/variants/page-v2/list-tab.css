@@ -1,0 +1,209 @@
+/* ── page-v2: the list in a tab off the foot of the window ─────────────────
+   The original parts, laid out again: the dock's black slots (.ctl-box), the
+   filter sheet's words (.filter-group, .filter-opt), the search field and the
+   view switch - all from globals.css. Only the tab they sit in is new.
+   Everything here is under .p2tab, so this file can go, or be ported, alone. */
+
+/* THE TAB. A white sheet the width of the window, no edge, standing at the
+   foot of the window with only its row showing; up, it covers the page from
+   a little under the Menu to the foot. It moves
+   by its top, not by a transform: a transform would make it the frame of
+   every fixed thing inside it, and the panel beside the index is one. */
+.p2tab {
+  --p2-top: 12dvh;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: calc(100dvh - var(--p2-head, 50px));
+  height: calc(100dvh - var(--p2-top));
+  /* over the page and its dock, under the Menu (70) and the company (201) */
+  z-index: 55;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  /* the dock's own clock */
+  transition: top 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.p2tab.is-open { top: var(--p2-top); }
+.p2tab[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .p2tab { transition: none; }
+}
+
+/* DOWN, NO GROUND: folded, the tab is its black slots alone over
+   the page; up, it has its white back. No edge either way. */
+.p2tab:not(.is-open) { background: transparent; }
+
+/* folded, and the mark still riding the foot of the window: below it,
+   out of sight, until the mark starts to rise (the top's transition is the
+   slide) */
+.p2tab[data-away]:not(.is-open) { top: 100dvh; visibility: hidden; transition: top 260ms cubic-bezier(0.22, 1, 0.36, 1), visibility 0s 260ms; }
+
+/* the row: the dock's padding, the slots shoulder to shoulder */
+.p2tab-head {
+  flex: none;
+  position: relative;
+  z-index: 2;
+  padding: 11px var(--pad);
+}
+:is(.p2tab, .p4dock) .p2-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  align-items: center;
+}
+/* the list, scrolling in the tab rather than the page */
+.p2tab-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* A SLOT takes what its words need; pressing one deepens it, as in the dock */
+:is(.p2tab, .p4dock) .p2-slot {
+  width: auto;
+  flex: 0 0 auto;
+  cursor: pointer;
+  white-space: nowrap;
+}
+:is(.p2tab, .p4dock) .p2-slot:hover,
+:is(.p2tab, .p4dock) .p2-slot[aria-expanded="true"] { background: #222; }
+:is(.p2tab, .p4dock) .p2-title { gap: 14px; }
+/* the count, and a filter's number, in the slot's grey */
+:is(.p2tab, .p4dock) .p2-count {
+  color: var(--slot-meta);
+  font-variant-numeric: tabular-nums;
+}
+/* the fold-out mark: points up while the list is down, down while it is up
+   - and on a drop-down, down while shut, up while open */
+:is(.p2tab, .p4dock) .p2-mark {
+  display: block;
+  flex: none;
+  width: 10px;
+  height: 10px;
+  overflow: visible;
+}
+:is(.p2tab, .p4dock) .p2-title .p2-mark { transform: rotate(180deg); }
+.p2tab.is-open .p2-title .p2-mark { transform: none; }
+:is(.p2tab, .p4dock) .p2-drop .p2-slot[aria-expanded="true"] .p2-mark { transform: rotate(180deg); }
+
+/* the search takes what the row leaves */
+:is(.p2tab, .p4dock) .p2-search {
+  flex: 1 1 180px;
+  min-width: 120px;
+}
+:is(.p2tab, .p4dock) .p2-views { width: auto; flex: 0 0 auto; }
+/* The List holds the right corner */
+:is(.p2tab, .p4dock) .p2-title { margin-left: auto; }
+
+/* A DROP-DOWN is the original filter sheet cut to one group: ink, the words
+   white, an option on when inverted. It hangs from its slot. */
+:is(.p2tab, .p4dock) .p2-drop { position: relative; flex: 0 0 auto; }
+:is(.p2tab, .p4dock) .p2-drop-panel {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  z-index: 3;
+  min-width: 220px;
+  max-width: calc(100vw - 2 * var(--pad));
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 16px;
+  background: var(--ink);
+  color: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+/* Geography's forty countries in two columns, as in the sheet */
+:is(.p2tab, .p4dock) .p2-drop-panel--wide { min-width: 360px; }
+:is(.p2tab, .p4dock) .p2-drop-panel--wide .filter-group-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--gutter);
+  row-gap: 4px;
+}
+
+/* a desktop has a drop-down a group; a phone has one Filter with all four */
+:is(.p2tab, .p4dock) .p2-phone { display: none; }
+@media (max-width: 720px) {
+  .p2tab { --p2-top: 8dvh; }
+  :is(.p2tab, .p4dock) .p2-desk { display: none; }
+  :is(.p2tab, .p4dock) .p2-phone { display: block; }
+  /* one row on a phone too: the search gives way first */
+  :is(.p2tab, .p4dock) .p2-search { flex-basis: 80px; min-width: 80px; }
+  :is(.p2tab, .p4dock) .p2-drop-panel--all {
+    position: fixed;
+    left: var(--pad);
+    right: var(--pad);
+    top: auto;
+    min-width: 0;
+    max-width: none;
+  }
+}
+
+/* THE HANDLE: a small square bump off the tab's top, in its middle - a black
+   slot like the rest of the row, up or down. Two chevrons: up
+   while the tab is down, turned over while it is up. */
+:is(.p2tab, .p4dock) .p2-handle {
+  position: absolute;
+  top: -23px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 21px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: var(--ink);
+  color: var(--bg);
+  cursor: pointer;
+  touch-action: none;
+  z-index: 3;
+}
+:is(.p2tab, .p4dock) .p2-handle svg {
+  display: block;
+  overflow: visible;
+}
+.p2tab.is-open .p2-handle svg { transform: rotate(180deg); }
+:is(.p2tab, .p4dock) .p2-handle:focus-visible { outline: 1px solid var(--ink); outline-offset: 2px; }
+
+/* ── page-v3: the tab rides the mark ──────────────────────────────────────
+   The page's scroll is the motion, so the tab follows it with no clock of
+   its own - except for a jump (pressed shut, or hung from the mark again),
+   which glides on the dock's clock. The list scrolls on its own under the
+   pointer, and hands the scroll on to the page when it runs out. */
+.p2tab.p2tab--scroll { transition: none; }
+.p2tab.p2tab--scroll[data-glide] { transition: top 320ms cubic-bezier(0.22, 1, 0.36, 1); }
+.p2tab.p2tab--scroll .p2tab-body { overscroll-behavior: auto; }
+@media (prefers-reduced-motion: reduce) {
+  .p2tab.p2tab--scroll[data-glide] { transition: none; }
+}
+/* DOWN AT REST, NO GROUND: only the black slots */
+.p2tab.p2tab--scroll[data-rest="docked"] { background: transparent; }
+/* below the window, while the mark rides its foot: nothing to reach for */
+.p2tab.p2tab--scroll[data-rest="away"] { visibility: hidden; }
+
+/* a phone's three views, side by side in one slot */
+:is(.p2tab, .p4dock) .p2-phoneviews { display: none; }
+@media (max-width: 720px) {
+  :is(.p2tab, .p4dock) .p2-phoneviews { display: flex; gap: 10px; width: auto; flex: 0 0 auto; }
+}
+
+/* THE ROW AT THE DRAWER'S FOOT (every dockstyle version but v2 and v3): up, the
+   row goes to the bottom of the drawer and its drop-downs open upward; down,
+   the row is all that shows. The handle stays on the drawer's top edge. */
+.p2tab.is-open.p2tab--dock-bottom .p2tab-head { order: 2; }
+.p2tab.is-open.p2tab--dock-bottom .p2-drop-panel { top: auto; bottom: calc(100% + 2px); }
+
+/* Shake the grid and Shuffle do the same: Shuffle stays, Shake is behind a
+   switch */
+html[data-t-shakegrid="off"] .p2-shake { display: none; }
+
+/* "56 more ways" not said (switch more56 off): no key for it in the list's
+   head, no head on its chapter - the companies stay */
+html[data-t-more56="off"] .p5key--others,
+html[data-t-more56="off"] .chap--more .chap-head { display: none; }

@@ -1,0 +1,74 @@
+/* ── listview-v5: chapters ────────────────────────────────────────────────────
+   A head over each chapter on the page's twelve tracks: the badge or the
+   name at the left, at the modal's name size, and the count and a line
+   about the chapter at the right, standing on the head's foot. Then the
+   chapter's cards, listview-v2's grid as it is. The override at the end of
+   this file centres the head instead. */
+.chap-head {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  align-items: end;
+  padding: 72px var(--pad) 0;
+  font-family: var(--font);
+  font-weight: 500;
+  letter-spacing: normal;
+  color: var(--ink);
+}
+.chap:first-child .chap-head { padding-top: calc(var(--gutter) + 10px); }
+.chap-title {
+  grid-column: 1 / span 6;
+  margin: 0;
+  font-size: 42px;
+  line-height: 48px;
+  font-weight: 500;
+}
+.chap-lede {
+  grid-column: 7 / -1;
+  display: flex;
+  gap: var(--gutter);
+  margin: 0;
+  padding-bottom: 4px;
+  font-size: 14px;
+  line-height: 16px;
+}
+/* the count, as the dock sets it: a figure alone, before the line */
+.chap-count {
+  flex: none;
+  min-width: 3ch;
+  font-variant-numeric: tabular-nums;
+}
+.chap-lede > span:last-child:not(.chap-count) { font-style: italic; max-width: 44ch; }
+
+/* the chapter's grid: listview-v2's, but beside page-v4's company it keeps its
+   own width - the company has its own column there */
+.chapters .grid--v2.grid--side { padding-right: var(--pad); }
+
+@media (max-width: 720px) {
+  .chap-head {
+    grid-template-columns: 1fr;
+    row-gap: 12px;
+    padding-top: 56px;
+  }
+  .chap-title,
+  .chap-lede { grid-column: 1 / -1; }
+  .chap-title { font-size: 30px; line-height: 34px; }
+}
+
+/* THE HEADS CENTRED - the badge, then the count and the line - and each
+   chapter on a wash of its campaign's colour. Overrides the grid placement
+   above by source order. */
+.chap-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+}
+.chap-title,
+.chap-lede { grid-column: auto; }
+.chap-lede { justify-content: center; }
+.chap--eu { background: rgba(0, 55, 148, 0.1); }
+.chap--pwm { background: rgba(255, 178, 233, 0.28); }
+.chap--more { background: rgba(255, 210, 0, 0.14); }
+.chap { padding-bottom: 40px; }

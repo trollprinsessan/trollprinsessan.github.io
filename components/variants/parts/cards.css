@@ -1,0 +1,384 @@
+/* ── the card and its tags, chosen on their own ──────────────────
+   The grids ride on the original .grid (cardstyle-v1), listview-v2's .grid--v2
+   (cardstyle-v2 to -v4) and listview-v6's .grid--v6 (cardstyle-v5); this file adds only
+   what the new versions change, under .nkc-grid--v# and .nkt--v#. */
+
+/* the logos on the original card: its frame holds them */
+.nkc-grid--v1 .card-media {
+  position: relative;
+  container-type: inline-size;
+}
+
+/* THE COUNTRY under the tags, plain */
+.nkc-country { display: block; margin-top: 4px; }
+
+/* the sections of listview-v2's card hold the tags in a row */
+.nkc-grid .entry2-sections,
+.nkc-grid .e4-sections { gap: 0; }
+
+/* ── cardstyle-v3: the card on a light grey ground, square, the name in bold, no
+   line; the tags round; the rows closer ── */
+.nkc-grid--v3 .entry2 {
+  background: #f6f6f6;
+  border-radius: 0;
+  padding: 10px 10px 12px;
+}
+.grid.nkc-grid--v3 { row-gap: 16px; }
+.nkc-grid--v3 :is(.nkt-tag, .card-tag) { border-radius: 999px; }
+.nkc-grid--v3 .entry2-media { background: none; }
+.nkc-grid--v3 .entry2-name { font-weight: 700; }
+
+/* ── cardstyle-v4: the tags in a row straight under the picture, then the words ── */
+.grid.nkc-grid--v4 .entry2-sections {
+  grid-row: 2;
+  padding-top: 10px;
+}
+.grid.nkc-grid--v4 .entry2-text { grid-row: 3; padding-top: 8px; }
+.nkc-grid--v4 .entry2-name { font-weight: 700; }
+.nkc-grid--v4 .nkc-country { display: none; }
+.nkc-grid--v4.grid--v2-plates .entry2-sections,
+.nkc-grid--v4.grid--v2-names .entry2-sections { display: none; }
+
+/* ── the tags ── */
+.nkt {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-family: var(--font);
+  font-size: 11px;
+  line-height: 13px;
+  font-weight: 500;
+  letter-spacing: normal;
+}
+.nkt-tag {
+  display: inline-block;
+  padding: 3px 6px 2px;
+  white-space: nowrap;
+}
+
+/* v2: black, white type */
+.nkt--v2 .nkt-tag {
+  background: var(--ink);
+  color: #fff;
+  border-radius: 3px;
+}
+
+/* v3: the campaign's colour; the sector boxed as the original tags are */
+.nkt--v3 .nkt-tag { border-radius: 3px; }
+.nkt--v3 .nkt-tag--sector { box-shadow: inset 0 0 0 1px var(--ink); }
+.nkt--v3 .nkt-tag--eu { background: #003794; color: #fff; }
+.nkt--v3 .nkt-tag--pwm { background: #ffb2e9; color: var(--ink); }
+.nkt--v3 .nkt-tag--more { background: var(--ink); color: #fff; }
+
+/* v4: hashtags, in the campaign's colour, on no ground */
+.nkt--v4 { gap: 2px 10px; }
+.nkt--v4 .nkt-tag { padding: 0; }
+.nkt--v4 .nkt-tag--eu,
+.nkt--v4 .nkt-tag--pwm,
+.nkt--v4 .nkt-tag--more { font-weight: 700; }
+.nkt--v4 .nkt-tag--eu { color: #003794; }
+.nkt--v4 .nkt-tag--pwm { color: #d6338a; }
+.nkt--v4 .nkt-tag--more { color: var(--ink); }
+
+/* THE TWO TIGHTEST STOPS, the rows closer */
+.nkc-grid.grid--v2-plates,
+.nkc-grid.grid--v2-names,
+.nkc-grid--v1.grid--plates,
+.nkc-grid--v1.grid--names { row-gap: 14px; }
+.nkc-grid.grid--v2-plates .entry2-media { margin-bottom: 0; }
+
+/* A PHONE has one grid: two a row, three on a wider phone */
+@media (max-width: 720px) {
+  .nkc-grid:not(.nkc-grid--v5) { --gridcols-phone: 2 !important; }
+}
+@media (min-width: 540px) and (max-width: 720px) {
+  .nkc-grid:not(.nkc-grid--v5) { --gridcols-phone: 3 !important; }
+}
+
+/* the country as a tag (switch countrytag): the line under the tags goes */
+html[data-t-countrytag="on"] .nkc-country { display: none; }
+html[data-t-countrytag="on"] .nkt--v1 + .nkc-country { display: block; }
+.nkt--v4 .nkt-tag--geo { font-weight: 500; }
+.nkt--v2 .nkt-tag--geo { background: var(--ink); color: #fff; }
+.nkt--v3 .nkt-tag--geo { box-shadow: inset 0 0 0 1px var(--ink); }
+
+/* tagstyle-v5: black, white type, all the way round */
+.nkt--v5 .nkt-tag { background: var(--ink); color: #fff; border-radius: 999px; padding: 3px 8px 2px; }
+
+/* more air between the name and the gymbs (switch nameroom) */
+html[data-t-nameroom="on"] .nkc :is(.entry2-name, .e4-name, .card-head) { margin-bottom: 5px; display: block; }
+
+/* cardstyle-v6: v3's name and line, the picture on no ground and no radius */
+.nkc-grid--v6 .entry2-name { font-weight: 700; }
+.nkc-grid--v6 .entry2-media,
+.nkc-grid--v6 .entry2-motif { background: none; border-radius: 0; }
+
+/* cardstyle-v7: the name over the line, the rest under the picture */
+.grid.nkc-grid--v7 .entry2 { display: flex; flex-direction: column; }
+.nkc-grid--v7 .entry2-text { display: contents; }
+.nkc-grid--v7 .entry2-name {
+  order: 0;
+  font-weight: 700;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+:is(html[data-v-linestyle="v1"], html[data-v-linestyle="v2"], html[data-v-linestyle="v3"])[data-t-cardlines="on"] .nkc-grid--v7 .entry2-name {
+  border-bottom: var(--nk-line-w, 2px) solid var(--nk-line-c, var(--ink));
+}
+.nkc-grid--v7 .entry2-media { order: 1; background: none; }
+.nkc-grid--v7 .entry2-gymbs { order: 2; padding-top: 10px; }
+.nkc-grid--v7 .entry2-sections { order: 3; padding-top: 10px; }
+
+/* ── cardstyle-v8: white cards with a shadow under them; a press grows the card
+   into the modal (grow.ts) ── */
+.nkc-grid--v8 .entry2 {
+  background: #fff;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.12);
+  padding: 10px 10px 12px;
+}
+.grid.nkc-grid--v8 { row-gap: 22px; }
+.nkc-grid--v8 .entry2-name { font-weight: 700; }
+.nkc-grid--v8 .entry2-media { background: none; }
+.nkc-grid--v8 :is(.nkt-tag, .card-tag) { border-radius: 999px; }
+
+/* the copy in flight, and the modal waiting unseen under it */
+.nk-grow-ground { background: #fff; box-shadow: 0 6px 30px rgba(0, 0, 0, 0.16); }
+.nk-grow > * { will-change: left, top, width, height, transform; }
+html[data-nk-growing] .entry-scrim .entry { visibility: hidden; }
+
+/* tagstyle-v6: all round, and each kind its own - the sector black,
+   the campaign in its colour, the country an outline - so a card reads at a
+   glance which is which */
+.nkt--v6 .nkt-tag { border-radius: 999px; padding: 3px 8px 2px; }
+.nkt--v6 .nkt-tag--sector { background: var(--ink); color: #fff; }
+.nkt--v6 .nkt-tag--eu { background: #003794; color: #fff; }
+.nkt--v6 .nkt-tag--pwm { background: #ffb2e9; color: var(--ink); }
+.nkt--v6 .nkt-tag--geo { box-shadow: inset 0 0 0 1px var(--ink); }
+
+/* ── cardstyle-v3b: cardstyle-v3 with the name and the country's code over the
+   picture - name, picture, one-liner, tags. Four of the grid's rows, so the
+   pictures share a line whatever the names do. ── */
+.grid.nkc-grid--v3b .entry2 { grid-row: span 4; }
+.nkc-grid--v3b .entry2-text { display: contents; }
+.nkc-grid--v3b .entry2-name { grid-row: 1; padding-bottom: 8px; font-size: 14px; }
+.grid.nkc-grid--v3b .entry2-media { grid-row: 2; }
+.nkc-grid--v3b .entry2-gymbs { grid-row: 3; padding-top: 12px; font-size: 14px; }
+.grid.nkc-grid--v3b .entry2-sections { grid-row: 4; }
+/* the code says the country: no tag for it too */
+.nkc-grid--v3b .nkt-tag--geo { display: none; }
+
+/* the layer the card's parts travel in (fly.ts), over the modal */
+.nk-fly { position: fixed; left: 0; top: 0; width: 0; height: 0; z-index: 400; pointer-events: none; }
+.nk-fly > * { will-change: transform; }
+
+/* ── cardstyle-v9, -v10: the card as the poster - the name in capitals, regular,
+   over the picture; the picture; the one-liner in bold italic; square tags.
+   White, on a shadow. v9 centred, v10 set left. ── */
+.grid.nkc-grid--poster { row-gap: 22px; }
+.grid.nkc-grid--poster .entry2 {
+  grid-row: span 4;
+  background: #fff;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.12);
+  padding: 14px 12px !important;
+  border-top: 0 !important;
+  text-align: center;
+}
+.nkc-grid--poster .entry2-text { display: contents; }
+.nkc-grid--poster .entry2-name {
+  grid-row: 1;
+  padding-bottom: 10px;
+  font-size: 17px;
+  line-height: 19px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+.grid.nkc-grid--poster .entry2-media { grid-row: 2; background: none; }
+.nkc-grid--poster .entry2-gymbs { grid-row: 3; padding-top: 12px; font-size: 13px; line-height: 15px; font-weight: 700; }
+.grid.nkc-grid--poster .entry2-sections { grid-row: 4; padding-top: 10px; }
+.nkc-grid--poster .nkt { justify-content: center; }
+/* the original tags square on the poster card; the others keep their set's corners */
+.nkc-grid--poster .card-tag { border-radius: 0; }
+.grid.nkc-grid--v10 .entry2 { text-align: left; }
+.nkc-grid--v10 .nkt { justify-content: flex-start; }
+
+/* ── cardstyle-v11: cardstyle-v10 with every card the same height - one line of name,
+   the picture's frame, two lines of one-liner, two rows of tags - and the
+   one-liner in medium, not bold ── */
+.grid.nkc-grid--v11 .entry2 {
+  display: flex;
+  flex-direction: column;
+  grid-row: auto;
+  height: 100%;
+}
+.grid.nkc-grid--v11 { grid-auto-rows: 1fr; align-items: stretch; }
+.nkc-grid--v11 .entry2-name {
+  flex: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: calc(19px + 10px);
+}
+.grid.nkc-grid--v11 .entry2-media { flex: none; }
+.nkc-grid--v11 .entry2-gymbs {
+  flex: none;
+  font-weight: 500;
+  height: calc(2 * 15px + 12px);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.grid.nkc-grid--v11 .entry2-sections {
+  flex: none;
+  height: calc(2 * 19px + 4px + 10px);
+  overflow: hidden;
+}
+/* one frame for every picture, so the name under it stands on one line
+   across the row: the picture fitted into it, whole */
+.grid.nkc-grid--v11 .entry2-media {
+  position: relative;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  container-type: normal;
+}
+.nkc-grid--v11 .entry2-motif {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  transform: none !important;
+  margin: 0 !important;
+}
+.nkc-grid--v11 .entry2-thumb {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  transform: none !important;
+}
+/* every column the same width, whatever is in it */
+.grid.nkc-grid--v11 { grid-template-columns: repeat(var(--gridcols), minmax(0, 1fr)); }
+@media (max-width: 720px) {
+  .grid.nkc-grid--v11 { grid-template-columns: repeat(var(--gridcols-phone), minmax(0, 1fr)); }
+}
+
+/* ── cardstyle-v10: every card exactly as high as the fullest one. The name at
+   the head, two lines high whatever its length; the picture's frame fixed
+   under it; the tags at the foot; the one-liner midway between the two,
+   the same space over it as under it. ── */
+.grid.nkc-grid--v10 {
+  grid-template-columns: repeat(var(--gridcols), minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+}
+@media (max-width: 720px) {
+  .grid.nkc-grid--v10 { grid-template-columns: repeat(var(--gridcols-phone), minmax(0, 1fr)); }
+}
+.grid.nkc-grid--v10 .entry2 {
+  grid-row: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.nkc-grid--v10 .entry2-name {
+  flex: none;
+  height: calc(2 * 19px);
+  margin-bottom: 10px;
+  padding-bottom: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.grid.nkc-grid--v10 .entry2-media {
+  flex: none;
+  position: relative;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  container-type: normal;
+}
+.nkc-grid--v10 .entry2-motif {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  transform: none !important;
+  margin: 0 !important;
+}
+.nkc-grid--v10 .entry2-thumb {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  transform: none !important;
+}
+.nkc-grid--v10 .entry2-gymbs {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+}
+.grid.nkc-grid--v10 .entry2-sections { flex: none; padding-top: 0; }
+.nkc-grid--v10 .entry2-name { order: 0; }
+.grid.nkc-grid--v10 .entry2-media { order: 1; }
+.nkc-grid--v10 .entry2-gymbs { order: 2; }
+.grid.nkc-grid--v10 .entry2-sections { order: 3; }
+.nkc-grid--v10 .entry2-gymbs { font-weight: 500; }
+
+/* cardstyle-v10's foot: always two rows high, so the one-liner stands on the
+   same line in every card - the sector over, the campaign under, and the
+   country's code at the right of the campaign's row, as words */
+.nkc-grid--v10 .nkc-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font);
+  font-size: 11px;
+  line-height: 13px;
+}
+.nkc-grid--v10 .nkc-foot-row {
+  display: flex;
+  align-items: center;
+  min-height: calc(13px + 6px);
+}
+.nkc-grid--v10 .nkc-foot-tag { margin: 0; }
+.nkc-grid--v10 .nkc-foot-code { margin-left: auto; padding-left: 8px; color: var(--ink); }
+/* each row exactly a tag high; a tag never wraps, a long one is cut */
+.nkc-grid--v10 .nkc-foot { height: calc(2 * 21px + 4px); flex: none; overflow: hidden; }
+.nkc-grid--v10 .nkc-foot-row { height: 21px; min-height: 0; min-width: 0; }
+.nkc-grid--v10 .nkc-foot-tag { flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nkc-grid--v10 .nkc-foot-code { flex: none; white-space: nowrap; }
+/* the code in the card's right corner; the one-liner starts on one line in
+   every card, a fixed step under the picture */
+.nkc-grid--v10 .nkc-foot-row { width: 100%; }
+.nkc-grid--v10 .entry2-gymbs { align-items: flex-start; padding: 14px 0 12px; }
+.grid.nkc-grid--v10 .entry2-sections.nkc-foot { width: 100%; align-self: stretch; }
+
+/* the country a tag, first on the second row */
+.nkc-grid--v10 .nkc-foot-row { gap: 4px; }
+.nkc-grid--v10 .nkc-foot-tag--geo { flex: none; }
+
+/* while the card's letters and picture are in flight, the modal's name and
+   picture wait unseen, whatever re-draws them */
+html[data-nk-flying] :is(.entry-scrim .entry, .cside, .index-panel .entry) :is(.entry-name, .entry-figure img, .cside-title, .cside-picture img) { opacity: 0 !important; }
+
+/* cardstyle-v10's foot in the set's tag styles: the rows keep their fixed height
+   and direction whatever the style */
+.nkc-grid--v10 .nkc-foot.nkt { display: flex; flex-direction: column; flex-wrap: nowrap; gap: 4px; }
+.nkc-grid--v10 .nkc-foot.nkt .nkc-foot-row { flex-wrap: nowrap; }
+
+/* cardstyle-v10: the one-liner centred and a step smaller; the tags closer round
+   their words, the country written as the Geography filter writes it */
+.nkc-grid--v10 .entry2-gymbs { justify-content: center; text-align: center; font-size: 12px; line-height: 14px; }
+.nkc-grid--v10 .nkc-foot :is(.card-tag, .nkt-tag) { padding: 2px 3px 1px; }
+.nkc-grid--v10 .nkt--v5 .nkt-tag { padding: 2px 6px 1px; }

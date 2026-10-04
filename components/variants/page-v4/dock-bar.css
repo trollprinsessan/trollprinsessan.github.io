@@ -1,0 +1,111 @@
+/* ── page-v4: the tab's row as the dock ────────────────────────────────────
+   The original dock's place and manners (globals.css, THE DOCK): fixed at the
+   foot, lifted off it by --dock-lift, sliding in while the list is on screen
+   and out when it is not, on the same clock. The row's own look comes from
+   the tab's stylesheet (list-tab.css, :is(.p2tab, .p4dock)). */
+.p4dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: var(--dock-lift, 20px);
+  z-index: 40;
+  padding: 0 var(--pad);
+  transform: translateY(calc(100% + var(--dock-lift, 20px)));
+  /* the bar's width moves on the mark's own clock (company-side.css), so the
+     two are always the same width, at every moment */
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), right 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.p4dock--on { transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .p4dock { transition: none; }
+}
+/* the drop-downs open upward, off the foot */
+.p4dock .p2-drop-panel {
+  top: auto;
+  bottom: calc(100% + 2px);
+}
+/* the count is not a drawer's handle here: no fold-out mark */
+.p4dock .p2-title .p2-mark { display: none; }
+.p4dock .p2-title { margin-left: auto; }
+
+/* A COMPANY BESIDE THE LIST: the bar keeps to the list's width, as the mark
+   does (company-side.css). A phone keeps the whole width. */
+@media (min-width: 901px) {
+  html.nk-cside .p4dock { right: var(--cside-w); }
+}
+/* the bar stays while its own drop-down is open or its search is in use:
+   a filter that shortens the list must not take the bar - and the open
+   drop-down with it - away mid-choice */
+.p4dock:has(.p2-drop-panel),
+.p4dock:focus-within { transform: translateY(0); }
+
+/* ── dockstyle-v# ── */
+
+/* AT THE FOOT, the filters' arrows point up - the way their lists open -
+   and down again while one is open */
+.p4dock--bottom .p2-drop .p2-slot .p2-mark { transform: rotate(180deg); }
+.p4dock--bottom .p2-drop .p2-slot[aria-expanded="true"] .p2-mark { transform: none; }
+
+/* AT THE HEAD (dockstyle-v2, -v3, dockplace-v2): stuck under the mark - or
+   under the banner when it is on - and following the mark's foot wherever
+   that is (--index-panel-top, measured in archive.tsx), in a room of its own
+   in the list (.nk-dockroom), so it never lies over the list. As wide as the
+   mark. Its lists open downward. Away from the list it is not shown. */
+.p4dock--top {
+  top: calc(var(--index-panel-top, var(--masthead-h, 0px)) + var(--nk-banner-h, 0px));
+  bottom: auto;
+  transform: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 160ms linear, visibility 0s linear 160ms, right 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.p4dock--top.p4dock--on,
+.p4dock--top:has(.p2-drop-panel),
+.p4dock--top:focus-within {
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 160ms linear, visibility 0s, right 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.p4dock--top .p2-drop-panel { top: calc(100% + 2px); bottom: auto; }
+
+/* v3: the head row is the search at the left, the filters in the middle
+   and Shuffle at the right; the views are the foot's, in the corner */
+.p4dock--v3 .p2-views,
+.p4dock--v3 .p2-phoneviews { display: none !important; }
+.p4dock--v3 .p2-search { order: 1; flex: 0 1 280px; }
+.p4dock--v3 .p2-drop { order: 2; }
+.p4dock--v3 .p2-drop:first-of-type { margin-left: auto; }
+.p4dock--v3 .p2-row > button { order: 3; }
+.p4dock--v3 .p2-row > button:not(.p2-title) { margin-left: 0; }
+.p4dock--v3 .p2-title { order: 4; margin-left: auto; }
+.p4dock--views { left: auto; }
+.p4dock--views .p2-row > :not(.p2-views):not(.p2-phoneviews) { display: none; }
+
+/* v4, v5: no search */
+.p4dock--v4 .p2-search,
+.p4dock--v5 .p2-search { display: none; }
+/* v5: v4, and no arrow on each filter - the words alone */
+.p4dock--v5 .p2-drop .p2-mark { display: none; }
+
+/* ONE ROW, ALWAYS - on a phone, and beside the side view on a desktop,
+   where the list is narrower: the search gives way first */
+.p4dock .p2-row { flex-wrap: nowrap; }
+.p4dock .p2-search { min-width: 0; }
+.p4dock:not(.p4dock--v3) .p2-search { flex: 1 1 0; }
+@media (max-width: 720px) {
+  .p4dock .p2-phoneviews { gap: 8px; }
+}
+
+/* the top bar's room in the list, under the banner: the list starts under
+   the bar, and moves up again when the bar goes to the foot */
+.nk-dockroom { display: none; }
+
+/* dockstyle-v6: at the foot, the whole width with the search; the view is Grid
+   or Index and nothing between - no slider, no categories */
+html[data-v-dockstyle="v6"] :is(.p2tab, .p4dock) .p2-views .scale { display: none; }
+html[data-v-dockstyle="v6"] :is(.p2tab, .p4dock) .p2-phoneviews .views-opt:nth-child(2) { display: none; }
+
+/* switch noarrows: the bar's buttons are their words alone, in every
+   version of the bar */
+html[data-t-noarrows="on"] .p4dock .p2-mark { display: none; }

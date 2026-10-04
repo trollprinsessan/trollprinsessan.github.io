@@ -1,0 +1,48 @@
+/* ── page-v5: the list's head ───────────────────────────────────────────────
+   One line over the first row, from the page's left margin: Show all, the
+   two campaigns' badges with their numbers, the other ways. Words as buttons,
+   in the modal's step (the original .entry-step) - no boxes, no lines. While
+   one is chosen it stands and the rest go grey. */
+.p5lead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 32px;
+  padding: calc(var(--gutter) + 10px) var(--pad) 0;
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 17px;
+  font-weight: 500;
+  letter-spacing: normal;
+  color: var(--ink);
+}
+.p5key {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 120ms linear;
+}
+.p5key-count { font-variant-numeric: tabular-nums; }
+/* under the pointer the words are underlined, as the modal's steps are */
+.p5key:is(.p5key--all, .p5key--others):hover,
+.p5key:hover .p5key-count { text-decoration: underline; text-underline-offset: 2px; }
+.p5lead--on .p5key:not(.is-on) { opacity: 0.35; }
+.p5lead--on .p5key:not(.is-on):hover { opacity: 1; }
+
+/* the rows under it stand a line clear of it */
+.p5lead + .index-view { margin-top: 24px; }
+
+/* the grid under it keeps a smaller head of air */
+.p5lead + .grid,
+.p5lead + .chapters .chap:first-child .chap-head { padding-top: 26px; }
+
+@media (max-width: 720px) {
+  .p5lead { gap: 10px 20px; }
+}
