@@ -63,14 +63,15 @@ const PANELS = [
     key: "Electro Union",
     // this panel swaps the vortex for the campaign's own mark
     image: { file: "Electro-union-logo.svg", ground: "plain", alt: "" },
-    // the photobook's chapter intro, page 7, whole
+    /* the photobook's chapter intro, page 7, cut to three fifths: the two
+       edges folded into one paragraph, the China comparison and the solar
+       park gone. The count is the book's chapter, which is what the tab
+       filters to. */
     body: [
-      "Electro Union is Norrsken's case for Europe to become the world's first electro-continent: where a majority of the economy runs on clean electricity it makes itself. The argument starts with a number that has barely moved in a decade. Around 90% of Europe's economy could run on electricity using technology that already exists. Less than a quarter of it does. That gap has two edges.",
-      "First: exposure. Europe is living through its third energy price shock in four years. The trigger is different every time. The vulnerability never is: Europe runs on fuel it does not own, shipped through waters it does not control. A wind farm cannot be embargoed. A solar park cannot be blockaded. Every terawatt-hour made at home is one no adversary can weaponise.",
-      "Second: cost. It decides the next thirty years. European industry pays roughly twice what American industry pays for electricity, and about half again what Chinese industry pays. That is a weight on everything. Every factory, every startup, every data centre begins at a disadvantage on the one input everything else runs through.",
-      "The direction of travel is settled. Solar has fallen more than 90% in a decade. Over 90% of new renewable projects cost less than the fossil alternative. Renewables have passed coal as the world's largest source of electricity. Unlike fuel, they get cheaper with every unit built. That difference is the whole argument. Fossil dependency is permanent. You pay for the fuel every month, forever, at a price set somewhere else. The grids, batteries and machines of an electric economy are bought once. After that, the energy is yours.",
-      "The European Commission unveiled an Electrification Action Plan in July 2026, with the goal of making Europe the world's first electro-continent, doubling electricity’s share of Europe’s energy use from 23% to 46% by 2040.",
-      // the count is the grid's: what you get when you press this tab
+      "Electro Union is the case for Europe as the world's first electro-continent: a majority of its economy running on clean electricity it makes itself. Around 90% of Europe's economy could run on electricity using technology that already exists. Less than a quarter of it does.",
+      "That gap leaves Europe exposed, in its third energy price shock in four years, running on fuel it does not own, shipped through waters it does not control. And it costs: European industry pays roughly twice what American industry pays for electricity, so every factory, startup and data centre starts behind.",
+      "Solar has fallen more than ninety percent in a decade. Unlike fuel, renewables get cheaper with every unit built. Fuel is paid for every month, forever, at a price set somewhere else. Grids, batteries and machines are bought once. After that, the energy is yours.",
+      "The European Commission unveiled an Electrification Action Plan in July 2026, with the goal of making Europe the world's first electro-continent, doubling the current share from 23% to 46% by 2040.",
       "In here you'll find the 26 builders, making Europe the Electro Union.",
     ],
   },
