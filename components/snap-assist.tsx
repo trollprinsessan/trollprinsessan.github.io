@@ -12,7 +12,11 @@ import { useEffect } from "react";
    nothing to settle on, so the list scrolls free.
 
    Phone only. On desktop the CSS band is enough, and a wheel is not a flick. */
-const REACH = 0.42; // of the screen, either side of a view
+/* A SOFT SNAP: only near the target. At 0.42 of the screen the assist caught
+   scrolls that were plainly going somewhere else, and the page took the
+   wheel out of your hand half a screen away from the view. It settles only
+   when the scroll has already come to rest close to one. */
+const REACH = 0.16; // of the screen, either side of a view
 
 export default function SnapAssist() {
   useEffect(() => {

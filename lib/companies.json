@@ -9261,7 +9261,7 @@
       2026
     ],
     "returning": true,
-    "statement": "Finds the wind farm hiding in a map. / Where thirty years of wind gets decided.",
+    "statement": "Finds the wind farm hiding in a map.",
     "website": "https://www.vind.ai",
     "visual": "https://cdn.prod.website-files.com/65e76a15af207274f46c7f5c/68cc2e0ef7c69150ceb3b185_VindAI%20(1).png",
     "legacy": {
@@ -11109,7 +11109,7 @@
       2026
     ],
     "returning": false,
-    "statement": "Clean fuel the Earth already made. / Clean fuel no tanker has to deliver.",
+    "statement": "Clean fuel no tanker has to deliver.",
     "website": "https://mantle8.com",
     "visual": "",
     "legacy": {
@@ -11165,7 +11165,7 @@
       2026
     ],
     "returning": false,
-    "statement": "Volcano-grade heat, minus the volcano. / Geothermal for countries without volcanoes.",
+    "statement": "Geothermal for countries without volcanoes.",
     "website": "https://mazamaenergy.com",
     "visual": "",
     "legacy": {
@@ -11573,7 +11573,7 @@
     }
   },
   {
-    "name": "R3Robotics",
+    "name": "R3 Robotics",
     "slug": "r3robotics",
     "countries": [
       "Luxembourg"
@@ -11713,7 +11713,7 @@
     }
   },
   {
-    "name": "Sava Technology",
+    "name": "Sava",
     "slug": "sava-technology",
     "countries": [
       "UK"

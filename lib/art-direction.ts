@@ -363,40 +363,41 @@ export function photoFor(slug: string) {
   return PHOTO_POOL[h % PHOTO_POOL.length];
 }
 
-/* THE ELECTRO UNION, provisionally.
-   The panel's copy names 27 builders, but no cohort field exists in the data
-   yet - these are picked from it by the only signal there is: European, and
-   in the sectors the copy names (the grid, storage, generation, electrified
-   industry and transport, and the materials it runs on), alphabetical.
-   Replace with the real list the moment it is in backstage. */
+/* THE ELECTRO UNION.
+   The 2026 companies whose picture is an Electro Union plate - the Image Type
+   column of the content-production sheet decides the campaign, not which of
+   the campaign copy columns happens to be filled. Matter is in it for now
+   while its picture is still being decided. Only the tag: the campaign copy
+   is not used. */
 export const ELECTRO_UNION = [
-  "1komma5",
-  "alight",
-  "beyond-aero",
-  "bloom-biorenewables",
+  "assetcool",
+  "axle-energy",
+  "bees-bears",
   "blykalla",
-  "cuspai",
-  "desolenator",
-  "einride",
-  "electricity-maps",
-  "elonroad",
-  "elyos-energy",
-  "enter",
-  "genomines",
-  "granular-energy",
-  "h2site",
-  "heart-aerospace",
-  "hived",
-  "instagrid",
-  "kitekraft",
-  "kraftblock",
-  "magnotherm",
-  "metris-energy",
-  "newcleo",
-  "nitrovolt",
-  "northvolt",
-  "piclo",
-  "pionix",
+  "decade-energy",
+  "delfos-energy",
+  "enerin",
+  "enline",
+  "entrix",
+  "etalytics",
+  "evroc",
+  "exergy3",
+  "galvany",
+  "ionate",
+  "juna-ai",
+  "mantle8",
+  "matter",
+  "metafuels",
+  "modvion",
+  "ore-energy",
+  "proxima-fusion",
+  "pulsetrain",
+  "recupere-metals",
+  "reverion",
+  "rift",
+  "trawa",
+  "turn2x",
+  "vind-ai",
 ];
 
 /* THE COHORTS.
@@ -416,7 +417,24 @@ export const ELECTRO_UNION = [
    `themes` in companies.json is empty on every record, so these come from
    here until the cohorts are in backstage. */
 export const PROMPT_WHAT_MATTERS: string[] = [
-  /* the 17 are not picked yet - drop their slugs in and they carry the tag */
+  /* the same rule: the ones whose picture is a Prompt What Matters plate */
+  "ai-bob",
+  "ataraxis-ai",
+  "biographica",
+  "biorce",
+  "cradle",
+  "epoch-biodesign",
+  "flok-health",
+  "floodbase",
+  "flox-intelligence",
+  "gridware",
+  "jua",
+  "mitti-labs",
+  "overstory",
+  "r3robotics",
+  "source-ag",
+  "vibrant-planet",
+  "voize",
 ];
 
 export function cohortsFor(slug: string) {

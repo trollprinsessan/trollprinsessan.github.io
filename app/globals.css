@@ -1011,13 +1011,17 @@ main {
 }
 @media (min-width: 721px) {
   .row > .row-name { grid-column: 1 / 3; }
-  .row > .row-statement { grid-column: 3 / 9; }
+  /* the campaign has its own column, two tracks between the one-liner and
+     the sector; the one-liner gives up the two */
+  .row > .row-statement { grid-column: 3 / 7; }
+  .row > .row-campaign { grid-column: 7 / 9; }
   .row > .row-sector { grid-column: 9 / 12; }
   .row > .row-geo { grid-column: 12 / 13; }
 }
 
 .row-name,
 .row-statement,
+.row-campaign,
 .row-sector,
 .row-geo {
   font-family: var(--font);
@@ -1041,6 +1045,7 @@ main {
    makes with its cards */
 .index--focused .index-item:not(.index-item--open) .row-name,
 .index--focused .index-item:not(.index-item--open) .row-statement,
+.index--focused .index-item:not(.index-item--open) .row-campaign,
 .index--focused .index-item:not(.index-item--open) .row-sector,
 .index--focused .index-item:not(.index-item--open) .row-geo {
   color: var(--meta);
@@ -1048,6 +1053,7 @@ main {
 /* hovering a greyed row brings it back, so the list stays navigable */
 .index--focused .index-item:not(.index-item--open) .row:hover .row-name,
 .index--focused .index-item:not(.index-item--open) .row:hover .row-statement,
+.index--focused .index-item:not(.index-item--open) .row:hover .row-campaign,
 .index--focused .index-item:not(.index-item--open) .row:hover .row-sector,
 .index--focused .index-item:not(.index-item--open) .row:hover .row-geo {
   color: var(--ink);
@@ -1060,6 +1066,7 @@ main {
    exactly two states and nothing between them. It snaps. */
 .row-name,
 .row-statement,
+.row-campaign,
 .row-sector,
 .row-geo {
   /* no fade: a row opens and the rest recede in one cut, the way every other
@@ -1085,6 +1092,7 @@ main {
 /* the step alone, no arrow: 6px, on and off in one frame */
 .row:hover .row-name,
 .row:hover .row-statement,
+.row:hover .row-campaign,
 .row:hover .row-sector,
 .row:hover .row-geo {
   transform: translateX(6px);
@@ -1093,6 +1101,7 @@ main {
 /* the open row is already marked by its inversion; it does not also step */
 .index-item--open .row:hover .row-name,
 .index-item--open .row:hover .row-statement,
+.index-item--open .row:hover .row-campaign,
 .index-item--open .row:hover .row-sector,
 .index-item--open .row:hover .row-geo { transform: none; }
 .index-item--open .row:hover::before { opacity: 0; }
@@ -1139,6 +1148,44 @@ main {
 }
 @media (prefers-reduced-motion: reduce) {
   .index-panel { animation: none; }
+}
+/* THE PANEL NEVER SHRINKS (desktop). Its top still follows the mark's foot,
+   but its height is the one it has with the mark at the head of the window -
+   so when the mark comes down the panel moves down with it and the window's
+   edge takes its foot, rather than the picture and the copy being squeezed
+   into what is left. And nothing in it is cut mid-line: the picture keeps a
+   floor, and on a window too short for the whole company the panel scrolls. */
+@media (min-width: 901px) {
+  .index-panel {
+    height: calc(100dvh - var(--masthead-h, 180px) - var(--index-dock-h, 53px) - var(--dock-lift));
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .index-panel::-webkit-scrollbar { display: none; }
+  /* (prefixed: the panel's own rules further down would otherwise win) */
+  /* a screen tall as before, the plate taking what the copy leaves - but
+     what does not fit runs on and the panel scrolls to it, instead of being
+     cut off */
+  .index-view .index-panel .entry--panel { overflow: visible; }
+  .index-view .index-panel .entry--panel .entry-figure { min-height: 13vh; }
+  /* Copy link ends 24 above the panel's foot, not 50: the text slots below
+     are fixed now, and the plate needs the room */
+  .index-view .index-panel .entry--panel { padding-bottom: 24px; }
+  /* NOTHING MOVES FROM ONE COMPANY TO THE NEXT. Every piece of text has a
+     slot as tall as the longest of the hundred needs, so the one-liner, the
+     record, the copy and Copy link stand on the same lines whichever company
+     is open - the plate takes what the slots leave, which is the same for
+     all of them too, and a company without a picture keeps its empty frame.
+     The slot heights are measured at the panel's own width (see Index); the
+     fallbacks are what a 1346px window measures. */
+  .index-view .index-panel .entry--panel .entry-verso > .entry-name { min-height: var(--slot-name, 34px); }
+  .index-view .index-panel .entry--panel .entry-runhead { min-height: var(--slot-runhead, 32px); }
+  .index-view .index-panel .entry--panel .entry-verso > .entry-record { min-height: var(--slot-record, 90px); }
+  .index-view .index-panel .entry--panel .entry-verso > .entry-verso-foot { min-height: var(--slot-foot, 302px); }
+  .index-view .index-panel .entry--panel .entry-verso > .entry-verso-foot {
+    flex: 0 0 auto;
+    overflow: visible;
+  }
 }
 /* the spread, stacked: one column, the pieces in reading order. Everything
    the twelve-track version places is unplaced here, and the type keeps the
@@ -1212,6 +1259,7 @@ main {
 @media (min-width: 721px) {
   .row-name,
   .row-statement,
+  .row-campaign,
   .row-sector,
   .row-geo,
   .index-panel .entry--panel,
@@ -1333,25 +1381,23 @@ main {
    desktop proposition, not a phone one. */
 @media (max-width: 900px) {
   .index-view--open { grid-template-columns: 1fr; }
-  /* A SHEET, NOT A PAGE.
-     It rises from the foot and stops short of the top, so the list it came
-     from is still there above it - the way a phone shows a thing on top of
-     the thing you were reading. It sits on the dock, which stays. */
+  /* THE WHOLE PHONE.
+     A company open on a phone covers the screen edge to edge - no list above
+     it, no dock under it, no Menu over its close. It still rises from the
+     foot, and a swipe down still puts it away. */
   .index-panel {
     position: fixed;
     left: 0;
     right: 0;
-    top: auto;
-    /* on the dock, which is fixed at the foot, and 86% of the screen tall:
-       the rest is the list, still there above it */
-    bottom: calc(var(--index-dock-h, 53px) + var(--dock-lift));
-    height: calc(86vh - var(--index-dock-h, 53px) - var(--dock-lift));
-    z-index: 60;
+    top: 0;
+    bottom: 0;
+    height: 100dvh;
+    /* over the dock (40) and the Menu (70) */
+    z-index: 80;
     width: auto;
     overflow-y: auto;
     overscroll-behavior: contain;
-    /* barely there: enough to say the sheet is on the list, not in it */
-    box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.05);
+    padding-top: env(safe-area-inset-top);
     animation: panel-up 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
   @keyframes panel-up {
@@ -1393,6 +1439,7 @@ main {
 }
 .index-item--open .row-name,
 .index-item--open .row-statement,
+.index-item--open .row-campaign,
 .index-item--open .row-sector,
 .index-item--open .row-geo {
   color: var(--bg);
@@ -1651,12 +1698,14 @@ main {
   text-transform: none;
   align-self: stretch;
 }
-/* what they do. Held at three lines so the cards keep their step; the
-   statements run a median of 69 characters. */
+/* what they do. Held just short of three lines, so the tags sit 7px closer
+   under the usual two - a statement that does run to three pushes its tags
+   down by what it needs rather than running into them. The statements run a
+   median of 69 characters. */
 .card-statement {
   font-size: 13px;
   line-height: 15px;
-  min-height: 45px;
+  min-height: 38px;
   align-self: stretch;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -1672,6 +1721,17 @@ main {
   flex-wrap: wrap;
   gap: 4px;
 }
+/* in the company's record, over the website: one more line of the record,
+   and a line's space between it and the website */
+.entry-tags {
+  display: flex;
+  flex-direction: column;
+  /* one line even when empty, so the website below never moves up */
+  min-height: 1lh;
+}
+/* the whole-screen sheet on a phone: the Menu steps aside (see Index) */
+.sheet-open .mod-hero-menu { display: none; }
+
 .card-tag {
   display: inline-block;
   /* 2 more over the type: the caps sit high in their line, and at 2 they
@@ -2649,6 +2709,57 @@ html {
      starts immediately under it once it parks */
   padding: 0 var(--pad);
 }
+
+/* THE CHAPTERS, over the list: the two campaigns and the whole edition, set
+   as the list is - no boxes, no fill. The one you are in is black, the rest
+   recede to the page's grey, and each carries its count a size down. On the
+   page's own tracks, starting where the one-liners start. */
+.chapters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 0 var(--pad) 10px;
+  margin-left: calc(2 * ((100% - 2 * var(--pad) - 11 * var(--gutter)) / 12 + var(--gutter)));
+}
+.chapter {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+  color: var(--meta);
+}
+.chapter:hover { color: var(--ink); }
+.chapter--on { color: var(--ink); }
+.chapter-count {
+  font-size: 11px;
+  line-height: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--meta);
+}
+.chapter--on .chapter-count { color: var(--ink); }
+@media (min-width: 721px) {
+  .chapter { font-size: 14px; line-height: 16px; }
+}
+@media (max-width: 720px) {
+  /* on a phone the names run the width, with no indent to lose */
+  .chapters {
+    margin-left: 0;
+    gap: 14px;
+    padding-bottom: 8px;
+  }
+}
+
+/* in the grid the mark does not hold the head of the window: it still rides
+   the foot over the film and the manifest and parks above the list, then
+   scrolls away with the page (see Archive) */
+.archive-masthead--loose { top: auto; }
 
 .manifest-logo {
   position: relative;
@@ -4518,6 +4629,8 @@ html {
   font-size: 15px;
   line-height: 17px;
   font-weight: 500;
+  /* the campaign, or nothing - and the line is held either way */
+  min-height: 17px;
 }
 /* the name at the head, the one thing on the verso that is not 15/17 */
 .entry--spread .entry-verso > .entry-name {
@@ -4547,6 +4660,10 @@ html {
 .entry--spread .entry-verso > .entry-record .entry-record-values a {
   /* on the record's own lines, no line of air above it */
   margin-top: 0;
+}
+/* ...except after a campaign: a line's space between it and the website */
+.entry--spread .entry-verso > .entry-record .entry-record-values a.entry-record-site--apart {
+  margin-top: 1lh;
 }
 /* THE DOMAIN IS THE ONE THING IN THE RECORD YOU CAN PRESS, and it is
    underlined always - the record's other lines are facts, this one is a way
@@ -4633,6 +4750,15 @@ html {
   .entry--spread:not(.entry--panel) .entry-figure--gif img {
     transform: scale(1.08);
   }
+}
+
+/* THE LINE DRAWINGS (the Prompt What Matters plates) are not hung on the
+   tracks either: always centred in the right half of the page, both ways,
+   and set a tenth smaller than the band so the drawing has air all round -
+   then lifted 70px, so it sits a little above the band's middle. */
+.entry--spread:not(.entry--panel) .entry-figure--line img {
+  object-position: center center;
+  transform: translateY(-70px) scale(0.9);
 }
 
 @keyframes plate-in {
@@ -5424,6 +5550,7 @@ html {
   .row-sector { grid-column: 2; grid-row: 1; }
   .row-geo { grid-column: 3; grid-row: 1; justify-self: start; }
   .row-statement { display: none; }
+  .row-campaign { display: none; }
   .row-name,
   .row-geo,
   .row-sector {
@@ -5774,17 +5901,8 @@ html {
 .index-sheet-scrim,
 .sheet-steps { display: none; }
 @media (max-width: 900px) {
-  /* the band of page left above the sheet (it is 86% of the screen tall, so
-     its top is always 14% down): a tap there closes it */
-  .index-sheet-scrim {
-    display: block;
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 14vh;
-    z-index: 59;
-  }
+  /* the sheet covers the whole screen now, so there is no band above it to
+     tap: the scrim stays hidden */
   /* the one-liner is the company's line: under the plate, centred, in bold
      italic, as the desktop's panel sets it */
   .index-panel .entry--panel .entry-runhead {
