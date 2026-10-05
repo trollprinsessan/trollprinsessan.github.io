@@ -5,30 +5,31 @@
 
    `h` is the per-logo height, the same equal-area normalisation the
    partners' marquee uses (see partners.tsx) - a wide wordmark and a stacked
-   mark set to one height read as two different sizes. */
+   mark set to one height read as two different sizes - set a quarter larger
+   than that formula gives, since there are only four of them on the line. */
 const PRESS = [
   {
     file: "forbes.webp",
     name: "Forbes",
-    h: 30,
+    h: 38,
     href: "https://www.forbes.com/sites/trevorclawson/2023/08/30/entrepreneurs-need-better-role-models-says-klarna-co-founder/",
   },
   {
     file: "sifted.webp",
     name: "Sifted",
-    h: 35,
+    h: 44,
     href: "https://sifted.eu/articles/the-46-most-promising-impact-startups-in-europe-according-to-investors",
   },
   {
     file: "fortune.webp",
     name: "Fortune",
-    h: 28,
+    h: 35,
     href: "https://fortune.com/europe/2024/06/12/hollywood-star-alexander-skarsgard-is-spotifys-new-voice-of-conscious-capitalismheres-why-sweden-is-the-world-leader/",
   },
   {
     file: "tech-eu.webp",
     name: "tech.eu",
-    h: 52,
+    h: 65,
     href: "https://tech.eu/2024/09/25/unveiling-impact-unicorns-norrsken-foundations-aannual-impact100/",
   },
 ];

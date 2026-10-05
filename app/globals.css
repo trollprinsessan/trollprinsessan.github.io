@@ -5174,10 +5174,10 @@ html {
   object-fit: contain;
   /* every mark black, whatever it arrives as */
   filter: brightness(0);
-  /* the press marks are a shade quieter than the page: they lift on hover */
-  opacity: 0.55;
+  /* black on the page, stepping back to grey under the pointer */
+  opacity: 1;
 }
-.mod-press-link:hover .mod-press-logo { opacity: 1; }
+.mod-press-link:hover .mod-press-logo { opacity: 0.45; }
 @media (max-width: 720px) {
   .mod-press { padding-bottom: 60px; }
   .mod-press-row { gap: 34px; }
