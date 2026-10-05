@@ -17,7 +17,11 @@ import HeroMenu from "@/components/modules/hero-menu";
 /* The page's content. The Next route renders it whole; the embed build
    (scripts/embed.mjs) renders it inside a host page that brings its own menu
    and footer, so both can be left out. */
-export default function PageBody({ menu = true, footer = true }: { menu?: boolean; footer?: boolean }) {
+/* THE FOOT IS WEBFLOW'S. The page carried a footer of its own while it was
+   a site; embedded under norrsken.org the host draws the real one, so this
+   build does not. The module and its styles stay in the repo - the default
+   is simply off now, and the standalone build has no foot either. */
+export default function PageBody({ menu = true, footer = false }: { menu?: boolean; footer?: boolean }) {
   const facets = getFacets();
   /* the manifest draws one company at a time; it needs four fields, not the
      whole record, so the list handed to it stays small in the bundle. Only the
