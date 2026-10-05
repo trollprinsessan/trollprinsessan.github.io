@@ -5147,3 +5147,39 @@ html {
     .mod-manifest-partners li { transition-delay: 0s; }
   }
 }
+
+/* ---- press ----
+   Four marks on one line under the FAQ, each a link out to what was
+   written. The logos are the whole section: no heading, no pull quotes.
+   They are drawn black like the partners' wall, and they sit on the page's
+   own measure. On a phone they wrap onto two lines. */
+.mod-press {
+  padding: 0 var(--pad) 90px;
+}
+.mod-press-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 56px;
+}
+.mod-press-link {
+  display: block;
+  line-height: 0;
+}
+.mod-press-logo {
+  height: var(--h, 32px);
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+  /* every mark black, whatever it arrives as */
+  filter: brightness(0);
+  /* the press marks are a shade quieter than the page: they lift on hover */
+  opacity: 0.55;
+}
+.mod-press-link:hover .mod-press-logo { opacity: 1; }
+@media (max-width: 720px) {
+  .mod-press { padding-bottom: 60px; }
+  .mod-press-row { gap: 34px; }
+  .mod-press-logo { height: calc(var(--h, 32px) * 0.72); max-width: 130px; }
+}

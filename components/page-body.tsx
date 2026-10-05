@@ -8,6 +8,7 @@ import ManifestLogo from "@/components/modules/manifest-logo";
 import Latest from "@/components/modules/latest";
 import Partners from "@/components/modules/partners";
 import Faq from "@/components/modules/faq";
+import Press from "@/components/modules/press";
 import GoodNewsSection from "@/components/modules/good-news";
 import Footer from "@/components/modules/footer";
 import SnapAssist from "@/components/snap-assist";
@@ -59,6 +60,8 @@ export default function PageBody({ menu = true, footer = true }: { menu?: boolea
         {/* Network parked: the module and its CSS stay in the repo,
             it is just not on the page for now */}
         <div id="faq"><Faq /></div>
+        {/* who has written about the list: the marks alone, each a link */}
+        <div id="press"><Press /></div>
         {footer && <Footer />}
       </main>
       {/* THE MENU rides the window's top right corner the whole way down:
