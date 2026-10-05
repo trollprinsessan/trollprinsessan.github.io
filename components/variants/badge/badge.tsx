@@ -37,12 +37,15 @@ const KEYS: Record<string, Key> = { "Electro Union": "eu", "Prompt What Matters"
 /* the strip's rows, longer than any strip: cut at both ends, as the logo is */
 const ROW = ":^...".repeat(16) + ":^.";
 
-/* THE LOGOS. Electro Union as the traced file; Prompt What Matters set in
+/* THE LOGOS. Electro Union as the manifest's file; Prompt What Matters set in
    type - the pink strip, the name in the typewriter face between two rows
    of :^... cut at the strip's ends - so it is sharp at any size */
 function EuLogo() {
   // eslint-disable-next-line @next/next/no-img-element
-  return <img className="nkb-eulogo" src={"/badges/electro-union.svg"} alt="" />;
+  /* the manifest's own drawing, with the ring and the two lines of small
+     caps taken off it: behind the list only the script is wanted, and at
+     that size "MAKE EUROPE" round the ring was noise */
+  return <img className="nkb-eulogo" src={"/badges/electro-union-wordmark.svg"} alt="" />;
 }
 function PwmLogo() {
   return (

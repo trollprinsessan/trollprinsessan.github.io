@@ -11,3 +11,4 @@ next-env.d.ts
 # the embed builds, one folder each, built by scripts/embed.mjs
 /dist-embed/
 /dist/
+_drop/

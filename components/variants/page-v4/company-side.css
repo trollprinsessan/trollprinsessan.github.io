@@ -120,7 +120,9 @@ html.nk-cside .grid--v2.grid--side { padding-right: var(--pad); }
   line-height: 48px;
   font-weight: 500;
   letter-spacing: normal;
-  overflow-wrap: anywhere;
+  /* one line, whatever the name: the size is fitted to it (see Title) */
+  white-space: nowrap;
+  overflow: hidden;
 }
 .cside-tools {
   flex: none;
@@ -369,6 +371,64 @@ html[data-v-markmode="v6"] .archive-masthead { top: auto; }
 /* sideview-v13: the one-liner centred; at the foot Copy link at the left,
    Prev and Next together at the right, on the one line */
 .cside--v13 .cside-gymbs { text-align: center; margin-bottom: 24px; }
+
+/* THE COLUMN READ TOP TO BOTTOM (v13, desktop, the roomy state).
+   The plate first and centred, the one-liner in bold under it, then the
+   record, and the copy last - rather than the record beside the plate with
+   the copy under both. The wrapper steps out of the way (display: contents)
+   so the plate, the record and the copy are all children of the column and
+   can be ordered; the tight state keeps its own two-column grid. */
+@media (min-width: 901px) {
+  /* and the column scrolls to the rest, rather than squeezing it in */
+  .cside--v13:not([data-tight]) {
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .cside--v13:not([data-tight])::-webkit-scrollbar { display: none; }
+  .cside--v13:not([data-tight]) .cside-top { display: contents; }
+  /* full width of the column, the picture centred inside it - an auto
+     margin here would collapse the frame, since the image is sized off it */
+  .cside--v13:not([data-tight]) .cside-picture {
+    order: 1;
+    width: 100%;
+    /* a plate worth looking at: the room the column has left over goes to
+       the picture, not to the gap above the arrows at the foot - and a
+       breath between it and the name above. A floor here is not the way:
+       it overflows the column and throws the view into its tight state. */
+    /* close under the name - the plate and the one-liner are one block, and
+       the air belongs under them, not over them. The height is a third of
+       the window, set in CompanySide so it is the same for every company. */
+    margin: 2px 0 0;
+  }
+  .cside--v13:not([data-tight]) .cside-gymbs { order: 2; }
+  .cside--v13:not([data-tight]) .cside-facts { order: 4; }
+  .cside--v13:not([data-tight]) .cside-text { order: 3; margin-top: 34px; }
+  /* the gaps around the one-liner tightened, so what they give up goes to
+     the plate rather than to white space between four short blocks */
+  .cside--v13:not([data-tight]) .cside-gymbs { margin: 8px 0 0; }
+  .cside--v13:not([data-tight]) .cside-facts { margin-top: 34px; }
+  /* THE FOOT ON THE RECORD'S LAST LINE: Copy link stands opposite the
+     website, at the right end of that line, rather than alone under the
+     record */
+  .cside--v13:not([data-tight]) .cside-nav {
+    order: 5;
+    margin-top: calc(-1 * (var(--cside-fs, 15px) + 2px));
+    padding-top: 0;
+  }
+  /* THE FOOT: no Prev and Next here - the rows beside the column are the
+     way from one company to the next - and Copy link where Next stood, at
+     the right end of the line */
+  .cside--v13:not([data-tight]) .cside-nav .cside-step:not(.cside-copy) { display: none; }
+  .cside--v13:not([data-tight]) .cside-nav .cside-copy { order: 0; margin: 0; }
+  /* the record stands on the column's own left edge here, not indented a
+     third as it was beside the plate, and its lines run together: the
+     website is one of the facts, not a footnote under them */
+  .cside--v13:not([data-tight]) .cside-info { margin: 0; white-space: normal; }
+  .cside--v13:not([data-tight]) .cside-site { margin-top: 0; }
+  /* the campaign is on the sector's line now (see Info), so the caption
+     under the record has nothing left to say */
+  .cside--v13:not([data-tight]) .cside-caption { display: none; }
+}
 .cside--v13 .cside-nav { justify-content: flex-end; gap: 16px; }
 .cside--v13 .cside-nav .cside-copy { order: -1; margin: 0 auto 0 0; }
 

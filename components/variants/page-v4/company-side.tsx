@@ -60,10 +60,35 @@ function metaOf(c: Company) {
   ];
 }
 
+/* THE NAME ON ONE LINE, ALWAYS.
+   At 42 the longer names turned and the plate under them moved down with
+   the second line. The name is held on one line and set to whatever size
+   that takes - 42 where it fits, down to 24 for the longest of the hundred
+   - so the head is one line deep for every company. Measured after layout
+   against the head's own width, and again when the window changes. */
 function Title({ c, name }: { c: Company; name?: string }) {
+  const ref = useRef<HTMLHeadingElement>(null);
+  const text = name ?? c.name;
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const fit = () => {
+      el.style.fontSize = "";
+      const room = el.clientWidth;
+      if (!room) return;
+      for (let fs = 42; fs >= 24; fs -= 1) {
+        el.style.fontSize = `${fs}px`;
+        el.style.lineHeight = `${Math.round(fs * 1.14)}px`;
+        if (el.scrollWidth <= room) return;
+      }
+    };
+    fit();
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  }, [text]);
   return (
-    <h2 className="cside-title" id={`cside-name-${c.slug}`} aria-label={c.name}>
-      {name ?? c.name}
+    <h2 className="cside-title" ref={ref} id={`cside-name-${c.slug}`} aria-label={c.name}>
+      {text}
     </h2>
   );
 }
@@ -140,7 +165,12 @@ function Info({ c, campaign = false }: { c: Company; campaign?: boolean }) {
   return (
     <div className="cside-info">
       <span>{c.countries.map(abbr).join(", ")}</span>
-      {c.sectorLabel && <span>{c.sectorLabel}</span>}
+      {/* the sector, and the campaign on the same line after it: "Clean
+          Energy, Electro Union" - one fact about the company, one about the
+          edition, but they read as the pair they are */}
+      {c.sectorLabel && (
+        <span>{[c.sectorLabel, ...cohortsFor(c.slug)].join(", ")}</span>
+      )}
       {meta.length > 0 && <span>{meta.join(", ")}</span>}
       {/* sideview-v11: the campaign a line of the record, before the website */}
       {campaign && cohortsFor(c.slug).length > 0 && <span className="cside-info-campaign">{cohortsFor(c.slug).join(", ")}</span>}
@@ -321,6 +351,21 @@ export default function CompanySide({
          as the mark goes is left between the copy and the foot */
       const pic13 = el.querySelector<HTMLElement>(".cside-picture");
       const short13 = !!pic13 && window.matchMedia("(min-width: 901px)").matches;
+      /* THE PLATE IS NOT WHAT GIVES WAY (v13, desktop).
+         Fitting the whole company into one screen meant the plate was
+         squeezed by however long that company's copy ran - small, and a
+         different size for every company. It keeps a third of the window
+         instead, the same for all of them, and the column scrolls when the
+         copy runs past the foot. Nothing is measured, so nothing is set a
+         size down either. */
+      if (short13 && pic13) {
+        el.removeAttribute("data-tight");
+        el.style.removeProperty("--cside-fs");
+        document.documentElement.classList.add("nk-cside");
+        pic13.style.setProperty("height", `${Math.round(window.innerHeight * 0.34)}px`);
+        pic13.style.setProperty("flex", "none");
+        return;
+      }
       if (pic13) {
         pic13.style.removeProperty("height");
         pic13.style.removeProperty("flex");

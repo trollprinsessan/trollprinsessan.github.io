@@ -3133,6 +3133,10 @@ html {
 .mod-latest-track.is-dragging img { pointer-events: none; }
 .mod-latest-track:focus-visible { outline: 1px solid var(--ink); outline-offset: -1px; }
 
+/* the card is the link: the whole thing, not a line of it. Nothing is
+   marked - the cursor and the title's underline on hover are enough */
+.mod-latest-card { color: inherit; text-decoration: none; cursor: pointer; }
+.mod-latest-card:hover .mod-latest-title { text-decoration: underline; text-underline-offset: 2px; }
 .mod-latest-card {
   flex: 0 0 clamp(260px, 46vw, 560px);
   scroll-snap-align: start;
@@ -3150,7 +3154,8 @@ html {
   overflow: hidden;
   margin-bottom: 16px;
 }
-.mod-latest-media img {
+.mod-latest-media img,
+.mod-latest-media video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -4114,7 +4119,9 @@ html {
 /* ---- FAQ accordion ---- */
 .mod-faq {
   /* the full step above, a short one below: the footer follows closely */
-  padding: clamp(80px, 10vw, 160px) var(--pad) 40px;
+  /* a longer breath before the questions: the section used to start right
+     under The Latest's last card */
+  padding: clamp(140px, 15vw, 240px) var(--pad) 40px;
   /* the shared column system at quarter resolution, so the split between the
      title art and the questions can sit off the page grid: the art takes 15 of
      24 tracks, the questions the remaining 9. Lines at multiples of four still
@@ -4292,7 +4299,7 @@ html {
 }
 /* the narrow grids have no room for the split: stack the title over the list */
 @media (max-width: 900px) {
-  .mod-faq { display: block; padding-top: 40px; }
+  .mod-faq { display: block; padding-top: 90px; }
   /* 40 less over the title art and 40 less under it: the gif carries air
      of its own inside its frame */
   .mod-faq .mod-section-header {

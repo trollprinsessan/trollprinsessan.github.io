@@ -173,6 +173,13 @@ html[data-t-partnersinplate="on"]:not([data-v-manifest="v1"]) .mod-manifest-part
     justify-content: flex-start;
   }
   html:is([data-v-mlayout="v10"], [data-v-mlayout="v11"]):is([data-v-manifest="v2"], [data-v-manifest="v3"], [data-v-manifest="v4"], [data-v-manifest="v5"]) .mod-manifest-draw-plate img { object-position: left top; }
+  /* THE DRAWN COMPANY'S NAME UNDER ITS PICTURE, centred on it. It stood on
+     the menu's first line, away from the plate it names; the plate is 3:2
+     and starts 110 down, so its foot is that plus two thirds of its width. */
+  html:is([data-v-mlayout="v10"], [data-v-mlayout="v11"]):is([data-v-manifest="v2"], [data-v-manifest="v3"], [data-v-manifest="v4"], [data-v-manifest="v5"]) .mod-manifest-draw-caption {
+    top: calc(110px + var(--nk-pic-w, 0px) * 2 / 3 + 14px);
+    text-align: center;
+  }
   html:is([data-v-mlayout="v10"], [data-v-mlayout="v11"]):is([data-v-manifest="v2"], [data-v-manifest="v3"], [data-v-manifest="v4"], [data-v-manifest="v5"]) .mod-manifest-verso:has(.mod-manifest-gifline--plain) { top: 110px; }
   /* the link under the copy's last column, that column's width */
   html:is([data-v-mlayout="v10"], [data-v-mlayout="v11"]):is([data-v-manifest="v2"], [data-v-manifest="v3"], [data-v-manifest="v4"], [data-v-manifest="v5"]) .mod-manifest-body > .mod-manifest-reveal {

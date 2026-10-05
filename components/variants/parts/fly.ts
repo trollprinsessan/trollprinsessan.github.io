@@ -257,7 +257,12 @@ export function flyFrom(card: HTMLElement, open: () => void, parts?: Part[]) {
              case, face, weight and size - drawn at the card's letter's
              height, so it only moves and grows on the way and lands as the
              letter it becomes, with nothing to swap */
-          c.el.textContent = ends[i].ch;
+          /* in the case the name lands in: the destination draws its letters
+             uppercase, so the letter flies as a capital rather than changing
+             case under your eye as it arrives. The boxes it is measured
+             against are the destination's own, so nothing shifts. */
+          const cap = tcs.textTransform === "uppercase";
+          c.el.textContent = cap ? ends[i].ch.toUpperCase() : ends[i].ch;
           copyText(c.el, to);
           c.el.style.textTransform = "none";
           c.el.style.width = `${e.width}px`;
