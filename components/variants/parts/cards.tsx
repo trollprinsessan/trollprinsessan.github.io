@@ -146,12 +146,14 @@ function Foot({ c }: { c: Company }) {
     text;
   return (
     <span className={`entry2-sections nkc-foot`}>
-      <span className="nkc-foot-row">
-        {c.sectorLabel && <span className={cls("sector")}>{word(c.sectorLabel, "sector")}</span>}
-      </span>
+      {/* the place first, then what the company does: the country is the one
+          fact every card has, so it holds the top line */}
       <span className="nkc-foot-row">
         <span className={cls("geo")}>{word(c.countries.map(countryName).join(", "), "geo")}</span>
         {camp && <span className={`${cls(campKey || "camp")} nkc-foot-tag--camp`}>{word(camp, campKey)}</span>}
+      </span>
+      <span className="nkc-foot-row">
+        {c.sectorLabel && <span className={cls("sector")}>{word(c.sectorLabel, "sector")}</span>}
       </span>
     </span>
   );
