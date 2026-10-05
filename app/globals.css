@@ -3731,7 +3731,8 @@ html {
   line-height: 48px;
   font-weight: 500;
   letter-spacing: normal;
-  text-transform: none;
+  /* in capitals, as the side view sets it */
+  text-transform: uppercase;
   text-align: left;
   overflow: visible;
 }

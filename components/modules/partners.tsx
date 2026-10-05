@@ -9,41 +9,73 @@
 // Formula: h = clamp(18, sqrt(4160 / ar) * clamp(0.85, (0.33 / ink)^0.25, 1.15), 58)
 // where ar is the trimmed aspect ratio and ink the share of the trimmed box
 // that is drawn. Regenerate if logos change.
+/* THE NOMINATION PARTNERS' MARKS, from Backstage.
+   The marquee used to be a hand-made folder that mixed partner marks with
+   portfolio ones - eight companies from the list were in it, and thirty-one
+   partners were missing. These are the fifty the API serves
+   (backstage.norrsken.org/api/public/impact100, `partners`), in its own
+   sort order, trimmed to their ink and saved at twice the height they are
+   drawn at.
+
+   `h` is a per-logo height computed from each file's real aspect ratio so
+   every mark occupies roughly the same AREA, not the same height - a long
+   wordmark set to one height dwarfs a square mark - with a mild correction
+   for weight, since a solid disc reads bigger than a hairline wordmark of
+   the same area.
+   Formula: h = clamp(18, sqrt(4160 / ar) * clamp(0.85, (0.33 / ink)^0.25, 1.15), 58)
+   where ar is the trimmed aspect ratio and ink the share of the trimmed box
+   that is drawn. Regenerate if the list changes. */
 const LOGOS = [
-  { file: "world-fund.png", name: "World Fund", h: 19 },
-  { file: "sequoia.png", name: "Sequoia Capital", h: 22 },
-  { file: "softbank.png", name: "SoftBank", h: 25 },
-  { file: "mit-solve.png", name: "MIT Solve", h: 32 },
-  { file: "leaps-by-bayer.png", name: "Leaps by Bayer", h: 41 },
-  { file: "planet-a-ventures.png", name: "Planet A", h: 32 },
-  { file: "unreasonable.png", name: "Unreasonable Group", h: 58 },
-  { file: "voyager-logo.png", name: "Voyager VC", h: 27 },
-  { file: "norrskenvc-black.png", name: "Norrsken VC", h: 57 },
-  { file: "norrskenlauncher-logo-black.png", name: "Norrsken Launcher", h: 33 },
-  { file: "norrsken-evolve-logo-black.png", name: "Norrsken Evolve", h: 38 },
-  { file: "norrsken22-black.png", name: "Norrsken22", h: 55 },
-  { file: "norrsken-foundation-logo-black.png", name: "Norrsken Foundation", h: 24 },
-  { file: "fleetzero-black-v.png", name: "Fleetzero", h: 58 },
-  { file: "food-planet-prize.png", name: "Food Planet Prize", h: 58 },
-  { file: "katapult-updated.png", name: "Katapult", h: 49 },
-  { file: "kiko-ventures.png", name: "Kiko Ventures", h: 30 },
-  { file: "lightspeed.png", name: "Lightspeed", h: 32 },
-  { file: "lionheart-ventures.png", name: "Lionheart Ventures", h: 58 },
-  { file: "mudcake.png", name: "Mudcake", h: 35 },
-  { file: "mustard.png", name: "Mustard", h: 29 },
-  { file: "nala-earth.png", name: "Nala Earth", h: 39 },
-  { file: "northzone.png", name: "Northzone", h: 21 },
-  { file: "oriole-networks-main-logo-768x216.png", name: "Oriole Networks", h: 25 },
-  { file: "pale-blue-dot.png", name: "Pale Blue Dot", h: 55 },
-  { file: "phaidra-png-2.png", name: "Phaidra", h: 43 },
-  { file: "pionix.png", name: "Pionix", h: 37 },
-  { file: "plural.png", name: "Plural", h: 35 },
-  { file: "project-eaden-logo-stacked-left-black4x.png", name: "Project Eaden", h: 32 },
-  { file: "ship2b.png", name: "Ship2B", h: 45 },
-  { file: "sici-screenshot.png", name: "Sici", h: 38 },
-  { file: "top-tier-impact.png", name: "Top Tier Impact", h: 42 },
-  { file: "trawa-logo-png.png", name: "Trawa", h: 33 },
-  { file: "vaayu-logo-black.png", name: "Vaayu", h: 38 },
+  { file: "world-fund.webp", name: "World Fund", h: 19 },
+  { file: "voyager-vc.webp", name: "Voyager VC", h: 26 },
+  { file: "unreasonable-group.webp", name: "Unreasonable Group", h: 58 },
+  { file: "top-tier-impact.webp", name: "Top Tier Impact", h: 53 },
+  { file: "softbank-group.webp", name: "SoftBank Group", h: 24 },
+  { file: "ship2b.webp", name: "Ship2B", h: 43 },
+  { file: "sequoia-capital.webp", name: "Sequoia Capital", h: 22 },
+  { file: "prins-daniel-s-fellowship.webp", name: "Prins Daniel's Fellowship", h: 38 },
+  { file: "plural.webp", name: "Plural", h: 35 },
+  { file: "planet-a.webp", name: "Planet A", h: 32 },
+  { file: "partech-partners.webp", name: "Partech Partners", h: 29 },
+  { file: "pale-blue-vc.webp", name: "Pale Blue VC", h: 29 },
+  { file: "obvious.webp", name: "Obvious", h: 42 },
+  { file: "northzone.webp", name: "Northzone", h: 21 },
+  { file: "norrsken-vc.webp", name: "Norrsken VC", h: 57 },
+  { file: "norrsken-launcher.webp", name: "Norrsken Launcher", h: 33 },
+  { file: "norrsken22.webp", name: "Norrsken22", h: 55 },
+  { file: "norrsken-evolve.webp", name: "Norrsken Evolve", h: 38 },
+  { file: "norrsken-africa-seed.webp", name: "Norrsken Africa Seed", h: 23 },
+  { file: "mustard-seed-partners.webp", name: "Mustard Seed Partners", h: 29 },
+  { file: "mudcake.webp", name: "Mudcake", h: 34 },
+  { file: "mit-solve.webp", name: "MIT Solve", h: 31 },
+  { file: "lumo-labs.webp", name: "Lumo Labs", h: 38 },
+  { file: "lionheart-ventures.webp", name: "Lionheart Ventures", h: 58 },
+  { file: "lightspeed-venture-partners.webp", name: "Lightspeed Venture Partners", h: 31 },
+  { file: "leaps-by-bayer.webp", name: "Leaps by Bayer", h: 42 },
+  { file: "kiko-vc.webp", name: "Kiko VC", h: 29 },
+  { file: "katapult.webp", name: "Katapult", h: 49 },
+  { file: "harvard-kennedy-school-sici.webp", name: "Harvard Kennedy School – SICI", h: 37 },
+  { file: "giant-ventures.webp", name: "Giant Ventures", h: 58 },
+  { file: "food-planet-prize.webp", name: "Food Planet Prize", h: 58 },
+  { file: "first-circle-capital.webp", name: "First Circle Capital", h: 43 },
+  { file: "fifty-years.webp", name: "Fifty Years", h: 55 },
+  { file: "felix-capital.webp", name: "Felix Capital", h: 45 },
+  { file: "eqt-ventures.webp", name: "EQT Ventures", h: 20 },
+  { file: "eqt-foundation.webp", name: "EQT Foundation", h: 35 },
+  { file: "enza-capital.webp", name: "Enza Capital", h: 37 },
+  { file: "eka-ventures.webp", name: "EKA Ventures", h: 46 },
+  { file: "dob-equity.webp", name: "DOB Equity", h: 32 },
+  { file: "creandum.webp", name: "Creandum", h: 20 },
+  { file: "collab-fund.webp", name: "Collab Fund", h: 30 },
+  { file: "capital-t.webp", name: "Capital T", h: 54 },
+  { file: "breakthrough-energy.webp", name: "Breakthrough Energy", h: 40 },
+  { file: "bmw-foundation.webp", name: "BMW Foundation", h: 29 },
+  { file: "blume-equity.webp", name: "Blume Equity", h: 50 },
+  { file: "blue-lion.webp", name: "Blue Lion", h: 44 },
+  { file: "blue-ashva-capital.webp", name: "Blue Ashva Capital", h: 44 },
+  { file: "astralis-foundation.webp", name: "Astralis Foundation", h: 37 },
+  { file: "ananda-impact-ventures.webp", name: "Ananda Impact Ventures", h: 39 },
+  { file: "aenu.webp", name: "AENU", h: 35 },
 ];
 
 // gigadesignstudio.com's logo wall: three rows, each an infinite marquee,

@@ -87,6 +87,12 @@ html[data-nk-growing] .entry-scrim .entry { visibility: hidden; }
 }
 .nkc-grid--v10 .entry2-name {
   flex: none;
+  /* the name centred over the plate, a size down, and nudged off the card's
+     top edge - the row keeps its height, so the picture does not move */
+  text-align: center;
+  font-size: 15px;
+  line-height: 17px;
+  padding-top: 5px;
   height: calc(2 * 19px);
   margin-bottom: 10px;
   padding-bottom: 0;
@@ -154,8 +160,10 @@ html[data-nk-growing] .entry-scrim .entry { visibility: hidden; }
 .nkc-grid--v10 .nkc-foot-tag { margin: 0; }
 .nkc-grid--v10 .nkc-foot-code { margin-left: auto; padding-left: 8px; color: var(--ink); }
 /* each row exactly a tag high; a tag never wraps, a long one is cut */
-.nkc-grid--v10 .nkc-foot { height: calc(2 * 21px + 4px); flex: none; overflow: hidden; }
-.nkc-grid--v10 .nkc-foot-row { height: 21px; min-height: 0; min-width: 0; }
+/* the two rows close together: a tag is 18 high, so the row is 19 and the
+   step between them 2 - they read as one block, not as two lines of a list */
+.nkc-grid--v10 .nkc-foot { height: calc(2 * 18px + 2px); flex: none; overflow: hidden; gap: 2px; }
+.nkc-grid--v10 .nkc-foot-row { height: 18px; min-height: 0; min-width: 0; }
 .nkc-grid--v10 .nkc-foot-tag { flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .nkc-grid--v10 .nkc-foot-code { flex: none; white-space: nowrap; }
 /* the code in the card's right corner; the one-liner starts on one line in
@@ -165,7 +173,9 @@ html[data-nk-growing] .entry-scrim .entry { visibility: hidden; }
 .grid.nkc-grid--v10 .entry2-sections.nkc-foot { width: 100%; align-self: stretch; }
 
 /* the country a tag, first on the second row */
-.nkc-grid--v10 .nkc-foot-row { gap: 4px; }
+.nkc-grid--v10 .nkc-foot-row { gap: 4px; justify-content: center; }
+/* and the code, which hung to the right edge, comes in with them */
+.nkc-grid--v10 .nkc-foot-code { margin-left: 0; }
 .nkc-grid--v10 .nkc-foot-tag--geo { flex: none; }
 
 /* while the card's letters and picture are in flight, the modal's name and
@@ -176,3 +186,6 @@ html[data-nk-flying] :is(.entry-scrim .entry, .cside, .index-panel .entry) :is(.
    their words, the country written as the Geography filter writes it */
 .nkc-grid--v10 .entry2-gymbs { justify-content: center; text-align: center; font-size: 12px; line-height: 14px; }
 .nkc-grid--v10 .nkc-foot :is(.card-tag, .nkt-tag) { padding: 2px 3px 1px; }
+
+/* the card's name is not a link of its own: no rule under it on hover */
+.grid.nkc-grid--v10 .entry2:hover .entry2-name { text-decoration: none; }
