@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { web } from "@/lib/art-direction";
 import { NOMINATION_PARTNERS } from "./partners";
 import ElectroMark from "./electro-mark";
@@ -276,6 +276,26 @@ function Body({
   );
 }
 
+/* THE ROULETTE OPENS ON A PICKED HAND.
+   The draw is random, but the first companies it shows are chosen: the
+   plate the page opens on and the ten the first presses land on, in this
+   order. After them the wheel is random again, as it was. Slugs, so a name
+   can change without breaking the order; a slug that is not in the draw
+   (another edition, a company gone) is skipped. */
+const OPENING = [
+  "isometric",
+  "mialgae",
+  "space-forge",
+  "amatera",
+  "sava-technology",
+  "mazama",
+  "planted",
+  "netzeronitrogen",
+  "fleetzero",
+  "root",
+  "bound4blue",
+];
+
 type Draw = {
   slug: string;
   name: string;
@@ -347,9 +367,21 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
     window.addEventListener("scroll", off, { passive: true, once: true });
     return () => window.removeEventListener("scroll", off);
   }, [mark]);
+  /* where the picked hand has got to; past its end the wheel is random */
+  const hand = useRef(0);
+  const handStops = useMemo(
+    () => OPENING.map((slug) => draw.findIndex((d) => d.slug === slug)).filter((i) => i >= 0),
+    [draw],
+  );
   useEffect(() => {
-    if (draw.length) setDrawn(Math.floor(Math.random() * draw.length));
-  }, [draw.length]);
+    if (!draw.length) return;
+    if (handStops.length) {
+      hand.current = 1;
+      setDrawn(handStops[0]);
+      return;
+    }
+    setDrawn(Math.floor(Math.random() * draw.length));
+  }, [draw.length, handStops]);
   const one = draw[drawn];
   /* a roulette, not a cut: the plate runs through a handful of companies,
      each held a little longer than the last, before it lands. The same
@@ -393,6 +425,13 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
       while (n === last) n = Math.floor(Math.random() * draw.length);
       stops.push(n);
       last = n;
+    }
+    /* the wheel turns through whatever it likes; where it LANDS is the next
+       company of the picked hand, while the hand lasts */
+    const next = handStops[hand.current];
+    if (next !== undefined && next !== drawn) {
+      stops[stops.length - 1] = next;
+      hand.current += 1;
     }
     stops.forEach((n) => {
       const src = draw[n]?.visual;
