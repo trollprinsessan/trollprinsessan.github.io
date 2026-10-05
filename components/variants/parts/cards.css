@@ -160,9 +160,10 @@ html[data-nk-growing] .entry-scrim .entry { visibility: hidden; }
 .nkc-grid--v10 .nkc-foot-tag { margin: 0; }
 .nkc-grid--v10 .nkc-foot-code { margin-left: auto; padding-left: 8px; color: var(--ink); }
 /* each row exactly a tag high; a tag never wraps, a long one is cut */
-/* the two rows close together: a tag is 18 high, so the row is 19 and the
-   step between them 2 - they read as one block, not as two lines of a list */
-.nkc-grid--v10 .nkc-foot { height: calc(2 * 18px + 2px); flex: none; overflow: hidden; gap: 2px; }
+/* the two rows close together, but not touching: a tag is 18 high and the
+   step between them 5 - they read as one block with its own air, not as two
+   lines of a list */
+.nkc-grid--v10 .nkc-foot { height: calc(2 * 18px + 5px); flex: none; overflow: hidden; gap: 5px; }
 .nkc-grid--v10 .nkc-foot-row { height: 18px; min-height: 0; min-width: 0; }
 .nkc-grid--v10 .nkc-foot-tag { flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .nkc-grid--v10 .nkc-foot-code { flex: none; white-space: nowrap; }
