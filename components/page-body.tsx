@@ -10,7 +10,6 @@ import Partners from "@/components/modules/partners";
 import Faq from "@/components/modules/faq";
 import Press from "@/components/modules/press";
 import GoodNewsSection from "@/components/modules/good-news";
-import Footer from "@/components/modules/footer";
 import SnapAssist from "@/components/snap-assist";
 import HeroMenu from "@/components/modules/hero-menu";
 
@@ -19,9 +18,10 @@ import HeroMenu from "@/components/modules/hero-menu";
    and footer, so both can be left out. */
 /* THE FOOT IS WEBFLOW'S. The page carried a footer of its own while it was
    a site; embedded under norrsken.org the host draws the real one, so this
-   build does not. The module and its styles stay in the repo - the default
-   is simply off now, and the standalone build has no foot either. */
-export default function PageBody({ menu = true, footer = false }: { menu?: boolean; footer?: boolean }) {
+   build has none - not drawn and not bundled. The module and its styles are
+   still in the repo (components/modules/footer.tsx); the `footer` prop is
+   kept so the embed's call does not have to change. */
+export default function PageBody({ menu = true }: { menu?: boolean; footer?: boolean }) {
   const facets = getFacets();
   /* the manifest draws one company at a time; it needs four fields, not the
      whole record, so the list handed to it stays small in the bundle. Only the
@@ -66,7 +66,6 @@ export default function PageBody({ menu = true, footer = false }: { menu?: boole
         <div id="faq"><Faq /></div>
         {/* who has written about the list: the marks alone, each a link */}
         <div id="press"><Press /></div>
-        {footer && <Footer />}
       </main>
       {/* THE MENU rides the window's top right corner the whole way down:
           one word, the sections folding out under it. It is white and set
