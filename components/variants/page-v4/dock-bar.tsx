@@ -48,7 +48,7 @@ export default function DockBar({
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
-  const cls = `p4dock p4dock--bottom p4dock--v6${on ? " p4dock--on" : ""}${panel ? " p4dock--panel" : ""}`;
+  const cls = `p4dock p4dock--bottom p4dock--v7${on ? " p4dock--on" : ""}${panel ? " p4dock--panel" : ""}`;
   return (
     <>
       <div className={cls} ref={barRef}>

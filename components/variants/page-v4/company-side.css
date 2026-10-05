@@ -315,12 +315,6 @@ html.nk-cside .grid--v2.grid--side { padding-right: var(--pad); }
 .nk-arrow--next { right: 2px; }
 /* on a phone the column is the screen: the copy takes its whole width */
 
-/* markmode-v4: over the grid the mark is stuck to the head of the window (on
-   no ground - the cards are cut at its foot); over the index it is not
-   stuck and goes up with the page */
-html:is([data-v-markmode="v4"], [data-v-markmode="v5"])[data-nk-view="grid"] .archive-masthead { top: 0; }
-html:is([data-v-markmode="v4"], [data-v-markmode="v5"])[data-nk-view="index"] .archive-masthead { top: auto; }
-
 /* sideview-v10 on a desktop: stuck to the mark's foot wherever it is - under
    the mark while the mark is on screen, at the window's head once it has
    gone - so nothing white stands over it, and it goes up with the list and
@@ -334,6 +328,10 @@ html:is([data-v-markmode="v4"], [data-v-markmode="v5"])[data-nk-view="index"] .a
    Prev and Next is always within reach */
 /* the dock at the window's foot lies over the column's foot: room for it,
    so the last line scrolls clear of it */
+
+/* markmode-v6: the page's whole width, and over the grid as over the index it
+   goes up with the list rather than holding the head of the window */
+html[data-v-markmode="v6"] .archive-masthead { top: auto; }
 
 /* sideview-v13: v2's column - name, record, picture, one-liner, copy - with
    the motion of v11 and v12: it rises into place on the modal's clock

@@ -61,9 +61,15 @@
 
 /* dockstyle-v6: at the foot, the whole width with the search; the view is Grid
    or Index and nothing between - no slider, no categories */
-html[data-v-dockstyle="v6"] :is(.p2tab, .p4dock) .p2-views .scale { display: none; }
-html[data-v-dockstyle="v6"] :is(.p2tab, .p4dock) .p2-phoneviews .views-opt:nth-child(2) { display: none; }
+html:is([data-v-dockstyle="v6"], [data-v-dockstyle="v7"]) :is(.p2tab, .p4dock) .p2-views .scale { display: none; }
+html:is([data-v-dockstyle="v6"], [data-v-dockstyle="v7"]) :is(.p2tab, .p4dock) .p2-phoneviews .views-opt:nth-child(2) { display: none; }
 
 /* switch noarrows: the bar's buttons are their words alone, in every
    version of the bar */
 html[data-t-noarrows="on"] .p4dock .p2-mark { display: none; }
+
+/* dockstyle-v7: dockstyle-v6 with the view switch - Grid, Index - at the row's
+   right-hand end, after Shuffle, and no count beside it */
+.p4dock--v7 .p2-title { display: none; }
+.p4dock--v7 :is(.p2-views, .p2-phoneviews) { order: 10; margin-left: 0; }
+.p4dock--v7 .p2-row > button:not(.p2-title) { margin-left: auto; }

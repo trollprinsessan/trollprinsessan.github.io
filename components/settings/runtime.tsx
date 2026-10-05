@@ -57,7 +57,10 @@ export default function Runtime() {
       const list = root.dataset.nkListGround;
       const a = document.getElementById("archive")?.getBoundingClientRect();
       const above = !a || a.top >= window.innerHeight * 0.6;
-      const pink = list ? list === "pwm" : root.dataset.nkPanelGround === "pink" && above;
+      /* switch rosaslut: the list's pink is the list's - once the list has
+         gone up past the middle of the window, the page under it is plain */
+      const past = (!!a) && a.bottom < window.innerHeight * 0.5;
+      const pink = list ? list === "pwm" && !past : root.dataset.nkPanelGround === "pink" && above;
       root.classList.toggle("ground-pink", pink);
     };
     decide();
