@@ -74,6 +74,11 @@ function Title({ c, name }: { c: Company; name?: string }) {
     if (!el) return;
     const fit = () => {
       el.style.fontSize = "";
+      el.style.lineHeight = "";
+      /* a phone sets the name at one size for every company (30/34 in the
+         stylesheet): the column is narrow, and a name that changed size from
+         one company to the next read as a different page each time */
+      if (window.matchMedia("(max-width: 720px)").matches) return;
       const room = el.clientWidth;
       if (!room) return;
       for (let fs = 42; fs >= 24; fs -= 1) {

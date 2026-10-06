@@ -277,6 +277,27 @@ html.nk-cside .grid--v2.grid--side { padding-right: var(--pad); }
 }
 @media (max-width: 720px) {
   .cside-title { font-size: 30px; line-height: 34px; }
+  /* ONE CAMPAIGN, NOT TWO. The record carries it on the sector's line (see
+     Info), so the badge under the record says it a second time. */
+  .cside-caption { display: none; }
+  /* the record a size down: it is a list of facts under a 30px name */
+  .cside-info { font-size: 13px; line-height: 15px; }
+  /* THE CLOSE UNDER WEBFLOW'S MENU. The host draws its menu button in the
+     top right of the window; the x keeps that side and stands a little
+     lower, so the two are not on the same line. */
+  .cside-tools { padding-top: 26px; }
+  /* the record left on the column's edge, and under the one-liner rather
+     than up beside the name: the facts read as the head of the copy */
+  .cside-info { margin-left: 0; }
+  .cside-facts { order: 3; margin-top: 18px; }
+  .cside-top { display: contents; }
+  .cside-picture { order: 1; }
+  .cside-gymbs { order: 2; }
+  .cside-text { order: 4; }
+  .cside-nav { order: 5; }
+  /* the foot off the very bottom edge: Copy link and the steps stand clear
+     of the sheet's floor rather than sitting on it */
+  .cside-nav { padding-bottom: 46px; }
 }
 
 /* while the name decodes, the rest of the column waits white */

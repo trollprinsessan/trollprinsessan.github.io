@@ -60,17 +60,31 @@ export default function Runtime() {
       /* switch rosaslut: the list's pink is the list's - once the list has
          gone up past the middle of the window, the page under it is plain */
       const past = (!!a) && a.bottom < window.innerHeight * 0.5;
-      const pink = list ? list === "pwm" && !past : root.dataset.nkPanelGround === "pink" && above;
+      /* and never under an open company on a phone: there the sheet is the
+         whole screen, and a pink page behind a pink sheet reads as a colour
+         chosen for the company rather than for the chapter */
+      const sheet =
+        root.classList.contains("nk-panel-open") &&
+        window.matchMedia("(max-width: 720px)").matches;
+      const pink =
+        !sheet &&
+        (list ? list === "pwm" && !past : root.dataset.nkPanelGround === "pink" && above);
       root.classList.toggle("ground-pink", pink);
     };
     decide();
     window.addEventListener("nk:ground", decide);
     window.addEventListener("scroll", decide, { passive: true });
     window.addEventListener("resize", decide);
+    /* the sheet's own class arrives a render after the ground is first
+       decided - on a link straight into a company it was still pink behind
+       it - so the root's classes are watched too */
+    const watch = new MutationObserver(() => decide());
+    watch.observe(root, { attributes: true, attributeFilter: ["class"] });
     return () => {
       window.removeEventListener("nk:ground", decide);
       window.removeEventListener("scroll", decide);
       window.removeEventListener("resize", decide);
+      watch.disconnect();
       root.classList.remove("ground-pink");
     };
   }, []);
