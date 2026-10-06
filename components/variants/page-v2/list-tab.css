@@ -141,14 +141,16 @@
      by itself with the bar still reachable under it. */
   :is(.p2tab, .p4dock) .p2-drop-panel--all {
     position: fixed;
-    left: 0;
-    right: 0;
+    /* the sheet takes the bar's own measure, not the page's: it stands over
+       the row it belongs to, edge to edge with it */
+    left: var(--pad);
+    right: var(--pad);
     bottom: calc(var(--nk-dock-h, 56px) + 2px);
     top: auto;
     min-width: 0;
     max-width: none;
     max-height: calc(100dvh - var(--nk-dock-h, 56px) - 80px);
-    padding: 4px var(--pad) 18px;
+    padding: 4px 12px 14px;
     gap: 0;
   }
   /* THE FOUR GROUPS FOLD. The handle is the group's name with what is
