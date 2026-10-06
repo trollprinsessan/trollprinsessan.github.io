@@ -293,6 +293,9 @@ html.nk-cside .grid--v2.grid--side { padding-right: var(--pad); }
   .cside-info { margin-left: 0; }
   .cside-site { margin-top: 0; }
   .cside-facts { order: 3; margin-top: 18px; }
+  /* and a line's air under the record before the copy starts: the two ran
+     together as one block of type */
+  .cside-text { margin-top: 22px; }
   .cside-top { display: contents; }
   .cside-picture { order: 1; }
   .cside-gymbs { order: 2; }
