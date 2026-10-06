@@ -4,6 +4,7 @@
 import "@/components/variants/listview-v2/grid.css";
 import "@/components/variants/listview-v6/grid.css";
 import "./cards.css";
+import type { CSSProperties } from "react";
 import type { Company } from "@/lib/types";
 import {
   visualFor,
@@ -78,7 +79,15 @@ function Motif({ c, cls }: { c: Company; cls: string }) {
   return (
     <span className={`${cls}-motif`} style={m.box}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img className={`${cls}-thumb`} src={cardSrc(visual)} alt={c.name} loading="lazy" style={m.img} />
+      <img
+        /* a photograph says so: it fills its frame, where a cut-out floats
+           in it */
+        className={`${cls}-thumb${m.img.objectFit === "cover" ? " is-photo" : ""}`}
+        src={cardSrc(visual)}
+        alt={c.name}
+        loading="lazy"
+        style={m.img}
+      />
     </span>
   );
 }
@@ -91,11 +100,14 @@ function EntryCard({
   onSelect,
   coded = false,
   footed = false,
+  edge,
 }: {
   c: Company;
   logos: boolean;
   open: boolean;
   onSelect: (el: HTMLElement) => void;
+  /* where the name's rule starts and stops, card by card */
+  edge?: CSSProperties;
   /* cardstyle-v3b: the country's code after the name, over the picture */
   coded?: boolean;
   /* cardstyle-v10: two fixed rows at the foot - the sector, then the campaign
@@ -108,6 +120,7 @@ function EntryCard({
       type="button"
       className={`entry2 nkc${open ? " entry2--open" : ""}`}
       data-camp={campaignOf(c)?.key} data-slug={c.slug}
+      style={edge}
       aria-current={open ? "true" : undefined}
       onClick={(e) => onSelect(e.currentTarget)}
     >
@@ -146,14 +159,15 @@ function Foot({ c }: { c: Company }) {
     text;
   return (
     <span className={`entry2-sections nkc-foot`}>
-      {/* the place first, then what the company does: the country is the one
-          fact every card has, so it holds the top line */}
+      {/* where the company is and what it does, on the one line - the place
+          first, the one fact every card has; the campaign, which only some
+          have, on its own under them */}
       <span className="nkc-foot-row">
         <span className={cls("geo")}>{word(c.countries.map(countryName).join(", "), "geo")}</span>
-        {camp && <span className={`${cls(campKey || "camp")} nkc-foot-tag--camp`}>{word(camp, campKey)}</span>}
+        {c.sectorLabel && <span className={cls("sector")}>{word(c.sectorLabel, "sector")}</span>}
       </span>
       <span className="nkc-foot-row">
-        {c.sectorLabel && <span className={cls("sector")}>{word(c.sectorLabel, "sector")}</span>}
+        {camp && <span className={`${cls(campKey || "camp")} nkc-foot-tag--camp`}>{word(camp, campKey)}</span>}
       </span>
     </span>
   );
@@ -182,7 +196,7 @@ export default function CardGrid({
       className={`grid grid--v2 grid--v2-${shows}${open ? " grid--side" : ""} nkc-grid nkc-grid--poster nkc-grid--v10`}
       style={{ ["--gridcols" as string]: cols, ["--gridcols-phone" as string]: phone }}
     >
-      {list.map((c) => (
+      {list.map((c, i) => (
         <EntryCard
           key={c.slug}
           c={c}
@@ -190,6 +204,18 @@ export default function CardGrid({
           open={open === c.slug}
           coded={false}
           footed={true}
+          /* the rule under the name runs on through the gaps, but never past
+             the grid: a card at the start of its row holds its own left edge,
+             one at the end its right - and the two counts differ between the
+             window and the phone, so each card carries both */
+          edge={{
+            ["--rule-l" as string]: i % cols === 0 ? "0px" : "-8px",
+            ["--rule-r" as string]:
+              i % cols === cols - 1 || i === list.length - 1 ? "0px" : "-8px",
+            ["--rule-l-phone" as string]: i % phone === 0 ? "0px" : "-8px",
+            ["--rule-r-phone" as string]:
+              i % phone === phone - 1 || i === list.length - 1 ? "0px" : "-8px",
+          }}
           /* cardstyle-v8: the card grows into the modal; cardstyle-v3 and -v3b: its
              parts fly to their places in it */
           onSelect={(el) =>

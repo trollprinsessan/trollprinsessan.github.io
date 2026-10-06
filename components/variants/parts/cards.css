@@ -163,8 +163,8 @@ html[data-nk-growing] .entry-scrim .entry { visibility: hidden; }
 /* the two rows close together, but not touching: a tag is 18 high and the
    step between them 5 - they read as one block with its own air, not as two
    lines of a list */
-.nkc-grid--v10 .nkc-foot { height: calc(2 * 18px + 5px); flex: none; overflow: hidden; gap: 5px; }
-.nkc-grid--v10 .nkc-foot-row { height: 18px; min-height: 0; min-width: 0; }
+.nkc-grid--v10 .nkc-foot { height: calc(2 * 20px + 5px); flex: none; overflow: hidden; gap: 5px; }
+.nkc-grid--v10 .nkc-foot-row { height: 20px; min-height: 0; min-width: 0; }
 .nkc-grid--v10 .nkc-foot-tag { flex: 0 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .nkc-grid--v10 .nkc-foot-code { flex: none; white-space: nowrap; }
 /* the code in the card's right corner; the one-liner starts on one line in
@@ -186,7 +186,93 @@ html[data-nk-flying] :is(.entry-scrim .entry, .cside, .index-panel .entry) :is(.
 /* cardstyle-v10: the one-liner centred and a step smaller; the tags closer round
    their words, the country written as the Geography filter writes it */
 .nkc-grid--v10 .entry2-gymbs { justify-content: center; text-align: center; font-size: 12px; line-height: 14px; }
-.nkc-grid--v10 .nkc-foot :is(.card-tag, .nkt-tag) { padding: 2px 3px 1px; }
+.nkc-grid--v10 .nkc-foot :is(.card-tag, .nkt-tag) { padding: 3px 5px 2px; }
 
 /* the card's name is not a link of its own: no rule under it on hover */
 .grid.nkc-grid--v10 .entry2:hover .entry2-name { text-decoration: none; }
+
+/* ── cardstyle-v10, the poster card as it is drawn in the layout: no plate and
+   no shadow, the name set left in capitals with a hairline under it, the
+   picture under the rule, the one-liner set left, and the tags in two rows -
+   what the company does and where on the first, the campaign on its own
+   under them. ── */
+.grid.nkc-grid--poster .entry2 {
+  background: none;
+  box-shadow: none;
+  padding: 0 !important;
+}
+/* the name stands on the rule - two lines of room, so the rule and everything
+   under it keeps the same height in every card, and a short name sits right
+   down on the line rather than leaving it hanging. The rule is not the
+   card's: it runs on through the gaps, one line across the row, and stops
+   where the dock's row stops - the page's margin, not its edge. */
+/* said loud enough to be heard over the name's own room rule */
+html .grid.nkc-grid--v10 .entry2-name {
+  position: relative;
+  text-align: left;
+  padding-top: 0;
+  padding-bottom: 0;
+  /* the rule and the picture are not one block: a few pixels' air under the
+     line, so the picture hangs from it rather than touching it */
+  margin-bottom: 20px;
+  overflow: visible;
+}
+.nkc-grid--v10 .entry2-nametext {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.nkc-grid--v10 .entry2-name::after {
+  content: "";
+  position: absolute;
+  left: var(--rule-l, -8px);
+  right: var(--rule-r, -8px);
+  bottom: 0;
+  height: 1px;
+  background: var(--ink);
+}
+@media (max-width: 720px) {
+  .nkc-grid--v10 .entry2-name::after {
+    left: var(--rule-l-phone, -8px);
+    right: var(--rule-r-phone, -8px);
+  }
+}
+.nkc-grid--v10 .entry2-gymbs {
+  justify-content: flex-start;
+  text-align: left;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 15px;
+}
+.nkc-grid--v10 .nkc-foot-row { justify-content: flex-start; }
+/* the tags follow the one-liner instead of standing on the card's foot: the
+   slack a short card has goes under them, not over them, so they always sit
+   a step below the words they belong to */
+.grid.nkc-grid--v10 .entry2-gymbs {
+  flex: none;
+  padding: 14px 0 18px;
+  /* three lines' room whether the one-liner takes them or not, so the first
+     row of tags stands on the same line in every card */
+  min-height: calc(3 * 15px + 14px + 18px);
+}
+.grid.nkc-grid--v10 .entry2-sections.nkc-foot { margin-bottom: auto; }
+
+/* a photograph fills the frame, edge to edge with the name's rule over it;
+   only the cut-outs float, so only they are let be */
+.nkc-grid--v10 .entry2-thumb.is-photo { object-fit: cover !important; }
+/* and it reaches the line: the air under the rule is the cut-outs' room to
+   float in, so a photograph takes it back - the frame grows upward into it,
+   its foot where every other frame's foot is */
+.grid.nkc-grid--v10 .entry2-media:has(.is-photo) {
+  box-sizing: content-box;
+  margin-top: -20px;
+  padding-top: 20px;
+}
+
+
