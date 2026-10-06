@@ -38,6 +38,9 @@ function Group({
   single = false,
   noAll = false,
   labelOf,
+  fold,
+  open: openGroup,
+  onFold,
 }: {
   title: string;
   value: Set<string>;
@@ -48,6 +51,11 @@ function Group({
   /* one choice always: no "All", and the choice is not undone (the year) */
   noAll?: boolean;
   labelOf?: (o: string) => string;
+  /* a phone folds the four groups: the head is the handle, and what is
+     chosen stands on it so a folded group still says where it is */
+  fold?: boolean;
+  open?: boolean;
+  onFold?: () => void;
 }) {
   const toggle = (o: string) => {
     if (single) {
@@ -59,6 +67,51 @@ function Group({
     else next.add(o);
     onChange(next);
   };
+  const chosen = value.size
+    ? [...value].map((v) => (labelOf ? labelOf(v) : v)).join(", ")
+    : "All";
+  if (fold) {
+    return (
+      <div className={`filter-group filter-group--fold${openGroup ? " is-open" : ""}`}>
+        <button
+          type="button"
+          className="filter-group-head filter-group-handle"
+          aria-expanded={!!openGroup}
+          onClick={onFold}
+        >
+          <span className="filter-group-title">{title}</span>
+          <span className="filter-group-chosen">{chosen}</span>
+        </button>
+        {openGroup && (
+          <div className="filter-group-list" role="group" aria-label={title}>
+            {single && !noAll && (
+              <button
+                type="button"
+                role="checkbox"
+                aria-checked={value.size === 0}
+                className={`filter-opt${value.size === 0 ? " filter-opt--on" : ""}`}
+                onClick={() => onChange(new Set())}
+              >
+                All
+              </button>
+            )}
+            {options.map((o) => (
+              <button
+                key={o}
+                type="button"
+                role="checkbox"
+                aria-checked={value.has(o)}
+                className={`filter-opt${value.has(o) ? " filter-opt--on" : ""}`}
+                onClick={() => toggle(o)}
+              >
+                {labelOf ? labelOf(o) : o}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
   return (
     <div className="filter-group">
       <div className="filter-group-head">
@@ -132,6 +185,9 @@ export function Controls({
   drawer?: boolean;
 }) {
   const [drop, setDrop] = useState<Drop>(null);
+  /* and on a phone, which of the four groups inside the Filter sheet is
+     unfolded - one at a time, so the sheet stays the height of a hand */
+  const [fold, setFold] = useState<string | null>(null);
   const rowRef = useRef<HTMLDivElement>(null);
 
   /* a drop-down closes on Escape and on a press anywhere off it */
@@ -157,6 +213,9 @@ export function Controls({
   useEffect(() => {
     if (!open) setDrop(null);
   }, [open]);
+  useEffect(() => {
+    if (drop !== "all") setFold(null);
+  }, [drop]);
 
   /* anything reached for in the row brings the list up */
   const reach = () => {
@@ -345,7 +404,19 @@ export function Controls({
         {drop === "all" && (
           <div className="p2-drop-panel p2-drop-panel--all">
             {groups.map((g) => (
-              <Group key={g.key} title={g.title} value={g.value} options={g.options} onChange={g.onChange} single={g.single} noAll={g.noAll} labelOf={g.labelOf} />
+              <Group
+                key={g.key}
+                title={g.title}
+                value={g.value}
+                options={g.options}
+                onChange={g.onChange}
+                single={g.single}
+                noAll={g.noAll}
+                labelOf={g.labelOf}
+                fold
+                open={fold === g.key}
+                onFold={() => setFold((x) => (x === g.key ? null : g.key))}
+              />
             ))}
           </div>
         )}

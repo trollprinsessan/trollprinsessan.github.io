@@ -151,13 +151,42 @@
     padding: 4px var(--pad) 18px;
     gap: 0;
   }
-  /* the group's name sticks while its own options run past it */
-  :is(.p2tab, .p4dock) .p2-drop-panel--all .filter-group-head {
+  /* THE FOUR GROUPS FOLD. The handle is the group's name with what is
+     chosen beside it, so a folded group still says where it stands; one
+     opens at a time, and the sheet stays the height of a hand. */
+  :is(.p2tab, .p4dock) .p2-drop-panel--all .filter-group-handle {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 15px 4px;
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+    background: none;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  :is(.p2tab, .p4dock) .p2-drop-panel--all .filter-group-chosen {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: rgba(255, 255, 255, 0.55);
+  }
+  :is(.p2tab, .p4dock) .p2-drop-panel--all .filter-group--fold.is-open .filter-group-chosen {
+    color: var(--bg);
+  }
+  /* the open group's name stays on top of its own options */
+  :is(.p2tab, .p4dock) .p2-drop-panel--all .filter-group--fold.is-open .filter-group-handle {
     position: sticky;
     top: 0;
     z-index: 1;
-    padding: 14px 0 6px;
     background: var(--ink);
+  }
+  :is(.p2tab, .p4dock) .p2-drop-panel--all .filter-group--fold .filter-group-list {
+    padding: 4px 0 10px;
   }
   /* one column, each option a line of its own with room to be pressed */
   :is(.p2tab, .p4dock) .p2-drop-panel--all .filter-group-list,
