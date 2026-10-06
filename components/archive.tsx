@@ -11,7 +11,7 @@ import {
   companyFromUrl,
   writeCompanyUrl,
 } from "@/lib/company-link";
-import { countryName } from "@/lib/countries";
+import { countryName, iso3List } from "@/lib/countries";
 import { composeOrder } from "@/lib/composition";
 import { flyFrom, rowParts } from "@/components/variants/parts/fly";
 import { SHUFFLE_GAPS } from "@/components/variants/parts/shuffle";
@@ -1658,6 +1658,20 @@ function Index({ list, open, onOpen, steps, undocked, scroller, head, modalLike 
   /* Shuffle is running: the marked row moves, the page does not */
   spinning?: boolean;
 }) {
+  /* THE PLACE IN THREE LETTERS ON A PHONE. At a phone's width the country
+     column took a third of the row and the sector was cut to "Circular
+     Eco..."; the code says the same in three letters and gives the sector
+     the room. Set after mount, so the static page and the first paint
+     agree. */
+  const [tiny, setTiny] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 720px)");
+    const on = () => setTiny(mq.matches);
+    on();
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+
   /* A row opens a panel on the right rather than unfolding under itself: the
      list keeps its place and the company is read beside it. The panel sits
      under the control row, which is sticky at the top of the page. */
@@ -1952,7 +1966,13 @@ function Index({ list, open, onOpen, steps, undocked, scroller, head, modalLike 
                 </div>
                 <div className="row-sector">{c.sectorLabel}</div>
                 {/* the index sets the place as codes, on its one track */}
-                <div className="row-geo">{compact ? c.countries.join(", ") : abbreviateCountry(c.countries[0])}</div>
+                <div className="row-geo">
+                  {tiny
+                    ? iso3List(c.countries)
+                    : compact
+                      ? c.countries.join(", ")
+                      : abbreviateCountry(c.countries[0])}
+                </div>
               </button>
             </div>
           );

@@ -65,7 +65,9 @@ export const SWITCHES: Record<string, boolean> = {
   softsnap: true,
   boldmanifest: false,
   boldfaq: true,
-  phoneplate: true,
+  /* off: on a phone the plate stands on a held line - the same line in
+     every panel - rather than following the copy down */
+  phoneplate: false,
   tabshuffle: true,
   faqroomphone: true,
 };

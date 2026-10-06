@@ -2973,7 +2973,10 @@ html {
        longer panel does not move it: a floor rather than a fixed height,
        so the nomination roster can still open and push. */
     height: auto;
-    min-height: calc(100dvh - var(--masthead-h, 45px));
+    /* and the section itself is as deep as its deepest panel (Electro Union,
+       848), so toggling between the tabs does not move the page under your
+       thumb - a screen at least, more if the copy needs it */
+    min-height: max(calc(100dvh - var(--masthead-h, 45px)), 848px);
     padding: 32px 0 24px;
     overflow: visible;
     box-sizing: border-box;
@@ -3003,7 +3006,10 @@ html {
     order: 2;
     margin: 0;
     box-sizing: content-box;
-    min-height: 361px;
+    /* the longest panel that carries a plate (Prompt What Matters) measures
+       391 at a phone's width; holding every panel to that puts the plate on
+       one line whichever tab is open - where Prompt What Matters has it */
+    min-height: 391px;
     padding-bottom: 10px;
   }
   .mod-manifest-verso:has(.mod-manifest-gifline--plain) { order: 3; }
@@ -4549,12 +4555,11 @@ html {
      down the list. Same tight line as the desktop row; the statement does
      not survive at this width. ---- */
   .row {
-    /* sector starts on the Index radio above it: the views group is right
-       aligned and 183px wide, so its left edge is 199px in from the right,
-       and the name track is what remains once the gap is taken off. Sector
-       is held to its longest label (Transportation, 92px) so country can sit
-       tight beside it rather than floating in the middle of the page. */
-    grid-template-columns: calc(100% - 195px) 92px 1fr;
+    /* the place is three letters here (see Index), so the country track is
+       only as wide as a code and what it gives up goes to the sector, which
+       was being cut to "Circular Eco..." in most rows. The name keeps the
+       left, the sector takes the middle. */
+    grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr) 30px;
     gap: 0 12px;
     padding: 1px var(--pad);
     align-items: baseline;
@@ -4570,7 +4575,7 @@ html {
     object-position: center;
   }
   .row-sector { grid-column: 2; grid-row: 1; }
-  .row-geo { grid-column: 3; grid-row: 1; justify-self: start; }
+  .row-geo { grid-column: 3; grid-row: 1; justify-self: end; }
   .row-statement { display: none; }
   .row-campaign { display: none; }
   .row-name,

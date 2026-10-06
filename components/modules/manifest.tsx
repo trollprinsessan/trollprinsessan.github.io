@@ -452,11 +452,22 @@ export default function Manifest({ draw = [] }: { draw?: Draw[] }) {
   anotherRef.current = another;
 
   const sectionRef = useRef<HTMLElement>(null);
+
+  /* THE WHEEL TURNS BY ITSELF.
+     Left alone, the draw takes another company every ten seconds, so the
+     section is never still for long. Any press - a tab, the plate, the
+     section itself - puts the clock back to the start, and it stops while
+     the roster is open, while a spin is still running, and whenever the
+     page is not the one being looked at. */
   useEffect(() => {
-    if (!window.matchMedia("(max-width: 720px)").matches) return;
-    /* the variants shuffle only when asked to */
-    return;
-  }, []);
+    if (partnersOpen || spinning || draw.length < 2) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t = setInterval(() => {
+      if (document.visibilityState !== "visible") return;
+      anotherRef.current();
+    }, 10000);
+    return () => clearInterval(t);
+  }, [partnersOpen, spinning, draw.length, drawn]);
 
   /* The ground belongs to the page, not to this section, so the class goes on
      <html>: it redefines --bg, and body plus every surface painted with it
