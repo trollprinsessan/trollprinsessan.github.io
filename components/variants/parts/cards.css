@@ -256,10 +256,10 @@ html .grid.nkc-grid--v10 .entry2-name {
    a step below the words they belong to */
 .grid.nkc-grid--v10 .entry2-gymbs {
   flex: none;
-  padding: 14px 0 18px;
+  padding: 14px 0 8px;
   /* three lines' room whether the one-liner takes them or not, so the first
      row of tags stands on the same line in every card */
-  min-height: calc(3 * 15px + 14px + 18px);
+  min-height: calc(3 * 15px + 14px + 8px);
 }
 .grid.nkc-grid--v10 .entry2-sections.nkc-foot { margin-bottom: auto; }
 
