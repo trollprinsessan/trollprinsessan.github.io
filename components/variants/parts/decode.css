@@ -232,16 +232,47 @@ html:is([data-v-modal="v5"], [data-v-modal="v6"], [data-v-modal="v7"], [data-v-m
    hung from the foot, level with the picture's foot. The right side, the foot
    line and the motion are modal-v7's. */
 @media (min-width: 721px) {
-  .entry-scrim .entry.entry--v8 { grid-template-rows: auto auto minmax(0, 1fr) auto auto auto; }
+  .entry-scrim .entry.entry--v8 { grid-template-rows: auto auto minmax(0, 1fr) auto minmax(0, auto) auto; }
+  /* the copy may be squeezed: on a short window - a 13" laptop - the text used
+     to run out under the modal's foot and the sentence was cut. It now scrolls
+     inside its own stretch, so the window's height is taken out of the copy and
+     never out of the page. */
+  html .entry-scrim .entry.entry--v8 .entry-blocks {
+    align-self: end;
+    height: auto;
+    max-height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
   .entry.entry--v8 .entry-name { grid-row: 1; }
+  /* THE RECORD CROSSES OVER: it stood a third into the left column, between
+     the name and the copy, and pushed the copy down into the modal's foot.
+     It now heads the picture's column, its first line on the name's line, with
+     the picture under it - and the whole left column is the reading column. */
   .entry.entry--v8 .entry-record {
-    grid-row: 2;
+    /* the picture's own column, not the gutter between, and down at its foot:
+       the record and the Copy link have changed places - the link heads the
+       column, the record closes it */
+    grid-column: 3;
+    grid-row: 5;
+    align-self: end;
     justify-self: start;
-    margin: 104px 0 0 40% !important;
+    margin: 0 !important;
     width: auto !important;
   }
+  /* the picture hangs a little lower, clear of the Copy link's line */
+  .entry.entry--v8 .entry-figure { grid-row: 2 / 6 !important; margin-top: 28px !important; }
   .entry.entry--v8 .entry-statement { grid-row: 4; margin: 0 0 9px !important; }
   .entry.entry--v8 .entry-blocks { grid-row: 5; margin-top: 0 !important; }
-  .entry.entry--v8 .entry-figure { grid-row: 2 / 6; }
-  .entry.entry--v8 :is(.entry-copy-foot, .entry-runhead--copy) { grid-row: 6; }
+  /* the copy's last line, the website and Prev/Next all stand on the one
+     line: the record and the steps come up into the copy's row, at its foot,
+     one at each end of the picture's column */
+  .entry.entry--v8 .entry-runhead--copy {
+    grid-row: 5;
+    align-self: end;
+    justify-self: end;
+  }
+  /* the Copy link takes the record's old place, its line the name's line */
+  .entry.entry--v8 .entry-copy-foot { grid-row: 1; align-self: start; }
 }

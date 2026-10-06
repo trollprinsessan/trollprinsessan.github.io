@@ -3848,14 +3848,26 @@ html {
     transform: scale(1.08);
   }
 }
+/* the islands and the films hang a little lower in the band and stand a size
+   larger - they read as objects in the page, not as plates hung from its top.
+   Only where the window has the height for it: on a short one (a 13" laptop)
+   the lift would push the picture out through the modal's foot. */
+@media (min-width: 901px) and (min-height: 820px) {
+  .entry--spread:not(.entry--panel) .entry-figure--clip img,
+  .entry--spread:not(.entry--panel) .entry-figure--gif img {
+    transform: translateY(24px) scale(1.16);
+  }
+}
 
 /* THE LINE DRAWINGS (the Prompt What Matters plates) are not hung on the
-   tracks either: always centred in the right half of the page, both ways,
-   and set a tenth smaller than the band so the drawing has air all round -
-   then lifted 70px, so it sits a little above the band's middle. */
+   tracks either: always centred in the right half of the page, both ways.
+   They were held a tenth smaller and lifted 70px, from when the record stood
+   in the left column and the picture began under the name; with the record
+   moved over and the picture hung lower, that lift left them small and high
+   up the page, so they now stand in the band like the photographs. */
 .entry--spread:not(.entry--panel) .entry-figure--line img {
   object-position: center center;
-  transform: translateY(-70px) scale(0.9);
+  transform: none;
 }
 
 @keyframes plate-in {
