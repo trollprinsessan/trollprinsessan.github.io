@@ -1379,9 +1379,26 @@ export default function Archive({
     </div>
   );
 
+  /* THE FILTER OFFERS WHAT THE EDITION HAS.
+     The facets are built from all 429 records, so the Sector list carried
+     both taxonomies at once - "Agriculture" beside "Agriculture & Food",
+     "CleanTech" beside "Clean Energy" - and Geography every country any
+     edition has ever had. Both are cut to the year that is chosen, which is
+     one edition at a time. */
+  const yearFacets = useMemo(() => {
+    const inYear = companies.filter(
+      (c) => !year.size || c.years.some((y) => year.has(String(y)))
+    );
+    return {
+      ...facets,
+      sectors: [...new Set(inYear.map((c) => c.sectorLabel).filter(Boolean))].sort(),
+      countries: [...new Set(inYear.flatMap((c) => c.countries).map(countryName))].sort(),
+    };
+  }, [companies, facets, year]);
+
   /* the list's state, for a host's or a page's own controls */
   const controls: ListControls = {
-            facets,
+            facets: yearFacets,
             total: companies.length,
             count: filtered.length,
             beforeSearch,
@@ -1442,8 +1459,8 @@ export default function Archive({
         <div className="filter-panel">
           <div className="filter-panel-groups">
             <FilterGroup title="Year" value={year} options={facets.years.map(String)} onChange={setYear} />
-            <FilterGroup title="Sector" value={sector} options={facets.sectors} onChange={setSector} />
-            <FilterGroup title="Geography" value={country} options={facets.countries} onChange={setCountry} wide />
+            <FilterGroup title="Sector" value={sector} options={yearFacets.sectors} onChange={setSector} />
+            <FilterGroup title="Geography" value={country} options={yearFacets.countries} onChange={setCountry} wide />
             <FilterGroup title="Theme" value={theme} options={facets.themes} onChange={setTheme} />
           </div>
           {/* the live count and the one action: clearing. Nothing to show,
