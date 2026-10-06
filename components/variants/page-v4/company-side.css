@@ -237,10 +237,11 @@ html.nk-cside .grid--v2.grid--side { padding-right: var(--pad); }
   width: 100%;
 }
 
-/* GYMBS: the one-liner in bold, half a line over the copy */
+/* GYMBS: the one-liner in bold italic, half a line over the copy */
 .cside-gymbs {
   margin: var(--cside-gap-copy) 0 9px;
   font-weight: 700;
+  font-style: italic;
 }
 
 /* TEXT: the copy, justified, a line between its blocks */
